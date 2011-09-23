@@ -20,8 +20,8 @@ SOURCES += testApplication.cpp \
 	   ../../parser/blog.cpp \
 	   ../../strings/strings.cpp \
 	   ../../strings/guiStrings.cpp \
-	   ../../GeneratedFiles/debug/moc_database.cpp \
-	   ../../GeneratedFiles/debug/moc_atomParser.cpp \
-	   ../../GeneratedFiles/debug/moc_defaultManager.cpp \
-	   ../../GeneratedFiles/debug/moc_propertyTable.cpp \
-	   ../../GeneratedFiles/debug/moc_mainWindow.cpp
+	   ../../GeneratedFiles/release/moc_database.cpp \
+	   ../../GeneratedFiles/release/moc_atomParser.cpp \
+	   ../../GeneratedFiles/release/moc_defaultManager.cpp \
+	   ../../GeneratedFiles/release/moc_propertyTable.cpp \
+	   ../../GeneratedFiles/release/moc_mainWindow.cpp

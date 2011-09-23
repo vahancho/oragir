@@ -10,4 +10,4 @@ SOURCES += testFilter.cpp \
            ../../parser/post.cpp \
            ../../strings/strings.cpp \
            ../../core/propertyTable.cpp \
-           ../../GeneratedFiles/debug/moc_propertyTable.cpp
+           ../../GeneratedFiles/release/moc_propertyTable.cpp
