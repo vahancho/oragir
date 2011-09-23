@@ -30,7 +30,7 @@ Blog::Blog()
     addProperty(str::TagLink, QString());
     addProperty(str::TagName, QString());
     addProperty(str::TagJournal, QString());
-    addProperty(str::TagJournalId, -1L);
+    addProperty(str::TagJournalId, -1);
 }
 
 } // namespace core

@@ -168,9 +168,9 @@ bool AtomParser::parseXmlData()
             } else if (m_currentTag == str::TagJournal) {
                 m_currentBlog.setValue(str::TagJournal, text);
             } else if (m_currentTag == str::TagJournalId) {
-                m_currentBlog.setValue(str::TagJournalId, text.toLong());
+                m_currentBlog.setValue(str::TagJournalId, text.toInt());
             } else if (m_currentTag == str::TagPosterId) {
-                m_currentPost.setValue(str::TagPosterId, text.toLong());
+                m_currentPost.setValue(str::TagPosterId, text.toInt());
             } else if (m_currentTag == str::TagUserPic) {
                 m_currentPost.setValue(str::TagUserPic, text);
             } else if (m_currentTag == str::TagContent) {
