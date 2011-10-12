@@ -25,6 +25,7 @@
 #include <QHttp>
 #include <QXmlStreamReader>
 #include <QTextEdit>
+#include <QStack>
 
 namespace core
 {
@@ -58,14 +59,15 @@ private slots:
     bool parseXmlData();
 
 private:
+    bool isGroupTag() const;
     QString m_status;
     QUrl m_url;
 
     int m_requestId;
 
     /// Current XML tag.
+    QStack<QString> m_tags;
     QString m_currentTag;
-    bool m_feedHeader;
     
     /// The XML reader.
     QXmlStreamReader m_xml;

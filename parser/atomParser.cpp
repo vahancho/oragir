@@ -27,8 +27,7 @@ namespace core
 
 AtomParser::AtomParser()
     :
-        m_url(str::sFeedUrl),
-        m_feedHeader(false)
+        m_url(str::sFeedUrl)
 {
     connect(&m_http, SIGNAL(readyRead(const QHttpResponseHeader &)), this,
             SLOT(fetchHttpData(const QHttpResponseHeader &)));
@@ -121,53 +120,94 @@ bool AtomParser::parseXmlData()
     {
         m_xml.readNext();
 
-        if (m_xml.isStartElement())
-        {
+        if (m_xml.isStartElement()) {
             m_currentTag = m_xml.name().toString();
-            //qDebug(m_currentTag.toAscii().data());
 
-            if (m_currentTag == str::sTagFeed) {
-                m_feedHeader = true;
-            } else if (m_currentTag == str::sTagEntry) {
-                m_feedHeader = false;
+            if (isGroupTag()) {
+                m_tags.push(m_currentTag);
+                QString s = QString("<%1>").arg(m_tags.top());
+                qDebug(s.toAscii().data());
             }
-        }
-        else if (m_xml.isEndElement())
-        {
-            
-        }
-        else if (m_xml.isCharacters() && !m_xml.isWhitespace())
-        {
-            if (m_currentTag == str::sTagTitle)
-            {
-                //qDebug(m_xml.text().toString().toAscii().data());
-                m_editor.append(m_xml.text().toString());
-                //m_mailEntry.addSubject(m_xml.text().toString());
+
+            if (m_currentTag == str::sTagLink) {
+                QXmlStreamAttributes atrs = m_xml.attributes();
+                QString s = atrs.value("href").toString();
+
+                if (m_tags.top() == str::sTagFeed) {
+                    s.prepend("Feed link: ");
+                } else if (m_tags.top() == str::sTagEntry) {
+                    s.prepend("Entry link: ");
+                }
+                qDebug(s.toAscii().data());
+                m_editor.append(s);
+            } else if (m_currentTag == str::sTagCategory) {
+                QXmlStreamAttributes atrs = m_xml.attributes();
+                QString s = atrs.value("term").toString();
+                qDebug(s.toAscii().data());
+                m_editor.append(s);
             }
-            else if (m_currentTag == str::sTagAuthor)
-            {
-                //qDebug(m_xml.text().toString().toAscii().data());
+        } else if (m_xml.isEndElement()) {
+            if (isGroupTag()) {
+                QString p = m_tags.pop();
+                QString s = QString("</%1>").arg(p);
+                qDebug(s.toAscii().data());
             }
-            else if (m_currentTag == str::sTagEntry)
-            {
-                qDebug(m_xml.text().toString().toAscii().data());
-                //m_mailEntry.addTime(m_xml.text().toString());
+        } else if (m_xml.isCharacters() && !m_xml.isWhitespace()) {
+            if (m_currentTag == str::sTagTitle) {
+                QString s = m_xml.text().toString();
+                if (m_tags.top() == str::sTagFeed) {
+                    s.prepend("Feed title: ");
+                } else if (m_tags.top() == str::sTagEntry) {
+                    s.prepend("Entry title: ");
+                }
+                qDebug(s.toAscii().data());
+                m_editor.append(s);
+            } else if (m_currentTag == str::sTagName) {
+                QString s = m_xml.text().toString();
+                if (m_tags.top() == str::sTagAuthor) {
+                    s.prepend("Author name: ");
+                } else if (m_tags.top() == str::sTagEntry) {
+                    s.prepend("Poster name: ");
+                }
+                qDebug(s.toAscii().data());
+                m_editor.append(s);
+            } else if (m_currentTag == str::sTagJournal) {
+                QString s = m_xml.text().toString();
+                qDebug(s.toAscii().data());
+                m_editor.append(s);
+            } else if (m_currentTag == str::sTagJournalId) {
+                QString s = m_xml.text().toString();
+                qDebug(s.toAscii().data());
+                m_editor.append(s);
+            } else if (m_currentTag == str::sTagPosterId) {
+                QString s = m_xml.text().toString();
+                qDebug(s.toAscii().data());
+                m_editor.append(s);
+            } else if (m_currentTag == str::sTagUserPic) {
+                QString s = m_xml.text().toString();
+                qDebug(s.toAscii().data());
+                m_editor.append(s);
             } else if (m_currentTag == str::sTagContent) {
-                //qDebug(m_xml.text().toString().toAscii().data());
-                //m_editor.append(m_xml.text().toString());
-                //m_mailEntry.addTime(m_xml.text().toString());
+                QString s = m_xml.text().toString();
+                qDebug(s.toAscii().data());
+                //m_editor.append(s);
             }
         }
     }
 
-    if (m_xml.error() && m_xml.error() != QXmlStreamReader::PrematureEndOfDocumentError) 
-    {
+    if (m_xml.error() && m_xml.error() != QXmlStreamReader::PrematureEndOfDocumentError) {
         m_status = QString("XML ERROR: %1 : %2").arg(m_xml.lineNumber()).arg(m_xml.errorString());
-
         return false;
     }
     else
         return true;
+}
+
+bool AtomParser::isGroupTag() const
+{
+    return m_xml.name() == str::sTagFeed ||
+           m_xml.name() == str::sTagAuthor ||
+           m_xml.name() == str::sTagEntry;
 }
 
 } // namespace core
