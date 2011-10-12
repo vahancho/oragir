@@ -36,6 +36,7 @@ namespace str
     extern const char *sTagFeed;
     extern const char *sTagTitle;
     extern const char *sTagName;
+    extern const char *sTagJournal;
     extern const char *sTagJournalId;
     extern const char *sTagLink;
     extern const char *sTagCategory;

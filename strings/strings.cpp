@@ -36,12 +36,13 @@ namespace str
     const char *sTagEntry = "entry";
     const char *sTagContent = "content";    
     const char *sTagName = "name";
-    const char *sTagJournalId = "lj:journalid";
+    const char *sTagJournal = "journal";
+    const char *sTagJournalId = "journalid";
     const char *sTagLink = "link";
     const char *sTagCategory = "category";
-    const char *sTagUserPic = "lj:userpic";
+    const char *sTagUserPic = "userpic";
     const char *sTagUpdated = "updated";
-    const char *sTagPosterId = "lj:posterid";
+    const char *sTagPosterId = "posterid";
     
     // Version related strings
     const char *sVersion = "0.0.1";
