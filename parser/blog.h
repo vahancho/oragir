@@ -35,6 +35,7 @@ private:
     QString m_title;
     QString m_url;
     QString m_name;
+    QString m_journal;
     long m_id;
 
     QList<Post> m_posts;
