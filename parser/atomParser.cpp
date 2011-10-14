@@ -139,7 +139,7 @@ bool AtomParser::parseXmlData()
                 QString s = atrs.value("href").toString();
 
                 if (m_tags.top() == str::sTagFeed) {
-                    s.prepend("Feed link: ");
+                    m_currentBlog.setUrl(s);
                 } else if (m_tags.top() == str::sTagEntry) {
                     s.prepend("Entry link: ");
                 }
@@ -152,30 +152,29 @@ bool AtomParser::parseXmlData()
                 QString p = m_tags.pop();
             }
         } else if (m_xml.isCharacters() && !m_xml.isWhitespace()) {
+            QString text = m_xml.text().toString();
             if (m_currentTag == str::sTagTitle) {
-                QString s = m_xml.text().toString();
                 if (m_tags.top() == str::sTagFeed) {
-                    s.prepend("Feed title: ");
+                    m_currentBlog.setTitle(text);
                 } else if (m_tags.top() == str::sTagEntry) {
-                    s.prepend("Entry title: ");
+                    text.prepend("Entry title: ");
                 }
             } else if (m_currentTag == str::sTagName) {
-                QString s = m_xml.text().toString();
                 if (m_tags.top() == str::sTagAuthor) {
-                    s.prepend("Author name: ");
+                    m_currentBlog.setName(text);
                 } else if (m_tags.top() == str::sTagEntry) {
-                    s.prepend("Poster name: ");
+                    text.prepend("Poster name: ");
                 }
             } else if (m_currentTag == str::sTagJournal) {
-                QString s = m_xml.text().toString();
+                m_currentBlog.setJournal(text);
             } else if (m_currentTag == str::sTagJournalId) {
-                QString s = m_xml.text().toString();
+                m_currentBlog.setId(text.toLong());
             } else if (m_currentTag == str::sTagPosterId) {
-                QString s = m_xml.text().toString();
+
             } else if (m_currentTag == str::sTagUserPic) {
-                QString s = m_xml.text().toString();
+
             } else if (m_currentTag == str::sTagContent) {
-                QString s = m_xml.text().toString();
+
             }
         }
     }
