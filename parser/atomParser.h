@@ -27,6 +27,9 @@
 #include <QTextEdit>
 #include <QStack>
 
+#include "blog.h"
+#include "post.h"
+
 namespace core
 {
 
@@ -68,6 +71,8 @@ private:
     /// Current XML tag.
     QStack<QString> m_tags;
     QString m_currentTag;
+    Blog m_currentBlog;
+    Post m_currentPost;
     
     /// The XML reader.
     QXmlStreamReader m_xml;

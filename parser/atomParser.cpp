@@ -124,9 +124,14 @@ bool AtomParser::parseXmlData()
             m_currentTag = m_xml.name().toString();
 
             if (isGroupTag()) {
+                if (m_currentTag == str::sTagFeed) {
+                    m_currentBlog.clear();
+                }
+
+                if (m_currentTag == str::sTagEntry) {
+                    m_currentPost.clear();
+                }
                 m_tags.push(m_currentTag);
-                QString s = QString("<%1>").arg(m_tags.top());
-                qDebug(s.toAscii().data());
             }
 
             if (m_currentTag == str::sTagLink) {
@@ -138,19 +143,13 @@ bool AtomParser::parseXmlData()
                 } else if (m_tags.top() == str::sTagEntry) {
                     s.prepend("Entry link: ");
                 }
-                qDebug(s.toAscii().data());
-                m_editor.append(s);
             } else if (m_currentTag == str::sTagCategory) {
                 QXmlStreamAttributes atrs = m_xml.attributes();
                 QString s = atrs.value("term").toString();
-                qDebug(s.toAscii().data());
-                m_editor.append(s);
             }
         } else if (m_xml.isEndElement()) {
             if (isGroupTag()) {
                 QString p = m_tags.pop();
-                QString s = QString("</%1>").arg(p);
-                qDebug(s.toAscii().data());
             }
         } else if (m_xml.isCharacters() && !m_xml.isWhitespace()) {
             if (m_currentTag == str::sTagTitle) {
@@ -160,8 +159,6 @@ bool AtomParser::parseXmlData()
                 } else if (m_tags.top() == str::sTagEntry) {
                     s.prepend("Entry title: ");
                 }
-                qDebug(s.toAscii().data());
-                m_editor.append(s);
             } else if (m_currentTag == str::sTagName) {
                 QString s = m_xml.text().toString();
                 if (m_tags.top() == str::sTagAuthor) {
@@ -169,28 +166,16 @@ bool AtomParser::parseXmlData()
                 } else if (m_tags.top() == str::sTagEntry) {
                     s.prepend("Poster name: ");
                 }
-                qDebug(s.toAscii().data());
-                m_editor.append(s);
             } else if (m_currentTag == str::sTagJournal) {
                 QString s = m_xml.text().toString();
-                qDebug(s.toAscii().data());
-                m_editor.append(s);
             } else if (m_currentTag == str::sTagJournalId) {
                 QString s = m_xml.text().toString();
-                qDebug(s.toAscii().data());
-                m_editor.append(s);
             } else if (m_currentTag == str::sTagPosterId) {
                 QString s = m_xml.text().toString();
-                qDebug(s.toAscii().data());
-                m_editor.append(s);
             } else if (m_currentTag == str::sTagUserPic) {
                 QString s = m_xml.text().toString();
-                qDebug(s.toAscii().data());
-                m_editor.append(s);
             } else if (m_currentTag == str::sTagContent) {
                 QString s = m_xml.text().toString();
-                qDebug(s.toAscii().data());
-                //m_editor.append(s);
             }
         }
     }
