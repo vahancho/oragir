@@ -39,8 +39,6 @@ AtomParser::AtomParser()
             this, SLOT(onStateChanged(int)));
 
     m_http.setHost(m_url.host());
-
-    m_editor.show();
 }
 
 AtomParser::~AtomParser()

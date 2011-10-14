@@ -24,7 +24,6 @@
 #include <QUrl>
 #include <QHttp>
 #include <QXmlStreamReader>
-#include <QTextEdit>
 #include <QStack>
 
 #include "blog.h"
@@ -82,8 +81,6 @@ private:
 
     /// Http
     QHttp m_http;
-
-    QTextEdit m_editor;
 };
 
 } // namespace core
