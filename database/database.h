@@ -18,24 +18,21 @@
 *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
 ***************************************************************************/
 
-#include <QtGui/QApplication>
-#include <QIcon>
-#include "../parser/atomParser.h"
-#include "../database/database.h"
+#ifndef __DATABASE_H__
+#define __DATABASE_H__
 
-int main(int argc, char *argv[])
+namespace core
 {
-    QApplication a(argc, argv);
-    a.setQuitOnLastWindowClosed(false);
 
-    a.setWindowIcon(QIcon(":/icons/app"));
+class Database
+{
+public:
+    Database();
 
-    core::Database db;
+private:
+    
+};
 
-    core::AtomParser ap;
-    ap.parse();
-      
+} // namespace core
 
-    int ret = a.exec();
-    return ret;
-}
+#endif // __DATABASE_H__

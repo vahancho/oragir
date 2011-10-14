@@ -18,24 +18,41 @@
 *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
 ***************************************************************************/
 
-#include <QtGui/QApplication>
-#include <QIcon>
-#include "../parser/atomParser.h"
-#include "../database/database.h"
+#include <QtSql>
+#include <QMessageBox>
+#include "database.h"
 
-int main(int argc, char *argv[])
+namespace core
 {
-    QApplication a(argc, argv);
-    a.setQuitOnLastWindowClosed(false);
 
-    a.setWindowIcon(QIcon(":/icons/app"));
+Database::Database()
+{
+    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
+    db.setDatabaseName(":memory:");
+    if (!db.open()) {
+     QMessageBox::critical(0, "Cannot open database",
+                              "Unable to establish a database connection.\n"
+                              "This example needs SQLite support. Please read "
+                              "the Qt SQL driver documentation for information how "
+                              "to build it.", QMessageBox::Cancel);
+    }
 
-    core::Database db;
+    QSqlQuery query;
+    query.exec("CREATE TABLE blog ("
+               "journalid INT PRIMARY KEY NOT NULL,"
+               "link      VARCHAR(256)    NOT NULL,"
+               "name      NVARCHAR(128)   NOT NULL,"
+               "journal   VARCHAR(256)    NOT NULL,"
+               "title     NVARCHAR(256))");
 
-    core::AtomParser ap;
-    ap.parse();
-      
-
-    int ret = a.exec();
-    return ret;
+    query.exec("CREATE TABLE entry ("
+               "posterid INT             NOT NULL,"
+               "link     VARCHAR(256)    NOT NULL,"
+               "updated  DATATIME        NOT NULL,"
+               "name     NVARCHAR(128)   NOT NULL,"
+               "content  NVARCHAR,"
+               "title    NVARCHAR(256))");
 }
+
+
+} // namespace core
