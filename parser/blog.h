@@ -38,8 +38,6 @@ private:
     QString m_name;
     QString m_journal;
     long m_id;
-
-    QList<Post> m_posts;
 };
 
 } // namespace core
