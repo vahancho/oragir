@@ -32,6 +32,12 @@ class Blog
 public:
     void clear();
 
+    void setTitle(const QString &title);
+    void setUrl(const QString &url);
+    void setName(const QString &name);
+    void setJournal(const QString &journal);
+    void setId(long id);
+
 private:
     QString m_title;
     QString m_url;

@@ -26,4 +26,29 @@ namespace core
 void Blog::clear()
 {}
 
+void Blog::setTitle(const QString &title)
+{
+    m_title = title;
+}
+
+void Blog::setUrl(const QString &url)
+{
+    m_url = url;
+}
+
+void Blog::setName(const QString &name)
+{
+    m_name = name;
+}
+
+void Blog::setJournal(const QString &journal)
+{
+    m_journal = journal;
+}
+
+void Blog::setId(long id)
+{
+    m_id = id;
+}
+
 } // namespace core
