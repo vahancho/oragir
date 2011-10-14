@@ -82,8 +82,6 @@ void AtomParser::onStateChanged(int state)
     default:
         break;
     }
-
-    //emit statusChanged();
 }
 
 void AtomParser::fetchHttpData(const QHttpResponseHeader &resp)
@@ -110,8 +108,6 @@ void AtomParser::onHttpDone(bool error)
         m_status = m_http.errorString();
     else
         m_status.clear();
-
-    //emit done(error);
 }
 
 bool AtomParser::parseXmlData()
@@ -129,6 +125,8 @@ bool AtomParser::parseXmlData()
                 }
 
                 if (m_currentTag == str::sTagEntry) {
+                    // All blog information is fetched, so inform all recievers.
+                    emit fetched(m_currentBlog);
                     m_currentPost.clear();
                 }
                 m_tags.push(m_currentTag);

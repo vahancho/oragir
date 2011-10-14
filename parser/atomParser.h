@@ -43,6 +43,9 @@ public:
 
     ~AtomParser();
 
+signals:
+    void fetched(const Blog &blog);
+
 public slots:
 
     /// Start parsing for the new mail.
