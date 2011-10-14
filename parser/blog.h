@@ -30,6 +30,7 @@ namespace core
 class Blog
 {
 public:
+    void clear();
 
 private:
     QString m_title;

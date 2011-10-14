@@ -23,5 +23,7 @@
 namespace core
 {
 
+void Blog::clear()
+{}
 
 } // namespace core

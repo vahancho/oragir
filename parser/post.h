@@ -29,6 +29,7 @@ namespace core
 class Post
 {
 public:
+    void clear();
 
 private:
     QString m_title;

@@ -23,5 +23,7 @@
 namespace core
 {
 
+void Post::clear()
+{}
 
 } // namespace core
