@@ -44,6 +44,7 @@ public:
 
 signals:
     void fetched(const Blog &blog);
+    void fetched(const Post &post);
 
 public slots:
 
