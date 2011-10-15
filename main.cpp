@@ -30,9 +30,13 @@ int main(int argc, char *argv[])
 
     a.setWindowIcon(QIcon(":/icons/app"));
 
+    core::AtomParser ap;
     core::Database db;
 
-    core::AtomParser ap;
+    QObject::connect(&ap, SIGNAL(fetched(const Blog &)),
+                     &db, SLOT(onFetched(const Blog &)));
+    QObject::connect(&ap, SIGNAL(fetched(const Post &)),
+                     &db, SLOT(onFetched(const Post &)));
     ap.parse();
       
 
