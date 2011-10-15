@@ -42,9 +42,19 @@ void Blog::setTitle(const QString &title)
     m_title = title;
 }
 
+QString Blog::title() const
+{
+    return m_title;
+}
+
 void Blog::setUrl(const QString &url)
 {
     m_url = url;
+}
+
+QString Blog::url() const
+{
+    return m_url;
 }
 
 void Blog::setName(const QString &name)
@@ -52,14 +62,29 @@ void Blog::setName(const QString &name)
     m_name = name;
 }
 
+QString Blog::name() const
+{
+    return m_name;
+}
+
 void Blog::setJournal(const QString &journal)
 {
     m_journal = journal;
 }
 
+QString Blog::journal() const
+{
+    return m_journal;
+}
+
 void Blog::setId(long id)
 {
     m_id = id;
+}
+
+long Blog::id() const
+{
+    return m_id;
 }
 
 } // namespace core

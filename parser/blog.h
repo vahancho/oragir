@@ -35,10 +35,19 @@ public:
     void clear();
 
     void setTitle(const QString &title);
+    QString title() const;
+
     void setUrl(const QString &url);
+    QString url() const;
+
     void setName(const QString &name);
+    QString name() const;
+
     void setJournal(const QString &journal);
+    QString journal() const;
+
     void setId(long id);
+    long id() const;
 
 private:
     QString m_title;
