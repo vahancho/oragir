@@ -31,12 +31,21 @@ class Post
 public:
     void clear();
 
+    void setTitle(const QString &title);
+    void setUrl(const QString &url);
+    void setTime(const QString &time);
+    void setPosterName(const QString &name);
+    void setPosterId(long id);
+    void setUserPic(const QString &url);
+    void setContent(const QString &content);
+    void addTag(const QString &tag);
+
 private:
     QString m_title;
     QString m_url;
     QString m_time;
-    QString m_blogName;
-    long m_blogId;
+    QString m_posterName;
+    long m_posterId;
     QString m_userPicUrl;
     QString m_content;
     QStringList m_tags;    

@@ -24,6 +24,47 @@ namespace core
 {
 
 void Post::clear()
-{}
+{
+}
+
+void Post::setTitle(const QString &title)
+{
+    m_title = title;
+}
+
+void Post::setUrl(const QString &url)
+{
+    m_url = url;
+}
+
+void Post::setTime(const QString &time)
+{
+    m_time = time;
+}
+
+void Post::setPosterName(const QString &name)
+{
+    m_posterName = name;
+}
+
+void Post::setPosterId(long id)
+{
+    m_posterId = id;
+}
+
+void Post::setUserPic(const QString &url)
+{
+    m_userPicUrl = url;
+}
+
+void Post::setContent(const QString &content)
+{
+    m_content = content;
+}
+
+void Post::addTag(const QString &tag)
+{
+    m_tags.push_back(tag);
+}
 
 } // namespace core
