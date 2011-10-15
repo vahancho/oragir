@@ -137,15 +137,18 @@ bool AtomParser::parseXmlData()
                 if (m_tags.top() == str::sTagFeed) {
                     m_currentBlog.setUrl(s);
                 } else if (m_tags.top() == str::sTagEntry) {
-                    s.prepend("Entry link: ");
+                    m_currentPost.setUrl(s);
                 }
             } else if (m_currentTag == str::sTagCategory) {
                 QXmlStreamAttributes atrs = m_xml.attributes();
                 QString s = atrs.value("term").toString();
+                m_currentPost.addTag(s);
             }
         } else if (m_xml.isEndElement()) {
             if (isGroupTag()) {
-                QString p = m_tags.pop();
+                QString s = m_tags.pop();
+                if (s == str::sTagEntry)
+                    emit fetched(m_currentPost);
             }
         } else if (m_xml.isCharacters() && !m_xml.isWhitespace()) {
             QString text = m_xml.text().toString();
@@ -153,24 +156,26 @@ bool AtomParser::parseXmlData()
                 if (m_tags.top() == str::sTagFeed) {
                     m_currentBlog.setTitle(text);
                 } else if (m_tags.top() == str::sTagEntry) {
-                    text.prepend("Entry title: ");
+                    m_currentPost.setTitle(text);
                 }
             } else if (m_currentTag == str::sTagName) {
                 if (m_tags.top() == str::sTagAuthor) {
                     m_currentBlog.setName(text);
                 } else if (m_tags.top() == str::sTagEntry) {
-                    text.prepend("Poster name: ");
+                    m_currentPost.setPosterName(text);
                 }
             } else if (m_currentTag == str::sTagJournal) {
                 m_currentBlog.setJournal(text);
             } else if (m_currentTag == str::sTagJournalId) {
                 m_currentBlog.setId(text.toLong());
             } else if (m_currentTag == str::sTagPosterId) {
-
+                m_currentPost.setPosterId(text.toLong());
             } else if (m_currentTag == str::sTagUserPic) {
-
+                m_currentPost.setUserPic(text);
             } else if (m_currentTag == str::sTagContent) {
-
+                m_currentPost.setContent(text);
+            } else if (m_currentTag == str::sTagUpdated) {
+                m_currentPost.setTime(text);
             }
         }
     }
@@ -178,9 +183,9 @@ bool AtomParser::parseXmlData()
     if (m_xml.error() && m_xml.error() != QXmlStreamReader::PrematureEndOfDocumentError) {
         m_status = QString("XML ERROR: %1 : %2").arg(m_xml.lineNumber()).arg(m_xml.errorString());
         return false;
-    }
-    else
+    } else {
         return true;
+    }
 }
 
 bool AtomParser::isGroupTag() const
