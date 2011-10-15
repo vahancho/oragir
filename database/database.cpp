@@ -54,5 +54,14 @@ Database::Database()
                "title    NVARCHAR(256))");
 }
 
+void Database::onFetched(const Blog &blog)
+{
+}
+
+void Database::onFetched(const Post &post)
+{
+}
+
+
 
 } // namespace core

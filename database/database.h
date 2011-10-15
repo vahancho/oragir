@@ -21,13 +21,21 @@
 #ifndef __DATABASE_H__
 #define __DATABASE_H__
 
+#include "../parser/blog.h"
+#include "../parser/post.h"
+
 namespace core
 {
 
-class Database
+class Database : public QObject
 {
+    Q_OBJECT
 public:
     Database();
+
+public slots:
+    void onFetched(const Blog &blog);
+    void onFetched(const Post &post);
 
 private:
     
