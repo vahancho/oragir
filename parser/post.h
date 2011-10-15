@@ -29,6 +29,8 @@ namespace core
 class Post
 {
 public:
+    Post();
+
     void clear();
 
     void setTitle(const QString &title);

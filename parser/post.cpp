@@ -23,8 +23,21 @@
 namespace core
 {
 
+Post::Post()
+    :
+        m_posterId(-1)
+{}
+
 void Post::clear()
 {
+    m_title.clear();
+    m_url.clear();
+    m_time.clear();
+    m_posterName.clear();
+    m_posterId = -1;
+    m_userPicUrl.clear();
+    m_content.clear();
+    m_tags.clear();
 }
 
 void Post::setTitle(const QString &title)
