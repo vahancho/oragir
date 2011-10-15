@@ -23,8 +23,19 @@
 namespace core
 {
 
-void Blog::clear()
+Blog::Blog()
+    :
+        m_id(-1)
 {}
+
+void Blog::clear()
+{
+    m_title.clear();
+    m_url.clear();
+    m_name.clear();
+    m_journal.clear();
+    m_id = -1;
+}
 
 void Blog::setTitle(const QString &title)
 {

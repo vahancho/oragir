@@ -30,6 +30,8 @@ namespace core
 class Blog
 {
 public:
+    Blog();
+
     void clear();
 
     void setTitle(const QString &title);
