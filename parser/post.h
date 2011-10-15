@@ -34,13 +34,28 @@ public:
     void clear();
 
     void setTitle(const QString &title);
+    QString title() const;
+
     void setUrl(const QString &url);
+    QString url() const;
+
     void setTime(const QString &time);
+    QString time() const;
+
     void setPosterName(const QString &name);
+    QString posterName() const;
+
     void setPosterId(long id);
+    long posterId() const;
+
     void setUserPic(const QString &url);
+    QString userPic() const;
+
     void setContent(const QString &content);
+    QString content() const;
+
     void addTag(const QString &tag);
+    QStringList tags() const;
 
 private:
     QString m_title;

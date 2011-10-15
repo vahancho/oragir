@@ -45,9 +45,19 @@ void Post::setTitle(const QString &title)
     m_title = title;
 }
 
+QString Post::title() const
+{
+    return m_title;
+}
+
 void Post::setUrl(const QString &url)
 {
     m_url = url;
+}
+
+QString Post::url() const
+{
+    return m_url;
 }
 
 void Post::setTime(const QString &time)
@@ -55,9 +65,19 @@ void Post::setTime(const QString &time)
     m_time = time;
 }
 
+QString Post::time() const
+{
+    return m_time;
+}
+
 void Post::setPosterName(const QString &name)
 {
     m_posterName = name;
+}
+
+QString Post::posterName() const
+{
+    return m_posterName;
 }
 
 void Post::setPosterId(long id)
@@ -65,9 +85,19 @@ void Post::setPosterId(long id)
     m_posterId = id;
 }
 
+long Post::posterId() const
+{
+    return m_posterId;
+}
+
 void Post::setUserPic(const QString &url)
 {
     m_userPicUrl = url;
+}
+
+QString Post::userPic() const
+{
+    return m_userPicUrl;
 }
 
 void Post::setContent(const QString &content)
@@ -75,9 +105,19 @@ void Post::setContent(const QString &content)
     m_content = content;
 }
 
+QString Post::content() const
+{
+    return m_content;
+}
+
 void Post::addTag(const QString &tag)
 {
     m_tags.push_back(tag);
+}
+
+QStringList Post::tags() const
+{
+    return m_tags;
 }
 
 } // namespace core
