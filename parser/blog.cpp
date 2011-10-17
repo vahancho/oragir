@@ -18,73 +18,19 @@
 *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
 ***************************************************************************/
 
+#include "../strings/strings.h"
 #include "blog.h"
 
 namespace core
 {
 
 Blog::Blog()
-    :
-        m_id(-1)
-{}
-
-void Blog::clear()
 {
-    m_title.clear();
-    m_url.clear();
-    m_name.clear();
-    m_journal.clear();
-    m_id = -1;
-}
-
-void Blog::setTitle(const QString &title)
-{
-    m_title = title;
-}
-
-QString Blog::title() const
-{
-    return m_title;
-}
-
-void Blog::setUrl(const QString &url)
-{
-    m_url = url;
-}
-
-QString Blog::url() const
-{
-    return m_url;
-}
-
-void Blog::setName(const QString &name)
-{
-    m_name = name;
-}
-
-QString Blog::name() const
-{
-    return m_name;
-}
-
-void Blog::setJournal(const QString &journal)
-{
-    m_journal = journal;
-}
-
-QString Blog::journal() const
-{
-    return m_journal;
-}
-
-void Blog::setId(long id)
-{
-    m_id = id;
-}
-
-long Blog::id() const
-{
-    return m_id;
+    addProperty(str::sTagTitle, QString());
+    addProperty(str::sTagLink, QString());
+    addProperty(str::sTagName, QString());
+    addProperty(str::sTagJournal, QString());
+    addProperty(str::sTagJournalId, -1L);
 }
 
 } // namespace core

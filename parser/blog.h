@@ -21,40 +21,15 @@
 #ifndef __BLOG_H__
 #define __BLOG_H__
 
-#include <QList>
-#include "post.h"
+#include "../core/propertyTable.h"
 
 namespace core
 {
 
-class Blog
+class Blog : public PropertyTable
 {
 public:
     Blog();
-
-    void clear();
-
-    void setTitle(const QString &title);
-    QString title() const;
-
-    void setUrl(const QString &url);
-    QString url() const;
-
-    void setName(const QString &name);
-    QString name() const;
-
-    void setJournal(const QString &journal);
-    QString journal() const;
-
-    void setId(long id);
-    long id() const;
-
-private:
-    QString m_title;
-    QString m_url;
-    QString m_name;
-    QString m_journal;
-    long m_id;
 };
 
 } // namespace core
