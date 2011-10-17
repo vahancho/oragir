@@ -33,10 +33,8 @@ int main(int argc, char *argv[])
     core::AtomParser ap;
     core::Database db;
 
-    QObject::connect(&ap, SIGNAL(fetched(const Blog &)),
-                     &db, SLOT(onFetched(const Blog &)));
-    QObject::connect(&ap, SIGNAL(fetched(const Post &)),
-                     &db, SLOT(onFetched(const Post &)));
+    QObject::connect(&ap, SIGNAL(fetched(const Post &, const Blog &)),
+                     &db, SLOT(onFetched(const Post &, const Blog &)));
     ap.parse();
       
 
