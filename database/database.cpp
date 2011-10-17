@@ -18,8 +18,10 @@
 *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
 ***************************************************************************/
 
+#include <QTableView>
 #include <QtSql>
 #include <QMessageBox>
+#include "../strings/strings.h"
 #include "database.h"
 
 namespace core
@@ -45,7 +47,7 @@ Database::Database()
                "journal   VARCHAR(256)    NOT NULL,"
                "title     NVARCHAR(256))");
 
-    query.exec("CREATE TABLE entry ("
+    query.exec("CREATE TABLE post ("
                "posterid INT             NOT NULL,"
                "link     VARCHAR(256)    NOT NULL,"
                "updated  DATATIME        NOT NULL,"
@@ -54,14 +56,59 @@ Database::Database()
                "title    NVARCHAR(256))");
 }
 
-void Database::onFetched(const Blog &blog)
+void Database::onFetched(const Post &post, const Blog &blog)
 {
+    QString sBlog = QString("%1\n%2\n%3\n%4\n%5\n%6\n")
+                            .arg(blog.value(str::sTagJournalId).toString())
+                            .arg(blog.value(str::sTagLink).toString())
+                            .arg(blog.value(str::sTagName).toString())
+                            .arg(blog.value(str::sTagJournal).toString())
+                            .arg(blog.value(str::sTagTitle).toString());
+
+    QSqlQuery query;
+    QString s = QString("INSERT INTO post VALUES(%1,'%2','%3','%4','%5','%6')")
+                        .arg(post.value(str::sTagPosterId).toString())
+                        .arg(post.value(str::sTagLink).toString())
+                        .arg(post.value(str::sTagUpdated).toString())
+                        .arg(post.value(str::sTagName).toString())
+                        .arg(post.value(str::sTagContent).toString())
+                        .arg(post.value(str::sTagTitle).toString());
+    query.exec(s);
+
+    query.exec("SELECT * FROM post");
+    query.last();
+    int numRows = query.at() + 1;
+    if (numRows % 20 == 0)
+        qDebug() << numRows;
+
+    if (numRows == 20) {
+        QSqlQueryModel *model1 = new QSqlQueryModel;
+        model1->setQuery("SELECT posterid, name, title FROM post");
+        model1->setHeaderData(0, Qt::Horizontal, tr("posterid"));
+        model1->setHeaderData(1, Qt::Horizontal, tr("name"));
+        model1->setHeaderData(1, Qt::Horizontal, tr("title"));
+
+        QTableView *view = new QTableView;
+        view->setModel(model1);
+        view->show();
+
+        QSqlQueryModel model;
+        model.setQuery("SELECT * FROM post");
+        int a = model.rowCount();
+
+        for (int i = 0; i < model.rowCount(); ++i) {
+            int id = model.record(i).value("posterid").toInt();
+            QString name = model.record(i).value("name").toString();
+            QString title = model.record(i).value("title").toString();
+            qDebug() << id << name << title;
+            QString s = QString("%1\t%2\t%3\t%4\t%5")
+                        .arg(id)
+                        .arg(model.record(i).value("updated").toString())
+                        .arg(name)
+                        .arg(title)
+                        .arg(model.record(i).value("link").toString());
+        }
+    }
 }
-
-void Database::onFetched(const Post &post)
-{
-}
-
-
 
 } // namespace core

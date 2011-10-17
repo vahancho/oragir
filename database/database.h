@@ -21,6 +21,7 @@
 #ifndef __DATABASE_H__
 #define __DATABASE_H__
 
+#include <QTextEdit>
 #include "../parser/blog.h"
 #include "../parser/post.h"
 
@@ -34,11 +35,9 @@ public:
     Database();
 
 public slots:
-    void onFetched(const Blog &blog);
-    void onFetched(const Post &post);
+    void onFetched(const Post &post, const Blog &blog);
 
 private:
-    
 };
 
 } // namespace core
