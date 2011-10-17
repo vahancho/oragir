@@ -21,17 +21,18 @@
 #ifndef __RULE_H__
 #define __RULE_H__
 
-#include <QStringList>
-
 namespace core
 {
 
 class Rule
 {
 public:
+    enum Option {
+        ExactMatch = 0,
+        Contains
+    };
     
 private:
-    
 };
 
 } // namespace core
