@@ -21,51 +21,16 @@
 #ifndef __POST_H__
 #define __POST_H__
 
-#include <QStringList>
+#include "../core/propertyTable.h"
 
 namespace core
 {
 
-class Post
+class Post : public PropertyTable
 {
 public:
     Post();
-
-    void clear();
-
-    void setTitle(const QString &title);
-    QString title() const;
-
-    void setUrl(const QString &url);
-    QString url() const;
-
-    void setTime(const QString &time);
-    QString time() const;
-
-    void setPosterName(const QString &name);
-    QString posterName() const;
-
-    void setPosterId(long id);
-    long posterId() const;
-
-    void setUserPic(const QString &url);
-    QString userPic() const;
-
-    void setContent(const QString &content);
-    QString content() const;
-
     void addTag(const QString &tag);
-    QStringList tags() const;
-
-private:
-    QString m_title;
-    QString m_url;
-    QString m_time;
-    QString m_posterName;
-    long m_posterId;
-    QString m_userPicUrl;
-    QString m_content;
-    QStringList m_tags;    
 };
 
 } // namespace core
