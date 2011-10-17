@@ -21,7 +21,6 @@
 #ifndef __DATABASE_H__
 #define __DATABASE_H__
 
-#include <QTextEdit>
 #include "../parser/blog.h"
 #include "../parser/post.h"
 
