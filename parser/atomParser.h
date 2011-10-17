@@ -43,8 +43,7 @@ public:
     ~AtomParser();
 
 signals:
-    void fetched(const Blog &blog);
-    void fetched(const Post &post);
+    void fetched(const Post &post, const Blog &blog);
 
 public slots:
 
