@@ -23,4 +23,78 @@
 namespace core
 {
 
+template<class Source>
+Rule<Source>::Rule()
+{
+    Source source;
+    QMap<QString, QVariant> properties = source.propertyMap();
+
+    QMap<QString, QVariant>::const_iterator it = properties.constBegin();
+    while (it != properties.constEnd()) {
+        Filter flt;
+        const QString &name = it.key();
+        m_filters[name] = flt;
+
+        ++it;
+    }
+}
+
+template<class Source>
+bool Rule<Source>::setFilter(const QString &name, const QString &value,
+                             Option opt)
+{
+    QMap<QString, Filter>::iterator it = m_filters.find(name);
+    if (it != m_filters.end()) {
+        Filter &flt = it.value();
+        flt.m_value = value;
+        flt.m_option = opt;
+
+        return true;
+    } else {
+        return false;
+    }
+}
+
+template<class Source>
+bool Rule<Source>::match(const Source &source) const
+{
+    QMap<QString, QVariant> properties = source.propertyMap();
+
+    // Iterate over all properties and apply filter on each.
+    // If at least one filter does not passed object does not pass.
+    QMap<QString, QVariant>::const_iterator it = properties.constBegin();
+    while (it != properties.constEnd()) {
+        if (!match(it.key(), it.value())) {
+            return false;
+        }
+        ++it;
+    }
+
+    return true;
+}
+
+template<class Source>
+bool Rule<Source>::match(const QString &name, const QString &value) const
+{
+    QMap<QString, Filter>::iterator it = m_filters.find(name);
+    if (it != m_filters.end()) {
+        const Filter &flt = it.value();
+
+        if (flt.m_option == None) {
+            return true;
+        } else if (flt.m_option == Contains &&
+                   value.contains(flt.m_value, Qt::CaseInsensitive)) {
+            return true;
+        } else if (flt.m_option == ExactMatch &&
+                   value == flt.m_value) {
+            return true;
+        } else {
+            return false;
+        }
+    } else {
+        // Such property not found.
+        return false;
+    }
+}
+
 } // namespace core

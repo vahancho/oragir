@@ -21,18 +21,40 @@
 #ifndef __RULE_H__
 #define __RULE_H__
 
+#include "post.h"
+
 namespace core
 {
 
+template<class Source>
 class Rule
 {
 public:
+    Rule();
+
     enum Option {
-        ExactMatch = 0,
+        None = 0,
+        ExactMatch,
         Contains
     };
-    
+
+    bool setFilter(const QString &name, const QString &value, Option opt);
+    bool match(const Source &source) const;
+
 private:
+    struct Filter
+    {
+        Filter()
+            :
+                m_option(None)
+        {}
+        QString m_value;
+        Option m_option;
+    };
+
+    bool match(const QString &name, const QString &value) const;
+
+    QMap<QString, Filter> m_filters;
 };
 
 } // namespace core
