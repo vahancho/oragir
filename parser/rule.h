@@ -102,7 +102,7 @@ bool Rule<Source>::match(const Source &source) const
     // If at least one filter does not passed object does not pass.
     QMap<QString, QVariant>::const_iterator it = properties.constBegin();
     while (it != properties.constEnd()) {
-        if (!match(it.key(), it.value())) {
+        if (!match(it.key(), it.value().toString())) {
             return false;
         }
         ++it;
