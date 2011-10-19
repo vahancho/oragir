@@ -41,6 +41,8 @@ public:
     bool setFilter(const QString &name, const QString &value, Option opt);
     bool match(const Source &source) const;
 
+    bool operator<(const Rule<Source> &other) const;
+
 private:
     struct Filter
     {
@@ -138,6 +140,11 @@ bool Rule<Source>::match(const QString &name, const QString &value) const
     }
 }
 
+template<class Source>
+bool Rule<Source>::operator<(const Rule<Source> &other) const
+{
+    return m_name < other.m_name;
+}
 
 } // namespace core
 
