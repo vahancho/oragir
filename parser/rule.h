@@ -30,7 +30,7 @@ template<class Source>
 class Rule
 {
 public:
-    Rule();
+    Rule(const QString &name);
 
     enum Option {
         None = 0,
@@ -55,6 +55,7 @@ private:
     bool match(const QString &name, const QString &value) const;
 
     QMap<QString, Filter> m_filters;
+    QString m_name;
 };
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -62,7 +63,9 @@ private:
 //
 
 template<class Source>
-Rule<Source>::Rule()
+Rule<Source>::Rule(const QString &name)
+    :
+        m_name(name)
 {
     Source source;
     QMap<QString, QVariant> properties = source.propertyMap();

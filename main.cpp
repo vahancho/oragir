@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
     a.setWindowIcon(QIcon(":/icons/app"));
 
     core::Database db;
-    core::Rule<core::Post> rule;
+    core::Rule<core::Post> rule("Test rule");
     rule.setFilter(str::sTagContent, "test", core::Rule<core::Post>::Contains);
     db.addRule(rule);
 
