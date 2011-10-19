@@ -21,7 +21,9 @@
 #include <QtGui/QApplication>
 #include <QIcon>
 #include "../parser/atomParser.h"
+#include "../parser/rule.h"
 #include "../database/database.h"
+#include "../strings/strings.h"
 
 int main(int argc, char *argv[])
 {
@@ -30,8 +32,12 @@ int main(int argc, char *argv[])
 
     a.setWindowIcon(QIcon(":/icons/app"));
 
-    core::AtomParser ap;
     core::Database db;
+    core::Rule<core::Post> rule;
+    rule.setFilter(str::sTagContent, "test", core::Rule<core::Post>::Contains);
+    db.addRule(rule);
+
+    core::AtomParser ap;
 
     QObject::connect(&ap, SIGNAL(fetched(const Post &, const Blog &)),
                      &db, SLOT(onFetched(const Post &, const Blog &)));
