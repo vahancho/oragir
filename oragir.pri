@@ -1,13 +1,16 @@
 #Header files
-HEADERS += ./parser/atomParser.h \
+HEADERS += ./core/propertyTable.h \
+           ./parser/atomParser.h \
            ./parser/blog.h \
            ./parser/post.h \
+           ./parser/rule.h \
            ./database/database.h \
            ./strings/strings.h \
            ./strings/guiStrings.h
 
 #Source files
 SOURCES += ./main.cpp \
+           ./core/propertyTable.cpp \
            ./parser/blog.cpp \
            ./parser/post.cpp \
            ./database/database.cpp \
