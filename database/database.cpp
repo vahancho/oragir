@@ -58,6 +58,24 @@ Database::Database()
 
 void Database::onFetched(const Post &post, const Blog &blog)
 {
+    QList<Rule<Post> >::const_iterator it = m_rules.constBegin();
+    while (it != m_rules.constEnd()) {
+        const Rule<Post> &rule = *it;
+        if (rule.match(post)) {
+            addRecord(post, blog);
+            break;
+        }
+        ++it;
+    }
+}
+
+void Database::addRule(const Rule<Post> &rule)
+{
+    m_rules.push_back(rule);
+}
+
+void Database::addRecord(const Post &post, const Blog &blog)
+{
     QString sBlog = QString("%1\n%2\n%3\n%4\n%5\n%6\n")
                             .arg(blog.value(str::sTagJournalId).toString())
                             .arg(blog.value(str::sTagLink).toString())
@@ -73,6 +91,9 @@ void Database::onFetched(const Post &post, const Blog &blog)
                         .arg(post.value(str::sTagName).toString())
                         .arg(post.value(str::sTagContent).toString())
                         .arg(post.value(str::sTagTitle).toString());
+
+    qDebug(post.value(str::sTagLink).toString().toAscii().data());
+
     query.exec(s);
 
     query.exec("SELECT * FROM post");

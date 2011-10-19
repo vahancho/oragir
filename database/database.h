@@ -23,6 +23,7 @@
 
 #include "../parser/blog.h"
 #include "../parser/post.h"
+#include "../parser/rule.h"
 
 namespace core
 {
@@ -33,10 +34,18 @@ class Database : public QObject
 public:
     Database();
 
+    /// Adds new rule to the list of rules.
+    void addRule(const Rule<Post> &rule);
+
 public slots:
     void onFetched(const Post &post, const Blog &blog);
 
 private:
+    /// Adds new recored to the database.
+    void addRecord(const Post &post, const Blog &blog);
+
+    /// Stores the list of rules.
+    QList<Rule<Post> > m_rules;
 };
 
 } // namespace core
