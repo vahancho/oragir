@@ -18,6 +18,7 @@
 *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
 ***************************************************************************/
 
+#include <set>
 #include <QTableView>
 #include <QtSql>
 #include <QMessageBox>
@@ -58,8 +59,8 @@ Database::Database()
 
 void Database::onFetched(const Post &post, const Blog &blog)
 {
-    QList<Rule<Post> >::const_iterator it = m_rules.constBegin();
-    while (it != m_rules.constEnd()) {
+    std::set<Rule<Post> >::iterator it = m_rules.begin();
+    while (it != m_rules.end()) {
         const Rule<Post> &rule = *it;
         if (rule.match(post)) {
             addRecord(post, blog);
@@ -71,7 +72,7 @@ void Database::onFetched(const Post &post, const Blog &blog)
 
 void Database::addRule(const Rule<Post> &rule)
 {
-    m_rules.push_back(rule);
+    m_rules.insert(rule);
 }
 
 void Database::addRecord(const Post &post, const Blog &blog)

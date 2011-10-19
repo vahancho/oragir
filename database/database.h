@@ -21,6 +21,7 @@
 #ifndef __DATABASE_H__
 #define __DATABASE_H__
 
+#include <set>
 #include "../parser/blog.h"
 #include "../parser/post.h"
 #include "../parser/rule.h"
@@ -45,7 +46,7 @@ private:
     void addRecord(const Post &post, const Blog &blog);
 
     /// Stores the list of rules.
-    QList<Rule<Post> > m_rules;
+    std::set<Rule<Post> > m_rules;
 };
 
 } // namespace core
