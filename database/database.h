@@ -38,6 +38,8 @@ public:
     /// Adds new rule to the list of rules.
     void addRule(const Rule<Post> &rule);
 
+    void saveRules(const QString &fileName);
+
 public slots:
     void onFetched(const Post &post, const Blog &blog);
 

@@ -133,4 +133,28 @@ void Database::addRecord(const Post &post, const Blog &blog)
     }
 }
 
+void Database::saveRules(const QString &fileName)
+{
+    QFile file(fileName);
+
+    if(file.open(QIODevice::Text | QIODevice::WriteOnly | QIODevice::Truncate)) {
+        QXmlStreamWriter writer(&file);
+        writer.setAutoFormatting(true);
+
+        writer.writeStartDocument();
+        writer.writeStartElement("rules");
+
+        std::set<Rule<Post> >::iterator it = m_rules.begin();
+
+        while (it != m_rules.end()) {
+            Rule<Post> &rule = *it;
+            rule.writeXml(writer);
+            ++it;
+        }
+
+        writer.writeEndElement(); // rules
+        writer.writeEndDocument();
+    }
+}
+
 } // namespace core
