@@ -21,6 +21,7 @@
 #ifndef __RULE_H__
 #define __RULE_H__
 
+#include <QXmlStreamWriter>
 #include "post.h"
 
 namespace core
@@ -40,6 +41,8 @@ public:
 
     bool setFilter(const QString &name, const QString &value, Option opt);
     bool match(const Source &source) const;
+    QString name() const;
+    void writeXml(QXmlStreamWriter &writer);
 
     bool operator<(const Rule<Source> &other) const;
 
@@ -138,6 +141,37 @@ bool Rule<Source>::match(const QString &name, const QString &value) const
         // Such property not found.
         return false;
     }
+}
+
+template<class Source>
+QString Rule<Source>::name() const
+{
+    return m_name;
+}
+
+template<class Source>
+void Rule<Source>::writeXml(QXmlStreamWriter &writer)
+{
+    writer.writeStartElement("rule");
+    writer.writeAttribute("name", m_name);
+
+    QMap<QString, Filter>::const_iterator it = m_filters.constBegin();
+    while (it != m_filters.constEnd()) {
+        const Filter &flt = it.value();
+        const QString &name = it.key();
+
+        writer.writeStartElement("filter");
+
+        writer.writeAttribute("name", name);
+        writer.writeTextElement("value", flt.m_value);
+        writer.writeTextElement("option", QString::number(flt.m_option));
+
+        writer.writeEndElement(); // filter
+
+        ++it;
+    }
+
+    writer.writeEndElement(); // rule
 }
 
 template<class Source>
