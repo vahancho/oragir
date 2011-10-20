@@ -34,7 +34,7 @@ public:
     Rule(const QString &name);
 
     enum Option {
-        None = 0,
+        Ignore = 0,
         ExactMatch,
         Contains
     };
@@ -51,7 +51,7 @@ private:
     {
         Filter()
             :
-                m_option(None)
+                m_option(Ignore)
         {}
         QString m_value;
         Option m_option;
@@ -126,7 +126,7 @@ bool Rule<Source>::match(const QString &name, const QString &value) const
     if (it != m_filters.end()) {
         const Filter &flt = it.value();
 
-        if (flt.m_option == None) {
+        if (flt.m_option == Ignore) {
             return true;
         } else if (flt.m_option == Contains &&
                    value.contains(flt.m_value, Qt::CaseInsensitive)) {
