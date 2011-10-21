@@ -126,13 +126,30 @@ bool Rule<Source>::match(const QString &name, const QString &value) const
     if (it != m_filters.end()) {
         const Filter &flt = it.value();
 
+        // Strip the html tags before comparing strings.
+        QString stripped = value;
+        stripped.replace("&amp;", "&");
+        stripped.replace("&quot;", "\"");
+        stripped.replace("&lt;", "<");
+        stripped.replace("&gt;", ">");
+        stripped.replace("&apos;", "'");
+        stripped.replace("&nbsp;", " ");
+        stripped.replace( QRegExp("<[^>]*>"), "" );
+
         if (flt.m_option == Ignore) {
             return true;
         } else if (flt.m_option == Contains &&
-                   value.contains(flt.m_value, Qt::CaseInsensitive)) {
+                   stripped.contains(flt.m_value, Qt::CaseInsensitive)) {
+            QRegExp rx;
+            QString pat = QString("\\s.{0,40}%1.{0,40}\\s").arg(flt.m_value);
+            rx.setPattern(pat);
+            if (rx.indexIn(stripped) != -1) {
+                QString s = rx.cap(0);
+                qDebug(s.toAscii().data());
+            }
             return true;
         } else if (flt.m_option == ExactMatch &&
-                   value == flt.m_value) {
+                   stripped == flt.m_value) {
             return true;
         } else {
             return false;
