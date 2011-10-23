@@ -20,6 +20,7 @@
 
 #include <QSettings>
 #include <QApplication>
+#include <QDir>
 #include "defaultManager.h"
 
 namespace core
@@ -69,7 +70,8 @@ void DefaultManager::readDefaults()
 
 QString DefaultManager::file() const
 {
-    return QCoreApplication::applicationDirPath() + '/' + defaultsFileName;
+    QString path = QCoreApplication::applicationDirPath() + '/' + defaultsFileName;
+    return QDir::toNativeSeparators(path);
 }
 
 } // namespace core
