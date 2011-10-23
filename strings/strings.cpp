@@ -46,5 +46,6 @@ namespace str
     
     // Version related strings
     const char *sVersion = "0.0.1";
+    const char *sRulesFileVersion = "1.0";
 
 } // namespace str
