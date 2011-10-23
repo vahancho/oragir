@@ -42,8 +42,7 @@ void DefaultManager::saveDefaults() const
 
     QSettings defaultsWriter(file(), QSettings::IniFormat);
 
-    while (i != m_properties.constEnd())
-    {
+    while (i != m_properties.constEnd()) {
         defaultsWriter.setValue(i.value().name(), i.value().value());
         ++i;
     }
@@ -56,8 +55,7 @@ void DefaultManager::readDefaults()
 
     QHash<QString, Property>::iterator i = m_properties.begin();
 
-    while (i != m_properties.end())
-    {
+    while (i != m_properties.end()) {
         QString defaultName = i.key();
         QVariant defaultValue = defaultsReader.value(defaultName);
 
