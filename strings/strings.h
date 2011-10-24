@@ -47,6 +47,14 @@ namespace str
     extern const char *sTagEntry;
     extern const char *sTagContent;
 
+    // Rules file tags.
+    extern const char *sTagRules;
+    extern const char *sTagRule;
+    extern const char *sTagFilter;
+    extern const char *sTagValue;
+    extern const char *sTagNameAttr;
+    extern const char *sTagOption;
+
     // Version related strings
     extern const char *sVersion;
     extern const char *sRulesFileVersion;

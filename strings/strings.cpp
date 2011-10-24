@@ -43,6 +43,14 @@ namespace str
     const char *sTagUserPic = "userpic";
     const char *sTagUpdated = "updated";
     const char *sTagPosterId = "posterid";
+
+     // Rules file tags.
+    const char *sTagRules = "rules";
+    const char *sTagRule = "rule";
+    const char *sTagFilter = "filter";
+    const char *sTagValue = "value";
+    const char *sTagNameAttr = "name";
+    const char *sTagOption = "option";
     
     // Version related strings
     const char *sVersion = "0.0.1";
