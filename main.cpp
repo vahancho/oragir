@@ -34,7 +34,7 @@ int main(int argc, char *argv[])
 
     core::Database db;
     if (!db.create()) {
-        printf("Failed to created database. Aborted.");
+        printf(db.errorMessage().toAscii().data());
         return -1;
     }
     core::Rule<core::Post> rule("Test rule");
