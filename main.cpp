@@ -37,6 +37,7 @@ int main(int argc, char *argv[])
     rule.setFilter(str::sTagContent, "test", core::Rule<core::Post>::Contains);
     db.addRule(rule);
     db.saveRules("rules.xml");
+    db.openRules("rules.xml");
 
     core::AtomParser ap;
 

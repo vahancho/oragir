@@ -43,6 +43,7 @@ public:
     bool match(const Source &source) const;
     QString name() const;
     void writeXml(QXmlStreamWriter &writer);
+    void readXml(QXmlStreamReader &reader);
 
     bool operator<(const Rule<Source> &other) const;
 
@@ -189,6 +190,37 @@ void Rule<Source>::writeXml(QXmlStreamWriter &writer)
     }
 
     writer.writeEndElement(); // rule
+}
+
+template<class Source>
+void Rule<Source>::readXml(QXmlStreamReader &reader)
+{
+    Q_ASSERT(reader.isStartElement());
+
+    reader.readNext();
+    QString filterName;
+    QString filterValue;
+    Option option;
+    QString elementName;
+
+    while(!(reader.isEndElement() && reader.name() == "rule")) {
+        reader.readNext();
+        if(reader.isStartElement()) {
+            elementName = reader.name().toString();
+            if (elementName == "filter")
+                filterName = reader.attributes().value("name").toString();
+        } else if (reader.isEndElement()) {
+            if (reader.name().toString() == "filter") {
+                if (option != Ignore)
+                    setFilter(filterName, filterValue, option);
+            }
+        } else if (reader.isCharacters() && !reader.isWhitespace()) {
+            if (elementName == "value")
+                filterValue = reader.text().toString();
+            else if (elementName == "option")
+                option = (Option)reader.text().toString().toInt();
+        }
+    }
 }
 
 template<class Source>

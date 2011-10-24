@@ -158,4 +158,36 @@ void Database::saveRules(const QString &fileName)
     }
 }
 
+bool Database::openRules(const QString &fileName)
+{
+    QFile file(fileName);
+
+    if(file.open(QIODevice::Text | QIODevice::ReadOnly)) {
+        QXmlStreamReader reader(&file);
+
+        while (!reader.atEnd()) {
+            reader.readNext();
+            if(reader.isStartElement()) {
+                if(reader.name() == "rule") {
+                    QString name = reader.attributes().value("name").toString();
+                    Rule<Post> rule(name);
+                    rule.readXml(reader);
+                    addRule(rule);
+                }
+            }
+        }
+
+        if (!reader.hasError()) {
+            return true;
+        } else {
+            QString s = QString("XML ERROR: %1 : line %2")
+                                .arg(reader.errorString())
+                                .arg(reader.lineNumber());
+            return false;
+        }
+    }
+
+    return false;
+}
+
 } // namespace core
