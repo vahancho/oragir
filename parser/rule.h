@@ -23,6 +23,7 @@
 
 #include <QXmlStreamWriter>
 #include "post.h"
+#include "../strings/strings.h"
 
 namespace core
 {
@@ -203,21 +204,21 @@ void Rule<Source>::readXml(QXmlStreamReader &reader)
     Option option;
     QString elementName;
 
-    while(!(reader.isEndElement() && reader.name() == "rule")) {
+    while(!(reader.isEndElement() && reader.name() == str::sTagRule)) {
         reader.readNext();
         if(reader.isStartElement()) {
             elementName = reader.name().toString();
-            if (elementName == "filter")
-                filterName = reader.attributes().value("name").toString();
+            if (elementName == str::sTagFilter)
+                filterName = reader.attributes().value(str::sTagNameAttr).toString();
         } else if (reader.isEndElement()) {
-            if (reader.name().toString() == "filter") {
+            if (reader.name().toString() == str::sTagFilter) {
                 if (option != Ignore)
                     setFilter(filterName, filterValue, option);
             }
         } else if (reader.isCharacters() && !reader.isWhitespace()) {
-            if (elementName == "value")
+            if (elementName == str::sTagValue)
                 filterValue = reader.text().toString();
-            else if (elementName == "option")
+            else if (elementName == str::sTagOption)
                 option = (Option)reader.text().toString().toInt();
         }
     }

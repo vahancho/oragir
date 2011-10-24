@@ -171,8 +171,9 @@ bool Database::openRules(const QString &fileName)
         while (!reader.atEnd()) {
             reader.readNext();
             if(reader.isStartElement()) {
-                if(reader.name() == "rule") {
-                    QString name = reader.attributes().value("name").toString();
+                if(reader.name() == str::sTagRule) {
+                    QString name = reader.attributes()
+                                         .value(str::sTagNameAttr).toString();
                     Rule<Post> rule(name);
                     rule.readXml(reader);
                     addRule(rule);
