@@ -57,7 +57,6 @@ namespace str
 
     // Version related strings
     extern const char *sVersion;
-    extern const char *sRulesFileVersion;
 
 } // namespace str
 

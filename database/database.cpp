@@ -142,7 +142,6 @@ bool Database::saveRules(const QString &fileName)
         writer.setAutoFormatting(true);
 
         writer.writeStartDocument();
-        writer.writeTextElement("version", str::sRulesFileVersion);
         writer.writeStartElement("rules");
 
         std::set<Rule<Post> >::iterator it = m_rules.begin();
