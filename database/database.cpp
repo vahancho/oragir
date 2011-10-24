@@ -21,7 +21,6 @@
 #include <set>
 #include <QTableView>
 #include <QtSql>
-#include <QMessageBox>
 #include "../strings/strings.h"
 #include "database.h"
 
