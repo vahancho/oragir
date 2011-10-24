@@ -35,6 +35,9 @@ class Database : public QObject
 public:
     Database();
 
+    /// Creates database and returns result of creation.
+    bool create();
+
     /// Adds new rule to the list of rules.
     void addRule(const Rule<Post> &rule);
 

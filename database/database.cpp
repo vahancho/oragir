@@ -29,6 +29,9 @@ namespace core
 {
 
 Database::Database()
+{}
+
+bool Database::create()
 {
     QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
     db.setDatabaseName(":memory:");
@@ -38,6 +41,8 @@ Database::Database()
                               "This example needs SQLite support. Please read "
                               "the Qt SQL driver documentation for information how "
                               "to build it.", QMessageBox::Cancel);
+
+        return false;
     }
 
     QSqlQuery query;
@@ -55,6 +60,8 @@ Database::Database()
                "name     NVARCHAR(128)   NOT NULL,"
                "content  NVARCHAR,"
                "title    NVARCHAR(256))");
+
+    return true;
 }
 
 void Database::onFetched(const Post &post, const Blog &blog)
