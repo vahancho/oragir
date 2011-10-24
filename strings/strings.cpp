@@ -54,4 +54,21 @@ namespace str
     
     // Version related strings
     const char *sVersion = "0.0.1";
+
+    // SQL Queries.
+    const char *sSqlCreateBlogTable = "CREATE TABLE blogs ("
+                                      "journalid INT PRIMARY KEY NOT NULL,"
+                                      "link      VARCHAR(256)    NOT NULL,"
+                                      "name      NVARCHAR(128)   NOT NULL,"
+                                      "journal   VARCHAR(256)    NOT NULL,"
+                                      "title     NVARCHAR(256))";
+
+    const char *sSqlCreatePostTable = "CREATE TABLE posts ("
+                                      "posterid INT             NOT NULL,"
+                                      "link     VARCHAR(256)    NOT NULL,"
+                                      "updated  DATATIME        NOT NULL,"
+                                      "name     NVARCHAR(128)   NOT NULL,"
+                                      "content  NVARCHAR,"
+                                      "title    NVARCHAR(256))";
+
 } // namespace str

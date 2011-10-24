@@ -58,6 +58,14 @@ namespace str
     // Version related strings
     extern const char *sVersion;
 
+    // SQL Queries
+
+    /// SQL query to create table blogs.
+    extern const char *sSqlCreateBlogTable;
+
+    /// SQL query to create table posts.
+    extern const char *sSqlCreatePostTable;
+
 } // namespace str
 
 #endif // __STRINGS_H__
