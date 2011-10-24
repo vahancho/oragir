@@ -136,7 +136,7 @@ bool Database::saveRules(const QString &fileName)
         writer.setAutoFormatting(true);
 
         writer.writeStartDocument();
-        writer.writeStartElement("rules");
+        writer.writeStartElement(str::sTagRules);
 
         std::set<Rule<Post> >::iterator it = m_rules.begin();
 
