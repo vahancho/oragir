@@ -44,7 +44,7 @@ public:
     bool saveRules(const QString &fileName);
     bool openRules(const QString &fileName);
 
-    /// Reports the last error is any.
+    /// Reports the last error if any.
     QString errorMessage() const;
 
 public slots:
