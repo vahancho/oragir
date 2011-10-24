@@ -178,9 +178,9 @@ bool Database::openRules(const QString &fileName)
         if (!reader.hasError()) {
             return true;
         } else {
-            QString s = QString("XML ERROR: %1 : line %2")
-                                .arg(reader.errorString())
-                                .arg(reader.lineNumber());
+            m_error = QString("XML ERROR: %1 : line %2")
+                              .arg(reader.errorString())
+                              .arg(reader.lineNumber());
             return false;
         }
     }
