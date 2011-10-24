@@ -38,7 +38,7 @@ public:
     /// Adds new rule to the list of rules.
     void addRule(const Rule<Post> &rule);
 
-    void saveRules(const QString &fileName);
+    bool saveRules(const QString &fileName);
     bool openRules(const QString &fileName);
 
 public slots:

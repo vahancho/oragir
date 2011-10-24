@@ -133,7 +133,7 @@ void Database::addRecord(const Post &post, const Blog &blog)
     }
 }
 
-void Database::saveRules(const QString &fileName)
+bool Database::saveRules(const QString &fileName)
 {
     QFile file(fileName);
 
@@ -155,7 +155,11 @@ void Database::saveRules(const QString &fileName)
 
         writer.writeEndElement(); // rules
         writer.writeEndDocument();
+
+        return true;
     }
+
+    return false;
 }
 
 bool Database::openRules(const QString &fileName)
