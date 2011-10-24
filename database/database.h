@@ -44,6 +44,9 @@ public:
     bool saveRules(const QString &fileName);
     bool openRules(const QString &fileName);
 
+    /// Reports the last error is any.
+    QString errorMessage() const;
+
 public slots:
     void onFetched(const Post &post, const Blog &blog);
 
@@ -53,6 +56,9 @@ private:
 
     /// Stores the list of rules.
     std::set<Rule<Post> > m_rules;
+
+    /// Stores the error message.
+    QString m_error;
 };
 
 } // namespace core

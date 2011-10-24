@@ -36,30 +36,18 @@ bool Database::create()
     QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
     db.setDatabaseName(":memory:");
     if (!db.open()) {
-     QMessageBox::critical(0, "Cannot open database",
-                              "Unable to establish a database connection.\n"
-                              "This example needs SQLite support. Please read "
-                              "the Qt SQL driver documentation for information how "
-                              "to build it.", QMessageBox::Cancel);
-
+        m_error = QString("Cannot open database. "
+                          "Unable to establish a database connection.");
         return false;
     }
 
     QSqlQuery query;
-    query.exec("CREATE TABLE blog ("
-               "journalid INT PRIMARY KEY NOT NULL,"
-               "link      VARCHAR(256)    NOT NULL,"
-               "name      NVARCHAR(128)   NOT NULL,"
-               "journal   VARCHAR(256)    NOT NULL,"
-               "title     NVARCHAR(256))");
-
-    query.exec("CREATE TABLE post ("
-               "posterid INT             NOT NULL,"
-               "link     VARCHAR(256)    NOT NULL,"
-               "updated  DATATIME        NOT NULL,"
-               "name     NVARCHAR(128)   NOT NULL,"
-               "content  NVARCHAR,"
-               "title    NVARCHAR(256))");
+    if (!query.exec(str::sSqlCreateBlogTable) ||
+        !query.exec(str::sSqlCreatePostTable))
+    {
+        m_error = query.lastError().text();
+        return false;
+    }
 
     return true;
 }
@@ -92,7 +80,7 @@ void Database::addRecord(const Post &post, const Blog &blog)
                             .arg(blog.value(str::sTagTitle).toString());
 
     QSqlQuery query;
-    QString s = QString("INSERT INTO post VALUES(%1,'%2','%3','%4','%5','%6')")
+    QString s = QString("INSERT INTO posts VALUES(%1,'%2','%3','%4','%5','%6')")
                         .arg(post.value(str::sTagPosterId).toString())
                         .arg(post.value(str::sTagLink).toString())
                         .arg(post.value(str::sTagUpdated).toString())
@@ -104,7 +92,7 @@ void Database::addRecord(const Post &post, const Blog &blog)
 
     query.exec(s);
 
-    query.exec("SELECT * FROM post");
+    query.exec("SELECT * FROM posts");
     query.last();
     int numRows = query.at() + 1;
     if (numRows % 20 == 0)
@@ -112,7 +100,7 @@ void Database::addRecord(const Post &post, const Blog &blog)
 
     if (numRows == 20) {
         QSqlQueryModel *model1 = new QSqlQueryModel;
-        model1->setQuery("SELECT posterid, name, title FROM post");
+        model1->setQuery("SELECT posterid, name, title FROM posts");
         model1->setHeaderData(0, Qt::Horizontal, tr("posterid"));
         model1->setHeaderData(1, Qt::Horizontal, tr("name"));
         model1->setHeaderData(1, Qt::Horizontal, tr("title"));
@@ -122,7 +110,7 @@ void Database::addRecord(const Post &post, const Blog &blog)
         view->show();
 
         QSqlQueryModel model;
-        model.setQuery("SELECT * FROM post");
+        model.setQuery("SELECT * FROM posts");
         int a = model.rowCount();
 
         for (int i = 0; i < model.rowCount(); ++i) {
@@ -199,6 +187,11 @@ bool Database::openRules(const QString &fileName)
     }
 
     return false;
+}
+
+QString Database::errorMessage() const
+{
+    return m_error;
 }
 
 } // namespace core
