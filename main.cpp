@@ -33,6 +33,10 @@ int main(int argc, char *argv[])
     a.setWindowIcon(QIcon(":/icons/app"));
 
     core::Database db;
+    if (!db.create()) {
+        printf("Failed to created database. Aborted.");
+        return -1;
+    }
     core::Rule<core::Post> rule("Test rule");
     rule.setFilter(str::sTagContent, "test", core::Rule<core::Post>::Contains);
     db.addRule(rule);
