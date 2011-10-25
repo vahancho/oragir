@@ -36,7 +36,7 @@ public:
     Database();
 
     /// Creates database and returns result of creation.
-    bool create();
+    bool create(const QString &fileName);
 
     /// Adds new rule to the list of rules.
     void addRule(const Rule<Post> &rule);

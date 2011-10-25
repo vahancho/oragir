@@ -30,10 +30,10 @@ namespace core
 Database::Database()
 {}
 
-bool Database::create()
+bool Database::create(const QString &fileName)
 {
     QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
-    db.setDatabaseName("posts.db");
+    db.setDatabaseName(fileName);
     if (!db.open()) {
         m_error = QString("Cannot open database. "
                           "Unable to establish a database connection.");

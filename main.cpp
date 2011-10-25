@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
     a.setWindowIcon(QIcon(":/icons/app"));
 
     core::Database db;
-    if (!db.create()) {
+    if (!db.create("posts.db")) {
         printf("%s \n", db.errorMessage().toAscii().data());
         return -1;
     }
