@@ -33,7 +33,7 @@ Database::Database()
 bool Database::create()
 {
     QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
-    db.setDatabaseName(":memory:");
+    db.setDatabaseName("posts.db");
     if (!db.open()) {
         m_error = QString("Cannot open database. "
                           "Unable to establish a database connection.");
@@ -47,6 +47,13 @@ bool Database::create()
         m_error = query.lastError().text();
         return false;
     }
+
+    query.exec("PRAGMA page_size = 4096");
+    query.exec("PRAGMA cache_size = 16384");
+    query.exec("PRAGMA temp_store = MEMORY");
+    query.exec("PRAGMA journal_mode = OFF");
+    query.exec("PRAGMA locking_mode = EXCLUSIVE");
+    query.exec("PRAGMA synchronous = OFF");
 
     return true;
 }
@@ -91,7 +98,7 @@ void Database::addRecord(const Post &post, const Blog &blog)
 
     query.exec(s);
 
-    query.exec("SELECT * FROM posts");
+    query.exec("SELECT * FROM post");
     query.last();
     int numRows = query.at() + 1;
     if (numRows % 20 == 0)
@@ -99,7 +106,7 @@ void Database::addRecord(const Post &post, const Blog &blog)
 
     if (numRows == 20) {
         QSqlQueryModel *model1 = new QSqlQueryModel;
-        model1->setQuery("SELECT posterid, name, title FROM posts");
+        model1->setQuery("SELECT posterid, name, title FROM post");
         model1->setHeaderData(0, Qt::Horizontal, tr("posterid"));
         model1->setHeaderData(1, Qt::Horizontal, tr("name"));
         model1->setHeaderData(1, Qt::Horizontal, tr("title"));
@@ -109,7 +116,7 @@ void Database::addRecord(const Post &post, const Blog &blog)
         view->show();
 
         QSqlQueryModel model;
-        model.setQuery("SELECT * FROM posts");
+        model.setQuery("SELECT * FROM post");
         int a = model.rowCount();
 
         for (int i = 0; i < model.rowCount(); ++i) {
