@@ -61,19 +61,19 @@ void AtomParser::onStateChanged(int state)
     switch (state)
     {
     case QHttp::HostLookup :
-        m_status = TRANSLATE(str::sHostLookup);
+        m_status = TRANSLATE(str::HostLookup);
         break;
     case QHttp::Connecting :
-        m_status = TRANSLATE(str::sConnecting);
+        m_status = TRANSLATE(str::Connecting);
         break;
     case QHttp::Sending :
-        m_status = TRANSLATE(str::sSending);
+        m_status = TRANSLATE(str::Sending);
         break;
     case QHttp::Reading :
-        m_status = TRANSLATE(str::sReading);
+        m_status = TRANSLATE(str::Reading);
         break;
     case QHttp::Connected :
-        m_status = TRANSLATE(str::sConnected);
+        m_status = TRANSLATE(str::Connected);
         break;
     case QHttp::Unconnected :
     case QHttp::Closing :
