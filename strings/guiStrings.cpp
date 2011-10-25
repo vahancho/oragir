@@ -25,16 +25,39 @@ namespace str
 {
 //////////////////////////////////////////////////////////////////////////
 // Translatable GUI Strings
-// 
+//
+    // Menu names.
+    const char *MenuFile = QT_TRANSLATE_NOOP("Oragir", "&File");
+    const char *MenuNew = QT_TRANSLATE_NOOP("Oragir", "New");
+    const char *MenuView = QT_TRANSLATE_NOOP("Oragir", "&View");
+    const char *MenuViews = QT_TRANSLATE_NOOP("Oragir", "&Views");
+    const char *MenuToolBars = QT_TRANSLATE_NOOP("Oragir", "&Toolbars");
+    const char *MenuWindow = QT_TRANSLATE_NOOP("Oragir", "&Window");
+    const char *MenuHelp = QT_TRANSLATE_NOOP("Oragir", "&Help");
+
+    const char *ActionMinimize = QT_TRANSLATE_NOOP("Oragir", "Mi&nimize");
+    const char *ActionMaximize = QT_TRANSLATE_NOOP("Oragir", "Ma&ximize");
+    const char *ActionRestore = QT_TRANSLATE_NOOP("Oragir", "&Restore");
+    const char *ActionQuit = QT_TRANSLATE_NOOP("Oragir", "&Quit");
+    const char *ActionExit = QT_TRANSLATE_NOOP("Oragir", "&Exit");
+    const char *ActionStatusBar = QT_TRANSLATE_NOOP("Oragir", "Status &Bar");
+    const char *ActionClose = QT_TRANSLATE_NOOP("Oragir", "Cl&ose");
+    const char *ActionCloseAll = QT_TRANSLATE_NOOP("Oragir", "Close &All");
+    const char *ActionTile = QT_TRANSLATE_NOOP("Oragir", "&Tile");
+    const char *ActionCascade = QT_TRANSLATE_NOOP("Oragir", "&Cascade");
+    const char *ActionNext = QT_TRANSLATE_NOOP("Oragir", "&Next");
+    const char *ActionPrevious = QT_TRANSLATE_NOOP("Oragir", "&Previous");
+    const char *ActionAbout = QT_TRANSLATE_NOOP("Oragir", "&About");
+
     // Http status messages
-    const char *sHostLookup = QT_TRANSLATE_NOOP("GHerald", "A host name lookup is in progress...");
-    const char *sConnecting = QT_TRANSLATE_NOOP("GHerald", "Connecting to the host...");
-    const char *sSending = QT_TRANSLATE_NOOP("GHerald", "Sending request to the server...");
-    const char *sReading = QT_TRANSLATE_NOOP("GHerald", "Reading the server's response...");
-    const char *sConnected = QT_TRANSLATE_NOOP("GHerald", "Connected.");
+    const char *HostLookup = QT_TRANSLATE_NOOP("Oragir", "A host name lookup is in progress...");
+    const char *Connecting = QT_TRANSLATE_NOOP("Oragir", "Connecting to the host...");
+    const char *Sending = QT_TRANSLATE_NOOP("Oragir", "Sending request to the server...");
+    const char *Reading = QT_TRANSLATE_NOOP("Oragir", "Reading the server's response...");
+    const char *Connected = QT_TRANSLATE_NOOP("Oragir", "Connected.");
 
     // Other strings
-    const char *sOk = QT_TRANSLATE_NOOP("GHerald", "OK");
-    const char *sCancel = QT_TRANSLATE_NOOP("GHerald", "Cancel");
+    const char *Ok = QT_TRANSLATE_NOOP("Oragir", "OK");
+    const char *Cancel = QT_TRANSLATE_NOOP("Oragir", "Cancel");
 
 } // namespace str

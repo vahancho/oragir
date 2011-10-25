@@ -29,18 +29,42 @@ namespace str
 {
     //////////////////////////////////////////////////////////////////////////
     // Translatable GUI Strings
-    //   
+    //
+
+    // Menu names.
+    extern const char *MenuFile;
+    extern const char *MenuNew;
+    extern const char *MenuView;
+    extern const char *MenuViews;
+    extern const char *MenuToolBars;
+    extern const char *MenuWindow;
+    extern const char *MenuHelp;
+
+    // Action titles.
+    extern const char *ActionMinimize;
+    extern const char *ActionMaximize;
+    extern const char *ActionRestore;
+    extern const char *ActionQuit;
+    extern const char *ActionExit;
+    extern const char *ActionStatusBar;
+    extern const char *ActionClose;
+    extern const char *ActionCloseAll;
+    extern const char *ActionTile;
+    extern const char *ActionCascade;
+    extern const char *ActionNext;
+    extern const char *ActionPrevious;
+    extern const char *ActionAbout;
 
     // Http status messages
-    extern const char *sHostLookup;
-    extern const char *sConnecting;
-    extern const char *sSending;
-    extern const char *sReading;
-    extern const char *sConnected;
+    extern const char *HostLookup;
+    extern const char *Connecting;
+    extern const char *Sending;
+    extern const char *Reading;
+    extern const char *Connected;
 
     // Other strings
-    extern const char *sOk;
-    extern const char *sCancel;
+    extern const char *Ok;
+    extern const char *Cancel;
 
 } // namespace str
 
