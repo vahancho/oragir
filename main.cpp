@@ -24,6 +24,7 @@
 #include "../parser/rule.h"
 #include "../database/database.h"
 #include "../strings/strings.h"
+#include "../gui/mainWindow.h"
 
 int main(int argc, char *argv[])
 {
@@ -31,6 +32,9 @@ int main(int argc, char *argv[])
     a.setQuitOnLastWindowClosed(false);
 
     a.setWindowIcon(QIcon(":/icons/app"));
+
+    gui::MainWindow mw;
+    mw.show();
 
     core::Database db;
     if (!db.create("posts.db")) {
