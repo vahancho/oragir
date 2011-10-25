@@ -56,14 +56,14 @@ namespace str
     const char *sVersion = "0.0.1";
 
     // SQL Queries.
-    const char *sSqlCreateBlogTable = "CREATE TABLE blogs ("
+    const char *sSqlCreateBlogTable = "CREATE TABLE IF NOT EXISTS blog ("
                                       "journalid INT PRIMARY KEY NOT NULL,"
                                       "link      VARCHAR(256)    NOT NULL,"
                                       "name      NVARCHAR(128)   NOT NULL,"
                                       "journal   VARCHAR(256)    NOT NULL,"
                                       "title     NVARCHAR(256))";
 
-    const char *sSqlCreatePostTable = "CREATE TABLE posts ("
+    const char *sSqlCreatePostTable = "CREATE TABLE IF NOT EXISTS post ("
                                       "posterid INT             NOT NULL,"
                                       "link     VARCHAR(256)    NOT NULL,"
                                       "updated  DATATIME        NOT NULL,"
