@@ -61,6 +61,7 @@ namespace str
     extern const char *MainWindowMax;
     extern const char *MainWindowState;
     extern const char *ShowStatusBar;
+    extern const char *QuitOnClose;
 
     // Version related strings
     extern const char *sVersion;
