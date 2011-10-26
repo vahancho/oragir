@@ -25,7 +25,7 @@ namespace str
     //
 
     // Application name
-    const char *AppName = "Oragiro";
+    const char *AppName = "Oragir";
     
     const char *FeedUrl = "http://atom.services.livejournal.com/atom-stream.xml";
 
@@ -60,7 +60,7 @@ namespace str
     const char *QuitOnClose = "QuitOnClose";
     
     // Version related strings
-    const char *Version = "0.0.1";
+    const char *Version = "0.1a";
 
     // SQL Queries.
     const char *SqlCreateBlogTable = "CREATE TABLE IF NOT EXISTS blog ("
