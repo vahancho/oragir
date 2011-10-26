@@ -86,7 +86,7 @@ void Database::addRecord(const Post &post, const Blog &blog)
                             .arg(blog.value(str::TagTitle).toString());
 
     QSqlQuery query;
-    QString s = QString("INSERT INTO posts VALUES(%1,'%2','%3','%4','%5','%6')")
+    QString s = QString("INSERT INTO post VALUES(%1,'%2','%3','%4','%5','%6')")
                         .arg(post.value(str::TagPosterId).toString())
                         .arg(post.value(str::TagLink).toString())
                         .arg(post.value(str::TagUpdated).toString())
