@@ -346,7 +346,6 @@ void MainWindow::closeEvent(QCloseEvent *event)
 
 void MainWindow::addDefaults() const
 {
-    /*
     core::DefaultManager *defaultMngr = core::Application::theApp()->defaultManager();
 
     // Add Main Window related defaults with initial and factory values.
@@ -355,9 +354,7 @@ void MainWindow::addDefaults() const
     defaultMngr->addProperty(str::MainWindowMax, bool(false), bool(false));
     defaultMngr->addProperty(str::MainWindowState, QByteArray(), QByteArray());
     defaultMngr->addProperty(str::ShowStatusBar, bool(true), bool(true));
-    defaultMngr->addProperty(str::RecentDialogState, QByteArray(), QByteArray());
     defaultMngr->addProperty(str::QuitOnClose, bool(false), bool(false));
-    */
 }
 
 void MainWindow::updateWindowMenu()
