@@ -55,6 +55,13 @@ namespace str
     extern const char *sTagNameAttr;
     extern const char *sTagOption;
 
+    // Defaults names.
+    extern const char *MainWindowSize;
+    extern const char *MainWindowPos;
+    extern const char *MainWindowMax;
+    extern const char *MainWindowState;
+    extern const char *ShowStatusBar;
+
     // Version related strings
     extern const char *sVersion;
 

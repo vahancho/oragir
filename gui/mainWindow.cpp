@@ -20,6 +20,8 @@
 
 #include <QtGui>
 #include "mainWindow.h"
+#include "../core/application.h"
+#include "../core/defaultManager.h"
 #include "../strings/strings.h"
 #include "../strings/guiStrings.h"
 
@@ -284,7 +286,6 @@ void MainWindow::onToolsOptions()
 
 void MainWindow::saveWindow() const
 {
-    /*
     core::DefaultManager *defaultMngr = core::Application::theApp()->defaultManager();
 
     // Save Main Window configuration to defaults
@@ -293,7 +294,6 @@ void MainWindow::saveWindow() const
     defaultMngr->setValue(str::MainWindowMax, isMaximized());
     defaultMngr->setValue(str::MainWindowState, saveState());
     defaultMngr->setValue(str::ShowStatusBar, m_statusBarAction->isChecked());
-    */
 }
 
 void MainWindow::restoreWindow()

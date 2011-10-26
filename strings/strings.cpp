@@ -51,6 +51,12 @@ namespace str
     const char *sTagValue = "value";
     const char *sTagNameAttr = "name";
     const char *sTagOption = "option";
+
+    const char *MainWindowSize = "MainWindowSize";
+    const char *MainWindowPos = "MainWindowPos";
+    const char *MainWindowMax = "MainWindowMax";
+    const char *MainWindowState = "MainWindowState";
+    const char *ShowStatusBar = "ShowStatusBar";
     
     // Version related strings
     const char *sVersion = "0.0.1";
