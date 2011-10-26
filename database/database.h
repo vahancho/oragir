@@ -38,6 +38,9 @@ public:
     /// Creates database and returns result of creation.
     bool create(const QString &fileName);
 
+    /// Closes and removes the given database connection.
+    bool remove(const QString &fileName);
+
     /// Adds new rule to the list of rules.
     void addRule(const Rule<Post> &rule);
 

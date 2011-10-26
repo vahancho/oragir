@@ -32,7 +32,7 @@ Database::Database()
 
 bool Database::create(const QString &fileName)
 {
-    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
+    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE", fileName.toLatin1());
     db.setDatabaseName(fileName);
     if (!db.open()) {
         m_error = QString("Cannot open database. "
@@ -55,6 +55,23 @@ bool Database::create(const QString &fileName)
     query.exec("PRAGMA locking_mode = EXCLUSIVE");
     query.exec("PRAGMA synchronous = OFF");
 
+    return true;
+}
+
+bool Database::remove(const QString &fileName)
+{
+    {
+        QSqlDatabase db = QSqlDatabase::database(fileName);
+
+        if(db.isValid()) {
+            if (db.isOpen())
+                db.close();
+        } else {
+            return false;
+        }
+    }
+
+    QSqlDatabase::removeDatabase(fileName);
     return true;
 }
 
