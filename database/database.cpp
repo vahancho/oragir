@@ -40,7 +40,7 @@ bool Database::create(const QString &fileName)
         return false;
     }
 
-    QSqlQuery query;
+    QSqlQuery query(db);
     if (!query.exec(str::SqlCreateBlogTable) ||
         !query.exec(str::SqlCreatePostTable))
     {
@@ -55,13 +55,14 @@ bool Database::create(const QString &fileName)
     query.exec("PRAGMA locking_mode = EXCLUSIVE");
     query.exec("PRAGMA synchronous = OFF");
 
+    m_dbConnectionName = fileName;
     return true;
 }
 
-bool Database::remove(const QString &fileName)
+bool Database::remove()
 {
     {
-        QSqlDatabase db = QSqlDatabase::database(fileName);
+        QSqlDatabase db = QSqlDatabase::database(m_dbConnectionName);
 
         if(db.isValid()) {
             if (db.isOpen())
@@ -71,7 +72,8 @@ bool Database::remove(const QString &fileName)
         }
     }
 
-    QSqlDatabase::removeDatabase(fileName);
+    QSqlDatabase::removeDatabase(m_dbConnectionName);
+    m_dbConnectionName = QString();
     return true;
 }
 
@@ -102,7 +104,8 @@ void Database::addRecord(const Post &post, const Blog &blog)
                             .arg(blog.value(str::TagJournal).toString())
                             .arg(blog.value(str::TagTitle).toString());
 
-    QSqlQuery query;
+    QSqlDatabase db = QSqlDatabase::database(m_dbConnectionName);
+    QSqlQuery query(db);
     QString s = QString("INSERT INTO post VALUES(%1,'%2','%3','%4','%5','%6')")
                         .arg(post.value(str::TagPosterId).toString())
                         .arg(post.value(str::TagLink).toString())

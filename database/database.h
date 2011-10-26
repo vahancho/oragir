@@ -39,7 +39,7 @@ public:
     bool create(const QString &fileName);
 
     /// Closes and removes the given database connection.
-    bool remove(const QString &fileName);
+    bool remove();
 
     /// Adds new rule to the list of rules.
     void addRule(const Rule<Post> &rule);
@@ -62,6 +62,8 @@ private:
 
     /// Stores the error message.
     QString m_error;
+
+    QString m_dbConnectionName;
 };
 
 } // namespace core

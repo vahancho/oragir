@@ -60,7 +60,7 @@ Application::~Application()
     delete m_atomParser;
 
     m_dataBase->saveRules("rules.xml");
-    m_dataBase->remove("posts.db");
+    m_dataBase->remove();
     delete m_dataBase;
 }
 
