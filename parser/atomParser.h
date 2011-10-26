@@ -46,9 +46,11 @@ signals:
     void fetched(const Post &post, const Blog &blog);
 
 public slots:
-
-    /// Start parsing for the new mail.
+    /// Start parsing the atom stream.
     void parse();
+
+    /// Stop all activity.
+    void stop();
 
 private slots:
 

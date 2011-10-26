@@ -55,6 +55,8 @@ Application::~Application()
         m_defaultManager->saveDefaults();
 
     delete m_defaultManager;
+
+    m_atomParser->stop();
     delete m_atomParser;
 
     m_dataBase->saveRules("rules.xml");

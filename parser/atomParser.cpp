@@ -56,6 +56,11 @@ void AtomParser::parse()
     m_http.get(m_url.path());
 }
 
+void AtomParser::stop()
+{
+    m_http.abort();
+}
+
 void AtomParser::onStateChanged(int state)
 {
     switch (state)
