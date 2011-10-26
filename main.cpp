@@ -51,8 +51,10 @@ int main(int argc, char *argv[])
     QObject::connect(&ap, SIGNAL(fetched(const Post &, const Blog &)),
                      &db, SLOT(onFetched(const Post &, const Blog &)));
     ap.parse();
-      
 
     int ret = a.exec();
+
+    core::Application::destroy();
+
     return ret;
 }
