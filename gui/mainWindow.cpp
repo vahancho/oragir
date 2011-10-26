@@ -138,15 +138,8 @@ void MainWindow::trayIconMessageClicked()
 
 void MainWindow::onAbout()
 {
-    QMessageBox::about(this,
-                       tr("About Oragir"),
-                       "Oragir v0.1"
-                       "<BR>"
-                       "Copyright © 2011 <a href=\"mailto:vahancho@gmail.com\">Vahan Aghajanyan</a>."
-                       "<BR>"
-                       "All Rights Reserved."
-                       "<BR><BR>"
-                       "Oragir is made possible by the <a href=\"http://sourceforge.net/projects/oragir\">Oragir</a> open source project.");
+    QMessageBox::about(this, str::AboutTitle,
+                       QString(str::About).arg(str::Version));
 }
 
 void MainWindow::createDockWindows()

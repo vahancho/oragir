@@ -65,6 +65,8 @@ namespace str
     // Other strings
     extern const char *Ok;
     extern const char *Cancel;
+    extern const char *AboutTitle;
+    extern const char *About;
 
 } // namespace str
 

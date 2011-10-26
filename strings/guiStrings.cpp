@@ -59,5 +59,18 @@ namespace str
     // Other strings
     const char *Ok = QT_TRANSLATE_NOOP("Oragir", "OK");
     const char *Cancel = QT_TRANSLATE_NOOP("Oragir", "Cancel");
+    const char *AboutTitle = QT_TRANSLATE_NOOP("Oragir", "About Oragir");
+    const char *About = QT_TRANSLATE_NOOP("Oragir",
+                                          "<big><b>Oragir v%1</b></big>"
+                                          "<BR>"
+                                          "<BR>"
+                                          "Copyright © 2011 "
+                                          "<a href=\"mailto:vahancho@gmail.com\">Vahan Aghajanyan</a>."
+                                          "<BR>"
+                                          "All Rights Reserved."
+                                          "<BR><BR>"
+                                          "Oragir is made possible by the "
+                                          "<a href=\"http://sourceforge.net/projects/oragir\">Oragir</a> "
+                                          "open source project.");
 
 } // namespace str
