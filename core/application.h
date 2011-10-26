@@ -31,6 +31,8 @@ namespace core
 {
 
 class DefaultManager;
+class AtomParser;
+class Database;
 
 /// Application class implements the core of the program.
 /*!
@@ -98,6 +100,12 @@ public:
 
     /// The Main Window.
     gui::MainWindow *m_mainWindow;
+
+    /// The database.
+    Database *m_dataBase;
+
+    /// The atom parser.
+    AtomParser *m_atomParser;
 };
 
 } // namespace core

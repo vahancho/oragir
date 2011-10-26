@@ -20,6 +20,8 @@
 
 #include "application.h"
 #include "defaultManager.h"
+#include "../parser/atomParser.h"
+#include "../database/database.h"
 #include "../gui/mainWindow.h"
 
 namespace core
@@ -53,6 +55,10 @@ Application::~Application()
         m_defaultManager->saveDefaults();
 
     delete m_defaultManager;
+    delete m_atomParser;
+
+    m_dataBase->saveRules("rules.xml");
+    delete m_dataBase;
 }
 
 Application *Application::create()
@@ -87,6 +93,22 @@ void Application::init()
     // Restore Main Window state based on saved defaults
     m_mainWindow->restoreWindow();
     m_mainWindow->show();
+
+    m_dataBase = new Database;
+    if (!m_dataBase->create("posts.db")) {
+        printf("%s \n", m_dataBase->errorMessage().toAscii().data());
+    }
+
+    if (!m_dataBase->openRules("rules.xml")) {
+        Rule<Post> rule("Test rule");
+        rule.setFilter(str::TagContent, "test", Rule<Post>::Contains);
+        m_dataBase->addRule(rule);
+    }
+
+    m_atomParser = new AtomParser;
+    QObject::connect(m_atomParser, SIGNAL(fetched(const Post &, const Blog &)),
+                     m_dataBase, SLOT(onFetched(const Post &, const Blog &)));
+    m_atomParser->parse();
 }
 
 gui::MainWindow *Application::mainWindow() const
