@@ -57,7 +57,7 @@ namespace str
     const char *MainWindowMax = "MainWindowMax";
     const char *MainWindowState = "MainWindowState";
     const char *ShowStatusBar = "ShowStatusBar";
-    const char *ShowStatusBar = "QuitOnClose";
+    const char *QuitOnClose = "QuitOnClose";
     
     // Version related strings
     const char *sVersion = "0.0.1";
