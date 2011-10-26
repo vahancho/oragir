@@ -20,11 +20,11 @@
 
 #include <QtGui/QApplication>
 #include <QIcon>
+#include "../core/application.h"
 #include "../parser/atomParser.h"
 #include "../parser/rule.h"
 #include "../database/database.h"
 #include "../strings/strings.h"
-#include "../gui/mainWindow.h"
 
 int main(int argc, char *argv[])
 {
@@ -33,8 +33,7 @@ int main(int argc, char *argv[])
 
     a.setWindowIcon(QIcon(":/icons/app"));
 
-    gui::MainWindow mw;
-    mw.show();
+    core::Application::create();
 
     core::Database db;
     if (!db.create("posts.db")) {

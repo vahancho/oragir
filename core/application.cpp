@@ -86,6 +86,7 @@ void Application::init()
 
     // Restore Main Window state based on saved defaults
     m_mainWindow->restoreWindow();
+    m_mainWindow->show();
 }
 
 gui::MainWindow *Application::mainWindow() const
