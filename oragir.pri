@@ -1,5 +1,7 @@
 #Header files
 HEADERS += ./core/propertyTable.h \
+           ./core/application.h \
+           ./core/defaultManager.h \
            ./gui/mainWindow.h \
            ./parser/atomParser.h \
            ./parser/blog.h \
@@ -12,6 +14,8 @@ HEADERS += ./core/propertyTable.h \
 #Source files
 SOURCES += ./main.cpp \
            ./core/propertyTable.cpp \
+           ./core/application.cpp \
+           ./core/defaultManager.cpp \
            ./gui/mainWindow.cpp \
            ./parser/blog.cpp \
            ./parser/post.cpp \
