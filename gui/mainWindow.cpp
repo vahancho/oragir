@@ -62,7 +62,7 @@ MainWindow::MainWindow(QWidget *parent, Qt::WFlags flags)
             this, SLOT(setActiveSubWindow(QWidget *)));
 
     // Set window title
-    setWindowTitle(str::sAppName);
+    setWindowTitle(str::AppName);
 
     // Register Main Window defaults
     addDefaults();
@@ -107,7 +107,7 @@ void MainWindow::createTrayIcon()
             this, SLOT(trayIconActivated(QSystemTrayIcon::ActivationReason)));
 
     m_trayIcon->setContextMenu(trayIconMenu);
-    m_trayIcon->setToolTip(str::sAppName);
+    m_trayIcon->setToolTip(str::AppName);
     m_trayIcon->setVisible(true);
 }
 

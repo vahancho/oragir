@@ -28,32 +28,32 @@ namespace str
     //
 
     // Application name
-    extern const char *sAppName;
+    extern const char *AppName;
 
-    extern const char *sFeedUrl;
+    extern const char *FeedUrl;
 
     // XML Tags
-    extern const char *sTagFeed;
-    extern const char *sTagTitle;
-    extern const char *sTagName;
-    extern const char *sTagJournal;
-    extern const char *sTagJournalId;
-    extern const char *sTagLink;
-    extern const char *sTagCategory;
-    extern const char *sTagUserPic;
-    extern const char *sTagUpdated;
-    extern const char *sTagPosterId;
-    extern const char *sTagAuthor;
-    extern const char *sTagEntry;
-    extern const char *sTagContent;
+    extern const char *TagFeed;
+    extern const char *TagTitle;
+    extern const char *TagName;
+    extern const char *TagJournal;
+    extern const char *TagJournalId;
+    extern const char *TagLink;
+    extern const char *TagCategory;
+    extern const char *TagUserPic;
+    extern const char *TagUpdated;
+    extern const char *TagPosterId;
+    extern const char *TagAuthor;
+    extern const char *TagEntry;
+    extern const char *TagContent;
 
     // Rules file tags.
-    extern const char *sTagRules;
-    extern const char *sTagRule;
-    extern const char *sTagFilter;
-    extern const char *sTagValue;
-    extern const char *sTagNameAttr;
-    extern const char *sTagOption;
+    extern const char *TagRules;
+    extern const char *TagRule;
+    extern const char *TagFilter;
+    extern const char *TagValue;
+    extern const char *TagNameAttr;
+    extern const char *TagOption;
 
     // Defaults names.
     extern const char *MainWindowSize;
@@ -64,15 +64,15 @@ namespace str
     extern const char *QuitOnClose;
 
     // Version related strings
-    extern const char *sVersion;
+    extern const char *Version;
 
     // SQL Queries
 
     /// SQL query to create table blogs.
-    extern const char *sSqlCreateBlogTable;
+    extern const char *SqlCreateBlogTable;
 
     /// SQL query to create table posts.
-    extern const char *sSqlCreatePostTable;
+    extern const char *SqlCreatePostTable;
 
 } // namespace str
 

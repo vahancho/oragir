@@ -41,7 +41,7 @@ int main(int argc, char *argv[])
         return -1;
     }
     core::Rule<core::Post> rule("Test rule");
-    rule.setFilter(str::sTagContent, "test", core::Rule<core::Post>::Contains);
+    rule.setFilter(str::TagContent, "test", core::Rule<core::Post>::Contains);
     db.addRule(rule);
     db.saveRules("rules.xml");
     db.openRules("rules.xml");

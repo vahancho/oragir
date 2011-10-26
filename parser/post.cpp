@@ -27,21 +27,21 @@ namespace core
 
 Post::Post()
 {
-    addProperty(str::sTagTitle, QString());
-    addProperty(str::sTagLink, QString());
-    addProperty(str::sTagUpdated, QString());
-    addProperty(str::sTagName, QString());
-    addProperty(str::sTagUserPic, QString());
-    addProperty(str::sTagContent, QString());
-    addProperty(str::sTagCategory, QStringList());
-    addProperty(str::sTagPosterId, -1L);
+    addProperty(str::TagTitle, QString());
+    addProperty(str::TagLink, QString());
+    addProperty(str::TagUpdated, QString());
+    addProperty(str::TagName, QString());
+    addProperty(str::TagUserPic, QString());
+    addProperty(str::TagContent, QString());
+    addProperty(str::TagCategory, QStringList());
+    addProperty(str::TagPosterId, -1L);
 }
 
 void Post::addTag(const QString &tag)
 {
-    QStringList tags = value(str::sTagCategory).toStringList();
+    QStringList tags = value(str::TagCategory).toStringList();
     tags.push_back(tag);
-    setValue(str::sTagCategory, tags);
+    setValue(str::TagCategory, tags);
 }
 
 } // namespace core

@@ -27,7 +27,7 @@ namespace core
 
 AtomParser::AtomParser()
     :
-        m_url(str::sFeedUrl)
+        m_url(str::FeedUrl)
 {
     connect(&m_http, SIGNAL(readyRead(const QHttpResponseHeader &)), this,
             SLOT(fetchHttpData(const QHttpResponseHeader &)));
@@ -118,24 +118,24 @@ bool AtomParser::parseXmlData()
             m_currentTag = m_xml.name().toString();
 
             if (isGroupTag()) {
-                if (m_currentTag == str::sTagFeed) {
+                if (m_currentTag == str::TagFeed) {
                     m_currentBlog.resetToDefault();
-                } else if (m_currentTag == str::sTagEntry) {
+                } else if (m_currentTag == str::TagEntry) {
                     m_currentPost.resetToDefault();
                 }
                 m_tags.push(m_currentTag);
             }
 
-            if (m_currentTag == str::sTagLink) {
+            if (m_currentTag == str::TagLink) {
                 QXmlStreamAttributes atrs = m_xml.attributes();
                 QString s = atrs.value("href").toString();
 
-                if (m_tags.top() == str::sTagFeed) {
-                    m_currentBlog.setValue(str::sTagLink, s);
-                } else if (m_tags.top() == str::sTagEntry) {
-                    m_currentPost.setValue(str::sTagLink, s);
+                if (m_tags.top() == str::TagFeed) {
+                    m_currentBlog.setValue(str::TagLink, s);
+                } else if (m_tags.top() == str::TagEntry) {
+                    m_currentPost.setValue(str::TagLink, s);
                 }
-            } else if (m_currentTag == str::sTagCategory) {
+            } else if (m_currentTag == str::TagCategory) {
                 QXmlStreamAttributes atrs = m_xml.attributes();
                 QString s = atrs.value("term").toString();
                 m_currentPost.addTag(s);
@@ -143,35 +143,35 @@ bool AtomParser::parseXmlData()
         } else if (m_xml.isEndElement()) {
             if (isGroupTag()) {
                 QString s = m_tags.pop();
-                if (s == str::sTagEntry)
+                if (s == str::TagEntry)
                     emit fetched(m_currentPost, m_currentBlog);
             }
         } else if (m_xml.isCharacters() && !m_xml.isWhitespace()) {
             QString text = m_xml.text().toString();
-            if (m_currentTag == str::sTagTitle) {
-                if (m_tags.top() == str::sTagFeed) {
-                    m_currentBlog.setValue(str::sTagTitle, text);
-                } else if (m_tags.top() == str::sTagEntry) {
-                    m_currentPost.setValue(str::sTagTitle, text);
+            if (m_currentTag == str::TagTitle) {
+                if (m_tags.top() == str::TagFeed) {
+                    m_currentBlog.setValue(str::TagTitle, text);
+                } else if (m_tags.top() == str::TagEntry) {
+                    m_currentPost.setValue(str::TagTitle, text);
                 }
-            } else if (m_currentTag == str::sTagName) {
-                if (m_tags.top() == str::sTagAuthor) {
-                    m_currentBlog.setValue(str::sTagName, text);
-                } else if (m_tags.top() == str::sTagEntry) {
-                    m_currentPost.setValue(str::sTagName, text);
+            } else if (m_currentTag == str::TagName) {
+                if (m_tags.top() == str::TagAuthor) {
+                    m_currentBlog.setValue(str::TagName, text);
+                } else if (m_tags.top() == str::TagEntry) {
+                    m_currentPost.setValue(str::TagName, text);
                 }
-            } else if (m_currentTag == str::sTagJournal) {
-                m_currentBlog.setValue(str::sTagJournal, text);
-            } else if (m_currentTag == str::sTagJournalId) {
-                m_currentBlog.setValue(str::sTagJournalId, text.toLong());
-            } else if (m_currentTag == str::sTagPosterId) {
-                m_currentPost.setValue(str::sTagPosterId, text.toLong());
-            } else if (m_currentTag == str::sTagUserPic) {
-                m_currentPost.setValue(str::sTagUserPic, text);
-            } else if (m_currentTag == str::sTagContent) {
-                m_currentPost.setValue(str::sTagContent, text);
-            } else if (m_currentTag == str::sTagUpdated) {
-                m_currentPost.setValue(str::sTagUpdated, text);
+            } else if (m_currentTag == str::TagJournal) {
+                m_currentBlog.setValue(str::TagJournal, text);
+            } else if (m_currentTag == str::TagJournalId) {
+                m_currentBlog.setValue(str::TagJournalId, text.toLong());
+            } else if (m_currentTag == str::TagPosterId) {
+                m_currentPost.setValue(str::TagPosterId, text.toLong());
+            } else if (m_currentTag == str::TagUserPic) {
+                m_currentPost.setValue(str::TagUserPic, text);
+            } else if (m_currentTag == str::TagContent) {
+                m_currentPost.setValue(str::TagContent, text);
+            } else if (m_currentTag == str::TagUpdated) {
+                m_currentPost.setValue(str::TagUpdated, text);
             }
         }
     }
@@ -186,9 +186,9 @@ bool AtomParser::parseXmlData()
 
 bool AtomParser::isGroupTag() const
 {
-    return m_xml.name() == str::sTagFeed ||
-           m_xml.name() == str::sTagAuthor ||
-           m_xml.name() == str::sTagEntry;
+    return m_xml.name() == str::TagFeed ||
+           m_xml.name() == str::TagAuthor ||
+           m_xml.name() == str::TagEntry;
 }
 
 } // namespace core

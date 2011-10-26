@@ -25,32 +25,32 @@ namespace str
     //
 
     // Application name
-    const char *sAppName = "Oragiro";
+    const char *AppName = "Oragiro";
     
-    const char *sFeedUrl = "http://atom.services.livejournal.com/atom-stream.xml";
+    const char *FeedUrl = "http://atom.services.livejournal.com/atom-stream.xml";
 
     // XML Tags
-    const char *sTagFeed = "feed";
-    const char *sTagTitle = "title";
-    const char *sTagAuthor = "author";
-    const char *sTagEntry = "entry";
-    const char *sTagContent = "content";    
-    const char *sTagName = "name";
-    const char *sTagJournal = "journal";
-    const char *sTagJournalId = "journalid";
-    const char *sTagLink = "link";
-    const char *sTagCategory = "category";
-    const char *sTagUserPic = "userpic";
-    const char *sTagUpdated = "updated";
-    const char *sTagPosterId = "posterid";
+    const char *TagFeed = "feed";
+    const char *TagTitle = "title";
+    const char *TagAuthor = "author";
+    const char *TagEntry = "entry";
+    const char *TagContent = "content";
+    const char *TagName = "name";
+    const char *TagJournal = "journal";
+    const char *TagJournalId = "journalid";
+    const char *TagLink = "link";
+    const char *TagCategory = "category";
+    const char *TagUserPic = "userpic";
+    const char *TagUpdated = "updated";
+    const char *TagPosterId = "posterid";
 
      // Rules file tags.
-    const char *sTagRules = "rules";
-    const char *sTagRule = "rule";
-    const char *sTagFilter = "filter";
-    const char *sTagValue = "value";
-    const char *sTagNameAttr = "name";
-    const char *sTagOption = "option";
+    const char *TagRules = "rules";
+    const char *TagRule = "rule";
+    const char *TagFilter = "filter";
+    const char *TagValue = "value";
+    const char *TagNameAttr = "name";
+    const char *TagOption = "option";
 
     const char *MainWindowSize = "MainWindowSize";
     const char *MainWindowPos = "MainWindowPos";
@@ -60,22 +60,22 @@ namespace str
     const char *QuitOnClose = "QuitOnClose";
     
     // Version related strings
-    const char *sVersion = "0.0.1";
+    const char *Version = "0.0.1";
 
     // SQL Queries.
-    const char *sSqlCreateBlogTable = "CREATE TABLE IF NOT EXISTS blog ("
-                                      "journalid INT PRIMARY KEY NOT NULL,"
-                                      "link      VARCHAR(256)    NOT NULL,"
-                                      "name      NVARCHAR(128)   NOT NULL,"
-                                      "journal   VARCHAR(256)    NOT NULL,"
-                                      "title     NVARCHAR(256))";
+    const char *SqlCreateBlogTable = "CREATE TABLE IF NOT EXISTS blog ("
+                                     "journalid INT PRIMARY KEY NOT NULL,"
+                                     "link      VARCHAR(256)    NOT NULL,"
+                                     "name      NVARCHAR(128)   NOT NULL,"
+                                     "journal   VARCHAR(256)    NOT NULL,"
+                                     "title     NVARCHAR(256))";
 
-    const char *sSqlCreatePostTable = "CREATE TABLE IF NOT EXISTS post ("
-                                      "posterid INT             NOT NULL,"
-                                      "link     VARCHAR(256)    NOT NULL,"
-                                      "updated  DATATIME        NOT NULL,"
-                                      "name     NVARCHAR(128)   NOT NULL,"
-                                      "content  NVARCHAR,"
-                                      "title    NVARCHAR(256))";
+    const char *SqlCreatePostTable = "CREATE TABLE IF NOT EXISTS post ("
+                                     "posterid INT             NOT NULL,"
+                                     "link     VARCHAR(256)    NOT NULL,"
+                                     "updated  DATATIME        NOT NULL,"
+                                     "name     NVARCHAR(128)   NOT NULL,"
+                                     "content  NVARCHAR,"
+                                     "title    NVARCHAR(256))";
 
 } // namespace str

@@ -41,8 +41,8 @@ bool Database::create(const QString &fileName)
     }
 
     QSqlQuery query;
-    if (!query.exec(str::sSqlCreateBlogTable) ||
-        !query.exec(str::sSqlCreatePostTable))
+    if (!query.exec(str::SqlCreateBlogTable) ||
+        !query.exec(str::SqlCreatePostTable))
     {
         m_error = query.lastError().text();
         return false;
@@ -79,22 +79,22 @@ void Database::addRule(const Rule<Post> &rule)
 void Database::addRecord(const Post &post, const Blog &blog)
 {
     QString sBlog = QString("%1\n%2\n%3\n%4\n%5\n%6\n")
-                            .arg(blog.value(str::sTagJournalId).toString())
-                            .arg(blog.value(str::sTagLink).toString())
-                            .arg(blog.value(str::sTagName).toString())
-                            .arg(blog.value(str::sTagJournal).toString())
-                            .arg(blog.value(str::sTagTitle).toString());
+                            .arg(blog.value(str::TagJournalId).toString())
+                            .arg(blog.value(str::TagLink).toString())
+                            .arg(blog.value(str::TagName).toString())
+                            .arg(blog.value(str::TagJournal).toString())
+                            .arg(blog.value(str::TagTitle).toString());
 
     QSqlQuery query;
     QString s = QString("INSERT INTO posts VALUES(%1,'%2','%3','%4','%5','%6')")
-                        .arg(post.value(str::sTagPosterId).toString())
-                        .arg(post.value(str::sTagLink).toString())
-                        .arg(post.value(str::sTagUpdated).toString())
-                        .arg(post.value(str::sTagName).toString())
-                        .arg(post.value(str::sTagContent).toString())
-                        .arg(post.value(str::sTagTitle).toString());
+                        .arg(post.value(str::TagPosterId).toString())
+                        .arg(post.value(str::TagLink).toString())
+                        .arg(post.value(str::TagUpdated).toString())
+                        .arg(post.value(str::TagName).toString())
+                        .arg(post.value(str::TagContent).toString())
+                        .arg(post.value(str::TagTitle).toString());
 
-    qDebug(post.value(str::sTagLink).toString().toAscii().data());
+    qDebug(post.value(str::TagLink).toString().toAscii().data());
 
     query.exec(s);
 
@@ -143,7 +143,7 @@ bool Database::saveRules(const QString &fileName)
         writer.setAutoFormatting(true);
 
         writer.writeStartDocument();
-        writer.writeStartElement(str::sTagRules);
+        writer.writeStartElement(str::TagRules);
 
         std::set<Rule<Post> >::iterator it = m_rules.begin();
 
@@ -172,9 +172,9 @@ bool Database::openRules(const QString &fileName)
         while (!reader.atEnd()) {
             reader.readNext();
             if(reader.isStartElement()) {
-                if(reader.name() == str::sTagRule) {
+                if(reader.name() == str::TagRule) {
                     QString name = reader.attributes()
-                                         .value(str::sTagNameAttr).toString();
+                                         .value(str::TagNameAttr).toString();
                     Rule<Post> rule(name);
                     rule.readXml(reader);
                     addRule(rule);

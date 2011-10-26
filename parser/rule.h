@@ -204,21 +204,21 @@ void Rule<Source>::readXml(QXmlStreamReader &reader)
     Option option;
     QString elementName;
 
-    while(!(reader.isEndElement() && reader.name() == str::sTagRule)) {
+    while(!(reader.isEndElement() && reader.name() == str::TagRule)) {
         reader.readNext();
         if(reader.isStartElement()) {
             elementName = reader.name().toString();
-            if (elementName == str::sTagFilter)
-                filterName = reader.attributes().value(str::sTagNameAttr).toString();
+            if (elementName == str::TagFilter)
+                filterName = reader.attributes().value(str::TagNameAttr).toString();
         } else if (reader.isEndElement()) {
-            if (reader.name().toString() == str::sTagFilter) {
+            if (reader.name().toString() == str::TagFilter) {
                 if (option != Ignore)
                     setFilter(filterName, filterValue, option);
             }
         } else if (reader.isCharacters() && !reader.isWhitespace()) {
-            if (elementName == str::sTagValue)
+            if (elementName == str::TagValue)
                 filterValue = reader.text().toString();
-            else if (elementName == str::sTagOption)
+            else if (elementName == str::TagOption)
                 option = (Option)reader.text().toString().toInt();
         }
     }

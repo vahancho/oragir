@@ -26,11 +26,11 @@ namespace core
 
 Blog::Blog()
 {
-    addProperty(str::sTagTitle, QString());
-    addProperty(str::sTagLink, QString());
-    addProperty(str::sTagName, QString());
-    addProperty(str::sTagJournal, QString());
-    addProperty(str::sTagJournalId, -1L);
+    addProperty(str::TagTitle, QString());
+    addProperty(str::TagLink, QString());
+    addProperty(str::TagName, QString());
+    addProperty(str::TagJournal, QString());
+    addProperty(str::TagJournalId, -1L);
 }
 
 } // namespace core
