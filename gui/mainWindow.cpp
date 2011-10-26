@@ -298,9 +298,9 @@ void MainWindow::saveWindow() const
 
 void MainWindow::restoreWindow()
 {
-    /*
     // Read Main Window configuration from defaults and restore the state
-    core::DefaultManager *defaultMngr = core::Application::theApp()->defaultManager();
+    core::DefaultManager *defaultMngr =
+                    core::Application::theApp()->defaultManager();
 
     // Set maximized state
     bool max = defaultMngr->value(str::MainWindowMax).toBool();
@@ -323,12 +323,10 @@ void MainWindow::restoreWindow()
     bool showStatus = defaultMngr->value(str::ShowStatusBar).toBool();
     statusBar()->setVisible(showStatus);
     m_statusBarAction->setChecked(showStatus);
-    */
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
-    /*
     core::DefaultManager *defaultMngr = 
                             core::Application::theApp()->defaultManager();
 
@@ -341,7 +339,6 @@ void MainWindow::closeEvent(QCloseEvent *event)
         event->accept();
 
     saveWindow();
-    */
 }
 
 void MainWindow::addDefaults() const
