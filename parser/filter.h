@@ -28,12 +28,23 @@
 namespace core
 {
 
+/// Implements the filtering functionality.
+/*
+    This template class implemente the filtering support for data
+    providers such as Post and Blog. Data source difined in the
+    template argument and supposed to be a type of property table.
+    Usage example: Filter<Post> - defines filter for the Post
+    property table. Similarly Filter<Blog> provides filtering
+    for Blog properties.
+*/
 template<class Source>
 class Filter
 {
 public:
+    /// Constructs the named filter.
     Filter(const QString &name);
 
+    /// Defines rules values matching options.
     enum Option {
         Ignore = 0,
         ExactMatch,
@@ -46,17 +57,40 @@ public:
         All      // All non empty rules match.
     };
 
+    /// Sets the new filtering rule.
+    /*
+        @param name  The property name,
+        @param value The value to compare property value with,
+        @param opt   Matching option.
+        @return      Returns rule adding result - success or not.
+    */
     bool setRule(const QString &name, const QString &value, Option opt);
+
+    /// Returns true if data matches to the filter rules.
     bool match(const Source &source) const;
+
+    /// Returs the name of the filter.
     QString name() const;
+
+    /// Returns whethe filter enabled or not.
     bool enabled() const;
+
+    /// Set filter's enable state.
     void setEnabled(bool enabled = true);
+
+    /// Returs how rules should match.
     RuleMatch ruleMatch() const;
+
+    /// Sets how rules should match.
     void setRuleMatch(RuleMatch rm = One);
 
+    /// Writes filter data with the given xml writer.
     void writeXml(QXmlStreamWriter &writer);
+
+    /// Reads xml data with the given reader.
     void readXml(QXmlStreamReader &reader);
 
+    /// Compare two filters.
     bool operator<(const Filter<Source> &other) const;
 
 private:
