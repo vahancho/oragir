@@ -72,7 +72,7 @@ private:
 
     bool match(const QString &name, const QString &value) const;
 
-    QMap<QString, Rule> m_filters;
+    QMap<QString, Rule> m_rules;
     QString m_name;
     bool m_enabled;
     RuleMatch m_ruleMatch;
@@ -96,7 +96,7 @@ Filter<Source>::Filter(const QString &name)
     while (it != properties.constEnd()) {
         Rule flt;
         const QString &name = it.key();
-        m_filters[name] = flt;
+        m_rules[name] = flt;
 
         ++it;
     }
@@ -106,11 +106,11 @@ template<class Source>
 bool Filter<Source>::setRule(const QString &name, const QString &value,
                              Option opt)
 {
-    QMap<QString, Rule>::iterator it = m_filters.find(name);
-    if (it != m_filters.end()) {
-        Rule &flt = it.value();
-        flt.m_value = value;
-        flt.m_option = opt;
+    QMap<QString, Rule>::iterator it = m_rules.find(name);
+    if (it != m_rules.end()) {
+        Rule &rl = it.value();
+        rl.m_value = value;
+        rl.m_option = opt;
 
         return true;
     } else {
@@ -139,8 +139,8 @@ bool Filter<Source>::match(const Source &source) const
 template<class Source>
 bool Filter<Source>::match(const QString &name, const QString &value) const
 {
-    QMap<QString, Rule>::iterator it = m_filters.find(name);
-    if (it != m_filters.end()) {
+    QMap<QString, Rule>::iterator it = m_rules.find(name);
+    if (it != m_rules.end()) {
         const Rule &flt = it.value();
 
         // Strip the html tags before comparing strings.
@@ -213,8 +213,8 @@ void Filter<Source>::writeXml(QXmlStreamWriter &writer)
     writer.writeStartElement(str::TagFilter);
     writer.writeAttribute(str::TagName, m_name);
 
-    QMap<QString, Rule>::const_iterator it = m_filters.constBegin();
-    while (it != m_filters.constEnd()) {
+    QMap<QString, Rule>::const_iterator it = m_rules.constBegin();
+    while (it != m_rules.constEnd()) {
         const Rule &flt = it.value();
         const QString &name = it.key();
 
