@@ -6,7 +6,7 @@ HEADERS += ./core/propertyTable.h \
            ./parser/atomParser.h \
            ./parser/blog.h \
            ./parser/post.h \
-           ./parser/rule.h \
+           ./parser/filter.h \
            ./database/database.h \
            ./strings/strings.h \
            ./strings/guiStrings.h
