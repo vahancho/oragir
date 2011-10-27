@@ -60,6 +60,14 @@ public:
     bool operator<(const Filter<Source> &other) const;
 
 private:
+    // Rules results.
+    enum Result {
+        Matched = 0,
+        NotMatched,
+        Undefined
+    };
+
+    /// Implements the filter's rule class.
     struct Rule
     {
         Rule()
@@ -70,7 +78,8 @@ private:
         Option m_option;
     };
 
-    bool match(const QString &name, const QString &value) const;
+    /// Returns result of applying rule named 'name' on a given value.
+    Result match(const QString &name, const QString &value) const;
 
     QMap<QString, Rule> m_rules;
     QString m_name;
@@ -123,25 +132,39 @@ bool Filter<Source>::match(const Source &source) const
 {
     QMap<QString, QVariant> properties = source.propertyMap();
 
-    // Iterate over all properties and apply filter on each.
-    // If at least one filter does not passed object does not pass.
+    // Iterate over all properties and apply rule on each.
     QMap<QString, QVariant>::const_iterator it = properties.constBegin();
     while (it != properties.constEnd()) {
-        if (!match(it.key(), it.value().toString())) {
-            return false;
+        Result res = match(it.key(), it.value().toString());
+
+        // Make decision depending on rule matching criteria.
+        switch (m_ruleMatch) {
+            case One:
+                // If at lease one rule matched, we succeed.
+                if (res == Matched)
+                    return true;
+            break;
+            case All:
+                // If one of the rule does not match, we failed.
+                if (NotMatched)
+                    return false;
+            break;
+            default:
+                break;
         }
         ++it;
     }
 
-    return true;
+    return false;
 }
 
 template<class Source>
-bool Filter<Source>::match(const QString &name, const QString &value) const
+typename Filter<Source>::Result Filter<Source>::match(const QString &name,
+                                                      const QString &value) const
 {
     QMap<QString, Rule>::iterator it = m_rules.find(name);
     if (it != m_rules.end()) {
-        const Rule &flt = it.value();
+        const Rule &rule = it.value();
 
         // Strip the html tags before comparing strings.
         QString stripped = value;
@@ -153,27 +176,27 @@ bool Filter<Source>::match(const QString &name, const QString &value) const
         stripped.replace("&nbsp;", " ");
         stripped.replace( QRegExp("<[^>]*>"), "" );
 
-        if (flt.m_option == Ignore) {
-            return true;
-        } else if (flt.m_option == Contains &&
-                   stripped.contains(flt.m_value, Qt::CaseInsensitive)) {
+        if (rule.m_option == Ignore) {
+            return Undefined;
+        } else if (rule.m_option == Contains &&
+                   stripped.contains(rule.m_value, Qt::CaseInsensitive)) {
             QRegExp rx;
-            QString pat = QString("\\s.{0,40}%1.{0,40}\\s").arg(flt.m_value);
+            QString pat = QString("\\s.{0,40}%1.{0,40}\\s").arg(rule.m_value);
             rx.setPattern(pat);
             if (rx.indexIn(stripped) != -1) {
                 QString s = rx.cap(0);
                 qDebug(s.toAscii().data());
             }
-            return true;
-        } else if (flt.m_option == ExactMatch &&
-                   stripped == flt.m_value) {
-            return true;
+            return Matched;
+        } else if (rule.m_option == ExactMatch &&
+                   stripped == rule.m_value) {
+            return Matched;
         } else {
-            return false;
+            return NotMatched;
         }
     } else {
         // Such property not found.
-        return false;
+        return Undefined;
     }
 }
 
