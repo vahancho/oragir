@@ -40,11 +40,20 @@ public:
         Contains
     };
 
+    /// Enumerate rules matching creteria.
+    enum RuleMatch {
+        One = 0, // At least one matches.
+        All      // All non empty rules match.
+    };
+
     bool setRule(const QString &name, const QString &value, Option opt);
     bool match(const Source &source) const;
     QString name() const;
     bool enabled() const;
     void setEnabled(bool enabled = true);
+    RuleMatch ruleMatch() const;
+    void setRuleMatch(RuleMatch rm = One);
+
     void writeXml(QXmlStreamWriter &writer);
     void readXml(QXmlStreamReader &reader);
 
@@ -66,6 +75,7 @@ private:
     QMap<QString, Rule> m_filters;
     QString m_name;
     bool m_enabled;
+    RuleMatch m_ruleMatch;
 };
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -76,7 +86,8 @@ template<class Source>
 Filter<Source>::Filter(const QString &name)
     :
         m_name(name),
-        m_enabled(true)
+        m_enabled(true),
+        m_ruleMatch(One)
 {
     Source source;
     QMap<QString, QVariant> properties = source.propertyMap();
@@ -182,6 +193,18 @@ template<class Source>
 void Filter<Source>::setEnabled(bool enabled)
 {
     m_enabled = enabled;
+}
+
+template<class Source>
+typename Filter<Source>::RuleMatch Filter<Source>::ruleMatch() const
+{
+    return m_ruleMatch;
+}
+
+template<class Source>
+void Filter<Source>::setRuleMatch(RuleMatch rm)
+{
+    m_ruleMatch = rm;
 }
 
 template<class Source>
