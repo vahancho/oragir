@@ -47,7 +47,7 @@ AtomParser::~AtomParser()
         m_http.abort();
 }
 
-void AtomParser::parse()
+void AtomParser::start()
 {
     if (m_http.state() != QHttp::Unconnected)
         m_http.abort();

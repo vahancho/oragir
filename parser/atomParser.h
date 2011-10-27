@@ -47,7 +47,7 @@ signals:
 
 public slots:
     /// Start parsing the atom stream.
-    void parse();
+    void start();
 
     /// Stop all activity.
     void stop();
