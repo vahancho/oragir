@@ -43,6 +43,8 @@ public:
     bool setRule(const QString &name, const QString &value, Option opt);
     bool match(const Source &source) const;
     QString name() const;
+    bool enabled() const;
+    void setEnabled(bool enabled = true);
     void writeXml(QXmlStreamWriter &writer);
     void readXml(QXmlStreamReader &reader);
 
@@ -63,6 +65,7 @@ private:
 
     QMap<QString, Rule> m_filters;
     QString m_name;
+    bool m_enabled;
 };
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -72,7 +75,8 @@ private:
 template<class Source>
 Filter<Source>::Filter(const QString &name)
     :
-        m_name(name)
+        m_name(name),
+        m_enabled(true)
 {
     Source source;
     QMap<QString, QVariant> properties = source.propertyMap();
@@ -166,6 +170,18 @@ template<class Source>
 QString Filter<Source>::name() const
 {
     return m_name;
+}
+
+template<class Source>
+bool Filter<Source>::enabled() const
+{
+    return m_enabled;
+}
+
+template<class Source>
+void Filter<Source>::setEnabled(bool enabled)
+{
+    m_enabled = enabled;
 }
 
 template<class Source>
