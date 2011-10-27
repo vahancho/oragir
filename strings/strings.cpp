@@ -44,10 +44,10 @@ namespace str
     const char *TagUpdated = "updated";
     const char *TagPosterId = "posterid";
 
-     // Rules file tags.
-    const char *TagRules = "rules";
-    const char *TagRule = "rule";
+     // Filters file tags.
+    const char *TagFilters = "filters";
     const char *TagFilter = "filter";
+    const char *TagRule = "rule";
     const char *TagValue = "value";
     const char *TagNameAttr = "name";
     const char *TagOption = "option";

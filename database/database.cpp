@@ -79,10 +79,10 @@ bool Database::remove()
 
 void Database::onFetched(const Post &post, const Blog &blog)
 {
-    std::set<Rule<Post> >::iterator it = m_rules.begin();
-    while (it != m_rules.end()) {
-        const Rule<Post> &rule = *it;
-        if (rule.match(post)) {
+    std::set<Filter<Post> >::iterator it = m_filters.begin();
+    while (it != m_filters.end()) {
+        const Filter<Post> &filter = *it;
+        if (filter.match(post)) {
             addRecord(post, blog);
             break;
         }
@@ -90,9 +90,9 @@ void Database::onFetched(const Post &post, const Blog &blog)
     }
 }
 
-void Database::addRule(const Rule<Post> &rule)
+void Database::addFilter(const Filter<Post> &filter)
 {
-    m_rules.insert(rule);
+    m_filters.insert(filter);
 }
 
 void Database::addRecord(const Post &post, const Blog &blog)
@@ -154,7 +154,7 @@ void Database::addRecord(const Post &post, const Blog &blog)
     }
 }
 
-bool Database::saveRules(const QString &fileName)
+bool Database::saveFilters(const QString &fileName)
 {
     QFile file(fileName);
 
@@ -163,17 +163,17 @@ bool Database::saveRules(const QString &fileName)
         writer.setAutoFormatting(true);
 
         writer.writeStartDocument();
-        writer.writeStartElement(str::TagRules);
+        writer.writeStartElement(str::TagFilters);
 
-        std::set<Rule<Post> >::iterator it = m_rules.begin();
+        std::set<Filter<Post> >::iterator it = m_filters.begin();
 
-        while (it != m_rules.end()) {
-            Rule<Post> &rule = *it;
-            rule.writeXml(writer);
+        while (it != m_filters.end()) {
+            Filter<Post> &filter = *it;
+            filter.writeXml(writer);
             ++it;
         }
 
-        writer.writeEndElement(); // rules
+        writer.writeEndElement(); // filters
         writer.writeEndDocument();
 
         return true;
@@ -182,7 +182,7 @@ bool Database::saveRules(const QString &fileName)
     return false;
 }
 
-bool Database::openRules(const QString &fileName)
+bool Database::openFilters(const QString &fileName)
 {
     QFile file(fileName);
 
@@ -192,12 +192,12 @@ bool Database::openRules(const QString &fileName)
         while (!reader.atEnd()) {
             reader.readNext();
             if(reader.isStartElement()) {
-                if(reader.name() == str::TagRule) {
+                if(reader.name() == str::TagFilter) {
                     QString name = reader.attributes()
                                          .value(str::TagNameAttr).toString();
-                    Rule<Post> rule(name);
-                    rule.readXml(reader);
-                    addRule(rule);
+                    Filter<Post> filter(name);
+                    filter.readXml(reader);
+                    addFilter(filter);
                 }
             }
         }

@@ -59,7 +59,7 @@ Application::~Application()
     m_atomParser->stop();
     delete m_atomParser;
 
-    m_dataBase->saveRules("rules.xml");
+    m_dataBase->saveFilters("filters.xml");
     m_dataBase->remove();
     delete m_dataBase;
 }
@@ -102,10 +102,10 @@ void Application::init()
         printf("%s \n", m_dataBase->errorMessage().toAscii().data());
     }
 
-    if (!m_dataBase->openRules("rules.xml")) {
-        Rule<Post> rule("Test rule");
-        rule.setFilter(str::TagContent, "test", Rule<Post>::Contains);
-        m_dataBase->addRule(rule);
+    if (!m_dataBase->openFilters("filters.xml")) {
+        Filter<Post> filter("Test filter");
+        filter.setRule(str::TagContent, "test", Filter<Post>::Contains);
+        m_dataBase->addFilter(filter);
     }
 
     m_atomParser = new AtomParser;

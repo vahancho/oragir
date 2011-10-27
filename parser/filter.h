@@ -29,10 +29,10 @@ namespace core
 {
 
 template<class Source>
-class Rule
+class Filter
 {
 public:
-    Rule(const QString &name);
+    Filter(const QString &name);
 
     enum Option {
         Ignore = 0,
@@ -40,18 +40,18 @@ public:
         Contains
     };
 
-    bool setFilter(const QString &name, const QString &value, Option opt);
+    bool setRule(const QString &name, const QString &value, Option opt);
     bool match(const Source &source) const;
     QString name() const;
     void writeXml(QXmlStreamWriter &writer);
     void readXml(QXmlStreamReader &reader);
 
-    bool operator<(const Rule<Source> &other) const;
+    bool operator<(const Filter<Source> &other) const;
 
 private:
-    struct Filter
+    struct Rule
     {
-        Filter()
+        Rule()
             :
                 m_option(Ignore)
         {}
@@ -61,7 +61,7 @@ private:
 
     bool match(const QString &name, const QString &value) const;
 
-    QMap<QString, Filter> m_filters;
+    QMap<QString, Rule> m_filters;
     QString m_name;
 };
 
@@ -70,7 +70,7 @@ private:
 //
 
 template<class Source>
-Rule<Source>::Rule(const QString &name)
+Filter<Source>::Filter(const QString &name)
     :
         m_name(name)
 {
@@ -79,7 +79,7 @@ Rule<Source>::Rule(const QString &name)
 
     QMap<QString, QVariant>::const_iterator it = properties.constBegin();
     while (it != properties.constEnd()) {
-        Filter flt;
+        Rule flt;
         const QString &name = it.key();
         m_filters[name] = flt;
 
@@ -88,12 +88,12 @@ Rule<Source>::Rule(const QString &name)
 }
 
 template<class Source>
-bool Rule<Source>::setFilter(const QString &name, const QString &value,
+bool Filter<Source>::setRule(const QString &name, const QString &value,
                              Option opt)
 {
-    QMap<QString, Filter>::iterator it = m_filters.find(name);
+    QMap<QString, Rule>::iterator it = m_filters.find(name);
     if (it != m_filters.end()) {
-        Filter &flt = it.value();
+        Rule &flt = it.value();
         flt.m_value = value;
         flt.m_option = opt;
 
@@ -104,7 +104,7 @@ bool Rule<Source>::setFilter(const QString &name, const QString &value,
 }
 
 template<class Source>
-bool Rule<Source>::match(const Source &source) const
+bool Filter<Source>::match(const Source &source) const
 {
     QMap<QString, QVariant> properties = source.propertyMap();
 
@@ -122,11 +122,11 @@ bool Rule<Source>::match(const Source &source) const
 }
 
 template<class Source>
-bool Rule<Source>::match(const QString &name, const QString &value) const
+bool Filter<Source>::match(const QString &name, const QString &value) const
 {
-    QMap<QString, Filter>::iterator it = m_filters.find(name);
+    QMap<QString, Rule>::iterator it = m_filters.find(name);
     if (it != m_filters.end()) {
-        const Filter &flt = it.value();
+        const Rule &flt = it.value();
 
         // Strip the html tags before comparing strings.
         QString stripped = value;
@@ -163,61 +163,61 @@ bool Rule<Source>::match(const QString &name, const QString &value) const
 }
 
 template<class Source>
-QString Rule<Source>::name() const
+QString Filter<Source>::name() const
 {
     return m_name;
 }
 
 template<class Source>
-void Rule<Source>::writeXml(QXmlStreamWriter &writer)
+void Filter<Source>::writeXml(QXmlStreamWriter &writer)
 {
-    writer.writeStartElement("rule");
-    writer.writeAttribute("name", m_name);
+    writer.writeStartElement(str::TagFilter);
+    writer.writeAttribute(str::TagName, m_name);
 
-    QMap<QString, Filter>::const_iterator it = m_filters.constBegin();
+    QMap<QString, Rule>::const_iterator it = m_filters.constBegin();
     while (it != m_filters.constEnd()) {
-        const Filter &flt = it.value();
+        const Rule &flt = it.value();
         const QString &name = it.key();
 
-        writer.writeStartElement("filter");
+        writer.writeStartElement(str::TagRule);
 
-        writer.writeAttribute("name", name);
-        writer.writeTextElement("value", flt.m_value);
-        writer.writeTextElement("option", QString::number(flt.m_option));
+        writer.writeAttribute(str::TagName, name);
+        writer.writeTextElement(str::TagValue, flt.m_value);
+        writer.writeTextElement(str::TagOption, QString::number(flt.m_option));
 
-        writer.writeEndElement(); // filter
+        writer.writeEndElement(); // rule
 
         ++it;
     }
 
-    writer.writeEndElement(); // rule
+    writer.writeEndElement(); // filter
 }
 
 template<class Source>
-void Rule<Source>::readXml(QXmlStreamReader &reader)
+void Filter<Source>::readXml(QXmlStreamReader &reader)
 {
     Q_ASSERT(reader.isStartElement());
 
     reader.readNext();
-    QString filterName;
-    QString filterValue;
+    QString ruleName;
+    QString ruleValue;
     Option option;
     QString elementName;
 
-    while(!(reader.isEndElement() && reader.name() == str::TagRule)) {
+    while(!(reader.isEndElement() && reader.name() == str::TagFilter)) {
         reader.readNext();
         if(reader.isStartElement()) {
             elementName = reader.name().toString();
-            if (elementName == str::TagFilter)
-                filterName = reader.attributes().value(str::TagNameAttr).toString();
+            if (elementName == str::TagRule)
+                ruleName = reader.attributes().value(str::TagNameAttr).toString();
         } else if (reader.isEndElement()) {
-            if (reader.name().toString() == str::TagFilter) {
+            if (reader.name().toString() == str::TagRule) {
                 if (option != Ignore)
-                    setFilter(filterName, filterValue, option);
+                    setRule(ruleName, ruleValue, option);
             }
         } else if (reader.isCharacters() && !reader.isWhitespace()) {
             if (elementName == str::TagValue)
-                filterValue = reader.text().toString();
+                ruleValue = reader.text().toString();
             else if (elementName == str::TagOption)
                 option = (Option)reader.text().toString().toInt();
         }
@@ -225,7 +225,7 @@ void Rule<Source>::readXml(QXmlStreamReader &reader)
 }
 
 template<class Source>
-bool Rule<Source>::operator<(const Rule<Source> &other) const
+bool Filter<Source>::operator<(const Filter<Source> &other) const
 {
     return m_name < other.m_name;
 }

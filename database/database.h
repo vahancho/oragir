@@ -24,7 +24,7 @@
 #include <set>
 #include "../parser/blog.h"
 #include "../parser/post.h"
-#include "../parser/rule.h"
+#include "../parser/filter.h"
 
 namespace core
 {
@@ -41,11 +41,11 @@ public:
     /// Closes and removes the given database connection.
     bool remove();
 
-    /// Adds new rule to the list of rules.
-    void addRule(const Rule<Post> &rule);
+    /// Adds new filter to the list of filters.
+    void addFilter(const Filter<Post> &filter);
 
-    bool saveRules(const QString &fileName);
-    bool openRules(const QString &fileName);
+    bool saveFilters(const QString &fileName);
+    bool openFilters(const QString &fileName);
 
     /// Reports the last error if any.
     QString errorMessage() const;
@@ -57,8 +57,8 @@ private:
     /// Adds new recored to the database.
     void addRecord(const Post &post, const Blog &blog);
 
-    /// Stores the list of rules.
-    std::set<Rule<Post> > m_rules;
+    /// Stores the list of filters.
+    std::set<Filter<Post> > m_filters;
 
     /// Stores the error message.
     QString m_error;

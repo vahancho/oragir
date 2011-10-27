@@ -47,10 +47,10 @@ namespace str
     extern const char *TagEntry;
     extern const char *TagContent;
 
-    // Rules file tags.
-    extern const char *TagRules;
-    extern const char *TagRule;
+    // Filters file tags.
+    extern const char *TagFilters;
     extern const char *TagFilter;
+    extern const char *TagRule;
     extern const char *TagValue;
     extern const char *TagNameAttr;
     extern const char *TagOption;
