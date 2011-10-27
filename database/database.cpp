@@ -126,7 +126,7 @@ void Database::addRecord(const Post &post, const Blog &blog)
 
     if (numRows == 20) {
         QSqlQueryModel *model1 = new QSqlQueryModel;
-        model1->setQuery("SELECT posterid, name, title FROM post");
+        model1->setQuery("SELECT posterid, name, title FROM post", db);
         model1->setHeaderData(0, Qt::Horizontal, tr("posterid"));
         model1->setHeaderData(1, Qt::Horizontal, tr("name"));
         model1->setHeaderData(1, Qt::Horizontal, tr("title"));
