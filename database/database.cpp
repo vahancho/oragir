@@ -82,7 +82,7 @@ void Database::onFetched(const Post &post, const Blog &blog)
     std::set<Filter<Post> >::iterator it = m_filters.begin();
     while (it != m_filters.end()) {
         const Filter<Post> &filter = *it;
-        if (filter.match(post)) {
+        if (filter.enabled() && filter.match(post)) {
             addRecord(post, blog);
             break;
         }
