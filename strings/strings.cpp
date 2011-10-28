@@ -64,14 +64,14 @@ namespace str
 
     // SQL Queries.
     const char *SqlCreateBlogTable = "CREATE TABLE IF NOT EXISTS blog ("
-                                     "journalid INT PRIMARY KEY NOT NULL,"
+                                     "journalid INTEGER PRIMARY KEY NOT NULL,"
                                      "link      VARCHAR(256)    NOT NULL,"
                                      "name      NVARCHAR(128)   NOT NULL,"
                                      "journal   VARCHAR(256)    NOT NULL,"
                                      "title     NVARCHAR(256))";
 
     const char *SqlCreatePostTable = "CREATE TABLE IF NOT EXISTS post ("
-                                     "posterid INT             NOT NULL,"
+                                     "posterid INTEGER         NOT NULL,"
                                      "link     VARCHAR(256)    NOT NULL,"
                                      "updated  DATATIME        NOT NULL,"
                                      "name     NVARCHAR(128)   NOT NULL,"
