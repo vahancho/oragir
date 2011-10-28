@@ -26,6 +26,9 @@
 #include "../parser/post.h"
 #include "../parser/filter.h"
 
+class QSqlTableModel;
+class QTableView;
+
 namespace core
 {
 
@@ -64,6 +67,9 @@ private:
     QString m_error;
 
     QString m_dbConnectionName;
+
+    QSqlTableModel *m_model;
+    QTableView *m_view;
 };
 
 } // namespace core

@@ -64,6 +64,23 @@ bool Database::create(const QString &fileName)
     query.exec("PRAGMA synchronous = OFF");
 
     m_dbConnectionName = fileName;
+
+    /// Test
+    m_model = new QSqlTableModel(0, db);
+    m_model->setTable("post");
+    m_model->setEditStrategy(QSqlTableModel::OnManualSubmit);
+    m_model->select();
+
+    m_model->setHeaderData(0, Qt::Horizontal, tr("posterid"));
+    m_model->setHeaderData(1, Qt::Horizontal, tr("name"));
+    m_model->setHeaderData(2, Qt::Horizontal, tr("title"));
+    m_model->removeColumns(2, 3);
+
+    m_view = new QTableView;
+    m_view->setModel(m_model);
+    m_view->show();
+    ///
+
     return true;
 }
 
@@ -101,7 +118,7 @@ void Database::addFilter(const Filter<Post> &filter)
 void Database::addRecord(const Post &post, const Blog &blog)
 {
     QString sBlog = QString("%1\n%2\n%3\n%4\n%5\n%6\n")
-                            .arg(blog.value(str::TagJournalId).toString())
+                            .arg(blog.value(str::TagJournalId).toInt())
                             .arg(blog.value(str::TagLink).toString())
                             .arg(blog.value(str::TagName).toString())
                             .arg(blog.value(str::TagJournal).toString())
@@ -109,17 +126,17 @@ void Database::addRecord(const Post &post, const Blog &blog)
 
     QSqlDatabase db = QSqlDatabase::database(m_dbConnectionName);
     QSqlQuery query(db);
-    QString s = QString("INSERT INTO post VALUES(%1,'%2','%3','%4','%5','%6')")
-                        .arg(post.value(str::TagPosterId).toString())
-                        .arg(post.value(str::TagLink).toString())
-                        .arg(post.value(str::TagUpdated).toString())
-                        .arg(post.value(str::TagName).toString())
-                        .arg(post.value(str::TagContent).toString())
-                        .arg(post.value(str::TagTitle).toString());
 
-    qDebug(post.value(str::TagLink).toString().toAscii().data());
+    query.prepare("INSERT INTO post (posterid, link, updated, name, content, title) "
+                  "VALUES (:posterid, :link, :updated, :name, :content, :title)");
 
-    query.exec(s);
+    query.bindValue(":posterid", post.value(str::TagPosterId).toInt());
+    query.bindValue(":link", post.value(str::TagLink).toString());
+    query.bindValue(":updated", post.value(str::TagUpdated).toString());
+    query.bindValue(":name", post.value(str::TagName).toString());
+    query.bindValue(":content", post.value(str::TagContent).toString());
+    query.bindValue(":title", post.value(str::TagTitle).toString());
+    bool inserted = query.exec();
 
     query.exec("SELECT * FROM post");
     query.last();
@@ -127,34 +144,28 @@ void Database::addRecord(const Post &post, const Blog &blog)
     if (numRows % 20 == 0)
         qDebug() << numRows;
 
-    if (numRows == 20) {
-        QSqlQueryModel *model1 = new QSqlQueryModel;
-        model1->setQuery("SELECT posterid, name, title FROM post", db);
-        model1->setHeaderData(0, Qt::Horizontal, tr("posterid"));
-        model1->setHeaderData(1, Qt::Horizontal, tr("name"));
-        model1->setHeaderData(1, Qt::Horizontal, tr("title"));
+    m_model->select();
+    m_model->insertRows(numRows, 1);
+    m_view->update();
 
-        QTableView *view = new QTableView;
-        view->setModel(model1);
-        view->show();
+    /*
+    QSqlQueryModel model;
+    model.setQuery("SELECT * FROM post");
+    int a = model.rowCount();
 
-        QSqlQueryModel model;
-        model.setQuery("SELECT * FROM post");
-        int a = model.rowCount();
-
-        for (int i = 0; i < model.rowCount(); ++i) {
-            int id = model.record(i).value("posterid").toInt();
-            QString name = model.record(i).value("name").toString();
-            QString title = model.record(i).value("title").toString();
-            qDebug() << id << name << title;
-            QString s = QString("%1\t%2\t%3\t%4\t%5")
-                        .arg(id)
-                        .arg(model.record(i).value("updated").toString())
-                        .arg(name)
-                        .arg(title)
-                        .arg(model.record(i).value("link").toString());
-        }
+    for (int i = 0; i < model.rowCount(); ++i) {
+        int id = model.record(i).value("posterid").toInt();
+        QString name = model.record(i).value("name").toString();
+        QString title = model.record(i).value("title").toString();
+        qDebug() << id << name << title;
+        QString s = QString("%1\t%2\t%3\t%4\t%5")
+                    .arg(id)
+                    .arg(model.record(i).value("updated").toString())
+                    .arg(name)
+                    .arg(title)
+                    .arg(model.record(i).value("link").toString());
     }
+    */
 }
 
 bool Database::saveFilters(const QString &fileName)
