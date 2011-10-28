@@ -32,6 +32,14 @@ Database::Database()
 
 bool Database::create(const QString &fileName)
 {
+    if (QSqlDatabase::contains(fileName)) {
+        // Such connection already exists, so just do nothing.
+        return true;
+    } else {
+        // We want to create new connection, so close existing one.
+        remove();
+    }
+
     QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE", fileName.toLatin1());
     db.setDatabaseName(fileName);
     if (!db.open()) {
