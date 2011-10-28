@@ -67,22 +67,17 @@ bool Database::create(const QString &fileName)
     return true;
 }
 
-bool Database::remove()
+void Database::remove()
 {
     {
         QSqlDatabase db = QSqlDatabase::database(m_dbConnectionName);
-
-        if(db.isValid()) {
-            if (db.isOpen())
-                db.close();
-        } else {
-            return false;
+        if(db.isValid() && db.isOpen()) {
+            db.close();
         }
     }
 
     QSqlDatabase::removeDatabase(m_dbConnectionName);
     m_dbConnectionName = QString();
-    return true;
 }
 
 void Database::onFetched(const Post &post, const Blog &blog)

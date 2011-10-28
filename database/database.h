@@ -38,8 +38,8 @@ public:
     /// Creates database and returns result of creation.
     bool create(const QString &fileName);
 
-    /// Closes and removes the given database connection.
-    bool remove();
+    /// Closes, if open, and removes the given database connection.
+    void remove();
 
     /// Adds new filter to the list of filters.
     void addFilter(const Filter<Post> &filter);
