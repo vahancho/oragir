@@ -24,6 +24,7 @@
 #include <QMainWindow>
 #include <QMdiArea>
 #include <QSystemTrayIcon>
+#include <QtSql>
 
 class QSignalMapper;
 class QProgressBar;
@@ -50,6 +51,8 @@ public:
         geometries and tool bars state.
     */
     void restoreWindow();
+
+    void setDatabaseTable(const QSqlDatabase &db, const QString &table);
 
 protected:
     /// Handles the window's close event.

@@ -75,6 +75,28 @@ MainWindow::MainWindow(QWidget *parent, Qt::WFlags flags)
 MainWindow::~MainWindow()
 {}
 
+void MainWindow::setDatabaseTable(const QSqlDatabase &db, const QString &table)
+{
+    QSqlTableModel *m_model = new QSqlTableModel(0, db);
+    m_model->setTable(table);
+    m_model->setEditStrategy(QSqlTableModel::OnManualSubmit);
+    m_model->select();
+
+    m_model->setHeaderData(0, Qt::Horizontal, tr("posterid"));
+    m_model->setHeaderData(1, Qt::Horizontal, tr("name"));
+    m_model->setHeaderData(2, Qt::Horizontal, tr("title"));
+    m_model->removeColumns(2, 3);
+
+    QTableView *m_view = new QTableView;
+    m_view->setModel(m_model);
+
+    QMdiSubWindow *postTableView = new QMdiSubWindow;
+    postTableView->setWidget(m_view);
+    postTableView->setAttribute(Qt::WA_DeleteOnClose);
+    m_mdiArea.addSubWindow(postTableView);
+    postTableView->show();
+}
+
 void MainWindow::createTrayIcon()
 {
     QMenu *trayIconMenu = new QMenu(this);
