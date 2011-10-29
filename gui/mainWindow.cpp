@@ -104,10 +104,11 @@ void MainWindow::setDatabaseTable(const QSqlDatabase &db, const QString &table)
     QMdiSubWindow *postTableView = new QMdiSubWindow;
     postTableView->setWidget(m_view);
     postTableView->setAttribute(Qt::WA_DeleteOnClose);
-    m_mdiArea.addSubWindow(postTableView);
+    postTableView->resize(200, 200);
     postTableView->setWindowTitle("Database: " + db.databaseName() + " " +
                                   " [" +  table + "]");
-    postTableView->show();
+    m_mdiArea.addSubWindow(postTableView);
+    postTableView->showMaximized();
 }
 
 void MainWindow::createTrayIcon()
