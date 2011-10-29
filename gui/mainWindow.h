@@ -28,6 +28,8 @@
 
 class QSignalMapper;
 class QProgressBar;
+class QSqlTableModel;
+class QTableView;
 
 namespace gui
 {
@@ -52,7 +54,11 @@ public:
     */
     void restoreWindow();
 
+    /// Set up the table mdi child view for the given database table.
     void setDatabaseTable(const QSqlDatabase &db, const QString &table);
+
+public slots:
+    void onRecordInserted(const QSqlDatabase &db, const QString &table);
 
 protected:
     /// Handles the window's close event.
@@ -62,7 +68,6 @@ protected:
     void closeEvent(QCloseEvent *event);
 
 private slots:
-
     /// Opens Options dialog.
     void onToolsOptions();
 
@@ -100,7 +105,6 @@ private slots:
     void onAbout();
 
 private:
-
     /// Saves the window state.
     void saveWindow() const;
 
@@ -172,6 +176,9 @@ private:
         The progress bar for any task progress visualization.
     */
     QProgressBar *m_progressBar;
+
+    QSqlTableModel *m_model;
+    QTableView *m_view;
 };
 
 } // namespace gui

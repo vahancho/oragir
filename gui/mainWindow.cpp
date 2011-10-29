@@ -77,18 +77,21 @@ MainWindow::~MainWindow()
 
 void MainWindow::setDatabaseTable(const QSqlDatabase &db, const QString &table)
 {
-    QSqlTableModel *m_model = new QSqlTableModel(0, db);
+    m_model = new QSqlTableModel(0, db);
     m_model->setTable(table);
     m_model->setEditStrategy(QSqlTableModel::OnManualSubmit);
     m_model->select();
 
-    m_model->setHeaderData(0, Qt::Horizontal, tr("posterid"));
-    m_model->setHeaderData(1, Qt::Horizontal, tr("name"));
-    m_model->setHeaderData(2, Qt::Horizontal, tr("title"));
-    m_model->removeColumns(2, 3);
+    m_model->setHeaderData(0, Qt::Horizontal, tr("ID"));
+    m_model->setHeaderData(1, Qt::Horizontal, tr("URL"));
+    m_model->setHeaderData(2, Qt::Horizontal, tr("Time"));
+    m_model->setHeaderData(3, Qt::Horizontal, tr("Name"));
+    m_model->setHeaderData(4, Qt::Horizontal, tr("Content"));
+    m_model->setHeaderData(5, Qt::Horizontal, tr("Title"));
 
-    QTableView *m_view = new QTableView;
+    m_view = new QTableView;
     m_view->setModel(m_model);
+    m_view->hideColumn(4);
 
     QMdiSubWindow *postTableView = new QMdiSubWindow;
     postTableView->setWidget(m_view);
@@ -453,6 +456,13 @@ void MainWindow::setActiveSubWindow(QWidget *subWindow)
         return;
 
     m_mdiArea.setActiveSubWindow(qobject_cast<QMdiSubWindow *>(subWindow));
+}
+
+void MainWindow::onRecordInserted(const QSqlDatabase &db, const QString &table)
+{
+    int numRows = m_model->rowCount();
+    m_model->insertRows(numRows, 1);
+    m_model->select();
 }
 
 } // namespace gui
