@@ -22,6 +22,7 @@
 #include "mainWindow.h"
 #include "../core/application.h"
 #include "../core/defaultManager.h"
+#include "../parser/atomParser.h"
 #include "../strings/strings.h"
 #include "../strings/guiStrings.h"
 
@@ -502,10 +503,16 @@ void MainWindow::onRecordInserted(const QSqlDatabase &db, const QString &table)
 
 void MainWindow::onStreamStart()
 {
+    core::AtomParser *streamParser =
+                    core::Application::theApp()->streamParser();
+    streamParser->start();
 }
 
 void MainWindow::onStreamStop()
 {
+    core::AtomParser *streamParser =
+                    core::Application::theApp()->streamParser();
+    streamParser->stop();
 }
 
 } // namespace gui
