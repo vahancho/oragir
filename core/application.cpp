@@ -115,7 +115,6 @@ void Application::init()
     m_atomParser = new AtomParser;
     QObject::connect(m_atomParser, SIGNAL(fetched(const Post &, const Blog &)),
                      m_dataBase, SLOT(onFetched(const Post &, const Blog &)));
-    m_atomParser->start();
 }
 
 gui::MainWindow *Application::mainWindow() const
