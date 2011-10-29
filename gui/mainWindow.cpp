@@ -77,7 +77,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::setDatabaseTable(const QSqlDatabase &db, const QString &table)
 {
-    m_model = new QSqlTableModel(0, db);
+    m_model = new QSqlTableModel(this, db);
     m_model->setTable(table);
     m_model->setEditStrategy(QSqlTableModel::OnManualSubmit);
     m_model->select();
