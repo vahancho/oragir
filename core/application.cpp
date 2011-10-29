@@ -108,6 +108,8 @@ void Application::init()
         m_dataBase->addFilter(filter);
     }
 
+    m_mainWindow->setDatabaseTable(m_dataBase->database(), "post");
+
     m_atomParser = new AtomParser;
     QObject::connect(m_atomParser, SIGNAL(fetched(const Post &, const Blog &)),
                      m_dataBase, SLOT(onFetched(const Post &, const Blog &)));
