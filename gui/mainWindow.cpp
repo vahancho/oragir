@@ -223,6 +223,24 @@ void MainWindow::createMenus()
     connect(m_statusBarAction, SIGNAL(triggered()), this, SLOT(onStatusBarShowHide()));
 
     //////////////////////////////////////////////////////////////////////////
+    // Stream menu
+    //
+    QMenu *streamMenu = new QMenu("Stream", this);
+    QToolBar *streamToolBar = new QToolBar("Stream", this);
+    streamToolBar->setObjectName("Stream");
+    streamToolBar->setIconSize(QSize(iconSizeX, iconSizeY));
+
+    QAction *startAction = streamMenu->addAction("Start");
+    //startAction->setShortcut(QKeySequence(tr("Ctrl+Q")));
+    //startAction->setIcon(QIcon(":icons/exit"));
+    connect(startAction, SIGNAL(triggered()), this, SLOT(onStreamStart()));
+
+    QAction *stopAction = streamMenu->addAction("Stop");
+    //stopAction->setShortcut(QKeySequence(tr("Ctrl+Q")));
+    //stopAction->setIcon(QIcon(":icons/exit"));
+    connect(stopAction, SIGNAL(triggered()), this, SLOT(onStreamStop()));
+
+    //////////////////////////////////////////////////////////////////////////
     // Window menu
     m_windowMenu = new QMenu(str::MenuWindow, this);
     connect(m_windowMenu, SIGNAL(aboutToShow()), this, SLOT(updateWindowMenu()));
@@ -268,6 +286,7 @@ void MainWindow::createMenus()
     // Add menus to menu bar
     menuBar()->addMenu(fileMenu);
     menuBar()->addMenu(viewMenu);
+    menuBar()->addMenu(streamMenu);
     //menuBar()->addMenu(toolsMenu);
     menuBar()->addMenu(m_windowMenu);
     menuBar()->addSeparator();
@@ -479,6 +498,14 @@ void MainWindow::onRecordInserted(const QSqlDatabase &db, const QString &table)
     while (m_model->canFetchMore()){
         m_model->fetchMore();
     }
+}
+
+void MainWindow::onStreamStart()
+{
+}
+
+void MainWindow::onStreamStop()
+{
 }
 
 } // namespace gui

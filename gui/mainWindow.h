@@ -104,6 +104,10 @@ private slots:
     /// This slot called when About menu action triggered.
     void onAbout();
 
+    void onStreamStart();
+
+    void onStreamStop();
+
 private:
     /// Saves the window state.
     void saveWindow() const;
