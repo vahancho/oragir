@@ -109,6 +109,8 @@ void Application::init()
     }
 
     m_mainWindow->setDatabaseTable(m_dataBase->database(), "post");
+    QObject::connect(m_dataBase, SIGNAL(recordInserted(const QSqlDatabase &, const QString &)),
+                     m_mainWindow, SLOT(onRecordInserted(const QSqlDatabase &, const QString &)));
 
     m_atomParser = new AtomParser;
     QObject::connect(m_atomParser, SIGNAL(fetched(const Post &, const Blog &)),
