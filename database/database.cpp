@@ -119,6 +119,10 @@ void Database::addRecord(const Post &post, const Blog &blog)
     query.bindValue(":content", post.value(str::TagContent).toString());
     query.bindValue(":title", post.value(str::TagTitle).toString());
     bool inserted = query.exec();
+
+    if (inserted) {
+        emit recordInserted(db, "post");
+    }
 }
 
 bool Database::saveFilters(const QString &fileName)

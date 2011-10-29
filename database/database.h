@@ -53,6 +53,9 @@ public:
 
     QSqlDatabase database() const;
 
+signals:
+    void recordInserted(const QSqlDatabase &db, const QString &table);
+
 public slots:
     void onFetched(const Post &post, const Blog &blog);
 
