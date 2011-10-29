@@ -105,6 +105,8 @@ void MainWindow::setDatabaseTable(const QSqlDatabase &db, const QString &table)
     postTableView->setWidget(m_view);
     postTableView->setAttribute(Qt::WA_DeleteOnClose);
     m_mdiArea.addSubWindow(postTableView);
+    postTableView->setWindowTitle("Database: " + db.databaseName() + " " +
+                                  " [" +  table + "]");
     postTableView->show();
 }
 
