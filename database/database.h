@@ -22,6 +22,7 @@
 #define __DATABASE_H__
 
 #include <set>
+#include <QtSql>
 #include "../parser/blog.h"
 #include "../parser/post.h"
 #include "../parser/filter.h"
@@ -52,6 +53,8 @@ public:
 
     /// Reports the last error if any.
     QString errorMessage() const;
+
+    QSqlDatabase database() const;
 
 public slots:
     void onFetched(const Post &post, const Blog &blog);

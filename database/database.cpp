@@ -20,7 +20,6 @@
 
 #include <set>
 #include <QTableView>
-#include <QtSql>
 #include "../strings/strings.h"
 #include "database.h"
 
@@ -232,6 +231,11 @@ bool Database::openFilters(const QString &fileName)
 QString Database::errorMessage() const
 {
     return m_error;
+}
+
+QSqlDatabase Database::database() const
+{
+     return QSqlDatabase::database(m_dbConnectionName);
 }
 
 } // namespace core
