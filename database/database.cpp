@@ -19,7 +19,6 @@
 ***************************************************************************/
 
 #include <set>
-#include <QTableView>
 #include "../strings/strings.h"
 #include "database.h"
 
@@ -63,22 +62,6 @@ bool Database::create(const QString &fileName)
     query.exec("PRAGMA synchronous = OFF");
 
     m_dbConnectionName = fileName;
-
-    /// Test
-    m_model = new QSqlTableModel(0, db);
-    m_model->setTable("post");
-    m_model->setEditStrategy(QSqlTableModel::OnManualSubmit);
-    m_model->select();
-
-    m_model->setHeaderData(0, Qt::Horizontal, tr("posterid"));
-    m_model->setHeaderData(1, Qt::Horizontal, tr("name"));
-    m_model->setHeaderData(2, Qt::Horizontal, tr("title"));
-    m_model->removeColumns(2, 3);
-
-    m_view = new QTableView;
-    m_view->setModel(m_model);
-    m_view->show();
-    ///
 
     return true;
 }
@@ -136,35 +119,6 @@ void Database::addRecord(const Post &post, const Blog &blog)
     query.bindValue(":content", post.value(str::TagContent).toString());
     query.bindValue(":title", post.value(str::TagTitle).toString());
     bool inserted = query.exec();
-
-    query.exec("SELECT * FROM post");
-    query.last();
-    int numRows = query.at() + 1;
-    if (numRows % 20 == 0)
-        qDebug() << numRows;
-
-    m_model->select();
-    m_model->insertRows(numRows, 1);
-    m_view->update();
-
-    /*
-    QSqlQueryModel model;
-    model.setQuery("SELECT * FROM post");
-    int a = model.rowCount();
-
-    for (int i = 0; i < model.rowCount(); ++i) {
-        int id = model.record(i).value("posterid").toInt();
-        QString name = model.record(i).value("name").toString();
-        QString title = model.record(i).value("title").toString();
-        qDebug() << id << name << title;
-        QString s = QString("%1\t%2\t%3\t%4\t%5")
-                    .arg(id)
-                    .arg(model.record(i).value("updated").toString())
-                    .arg(name)
-                    .arg(title)
-                    .arg(model.record(i).value("link").toString());
-    }
-    */
 }
 
 bool Database::saveFilters(const QString &fileName)
