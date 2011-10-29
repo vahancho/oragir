@@ -468,9 +468,14 @@ void MainWindow::setActiveSubWindow(QWidget *subWindow)
 
 void MainWindow::onRecordInserted(const QSqlDatabase &db, const QString &table)
 {
-    int numRows = m_model->rowCount();
-    m_model->insertRows(numRows, 1);
     m_model->select();
+    // It selects the first 256 records only. In case of having
+    // more records in the table table view will not update
+    // properly. Therefore we need to fetch more if more
+    // records available.
+    while (m_model->canFetchMore()){
+        m_model->fetchMore();
+    }
 }
 
 } // namespace gui
