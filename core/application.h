@@ -69,7 +69,10 @@ public:
     /// Returns the Default Manager.
     DefaultManager *defaultManager() const;
 
-    private:
+    /// Returns the Sream parser.
+    AtomParser *streamParser() const;
+
+private:
     /// Default constructor.
     /*!
         Default constructor declared as private to allow controlling creation

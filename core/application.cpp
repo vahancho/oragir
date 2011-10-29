@@ -128,4 +128,9 @@ DefaultManager *Application::defaultManager() const
     return m_defaultManager;
 }
 
+AtomParser *Application::streamParser() const
+{
+    return m_atomParser;
+}
+
 } // namespace core
