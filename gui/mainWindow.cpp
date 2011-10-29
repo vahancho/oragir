@@ -91,6 +91,14 @@ void MainWindow::setDatabaseTable(const QSqlDatabase &db, const QString &table)
 
     m_view = new QTableView;
     m_view->setModel(m_model);
+    m_view->setAlternatingRowColors(true);
+    m_view->setSelectionBehavior(QAbstractItemView::SelectRows);
+
+    // The uniformed rows height.
+    QFontMetrics fm = fontMetrics();
+    m_view->verticalHeader()->setDefaultSectionSize(fm.height() + 6);
+
+    // Hide content column for now.
     m_view->hideColumn(4);
 
     QMdiSubWindow *postTableView = new QMdiSubWindow;
