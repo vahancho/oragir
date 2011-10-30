@@ -269,6 +269,8 @@ void Filter<Source>::writeXml(QXmlStreamWriter &writer)
 {
     writer.writeStartElement(str::TagFilter);
     writer.writeAttribute(str::TagName, m_name);
+    writer.writeAttribute(str::TagEnabled,
+                          QVariant::fromValue(m_enabled).toString());
 
     QMap<QString, Rule>::const_iterator it = m_rules.constBegin();
     while (it != m_rules.constEnd()) {

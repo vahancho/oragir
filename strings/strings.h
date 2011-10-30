@@ -46,6 +46,7 @@ namespace str
     extern const char *TagAuthor;
     extern const char *TagEntry;
     extern const char *TagContent;
+    extern const char *TagEnabled;
 
     // Filters file tags.
     extern const char *TagFilters;

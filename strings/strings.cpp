@@ -43,6 +43,7 @@ namespace str
     const char *TagUserPic = "userpic";
     const char *TagUpdated = "updated";
     const char *TagPosterId = "posterid";
+    const char *TagEnabled = "enabled";
 
      // Filters file tags.
     const char *TagFilters = "filters";

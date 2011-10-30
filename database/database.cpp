@@ -164,10 +164,13 @@ bool Database::openFilters(const QString &fileName)
             reader.readNext();
             if(reader.isStartElement()) {
                 if(reader.name() == str::TagFilter) {
-                    QString name = reader.attributes()
-                                         .value(str::TagNameAttr).toString();
+                    QXmlStreamAttributes attr = reader.attributes();
+                    QString name = attr.value(str::TagNameAttr).toString();
+                    bool enabled = QVariant::fromValue(attr.value(str::TagEnabled)
+                                                           .toString()).toBool();
                     Filter<Post> filter(name);
                     filter.readXml(reader);
+                    filter.setEnabled(enabled);
                     addFilter(filter);
                 }
             }
