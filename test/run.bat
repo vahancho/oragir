@@ -2,7 +2,7 @@
 
 cd /d %0\..
 echo Switching to %CD% ...
-echo Start building and executing test cases.
+echo Building test cases.
 
 FOR /D %%G in ("*") DO (
     Echo %%G
@@ -10,9 +10,14 @@ FOR /D %%G in ("*") DO (
     qmake
     nmake debug
     nmake release
-    release\test.exe
-
     cd ..
+)
+
+echo Executing test cases.
+
+FOR /D %%G in ("*") DO (
+    Echo %%G
+    %%G\release\test.exe
 )
 
 Echo "Test cases are built and executed."
