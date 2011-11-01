@@ -139,7 +139,7 @@ bool Database::saveFilters(const QString &fileName)
         std::set<Filter<Post> >::iterator it = m_filters.begin();
 
         while (it != m_filters.end()) {
-            Filter<Post> &filter = *it;
+            Filter<Post> filter = *it;
             filter.writeXml(writer);
             ++it;
         }

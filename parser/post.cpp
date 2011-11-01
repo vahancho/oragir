@@ -34,7 +34,7 @@ Post::Post()
     addProperty(str::TagUserPic, QString());
     addProperty(str::TagContent, QString());
     addProperty(str::TagCategory, QStringList());
-    addProperty(str::TagPosterId, -1L);
+    addProperty(str::TagPosterId, -1);
 }
 
 void Post::addTag(const QString &tag)
