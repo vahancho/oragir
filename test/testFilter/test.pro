@@ -1,5 +1,5 @@
-LIBS += -lQtTest
-CONFIG += testlib console debug_and_release
+QT += testlib
+CONFIG += console debug_and_release
 TEMPLATE = app
 TARGET =
 DEPENDPATH += .
