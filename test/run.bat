@@ -9,7 +9,9 @@ FOR /D %%G in ("*") DO (
     cd %%G
     qmake
     nmake debug
+    if errorlevel 1 goto BuildError
     nmake release
+    if errorlevel 1 goto BuildError
     cd ..
 )
 
@@ -20,5 +22,10 @@ FOR /D %%G in ("*") DO (
     %%G\release\test.exe
 )
 
-Echo "Test cases are built and executed."
+Echo Test cases are built and executed.
+exit /b
 
+:BuildError
+    cd ..
+    echo Build error %errorlevel%
+    exit /b %errorlevel%
