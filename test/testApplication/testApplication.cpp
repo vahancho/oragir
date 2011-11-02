@@ -19,6 +19,7 @@
 ***************************************************************************/
 
 #include <QtTest/QtTest>
+#include "../../gui/mainWindow.cpp"
 #include "../../core/application.h"
 
 using namespace core;
@@ -30,6 +31,7 @@ class testApplicaton : public QObject
 private slots:
     void initTestCase();
     void testCreateDestroy();
+    void testMainWindowState();
     void cleanupTestCase();
 };
 
@@ -48,24 +50,54 @@ void testApplicaton::testCreateDestroy()
     QVERIFY(core::Application::theApp() == 0);
 }
 
+void testApplicaton::testMainWindowState()
+{
+    // Clean up the state and start main window.
+    // Change main window size and position, close it and check whether its
+    // state saved.
+    cleanupTestCase();
+    core::Application *app = core::Application::create();
+    QVERIFY(app);
+
+    gui::MainWindow *mw = app->mainWindow();
+    QVERIFY(mw);
+    mw->resize(333, 333);
+    mw->move(333, 333);
+    app->destroy();
+    app = 0;
+    mw = 0;
+
+    // Create the application again and verify main window size and position.
+    app = core::Application::create();
+    QVERIFY(app);
+
+    mw = app->mainWindow();
+    QVERIFY(mw);
+
+    QVERIFY(mw->size() == QSize(333, 333));
+    QVERIFY(mw->pos() == QPoint(333, 333));
+    app->destroy();
+}
+
 void testApplicaton::cleanupTestCase()
 {
     // Find and delete temporary files in the directory that up by two levels
     // from the working directory of this application.
     QString strWd = QCoreApplication::applicationDirPath();
-    QDir wd(strWd);
-    wd.cdUp();
-    wd.cdUp();
-    strWd = wd.absolutePath();
 
     if (QFile::exists(strWd + "/settings.ini"))
         QFile::remove(strWd + "/settings.ini");
 
-    if (QFile::exists(strWd + "/filters.xml"))
-        QFile::remove(strWd + "/filters.xml");
+    QDir wd(strWd);
+    wd.cdUp();
+    wd.cdUp();
+    QString path = wd.absolutePath();
 
-    if (QFile::exists(strWd + "/posts.db"))
-        QFile::remove(strWd + "/posts.db");
+    if (QFile::exists(path + "/filters.xml"))
+        QFile::remove(path + "/filters.xml");
+
+    if (QFile::exists(path + "/posts.db"))
+        QFile::remove(path + "/posts.db");
 }
 
 QTEST_MAIN(testApplicaton)
