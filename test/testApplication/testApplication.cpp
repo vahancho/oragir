@@ -28,8 +28,14 @@ class testApplicaton : public QObject
     Q_OBJECT
 
 private slots:
+    void initTestCase();
     void testCreateDestroy();
+    void cleanupTestCase();
 };
+
+void testApplicaton::initTestCase()
+{
+}
 
 void testApplicaton::testCreateDestroy()
 {
@@ -40,6 +46,26 @@ void testApplicaton::testCreateDestroy()
 
     app->destroy();
     QVERIFY(core::Application::theApp() == 0);
+}
+
+void testApplicaton::cleanupTestCase()
+{
+    // Find and delete temporary files in the directory that up by two levels
+    // from the working directory of this application.
+    QString strWd = QCoreApplication::applicationDirPath();
+    QDir wd(strWd);
+    wd.cdUp();
+    wd.cdUp();
+    strWd = wd.absolutePath();
+
+    if (QFile::exists(strWd + "/settings.ini"))
+        QFile::remove(strWd + "/settings.ini");
+
+    if (QFile::exists(strWd + "/filters.xml"))
+        QFile::remove(strWd + "/filters.xml");
+
+    if (QFile::exists(strWd + "/posts.db"))
+        QFile::remove(strWd + "/posts.db");
 }
 
 QTEST_MAIN(testApplicaton)
