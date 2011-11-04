@@ -61,6 +61,9 @@ void testApplicaton::testCreateDestroy()
     QVERIFY(app);
     QVERIFY(app->theApp());
     QVERIFY(core::Application::theApp() == app);
+    QVERIFY(app->database());
+    QVERIFY(app->mainWindow());
+    QVERIFY(app->streamParser());
 
     app->destroy();
     QVERIFY(core::Application::theApp() == 0);
