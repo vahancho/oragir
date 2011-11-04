@@ -21,6 +21,9 @@
 #include <QtGui/QApplication>
 #include <QIcon>
 #include "../core/application.h"
+#include "../parser/filter.h"
+#include "../database/database.h"
+#include "../gui/mainWindow.h"
 
 int main(int argc, char *argv[])
 {
@@ -29,10 +32,23 @@ int main(int argc, char *argv[])
 
     a.setWindowIcon(QIcon(":/icons/app"));
 
-    core::Application::create();
+    core::Application *app = core::Application::create();
+    core::Database *db = app->database();
+    if (!db->create("posts.db")) {
+        printf("%s \n", db->errorMessage().toAscii().data());
+        return -1;
+    }
+
+    if (!db->openFilters("filters.xml")) {
+        core::Filter<core::Post> filter("Test filter");
+        filter.setRule(str::TagContent, "test", core::Filter<core::Post>::Contains);
+        db->addFilter(filter);
+    }
+
+    gui::MainWindow *mw = app->mainWindow();
+    mw->setDatabaseTable(db->database(), "post");
 
     int ret = a.exec();
-
     core::Application::destroy();
 
     return ret;
