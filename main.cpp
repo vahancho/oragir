@@ -29,17 +29,17 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     a.setQuitOnLastWindowClosed(false);
-
     a.setWindowIcon(QIcon(":/icons/app"));
 
     core::Application *app = core::Application::create();
     core::Database *db = app->database();
-    if (!db->create("posts.db")) {
+    QString appPath = QCoreApplication::applicationDirPath();
+    if (!db->create(appPath + "/posts.db")) {
         printf("%s \n", db->errorMessage().toAscii().data());
         return -1;
     }
 
-    if (!db->openFilters("filters.xml")) {
+    if (!db->openFilters(appPath + "/filters.xml")) {
         core::Filter<core::Post> filter("Test filter");
         filter.setRule(str::TagContent, "test", core::Filter<core::Post>::Contains);
         db->addFilter(filter);
