@@ -118,7 +118,7 @@ private:
     /// Returns true if rule for the given property supported.
     bool canAddRule(const QString &propertyName) const;
 
-    typedef QMap<QString, Rule> Rules;
+    typedef QMultiMap<QString, Rule> Rules;
 
     Rules m_rules;
     QString m_name;
@@ -154,7 +154,7 @@ bool Filter<Source>::setRule(const QString &name, const QString &value,
         Rule rule;
         rule.m_value = value;
         rule.m_option = opt;
-        m_rules[name] = rule;
+        m_rules.insert(name, rule);
 
         return true;
     } else {
