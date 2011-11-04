@@ -98,17 +98,7 @@ void Application::init()
     m_mainWindow->show();
 
     m_dataBase = new Database;
-    if (!m_dataBase->create("posts.db")) {
-        printf("%s \n", m_dataBase->errorMessage().toAscii().data());
-    }
 
-    if (!m_dataBase->openFilters("filters.xml")) {
-        Filter<Post> filter("Test filter");
-        filter.setRule(str::TagContent, "test", Filter<Post>::Contains);
-        m_dataBase->addFilter(filter);
-    }
-
-    m_mainWindow->setDatabaseTable(m_dataBase->database(), "post");
     QObject::connect(m_dataBase, SIGNAL(recordInserted(const QSqlDatabase &, const QString &)),
                      m_mainWindow, SLOT(onRecordInserted(const QSqlDatabase &, const QString &)));
 
@@ -125,6 +115,11 @@ gui::MainWindow *Application::mainWindow() const
 DefaultManager *Application::defaultManager() const
 {
     return m_defaultManager;
+}
+
+Database *Application::database() const
+{
+    return m_dataBase;
 }
 
 AtomParser *Application::streamParser() const

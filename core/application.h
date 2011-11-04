@@ -69,6 +69,9 @@ public:
     /// Returns the Default Manager.
     DefaultManager *defaultManager() const;
 
+    /// Returns the database manager.
+    Database *database() const;
+
     /// Returns the Sream parser.
     AtomParser *streamParser() const;
 
