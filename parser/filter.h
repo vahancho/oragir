@@ -115,7 +115,9 @@ private:
     /// Returns result of applying rule named 'name' on a given value.
     Result match(const QString &name, const QString &value) const;
 
-    QMap<QString, Rule> m_rules;
+    typedef QMap<QString, Rule> Rules;
+
+    Rules m_rules;
     QString m_name;
     bool m_enabled;
     RuleMatch m_ruleMatch;
