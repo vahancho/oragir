@@ -104,9 +104,10 @@ private:
     /// Implements the filter's rule class.
     struct Rule
     {
-        Rule()
+        Rule(const QString &value = QString(), Option option = Ignore)
             :
-                m_option(Ignore)
+                m_value(value),
+                m_option(option)
         {}
         QString m_value;
         Option m_option;
@@ -151,9 +152,7 @@ bool Filter<Source>::setRule(const QString &name, const QString &value,
                              Option opt)
 {
     if (canAddRule(name)) {
-        Rule rule;
-        rule.m_value = value;
-        rule.m_option = opt;
+        Rule rule(value, opt);
         m_rules.insert(name, rule);
 
         return true;
