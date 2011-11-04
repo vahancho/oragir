@@ -21,6 +21,7 @@
 #include <QtTest/QtTest>
 #include "../../gui/mainWindow.cpp"
 #include "../../core/application.h"
+#include "../../database/database.h"
 
 using namespace core;
 
@@ -33,11 +34,26 @@ private slots:
     void testCreateDestroy();
     void testMainWindowState();
     void cleanupTestCase();
+private:
+    core::Application *createApplication() const;
 };
 
-void testApplicaton::initTestCase()
+core::Application *testApplicaton::createApplication() const
 {
+    core::Application *app = core::Application::create();
+    core::Database *db = app->database();
+    QString appPath = QCoreApplication::applicationDirPath();
+    db->create(appPath + "/posts.db");
+
+    core::Filter<core::Post> filter("Test filter");
+    filter.setRule(str::TagContent, "test", core::Filter<core::Post>::Contains);
+    db->addFilter(filter);
+
+    return app;
 }
+
+void testApplicaton::initTestCase()
+{}
 
 void testApplicaton::testCreateDestroy()
 {
@@ -56,7 +72,7 @@ void testApplicaton::testMainWindowState()
     // Change main window size and position, close it and check whether its
     // state saved.
     cleanupTestCase();
-    core::Application *app = core::Application::create();
+    core::Application *app = createApplication();
     QVERIFY(app);
 
     gui::MainWindow *mw = app->mainWindow();
@@ -68,7 +84,7 @@ void testApplicaton::testMainWindowState()
     mw = 0;
 
     // Create the application again and verify main window size and position.
-    app = core::Application::create();
+    app = createApplication();
     QVERIFY(app);
 
     mw = app->mainWindow();
@@ -81,17 +97,11 @@ void testApplicaton::testMainWindowState()
 
 void testApplicaton::cleanupTestCase()
 {
-    // Find and delete temporary files in the directory that up by two levels
-    // from the working directory of this application.
-    QString strWd = QCoreApplication::applicationDirPath();
+    // Find and delete temporary files from the current directory. 
+    QString path = QCoreApplication::applicationDirPath();
 
-    if (QFile::exists(strWd + "/settings.ini"))
-        QFile::remove(strWd + "/settings.ini");
-
-    QDir wd(strWd);
-    wd.cdUp();
-    wd.cdUp();
-    QString path = wd.absolutePath();
+    if (QFile::exists(path + "/settings.ini"))
+        QFile::remove(path + "/settings.ini");
 
     if (QFile::exists(path + "/filters.xml"))
         QFile::remove(path + "/filters.xml");
