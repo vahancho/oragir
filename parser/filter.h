@@ -133,19 +133,7 @@ Filter<Source>::Filter(const QString &name)
         m_name(name),
         m_enabled(true),
         m_ruleMatch(One)
-{
-    Source source;
-    QMap<QString, QVariant> properties = source.propertyMap();
-
-    QMap<QString, QVariant>::const_iterator it = properties.constBegin();
-    while (it != properties.constEnd()) {
-        Rule flt;
-        const QString &name = it.key();
-        m_rules[name] = flt;
-
-        ++it;
-    }
-}
+{}
 
 template<class Source>
 bool Filter<Source>::setRule(const QString &name, const QString &value,
