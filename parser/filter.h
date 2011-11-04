@@ -150,11 +150,11 @@ template<class Source>
 bool Filter<Source>::setRule(const QString &name, const QString &value,
                              Option opt)
 {
-    typename QMap<QString, Rule>::iterator it = m_rules.find(name);
-    if (it != m_rules.end()) {
-        Rule &rl = it.value();
-        rl.m_value = value;
-        rl.m_option = opt;
+    if (canAddRule(name)) {
+        Rule rule;
+        rule.m_value = value;
+        rule.m_option = opt;
+        m_rules[name] = rule;
 
         return true;
     } else {
