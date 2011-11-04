@@ -115,6 +115,9 @@ private:
     /// Returns result of applying rule named 'name' on a given value.
     Result match(const QString &name, const QString &value) const;
 
+    /// Returns true if rule for the given property supported.
+    bool canAddRule(const QString &propertyName) const;
+
     typedef QMap<QString, Rule> Rules;
 
     Rules m_rules;
@@ -134,6 +137,14 @@ Filter<Source>::Filter(const QString &name)
         m_enabled(true),
         m_ruleMatch(One)
 {}
+
+template<class Source>
+bool Filter<Source>::canAddRule(const QString &propertyName) const
+{
+    Source source;
+    QMap<QString, QVariant> properties = source.propertyMap();
+    return properties.find(propertyName) != properties.end();
+}
 
 template<class Source>
 bool Filter<Source>::setRule(const QString &name, const QString &value,
