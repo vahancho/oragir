@@ -197,7 +197,7 @@ template<class Source>
 typename Filter<Source>::Result Filter<Source>::match(const QString &name,
                                                       const QString &value) const
 {
-    typename QMap<QString, Rule>::const_iterator it = m_rules.find(name);
+    typename Rules::const_iterator it = m_rules.find(name);
     if (it != m_rules.end()) {
         const Rule &rule = it.value();
 
@@ -273,7 +273,7 @@ void Filter<Source>::writeXml(QXmlStreamWriter &writer)
     writer.writeAttribute(str::TagEnabled,
                           QVariant::fromValue(m_enabled).toString());
 
-    typename QMap<QString, Rule>::const_iterator it = m_rules.constBegin();
+    typename Rules::const_iterator it = m_rules.constBegin();
     while (it != m_rules.constEnd()) {
         const Rule &flt = it.value();
         const QString &name = it.key();
