@@ -53,6 +53,8 @@ int main(int argc, char *argv[])
     mw->setDatabaseTable(db->database(), "post");
 
     int ret = a.exec();
+
+    db->saveFilters(appPath + "/filters.xml");
     core::Application::destroy();
 
     return ret;

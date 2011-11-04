@@ -59,7 +59,6 @@ Application::~Application()
     m_atomParser->stop();
     delete m_atomParser;
 
-    m_dataBase->saveFilters("filters.xml");
     m_dataBase->remove();
     delete m_dataBase;
 }
