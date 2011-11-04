@@ -44,6 +44,8 @@ int main(int argc, char *argv[])
     if (!db->openFilters(appPath + "/filters.xml")) {
         Filter<Post> filter("Test filter");
         filter.setRule(str::TagContent, "test", Filter<Post>::Contains);
+        filter.setRule(str::TagTitle, "test", Filter<Post>::Contains);
+        filter.setRule(str::TagName, "test", Filter<Post>::Contains);
         db->addFilter(filter);
     }
 
