@@ -301,7 +301,7 @@ void Filter<Source>::readXml(QXmlStreamReader &reader)
     reader.readNext();
     QString ruleName;
     QString ruleValue;
-    Option option;
+    Option option = Ignore;
     QString elementName;
 
     while(!(reader.isEndElement() && reader.name() == str::TagFilter)) {
