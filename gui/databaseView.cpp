@@ -33,6 +33,7 @@ DatabaseView::DatabaseView(QWidget *parent, Qt::WindowFlags f)
 {
     m_view = new QTableView(this);
     m_view->setAlternatingRowColors(true);
+    m_view->setEditTriggers(QAbstractItemView::NoEditTriggers);
     m_view->setSelectionBehavior(QAbstractItemView::SelectRows);
 
     // The uniformed rows height.
