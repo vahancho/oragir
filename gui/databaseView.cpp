@@ -82,4 +82,12 @@ void DatabaseView::updateTable()
     }
 }
 
+bool DatabaseView::hasTable(const QSqlDatabase &db, const QString &table) const
+{
+    return m_model &&
+           m_model->database().driver() == db.driver() &&
+           m_model->database().connectionName() == db.connectionName() &&
+           m_model->tableName() == table;
+}
+
 } // namespace gui

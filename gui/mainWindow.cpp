@@ -476,8 +476,10 @@ void MainWindow::onRecordInserted(const QSqlDatabase &db, const QString &table)
     foreach(QMdiSubWindow *mdiWindow, mdiWindows) {
         if (DatabaseView *dbView =
             qobject_cast<DatabaseView *>(mdiWindow->widget())){
+            if (dbView->hasTable(db, table)) {
                 dbView->updateTable();
                 break;
+            }
         }
     }
 }
