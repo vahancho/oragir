@@ -33,6 +33,8 @@ private slots:
     void testRuleMatch();
     void testSetRule_data();
     void testSetRule();
+    void testMatch_data();
+    void testMatch();
 };
 
 void testFilter::testName()
@@ -149,6 +151,67 @@ void testFilter::testSetRule()
     QFETCH(bool, result);
 
     QCOMPARE(filter.setRule(name, value, (Filter<Post>::Option)option), result);
+}
+
+void testFilter::testMatch_data()
+{
+    QTest::addColumn<QString>("title");
+    QTest::addColumn<QString>("link");
+    QTest::addColumn<QString>("name");
+    QTest::addColumn<QString>("userpic");
+    QTest::addColumn<QString>("content");
+    QTest::addColumn<QString>("category");
+    QTest::addColumn<int>("posterid");
+
+    QTest::addColumn<QString>("rule_name");
+    QTest::addColumn<QString>("rule_value");
+    QTest::addColumn<int>("rule_option");
+
+    QTest::addColumn<bool>("result");
+
+    QTest::newRow("0") << "This is title" << "link" << "name" << "userpic"
+                       << "content" << "category" << 0
+                       << "title" << "title" << 2 << true;
+
+}
+
+void testFilter::testMatch()
+{
+    // Fetch the post and filter data.
+    QFETCH(QString, title);
+    QFETCH(QString, link);
+    QFETCH(QString, name);
+    QFETCH(QString, userpic);
+    QFETCH(QString, content);
+    QFETCH(QString, category);
+    QFETCH(int, posterid);
+    QFETCH(QString, rule_name);
+    QFETCH(QString, rule_value);
+    QFETCH(int, rule_option);
+    QFETCH(bool, result);
+
+    // Construct post.
+    Post post;
+    post.setValue("title", title);
+    post.setValue("link", link);
+    post.setValue("name", name);
+    post.setValue("userpic", userpic);
+    post.setValue("content", content);
+    post.addTag(category);
+    post.setValue("posterid", posterid);
+
+    // Verify post properties values.
+    QCOMPARE(post.value("title").toString(), title);
+    QCOMPARE(post.value("link").toString(), link);
+    QCOMPARE(post.value("name").toString(), name);
+    QCOMPARE(post.value("userpic").toString(), userpic);
+    QCOMPARE(post.value("content").toString(), content);
+    QCOMPARE(post.value("posterid").toInt(), posterid);
+
+    // Create a filter with rules and verify match function.
+    Filter<Post> filter("Test filter");
+    filter.setRule(rule_name, rule_value, (Filter<Post>::Option)rule_option);
+    QCOMPARE(filter.match(post), result);
 }
 
 QTEST_MAIN(testFilter)
