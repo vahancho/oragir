@@ -61,7 +61,7 @@ bool Database::create(const QString &fileName)
     query.exec("PRAGMA locking_mode = EXCLUSIVE");
     query.exec("PRAGMA synchronous = OFF");
 
-    m_dbConnectionName = fileName;
+    m_dbActiveConnection = fileName;
 
     return true;
 }
@@ -69,14 +69,14 @@ bool Database::create(const QString &fileName)
 void Database::remove()
 {
     {
-        QSqlDatabase db = QSqlDatabase::database(m_dbConnectionName);
+        QSqlDatabase db = QSqlDatabase::database(m_dbActiveConnection);
         if(db.isValid() && db.isOpen()) {
             db.close();
         }
     }
 
-    QSqlDatabase::removeDatabase(m_dbConnectionName);
-    m_dbConnectionName = QString();
+    QSqlDatabase::removeDatabase(m_dbActiveConnection);
+    m_dbActiveConnection = QString();
 }
 
 void Database::onFetched(const Post &post, const Blog &blog)
@@ -106,7 +106,7 @@ void Database::addRecord(const Post &post, const Blog &blog)
                             .arg(blog.value(str::TagJournal).toString())
                             .arg(blog.value(str::TagTitle).toString());
 
-    QSqlDatabase db = QSqlDatabase::database(m_dbConnectionName);
+    QSqlDatabase db = QSqlDatabase::database(m_dbActiveConnection);
     QSqlQuery query(db);
 
     query.prepare("INSERT INTO post (posterid, link, updated, name, content, title) "
@@ -199,7 +199,7 @@ QString Database::errorMessage() const
 
 QSqlDatabase Database::database() const
 {
-     return QSqlDatabase::database(m_dbConnectionName);
+     return QSqlDatabase::database(m_dbActiveConnection);
 }
 
 } // namespace core

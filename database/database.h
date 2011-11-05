@@ -69,7 +69,7 @@ private:
     /// Stores the error message.
     QString m_error;
 
-    QString m_dbConnectionName;
+    QString m_dbActiveConnection;
 };
 
 } // namespace core
