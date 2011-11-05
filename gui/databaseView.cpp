@@ -27,10 +27,19 @@ namespace gui
 
 DatabaseView::DatabaseView(QWidget *parent, Qt::WindowFlags f)
     :
-        QWidget(parent, f)
+        QWidget(parent, f),
+        m_view(0),
+        m_model(0)
 {
-    QVBoxLayout *mainLayout = new QVBoxLayout;
     m_view = new QTableView(this);
+    m_view->setAlternatingRowColors(true);
+    m_view->setSelectionBehavior(QAbstractItemView::SelectRows);
+
+    // The uniformed rows height.
+    QFontMetrics fm = fontMetrics();
+    m_view->verticalHeader()->setDefaultSectionSize(fm.height() + 6);
+
+    QVBoxLayout *mainLayout = new QVBoxLayout;
     mainLayout->addWidget(m_view);
     setLayout(mainLayout);
 }
@@ -41,6 +50,10 @@ DatabaseView::~DatabaseView()
 void DatabaseView::init(const QSqlDatabase &db, const QString &table)
 {
     Q_ASSERT(db.isValid());
+
+    // If model already exists, delete it and create new one.
+    if (m_model)
+        delete m_model;
 
     m_model = new QSqlTableModel(this, db);
     m_model->setTable(table);
@@ -56,12 +69,6 @@ void DatabaseView::init(const QSqlDatabase &db, const QString &table)
 
     Q_ASSERT(m_view);
     m_view->setModel(m_model);
-    m_view->setAlternatingRowColors(true);
-    m_view->setSelectionBehavior(QAbstractItemView::SelectRows);
-
-    // The uniformed rows height.
-    QFontMetrics fm = fontMetrics();
-    m_view->verticalHeader()->setDefaultSectionSize(fm.height() + 6);
 
     // Hide content column for now.
     m_view->hideColumn(4);
