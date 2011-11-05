@@ -471,6 +471,15 @@ void MainWindow::setActiveSubWindow(QWidget *subWindow)
 
 void MainWindow::onRecordInserted(const QSqlDatabase &db, const QString &table)
 {
+    // Find database view that has to be updated.
+    QList<QMdiSubWindow *> mdiWindows = m_mdiArea.subWindowList();
+    foreach(QMdiSubWindow *mdiWindow, mdiWindows) {
+        if (DatabaseView *dbView =
+            qobject_cast<DatabaseView *>(mdiWindow->widget())){
+                dbView->updateTable();
+                break;
+        }
+    }
 }
 
 void MainWindow::onStreamStart()
