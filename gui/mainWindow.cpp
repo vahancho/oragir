@@ -510,8 +510,9 @@ void MainWindow::onDatabaseOpen()
 	QStringList files = dlg.selectedFiles();
 	if (files.size() > 0) {
 	    core::Database *db = core::Application::theApp()->database();
-	    if (db->create(files.at(0))) {
-	        setDatabaseTable(db->database(), "post");
+            QString file = files.at(0);
+	    if (db->create(file)) {
+	        setDatabaseTable(db->database(file), "post");
 	    }
         }
     }

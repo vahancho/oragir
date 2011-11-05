@@ -50,7 +50,7 @@ int main(int argc, char *argv[])
     }
 
     gui::MainWindow *mw = app->mainWindow();
-    mw->setDatabaseTable(db->database(), "post");
+    mw->setDatabaseTable(db->database(appPath + "/posts.db"), "post");
 
     int ret = a.exec();
 

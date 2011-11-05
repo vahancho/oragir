@@ -39,6 +39,11 @@ public:
     ~Database();
 
     /// Creates database and returns result of creation.
+    /*!
+        If there is no active connection, the new connection
+        become the active one, otherwise new connection does
+        not replace existing active connection.
+    */
     bool create(const QString &fileName);
 
     /// Closes, if open, and removes the given database connection.
@@ -53,7 +58,7 @@ public:
     /// Reports the last error if any.
     QString errorMessage() const;
 
-    QSqlDatabase database() const;
+    QSqlDatabase database(const QString &connectionName) const;
 
 signals:
     void recordInserted(const QSqlDatabase &db, const QString &table);

@@ -65,7 +65,8 @@ bool Database::create(const QString &fileName)
     query.exec("PRAGMA locking_mode = EXCLUSIVE");
     query.exec("PRAGMA synchronous = OFF");
 
-    m_dbActiveConnection = fileName;
+    if (m_dbActiveConnection.isEmpty())
+        m_dbActiveConnection = fileName;
 
     return true;
 }
@@ -201,9 +202,9 @@ QString Database::errorMessage() const
     return m_error;
 }
 
-QSqlDatabase Database::database() const
+QSqlDatabase Database::database(const QString &connectionName) const
 {
-     return QSqlDatabase::database(m_dbActiveConnection);
+     return QSqlDatabase::database(connectionName);
 }
 
 } // namespace core
