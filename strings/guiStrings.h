@@ -54,6 +54,7 @@ namespace str
     extern const char *ActionNext;
     extern const char *ActionPrevious;
     extern const char *ActionAbout;
+    extern const char *ActionOpen;
 
     // Http status messages
     extern const char *HostLookup;

@@ -48,6 +48,7 @@ namespace str
     const char *ActionNext = QT_TRANSLATE_NOOP("Oragir", "&Next");
     const char *ActionPrevious = QT_TRANSLATE_NOOP("Oragir", "&Previous");
     const char *ActionAbout = QT_TRANSLATE_NOOP("Oragir", "&About");
+    const char *ActionOpen = QT_TRANSLATE_NOOP("Oragir", "&Open Database");
 
     // Http status messages
     const char *HostLookup = QT_TRANSLATE_NOOP("Oragir", "A host name lookup is in progress...");

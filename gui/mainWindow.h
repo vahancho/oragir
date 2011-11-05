@@ -106,6 +106,8 @@ private slots:
 
     void onStreamStop();
 
+    void onDatabaseOpen();
+
 private:
     /// Saves the window state.
     void saveWindow() const;

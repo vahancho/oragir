@@ -24,6 +24,7 @@
 #include "../core/application.h"
 #include "../core/defaultManager.h"
 #include "../parser/atomParser.h"
+#include "../database/database.h"
 #include "../strings/strings.h"
 #include "../strings/guiStrings.h"
 
@@ -173,6 +174,10 @@ void MainWindow::createMenus()
     fileToolBar->setIconSize(QSize(iconSizeX, iconSizeY));
 
     QMenu *newMenu = fileMenu->addMenu(str::MenuNew);
+
+    QAction *openAction = fileMenu->addAction(str::ActionOpen);
+    openAction->setShortcut(QKeySequence(tr("Ctrl+O")));
+    connect(openAction, SIGNAL(triggered()), this, SLOT(onDatabaseOpen()));
 
     fileMenu->addSeparator();
     QAction *quitAction = fileMenu->addAction(str::ActionExit);
@@ -496,6 +501,20 @@ void MainWindow::onStreamStop()
     core::AtomParser *streamParser =
                     core::Application::theApp()->streamParser();
     streamParser->stop();
+}
+
+void MainWindow::onDatabaseOpen()
+{
+    QFileDialog dlg(this, "Open Database File", ".", tr("Databases (*.db)"));
+    if(dlg.exec() == QDialog::Accepted) {
+	QStringList files = dlg.selectedFiles();
+	if (files.size() > 0) {
+	    core::Database *db = core::Application::theApp()->database();
+	    if (db->create(files.at(0))) {
+	        setDatabaseTable(db->database(), "post");
+	    }
+        }
+    }
 }
 
 } // namespace gui
