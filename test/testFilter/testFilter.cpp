@@ -172,7 +172,37 @@ void testFilter::testMatch_data()
     QTest::newRow("0") << "This is title" << "link" << "name" << "userpic"
                        << "content" << "category" << 0
                        << "title" << "title" << 2 << true;
+    QTest::newRow("1") << "This is title" << "link" << "name" << "userpic"
+                       << "content" << "category" << 0
+                       << "link" << "link" << 1 << true;
+    QTest::newRow("2") << "This is title" << "link" << "name" << "userpic"
+                       << "content&amp; &quot;&lt; &gt;&apos;&nbsp;<tag>"
+                       << "category" << 1234567890
+                       << "content" << "content& \"' " << 1 << true;
+    QTest::newRow("3") << "This is title" << "link" << "name" << "userpic"
+                       << "content&amp; &quot;&lt; &gt;&apos;&nbsp;<tag>"
+                       << "category" << 1234567890
+                       << "content" << "content" << 2 << true;
+    QTest::newRow("4") << "" << "link" << "name" << "userpic"
+                       << "content" << "category" << 0
+                       << "title" << "" << 2 << true;
+    QTest::newRow("5") << "" << "link" << "name" << "userpic"
+                       << "content" << "category" << 0
+                       << "title" << "" << 1 << true;
 
+    // For ignored rules filter always should mismatch.
+    QTest::newRow("6") << "Title" << "link" << "name" << "userpic"
+                       << "content" << "category" << 42342
+                       << "title" << "Title" << 0 << false;
+    QTest::newRow("7") << "Title" << "link" << "name" << "userpic"
+                       << "content" << "category" << 54553
+                       << "title" << "tITlE" << 2 << true;
+    QTest::newRow("8") << "Title" << "link" << "name" << "userpic"
+                       << "content" << "category" << 233455
+                       << "title" << "tITlE" << 1 << false;
+    QTest::newRow("9") << " Title of\t this post \t " << "link" << "name" << "userpic"
+                       << "content" << "category" << 233455
+                       << "title" << "tITlE" << 2 << true;
 }
 
 void testFilter::testMatch()
