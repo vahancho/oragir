@@ -20,6 +20,7 @@
 
 #include <QtGui>
 #include "mainWindow.h"
+#include "databaseView.h"
 #include "../core/application.h"
 #include "../core/defaultManager.h"
 #include "../parser/atomParser.h"
@@ -78,32 +79,11 @@ MainWindow::~MainWindow()
 
 void MainWindow::setDatabaseTable(const QSqlDatabase &db, const QString &table)
 {
-    m_model = new QSqlTableModel(this, db);
-    m_model->setTable(table);
-    m_model->setEditStrategy(QSqlTableModel::OnManualSubmit);
-    m_model->select();
-
-    m_model->setHeaderData(0, Qt::Horizontal, tr("ID"));
-    m_model->setHeaderData(1, Qt::Horizontal, tr("URL"));
-    m_model->setHeaderData(2, Qt::Horizontal, tr("Time"));
-    m_model->setHeaderData(3, Qt::Horizontal, tr("Name"));
-    m_model->setHeaderData(4, Qt::Horizontal, tr("Content"));
-    m_model->setHeaderData(5, Qt::Horizontal, tr("Title"));
-
-    m_view = new QTableView;
-    m_view->setModel(m_model);
-    m_view->setAlternatingRowColors(true);
-    m_view->setSelectionBehavior(QAbstractItemView::SelectRows);
-
-    // The uniformed rows height.
-    QFontMetrics fm = fontMetrics();
-    m_view->verticalHeader()->setDefaultSectionSize(fm.height() + 6);
-
-    // Hide content column for now.
-    m_view->hideColumn(4);
+    DatabaseView *dbView = new DatabaseView;
+    dbView->init(db, table);
 
     QMdiSubWindow *postTableView = new QMdiSubWindow;
-    postTableView->setWidget(m_view);
+    postTableView->setWidget(dbView);
     postTableView->setAttribute(Qt::WA_DeleteOnClose);
     postTableView->resize(200, 200);
     postTableView->setWindowTitle("Database: " + db.databaseName() + " " +
@@ -491,14 +471,14 @@ void MainWindow::setActiveSubWindow(QWidget *subWindow)
 
 void MainWindow::onRecordInserted(const QSqlDatabase &db, const QString &table)
 {
-    m_model->select();
+    //m_model->select();
     // It selects the first 256 records only. In case of having
     // more records in the table table view will not update
     // properly. Therefore we need to fetch more if more
     // records available.
-    while (m_model->canFetchMore()){
-        m_model->fetchMore();
-    }
+    //while (m_model->canFetchMore()){
+    //    m_model->fetchMore();
+    //}
 }
 
 void MainWindow::onStreamStart()

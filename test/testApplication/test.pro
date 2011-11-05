@@ -10,18 +10,20 @@ INCLUDEPATH += .\
 # Input
 HEADERS +=
 SOURCES += testApplication.cpp \
-           ../../core/application.cpp \
-	   ../../database/database.cpp \
-	   ../../parser/atomParser.cpp \
-	   ../../core/defaultManager.cpp \
-	   ../../gui/mainWindow.cpp \
-	   ../../core/propertyTable.cpp \
-	   ../../parser/post.cpp \
-	   ../../parser/blog.cpp \
-	   ../../strings/strings.cpp \
-	   ../../strings/guiStrings.cpp \
-	   ../../GeneratedFiles/release/moc_database.cpp \
-	   ../../GeneratedFiles/release/moc_atomParser.cpp \
-	   ../../GeneratedFiles/release/moc_defaultManager.cpp \
-	   ../../GeneratedFiles/release/moc_propertyTable.cpp \
-	   ../../GeneratedFiles/release/moc_mainWindow.cpp
+          ../../core/application.cpp \
+          ../../database/database.cpp \
+          ../../parser/atomParser.cpp \
+          ../../core/defaultManager.cpp \
+          ../../gui/mainWindow.cpp \
+          ../../gui/databaseView.cpp \
+          ../../core/propertyTable.cpp \
+          ../../parser/post.cpp \
+          ../../parser/blog.cpp \
+          ../../strings/strings.cpp \
+          ../../strings/guiStrings.cpp \
+          ../../GeneratedFiles/release/moc_database.cpp \
+          ../../GeneratedFiles/release/moc_atomParser.cpp \
+          ../../GeneratedFiles/release/moc_defaultManager.cpp \
+          ../../GeneratedFiles/release/moc_propertyTable.cpp \
+          ../../GeneratedFiles/release/moc_mainWindow.cpp \
+          ../../GeneratedFiles/release/moc_databaseView.cpp

@@ -28,8 +28,6 @@
 
 class QSignalMapper;
 class QProgressBar;
-class QSqlTableModel;
-class QTableView;
 
 namespace gui
 {
@@ -180,9 +178,6 @@ private:
         The progress bar for any task progress visualization.
     */
     QProgressBar *m_progressBar;
-
-    QSqlTableModel *m_model;
-    QTableView *m_view;
 };
 
 } // namespace gui
