@@ -67,4 +67,18 @@ void DatabaseView::init(const QSqlDatabase &db, const QString &table)
     m_view->hideColumn(4);
 }
 
+void DatabaseView::updateTable()
+{
+    if (m_model && m_model->database().isValid()) {
+        m_model->select();
+        // It selects the first 256 records only. In case of having
+        // more records in the table table view will not update
+        // properly. Therefore we need to fetch more if more
+        // records available.
+        while (m_model->canFetchMore()){
+            m_model->fetchMore();
+        }
+    }
+}
+
 } // namespace gui

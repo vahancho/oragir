@@ -43,6 +43,8 @@ public:
 
     void init(const QSqlDatabase &db, const QString &table);
 
+    void updateTable();
+
 private:
     QSqlTableModel *m_model;
     QTableView *m_view;
