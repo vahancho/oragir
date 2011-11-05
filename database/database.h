@@ -36,11 +36,13 @@ class Database : public QObject
 public:
     Database();
 
+    ~Database();
+
     /// Creates database and returns result of creation.
     bool create(const QString &fileName);
 
     /// Closes, if open, and removes the given database connection.
-    void remove();
+    void remove(const QString &connectionName);
 
     /// Adds new filter to the list of filters.
     void addFilter(const Filter<Post> &filter);

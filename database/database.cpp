@@ -28,14 +28,18 @@ namespace core
 Database::Database()
 {}
 
+Database::~Database()
+{
+    QStringList connections = QSqlDatabase::connectionNames();
+    foreach(const QString &connection, connections)
+        remove(connection);
+}
+
 bool Database::create(const QString &fileName)
 {
     if (QSqlDatabase::contains(fileName)) {
         // Such connection already exists, so just do nothing.
         return true;
-    } else {
-        // We want to create new connection, so close existing one.
-        remove();
     }
 
     QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE", fileName.toLatin1());
@@ -66,16 +70,16 @@ bool Database::create(const QString &fileName)
     return true;
 }
 
-void Database::remove()
+void Database::remove(const QString &connectionName)
 {
     {
-        QSqlDatabase db = QSqlDatabase::database(m_dbActiveConnection);
+        QSqlDatabase db = QSqlDatabase::database(connectionName);
         if(db.isValid() && db.isOpen()) {
             db.close();
         }
     }
 
-    QSqlDatabase::removeDatabase(m_dbActiveConnection);
+    QSqlDatabase::removeDatabase(connectionName);
     m_dbActiveConnection = QString();
 }
 
