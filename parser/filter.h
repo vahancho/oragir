@@ -273,6 +273,8 @@ void Filter<Source>::writeXml(QXmlStreamWriter &writer)
     writer.writeAttribute(str::TagName, m_name);
     writer.writeAttribute(str::TagEnabled,
                           QVariant::fromValue(m_enabled).toString());
+    writer.writeAttribute(str::TagRuleMatch,
+                          QString::number(m_ruleMatch));
 
     typename Rules::const_iterator it = m_rules.constBegin();
     while (it != m_rules.constEnd()) {

@@ -168,9 +168,12 @@ bool Database::openFilters(const QString &fileName)
                     QString name = attr.value(str::TagNameAttr).toString();
                     bool enabled = QVariant::fromValue(attr.value(str::TagEnabled)
                                                            .toString()).toBool();
+                    int ruleMatch = QVariant::fromValue(attr.value(str::TagRuleMatch)
+                                                           .toString()).toInt();
                     Filter<Post> filter(name);
                     filter.readXml(reader);
                     filter.setEnabled(enabled);
+                    filter.setRuleMatch((Filter<Post>::RuleMatch)ruleMatch);
                     addFilter(filter);
                 }
             }
