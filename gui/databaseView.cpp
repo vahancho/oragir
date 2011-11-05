@@ -60,13 +60,6 @@ void DatabaseView::init(const QSqlDatabase &db, const QString &table)
     m_model->setEditStrategy(QSqlTableModel::OnManualSubmit);
     m_model->select();
 
-    m_model->setHeaderData(0, Qt::Horizontal, tr("ID"));
-    m_model->setHeaderData(1, Qt::Horizontal, tr("URL"));
-    m_model->setHeaderData(2, Qt::Horizontal, tr("Time"));
-    m_model->setHeaderData(3, Qt::Horizontal, tr("Name"));
-    m_model->setHeaderData(4, Qt::Horizontal, tr("Content"));
-    m_model->setHeaderData(5, Qt::Horizontal, tr("Title"));
-
     Q_ASSERT(m_view);
     m_view->setModel(m_model);
 
