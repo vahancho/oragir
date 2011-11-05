@@ -200,6 +200,10 @@ typename Filter<Source>::Result Filter<Source>::match(const QString &name,
     if (it != m_rules.end()) {
         const Rule &rule = it.value();
 
+        // For ignored rules return immediately.
+        if (rule.m_option == Ignore)
+            return Undefined;
+
         // Strip the html tags before comparing strings.
         QString stripped = value;
         stripped.replace("&amp;", "&");
@@ -210,10 +214,8 @@ typename Filter<Source>::Result Filter<Source>::match(const QString &name,
         stripped.replace("&nbsp;", " ");
         stripped.replace( QRegExp("<[^>]*>"), "" );
 
-        if (rule.m_option == Ignore) {
-            return Undefined;
-        } else if (rule.m_option == Contains &&
-                   stripped.contains(rule.m_value, Qt::CaseInsensitive)) {
+        if (rule.m_option == Contains &&
+            stripped.contains(rule.m_value, Qt::CaseInsensitive)) {
             QRegExp rx;
             QString pat = QString("\\s.{0,40}%1.{0,40}\\s").arg(rule.m_value);
             rx.setPattern(pat);
