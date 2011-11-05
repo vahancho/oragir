@@ -29,7 +29,10 @@ DatabaseView::DatabaseView(QWidget *parent, Qt::WindowFlags f)
     :
         QWidget(parent, f)
 {
+    QVBoxLayout *mainLayout = new QVBoxLayout;
     m_view = new QTableView(this);
+    mainLayout->addWidget(m_view);
+    setLayout(mainLayout);
 }
 
 DatabaseView::~DatabaseView()
