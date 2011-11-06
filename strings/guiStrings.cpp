@@ -34,6 +34,8 @@ namespace str
     const char *MenuToolBars = QT_TRANSLATE_NOOP("Oragir", "&Toolbars");
     const char *MenuWindow = QT_TRANSLATE_NOOP("Oragir", "&Window");
     const char *MenuHelp = QT_TRANSLATE_NOOP("Oragir", "&Help");
+    const char *MenuStream = QT_TRANSLATE_NOOP("Oragir", "&Stream");
+    const char *MenuTools = QT_TRANSLATE_NOOP("Oragir", "&Tools");
 
     const char *ActionMinimize = QT_TRANSLATE_NOOP("Oragir", "Mi&nimize");
     const char *ActionMaximize = QT_TRANSLATE_NOOP("Oragir", "Ma&ximize");
@@ -49,6 +51,10 @@ namespace str
     const char *ActionPrevious = QT_TRANSLATE_NOOP("Oragir", "&Previous");
     const char *ActionAbout = QT_TRANSLATE_NOOP("Oragir", "&About");
     const char *ActionOpen = QT_TRANSLATE_NOOP("Oragir", "&Open Database");
+    const char *ActionStart = QT_TRANSLATE_NOOP("Oragir", "&Start");
+    const char *ActionStop = QT_TRANSLATE_NOOP("Oragir", "S&top");
+    const char *ActionFilters = QT_TRANSLATE_NOOP("Oragir", "&Filters...");
+    const char *ActionOptions = QT_TRANSLATE_NOOP("Oragir", "&Options...");
 
     // Http status messages
     const char *HostLookup = QT_TRANSLATE_NOOP("Oragir", "A host name lookup is in progress...");

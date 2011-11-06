@@ -39,6 +39,8 @@ namespace str
     extern const char *MenuToolBars;
     extern const char *MenuWindow;
     extern const char *MenuHelp;
+    extern const char *MenuStream;
+    extern const char *MenuTools;
 
     // Action titles.
     extern const char *ActionMinimize;
@@ -55,6 +57,10 @@ namespace str
     extern const char *ActionPrevious;
     extern const char *ActionAbout;
     extern const char *ActionOpen;
+    extern const char *ActionStart;
+    extern const char *ActionStop;
+    extern const char *ActionFilters;
+    extern const char *ActionOptions;
 
     // Http status messages
     extern const char *HostLookup;

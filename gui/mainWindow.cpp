@@ -218,36 +218,32 @@ void MainWindow::createMenus()
     //////////////////////////////////////////////////////////////////////////
     // Stream menu
     //
-    QMenu *streamMenu = new QMenu("&Stream", this);
-    QToolBar *streamToolBar = new QToolBar("&Stream", this);
-    streamToolBar->setObjectName("Stream");
+    QMenu *streamMenu = new QMenu(str::MenuStream, this);
+    QToolBar *streamToolBar = new QToolBar(str::MenuStream, this);
+    streamToolBar->setObjectName(str::MenuStream);
     streamToolBar->setIconSize(QSize(iconSizeX, iconSizeY));
 
-    QAction *startAction = streamMenu->addAction("Start");
-    //startAction->setShortcut(QKeySequence(tr("Ctrl+Q")));
-    //startAction->setIcon(QIcon(":icons/exit"));
+    QAction *startAction = streamMenu->addAction(str::ActionStart);
     connect(startAction, SIGNAL(triggered()), this, SLOT(onStreamStart()));
     streamToolBar->addAction(startAction);
 
-    QAction *stopAction = streamMenu->addAction("Stop");
-    //stopAction->setShortcut(QKeySequence(tr("Ctrl+Q")));
-    //stopAction->setIcon(QIcon(":icons/exit"));
+    QAction *stopAction = streamMenu->addAction(str::ActionStop);
     connect(stopAction, SIGNAL(triggered()), this, SLOT(onStreamStop()));
     streamToolBar->addAction(stopAction);
 
     //////////////////////////////////////////////////////////////////////////
     // Tools menu
     //
-    QMenu *toolsMenu = new QMenu("&Tools", this);
-    QToolBar *toolsToolBar = new QToolBar("&Tools", this);
-    toolsToolBar->setObjectName("&Tools");
+    QMenu *toolsMenu = new QMenu(str::MenuTools, this);
+    QToolBar *toolsToolBar = new QToolBar(str::MenuTools, this);
+    toolsToolBar->setObjectName(str::MenuTools);
     toolsToolBar->setIconSize(QSize(iconSizeX, iconSizeY));
 
-    QAction *filtersAction = toolsMenu->addAction("&Filters...");
+    QAction *filtersAction = toolsMenu->addAction(str::ActionFilters);
     connect(filtersAction, SIGNAL(triggered()), this, SLOT(onFilters()));
     toolsToolBar->addAction(filtersAction);
 
-    QAction *optionsAction = toolsMenu->addAction("&Options...");
+    QAction *optionsAction = toolsMenu->addAction(str::ActionOptions);
     connect(optionsAction, SIGNAL(triggered()), this, SLOT(onOptions()));
     toolsToolBar->addAction(optionsAction);
 
