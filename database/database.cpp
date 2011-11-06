@@ -73,15 +73,24 @@ bool Database::create(const QString &fileName)
 
 void Database::remove(const QString &connectionName)
 {
+    if (!QSqlDatabase::contains(connectionName))
+        return;
+
     {
         QSqlDatabase db = QSqlDatabase::database(connectionName);
-        if(db.isValid() && db.isOpen()) {
+        if (!db.isValid())
+            return;
+
+        if(db.isOpen())
             db.close();
-        }
     }
 
     QSqlDatabase::removeDatabase(connectionName);
-    m_dbActiveConnection = QString();
+    QStringList remainingConnections = QSqlDatabase::connectionNames();
+    if (remainingConnections.size() > 0)
+        m_dbActiveConnection = remainingConnections.at(0);
+    else
+        m_dbActiveConnection = QString();
 }
 
 void Database::onFetched(const Post &post, const Blog &blog)
