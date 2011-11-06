@@ -174,12 +174,6 @@ private:
 
     /// Workspace for MDI application.
     QMdiArea m_mdiArea;
-
-    /// The progress bar.
-    /*!
-        The progress bar for any task progress visualization.
-    */
-    QProgressBar *m_progressBar;
 };
 
 } // namespace gui
