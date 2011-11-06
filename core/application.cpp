@@ -86,23 +86,21 @@ void Application::init()
 {
     // Create all application components
     m_defaultManager = new DefaultManager;
+    m_dataBase = new Database;
+    m_atomParser = new AtomParser;
+    QObject::connect(m_atomParser, SIGNAL(fetched(const Post &, const Blog &)),
+                     m_dataBase, SLOT(onFetched(const Post &, const Blog &)));
+
+    // Restore Main Window state based on saved defaults
     m_mainWindow = new gui::MainWindow;
+    QObject::connect(m_dataBase, SIGNAL(recordInserted(const QSqlDatabase &, const QString &)),
+                     m_mainWindow, SLOT(onRecordInserted(const QSqlDatabase &, const QString &)));
 
     // Read and set all defaults
     m_defaultManager->readDefaults();
 
-    // Restore Main Window state based on saved defaults
     m_mainWindow->restoreWindow();
     m_mainWindow->show();
-
-    m_dataBase = new Database;
-
-    QObject::connect(m_dataBase, SIGNAL(recordInserted(const QSqlDatabase &, const QString &)),
-                     m_mainWindow, SLOT(onRecordInserted(const QSqlDatabase &, const QString &)));
-
-    m_atomParser = new AtomParser;
-    QObject::connect(m_atomParser, SIGNAL(fetched(const Post &, const Blog &)),
-                     m_dataBase, SLOT(onFetched(const Post &, const Blog &)));
 }
 
 gui::MainWindow *Application::mainWindow() const
