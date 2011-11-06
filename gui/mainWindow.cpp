@@ -515,7 +515,10 @@ void MainWindow::onDatabaseOpen()
             QString file = files.at(0);
 	    if (db->create(file)) {
 	        setDatabaseTable(db->database(file), "post");
-	    }
+            } else {
+                QMessageBox::critical(this, str::DatabaseError,
+                                      db->errorMessage());
+            }
         }
     }
 }

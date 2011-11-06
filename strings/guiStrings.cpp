@@ -74,4 +74,7 @@ namespace str
                                           "<a href=\"http://sourceforge.net/projects/oragir\">Oragir</a> "
                                           "open source project.");
 
+    // Error messages.
+    const char *DatabaseError = QT_TRANSLATE_NOOP("Oragir", "Database Error");
+
 } // namespace str

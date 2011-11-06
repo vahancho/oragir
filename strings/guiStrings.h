@@ -69,6 +69,9 @@ namespace str
     extern const char *AboutTitle;
     extern const char *About;
 
+    // Error messages.
+    extern const char *DatabaseError;
+
 } // namespace str
 
 #endif // __GUISTRINGS_H__
