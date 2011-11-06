@@ -45,7 +45,9 @@ const int iconSizeY = 16;
 MainWindow::MainWindow(QWidget *parent, Qt::WFlags flags)
     :
         QMainWindow(parent, flags),
-        m_trayIcon(0)
+        m_trayIcon(0),
+        m_processedItemCount(0),
+        m_recordedItemCount(0)
 {
     createMenus();
 
@@ -72,6 +74,10 @@ MainWindow::MainWindow(QWidget *parent, Qt::WFlags flags)
 
     if(QSystemTrayIcon::isSystemTrayAvailable())
         createTrayIcon();
+
+    core::AtomParser *parser = core::Application::theApp()->streamParser();
+    connect(parser, SIGNAL(fetched(const Post &, const Blog &)),
+            this, SLOT(onItemProcessed()));
 }
 
 // Destructor
@@ -521,6 +527,13 @@ void MainWindow::onDatabaseOpen()
             }
         }
     }
+}
+
+void MainWindow::onItemProcessed()
+{
+    m_processedItemCount++;
+    QString msg = QString("%1 stream items processed").arg(m_processedItemCount);
+    statusBar()->showMessage(msg);
 }
 
 } // namespace gui

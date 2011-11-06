@@ -108,6 +108,8 @@ private slots:
 
     void onDatabaseOpen();
 
+    void onItemProcessed();
+
 private:
     /// Saves the window state.
     void saveWindow() const;
@@ -174,6 +176,12 @@ private:
 
     /// Workspace for MDI application.
     QMdiArea m_mdiArea;
+
+    /// The number of processed streaming items.
+    int m_processedItemCount;
+
+    /// The number of recoreded (filtered) items.
+    int m_recordedItemCount;
 };
 
 } // namespace gui
