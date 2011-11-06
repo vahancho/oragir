@@ -178,6 +178,7 @@ void MainWindow::createMenus()
     QAction *openAction = fileMenu->addAction(str::ActionOpen);
     openAction->setShortcut(QKeySequence(tr("Ctrl+O")));
     connect(openAction, SIGNAL(triggered()), this, SLOT(onDatabaseOpen()));
+    fileToolBar->addAction(openAction);
 
     fileMenu->addSeparator();
     QAction *quitAction = fileMenu->addAction(str::ActionExit);
@@ -220,11 +221,13 @@ void MainWindow::createMenus()
     //startAction->setShortcut(QKeySequence(tr("Ctrl+Q")));
     //startAction->setIcon(QIcon(":icons/exit"));
     connect(startAction, SIGNAL(triggered()), this, SLOT(onStreamStart()));
+    streamToolBar->addAction(startAction);
 
     QAction *stopAction = streamMenu->addAction("Stop");
     //stopAction->setShortcut(QKeySequence(tr("Ctrl+Q")));
     //stopAction->setIcon(QIcon(":icons/exit"));
     connect(stopAction, SIGNAL(triggered()), this, SLOT(onStreamStop()));
+    streamToolBar->addAction(stopAction);
 
     //////////////////////////////////////////////////////////////////////////
     // Window menu
@@ -280,8 +283,7 @@ void MainWindow::createMenus()
 
     // Add tool bars
     addToolBar(fileToolBar);
-    //addToolBar(viewToolBar);
-    //addToolBar(toolsToolBar);
+    addToolBar(streamToolBar);
 }
 
 void MainWindow::updateToolBarsMenu()
