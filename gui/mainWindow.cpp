@@ -218,8 +218,8 @@ void MainWindow::createMenus()
     //////////////////////////////////////////////////////////////////////////
     // Stream menu
     //
-    QMenu *streamMenu = new QMenu("Stream", this);
-    QToolBar *streamToolBar = new QToolBar("Stream", this);
+    QMenu *streamMenu = new QMenu("&Stream", this);
+    QToolBar *streamToolBar = new QToolBar("&Stream", this);
     streamToolBar->setObjectName("Stream");
     streamToolBar->setIconSize(QSize(iconSizeX, iconSizeY));
 
@@ -234,6 +234,22 @@ void MainWindow::createMenus()
     //stopAction->setIcon(QIcon(":icons/exit"));
     connect(stopAction, SIGNAL(triggered()), this, SLOT(onStreamStop()));
     streamToolBar->addAction(stopAction);
+
+    //////////////////////////////////////////////////////////////////////////
+    // Tools menu
+    //
+    QMenu *toolsMenu = new QMenu("&Tools", this);
+    QToolBar *toolsToolBar = new QToolBar("&Tools", this);
+    toolsToolBar->setObjectName("&Tools");
+    toolsToolBar->setIconSize(QSize(iconSizeX, iconSizeY));
+
+    QAction *filtersAction = toolsMenu->addAction("&Filters...");
+    connect(filtersAction, SIGNAL(triggered()), this, SLOT(onFilters()));
+    toolsToolBar->addAction(filtersAction);
+
+    QAction *optionsAction = toolsMenu->addAction("&Options...");
+    connect(optionsAction, SIGNAL(triggered()), this, SLOT(onOptions()));
+    toolsToolBar->addAction(optionsAction);
 
     //////////////////////////////////////////////////////////////////////////
     // Window menu
@@ -282,7 +298,7 @@ void MainWindow::createMenus()
     menuBar()->addMenu(fileMenu);
     menuBar()->addMenu(viewMenu);
     menuBar()->addMenu(streamMenu);
-    //menuBar()->addMenu(toolsMenu);
+    menuBar()->addMenu(toolsMenu);
     menuBar()->addMenu(m_windowMenu);
     menuBar()->addSeparator();
     menuBar()->addMenu(helpMenu);
@@ -290,6 +306,7 @@ void MainWindow::createMenus()
     // Add tool bars
     addToolBar(fileToolBar);
     addToolBar(streamToolBar);
+    addToolBar(toolsToolBar);
 }
 
 void MainWindow::updateToolBarsMenu()
@@ -534,6 +551,14 @@ void MainWindow::onItemProcessed()
     m_processedItemCount++;
     QString msg = QString("%1 stream items processed").arg(m_processedItemCount);
     statusBar()->showMessage(msg);
+}
+
+void MainWindow::onFilters()
+{
+}
+
+void MainWindow::onOptions()
+{
 }
 
 } // namespace gui

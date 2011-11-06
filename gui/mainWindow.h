@@ -110,6 +110,10 @@ private slots:
 
     void onItemProcessed();
 
+    void onFilters();
+
+    void onOptions();
+
 private:
     /// Saves the window state.
     void saveWindow() const;
