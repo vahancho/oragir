@@ -81,7 +81,14 @@ MainWindow::MainWindow(QWidget *parent, Qt::WFlags flags)
 
     QDockWidget *dock = new QDockWidget("Databases", this);
     dock->setObjectName("Databases");
-    m_databaseList = new QTableWidget;
+
+    m_databaseList = new QTreeWidget;
+    m_databaseList->setColumnCount(2);
+    m_databaseList->setRootIsDecorated(false);
+    QStringList headerLabels;
+    headerLabels << "Alias" << "Full Name";
+    m_databaseList->setHeaderLabels(headerLabels);
+
     dock->setWidget(m_databaseList);
     addDockWidget(Qt::LeftDockWidgetArea, dock);
 }

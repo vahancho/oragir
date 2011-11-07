@@ -27,7 +27,7 @@
 #include <QtSql>
 
 class QSignalMapper;
-class QTableWidget;
+class QTreeWidget;
 
 namespace gui
 {
@@ -182,7 +182,7 @@ private:
     QMdiArea m_mdiArea;
 
     /// Stores the list of opened databases.
-    QTableWidget *m_databaseList;
+    QTreeWidget *m_databaseList;
 
     /// The number of processed streaming items.
     int m_processedItemCount;
