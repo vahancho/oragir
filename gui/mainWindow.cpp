@@ -541,12 +541,21 @@ void MainWindow::onDatabaseOpen()
 {
     QFileDialog dlg(this, "Open Database File", ".", tr("Databases (*.db)"));
     if(dlg.exec() == QDialog::Accepted) {
-	QStringList files = dlg.selectedFiles();
-	if (files.size() > 0) {
-	    core::Database *db = core::Application::theApp()->database();
+        QStringList files = dlg.selectedFiles();
+        if (files.size() > 0) {
+            core::Database *db = core::Application::theApp()->database();
             QString file = files.at(0);
-	    if (db->create(file)) {
-	        setDatabaseTable(db->database(file), "post");
+            if (db->create(file)) {
+                setDatabaseTable(db->database(file), "post");
+
+                QTreeWidgetItem *node = new QTreeWidgetItem;
+                //node->setIcon(0, QIcon(":/icons/?"));
+                QFileInfo fi(file);
+                node->setText(0, fi.fileName());
+                node->setToolTip(0, fi.fileName());
+                node->setText(1, file);
+                node->setToolTip(1, file);
+                m_databaseList->addTopLevelItem(node);
             } else {
                 QMessageBox::critical(this, str::DatabaseError,
                                       db->errorMessage());
