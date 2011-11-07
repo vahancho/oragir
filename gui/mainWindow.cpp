@@ -78,6 +78,12 @@ MainWindow::MainWindow(QWidget *parent, Qt::WFlags flags)
     core::AtomParser *parser = core::Application::theApp()->streamParser();
     connect(parser, SIGNAL(fetched(const Post &, const Blog &)),
             this, SLOT(onItemProcessed()));
+
+    QDockWidget *dock = new QDockWidget("Databases", this);
+    dock->setObjectName("Databases");
+    m_databaseList = new QTableWidget;
+    dock->setWidget(m_databaseList);
+    addDockWidget(Qt::LeftDockWidgetArea, dock);
 }
 
 // Destructor

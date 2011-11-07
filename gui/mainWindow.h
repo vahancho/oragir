@@ -27,7 +27,7 @@
 #include <QtSql>
 
 class QSignalMapper;
-class QProgressBar;
+class QTableWidget;
 
 namespace gui
 {
@@ -180,6 +180,9 @@ private:
 
     /// Workspace for MDI application.
     QMdiArea m_mdiArea;
+
+    /// Stores the list of opened databases.
+    QTableWidget *m_databaseList;
 
     /// The number of processed streaming items.
     int m_processedItemCount;
