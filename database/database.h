@@ -49,6 +49,9 @@ public:
     /// Closes, if open, and removes the given database connection.
     void remove(const QString &connectionName);
 
+    /// Set the active (current) database.
+    void activateDatabase(const QString &connectionName);
+
     /// Adds new filter to the list of filters.
     void addFilter(const Filter<Post> &filter);
 
