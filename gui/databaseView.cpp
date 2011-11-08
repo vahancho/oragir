@@ -40,8 +40,8 @@ DatabaseView::DatabaseView(const QSqlDatabase &db, const QString &table,
                            QWidget *parent, Qt::WindowFlags f)
     :
         QWidget(parent, f),
-        m_view(0),
-        m_model(0)
+	m_model(0),
+        m_view(0)
 {
     // Create the table view for database items.
     m_view = new QTableView(this);
