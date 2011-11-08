@@ -549,7 +549,7 @@ void MainWindow::onDatabaseOpen()
                 setDatabaseTable(db->database(file), "post");
 
                 QTreeWidgetItem *node = new QTreeWidgetItem;
-                //node->setIcon(0, QIcon(":/icons/?"));
+                node->setIcon(0, QIcon(":/icons/db"));
                 QFileInfo fi(file);
                 node->setText(0, fi.fileName());
                 node->setToolTip(0, fi.fileName());

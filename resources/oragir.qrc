@@ -2,5 +2,7 @@
 	<qresource prefix="/icons" >
 		<file alias="app" >icon_app.png</file>
 		<file alias="exit" >icon_exit.png</file>
+		<file alias="db" >icon_db.png</file>
+		<file alias="db_active" >icon_db_active.png</file>
  	</qresource>
 </RCC>
