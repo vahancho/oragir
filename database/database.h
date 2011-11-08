@@ -63,6 +63,9 @@ public:
 
     QSqlDatabase database(const QString &connectionName) const;
 
+    /// Returns true if given connection is the active one.
+    bool isActive(const QString &connectionName) const;
+
 signals:
     void recordInserted(const QSqlDatabase &db, const QString &table);
 

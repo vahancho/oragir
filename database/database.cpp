@@ -222,4 +222,9 @@ void Database::activateDatabase(const QString &connectionName)
         m_dbActiveConnection = connectionName;
 }
 
+bool Database::isActive(const QString &connectionName) const
+{
+    return connectionName == m_dbActiveConnection;
+}
+
 } // namespace core
