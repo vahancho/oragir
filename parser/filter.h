@@ -23,6 +23,7 @@
 
 #include <QXmlStreamWriter>
 #include <QMultiMap>
+#include <QVariant>
 #include "../strings/strings.h"
 
 namespace core
