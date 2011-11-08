@@ -582,8 +582,33 @@ void MainWindow::onOptions()
 {
 }
 
-void MainWindow::onDatabaseContextMenu(const QPoint &point)
+void MainWindow::onDatabaseContextMenu(const QPoint &pos)
 {
+    if(QTreeWidgetItem *treeItem = m_databaseList->itemAt(pos)) {
+        QMenu menu;
+        core::Database *db = core::Application::theApp()->database();
+        QString dbName = treeItem->text(1);
+        bool active = db->isActive(dbName);
+        if (!active) {
+            QAction *action = menu.addAction(QIcon(":/icons/job_watch"),
+                                             "Active",
+                                             this,
+                                             SLOT(onDatabaseActivate(bool)));
+            action->setData(dbName);
+            action->setCheckable(true);
+            action->setChecked(db->isActive(dbName));
+        }
+
+        menu.exec(m_databaseList->mapToGlobal(QPoint(pos.x(), pos.y() + 20)));
+    }
+}
+
+void MainWindow::onDatabaseActivate(bool activate)
+{
+    if(QAction *action = qobject_cast<QAction *>(sender())) {
+        core::Database *db = core::Application::theApp()->database();
+        db->activateDatabase(action->data().toString());
+    }
 }
 
 } // namespace gui
