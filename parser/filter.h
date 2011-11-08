@@ -352,7 +352,7 @@ void Filter<Source>::readXml(QXmlStreamReader &reader)
     setEnabled(enabled);
     int ruleMatch = QVariant::fromValue(attr.value(str::TagRuleMatch)
                                         .toString()).toInt();
-    setRuleMatch((Filter<Post>::RuleMatch)ruleMatch);
+    setRuleMatch((RuleMatch)ruleMatch);
     QString table = QVariant::fromValue(attr.value(str::TagFolder)
                                         .toString()).toString();
     setTable(table);
