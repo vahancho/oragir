@@ -88,6 +88,9 @@ MainWindow::MainWindow(QWidget *parent, Qt::WFlags flags)
     QStringList headerLabels;
     headerLabels << "Alias" << "Full Name";
     m_databaseList->setHeaderLabels(headerLabels);
+    m_databaseList->setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(m_databaseList, SIGNAL(customContextMenuRequested(const QPoint &)),
+            this, SLOT(onDatabaseContextMenu(const QPoint &)));
 
     dock->setWidget(m_databaseList);
     addDockWidget(Qt::LeftDockWidgetArea, dock);
@@ -576,6 +579,10 @@ void MainWindow::onFilters()
 }
 
 void MainWindow::onOptions()
+{
+}
+
+void MainWindow::onDatabaseContextMenu(const QPoint &point)
 {
 }
 

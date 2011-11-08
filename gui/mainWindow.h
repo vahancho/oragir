@@ -114,6 +114,8 @@ private slots:
 
     void onOptions();
 
+    void onDatabaseContextMenu(const QPoint &point);
+
 private:
     /// Saves the window state.
     void saveWindow() const;
