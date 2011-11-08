@@ -216,7 +216,7 @@ QSqlDatabase Database::database(const QString &connectionName) const
      return QSqlDatabase::database(connectionName);
 }
 
-void Database::activateDatabase(const QString &connectionName)
+void Database::setActive(const QString &connectionName)
 {
     if (QSqlDatabase::contains(connectionName))
         m_dbActiveConnection = connectionName;
