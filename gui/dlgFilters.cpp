@@ -105,13 +105,18 @@ void FiltersDialog::onOk()
     // corresponding tree items.
     core::Database::Filters::iterator it = m_filters.begin();
     while (it != m_filters.end()) {
-        core::Filter<core::Post> &filter = *it;
+        // Filter will be changed.
+        core::Filter<core::Post> filter = *it;
         QList<QTreeWidgetItem *> nodes =
                  m_filtersTree->findItems(filter.name(), Qt::MatchFixedString, 1);
         // We should not have two nodes with the same name.
         if (nodes.size() > 0) {
             QTreeWidgetItem *node = nodes.at(0);
             filter.setEnabled(node->checkState(0) == Qt::Checked);
+
+            // Replace existin filter item with the new one.
+            m_filters.erase(it);
+            m_filters.insert(filter);
         }
         ++it;
     }
