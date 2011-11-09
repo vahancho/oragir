@@ -72,6 +72,9 @@ void DatabaseView::init(const QSqlDatabase &db, const QString &table)
 
     Q_ASSERT(m_view);
     m_view->setModel(m_model);
+    connect(m_view->selectionModel(),
+            SIGNAL(selectionChanged(const QItemSelection &, const QItemSelection &)),
+            this, SLOT(onSelectionChanged(const QItemSelection &, const QItemSelection &)));
 
     // Hide content column for now.
     m_view->hideColumn(4);
@@ -97,6 +100,11 @@ bool DatabaseView::hasTable(const QSqlDatabase &db, const QString &table) const
            m_model->database().driver() == db.driver() &&
            m_model->database().connectionName() == db.connectionName() &&
            m_model->tableName() == table;
+}
+
+void DatabaseView::onSelectionChanged(const QItemSelection &selected,
+                                      const QItemSelection &deselected)
+{
 }
 
 } // namespace gui
