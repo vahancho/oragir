@@ -24,7 +24,9 @@
 #include <QHeaderView>
 #include <QTextEdit>
 #include <QSqlTableModel>
+#include <QSqlRecord>
 #include "databaseView.h"
+#include "../strings/strings.h"
 
 namespace gui
 {
@@ -108,8 +110,9 @@ void DatabaseView::onSelectionChanged(const QItemSelection &selected,
 {
     QModelIndexList indexes = selected.indexes();
     foreach(const QModelIndex &index, indexes) {
-        if (index.column() == 4)
-            m_preview->setText(m_model->data(index).toString());
+        QSqlRecord record = m_model->record(index.row());
+        if (record.fieldName(index.column()) == str::TagContent)
+            m_preview->setText(record.value(index.column()).toString());
     }
 }
 
