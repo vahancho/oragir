@@ -49,7 +49,10 @@ DatabaseView::DatabaseView(QWidget *parent, Qt::WindowFlags f)
 
     QSplitter *splitter = new QSplitter(Qt::Vertical, this);
     splitter->addWidget(m_view);
+
     m_preview = new QTextEdit;
+    m_preview->setReadOnly(true);
+
     splitter->addWidget(m_preview);
 
     QVBoxLayout *mainLayout = new QVBoxLayout;
