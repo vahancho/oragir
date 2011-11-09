@@ -197,7 +197,9 @@ typename Filter<Source>::Result Filter<Source>::match(const QString &name,
                                                       const QString &value) const
 {
     typename Rules::const_iterator it = m_rules.find(name);
-    if (it != m_rules.end()) {
+
+    // Iterate over all rules with the given name until find a match.
+    while (it != m_rules.end() && it.key() == name) {
         const Rule &rule = it.value();
 
         // For ignored rules return immediately.
@@ -227,13 +229,13 @@ typename Filter<Source>::Result Filter<Source>::match(const QString &name,
         } else if (rule.m_option == ExactMatch &&
                    stripped == rule.m_value) {
             return Matched;
-        } else {
-            return NotMatched;
         }
-    } else {
-        // Such property not found.
-        return Undefined;
+
+        ++it;
     }
+
+    // Such property not found or not matched.
+    return NotMatched;
 }
 
 template<class Source>
