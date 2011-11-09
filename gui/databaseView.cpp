@@ -18,7 +18,11 @@
 *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
 ***************************************************************************/
 
-#include <QtGui>
+#include <QTableView>
+#include <QSplitter>
+#include <QVBoxLayout>
+#include <QHeaderView>
+#include <QTextEdit>
 #include <QSqlTableModel>
 #include "databaseView.h"
 
@@ -31,6 +35,7 @@ DatabaseView::DatabaseView(QWidget *parent, Qt::WindowFlags f)
         m_view(0),
         m_model(0)
 {
+    // Create the table view for database items.
     m_view = new QTableView(this);
     m_view->setAlternatingRowColors(true);
     m_view->setEditTriggers(QAbstractItemView::NoEditTriggers);
@@ -40,8 +45,12 @@ DatabaseView::DatabaseView(QWidget *parent, Qt::WindowFlags f)
     QFontMetrics fm = fontMetrics();
     m_view->verticalHeader()->setDefaultSectionSize(fm.height() + 6);
 
+    QSplitter *splitter = new QSplitter(Qt::Vertical, this);
+    splitter->addWidget(m_view);
+    splitter->addWidget(new QTextEdit);
+
     QVBoxLayout *mainLayout = new QVBoxLayout;
-    mainLayout->addWidget(m_view);
+    mainLayout->addWidget(splitter);
     setLayout(mainLayout);
 }
 
