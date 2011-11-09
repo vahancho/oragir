@@ -47,7 +47,8 @@ DatabaseView::DatabaseView(QWidget *parent, Qt::WindowFlags f)
 
     QSplitter *splitter = new QSplitter(Qt::Vertical, this);
     splitter->addWidget(m_view);
-    splitter->addWidget(new QTextEdit);
+    m_preview = new QTextEdit;
+    splitter->addWidget(m_preview);
 
     QVBoxLayout *mainLayout = new QVBoxLayout;
     mainLayout->addWidget(splitter);
@@ -105,6 +106,11 @@ bool DatabaseView::hasTable(const QSqlDatabase &db, const QString &table) const
 void DatabaseView::onSelectionChanged(const QItemSelection &selected,
                                       const QItemSelection &deselected)
 {
+    QModelIndexList indexes = selected.indexes();
+    foreach(const QModelIndex &index, indexes) {
+        if (index.column() == 4)
+            m_preview->setText(m_model->data(index).toString());
+    }
 }
 
 } // namespace gui

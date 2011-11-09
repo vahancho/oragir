@@ -27,6 +27,7 @@
 class QSqlTableModel;
 class QTableView;
 class QItemSelection;
+class QTextEdit;
 
 namespace gui
 {
@@ -56,6 +57,7 @@ private slots:
 private:
     QSqlTableModel *m_model;
     QTableView *m_view;
+    QTextEdit *m_preview;
 };
 
 } // namespace gui
