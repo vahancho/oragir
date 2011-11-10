@@ -118,6 +118,8 @@ private slots:
 
     void onDatabaseActivate(bool);
 
+    void onParserStateChanged(int state);
+
 private:
     /// Saves the window state.
     void saveWindow() const;

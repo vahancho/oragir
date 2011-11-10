@@ -78,6 +78,8 @@ MainWindow::MainWindow(QWidget *parent, Qt::WFlags flags)
     core::AtomParser *parser = core::Application::theApp()->streamParser();
     connect(parser, SIGNAL(fetched(const Post &, const Blog &)),
             this, SLOT(onItemProcessed()));
+    connect(parser, SIGNAL(stateChanged(int)),
+            this, SLOT(onParserStateChanged(int)));
 
     QDockWidget *dock = new QDockWidget("Databases", this);
     dock->setObjectName("Databases");
@@ -609,6 +611,12 @@ void MainWindow::onDatabaseActivate(bool activate)
         core::Database *db = core::Application::theApp()->database();
         db->setActive(action->data().toString());
     }
+}
+
+void MainWindow::onParserStateChanged(int /*state*/)
+{
+    core::AtomParser *parser = core::Application::theApp()->streamParser();
+    statusBar()->showMessage(parser->statusMessage(), 2000);
 }
 
 } // namespace gui
