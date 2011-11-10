@@ -85,6 +85,8 @@ void AtomParser::onStateChanged(int state)
     default:
         break;
     }
+
+    emit stateChanged(state);
 }
 
 void AtomParser::fetchHttpData(const QHttpResponseHeader &resp)
@@ -194,6 +196,11 @@ bool AtomParser::isGroupTag() const
     return m_xml.name() == str::TagFeed ||
            m_xml.name() == str::TagAuthor ||
            m_xml.name() == str::TagEntry;
+}
+
+QString AtomParser::statusMessage() const
+{
+    return m_status;
 }
 
 } // namespace core

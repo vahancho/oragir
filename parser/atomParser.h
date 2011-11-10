@@ -42,8 +42,11 @@ public:
 
     ~AtomParser();
 
+    QString statusMessage() const;
+
 signals:
     void fetched(const Post &post, const Blog &blog);
+    void stateChanged(int state);
 
 public slots:
     /// Start parsing the atom stream.
@@ -53,7 +56,6 @@ public slots:
     void stop();
 
 private slots:
-
     /// Fetches the fetched data from HTTP.
     void fetchHttpData(const QHttpResponseHeader &resp);
 
