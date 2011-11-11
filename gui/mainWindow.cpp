@@ -626,7 +626,31 @@ void MainWindow::onDatabaseRemove()
 {
      if(QAction *action = qobject_cast<QAction *>(sender())) {
         core::Database *db = core::Application::theApp()->database();
-        db->remove(action->data().toString());
+        QString dbName = action->data().toString();
+
+        // Find database view that has to be closed.
+        QList<QMdiSubWindow *> mdiWindows = m_mdiArea.subWindowList();
+        foreach(QMdiSubWindow *mdiWindow, mdiWindows) {
+            if (DatabaseView *dbView =
+                qobject_cast<DatabaseView *>(mdiWindow->widget())){
+                if (dbView->hasTable(db->database(dbName), "post")) {
+                    delete dbView;
+                    mdiWindow->close();
+                    // Assume that we will have one view per database.
+                    break;
+                }
+            }
+        }
+
+        // Remove all nodes for the given database.
+        for(int i = 0; i < m_databaseList->topLevelItemCount(); i++) {
+            QTreeWidgetItem *item = m_databaseList->topLevelItem(i);
+            if (item->text(1) == dbName)
+                m_databaseList->takeTopLevelItem(i);
+        }
+
+        // Finally remove the database itself.
+        db->remove(dbName);
     }
 }
 
