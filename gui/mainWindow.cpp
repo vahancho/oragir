@@ -619,7 +619,18 @@ void MainWindow::onDatabaseActivate(bool activate)
 {
     if(QAction *action = qobject_cast<QAction *>(sender())) {
         core::Database *db = core::Application::theApp()->database();
-        db->setActive(action->data().toString());
+        QString dbName = action->data().toString();
+        db->setActive(dbName);
+
+        // Set the active icon for the active db item.
+        for(int i = 0; i < m_databaseList->topLevelItemCount(); i++) {
+            QTreeWidgetItem *item = m_databaseList->topLevelItem(i);
+            if (item->text(1) == dbName) {
+                item->setIcon(0, QIcon(":/icons/db_active"));
+            } else {
+                item->setIcon(0, QIcon(":/icons/db"));
+            }
+        }
     }
 }
 
