@@ -598,7 +598,7 @@ void MainWindow::onDatabaseContextMenu(const QPoint &pos)
                                              SLOT(onDatabaseActivate(bool)));
             action->setData(dbName);
             action->setCheckable(true);
-            action->setChecked(db->isActive(dbName));
+            action->setChecked(active);
         }
 
         menu.exec(m_databaseList->mapToGlobal(QPoint(pos.x(), pos.y() + 20)));
