@@ -615,7 +615,7 @@ void MainWindow::onDatabaseContextMenu(const QPoint &pos)
     }
 }
 
-void MainWindow::onDatabaseActivate(bool activate)
+void MainWindow::onDatabaseActivate(bool /*activate*/)
 {
     if(QAction *action = qobject_cast<QAction *>(sender())) {
         core::Database *db = core::Application::theApp()->database();
