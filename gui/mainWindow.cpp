@@ -93,6 +93,8 @@ MainWindow::MainWindow(QWidget *parent, Qt::WFlags flags)
     m_databaseList->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(m_databaseList, SIGNAL(customContextMenuRequested(const QPoint &)),
             this, SLOT(onDatabaseContextMenu(const QPoint &)));
+    connect(m_databaseList, SIGNAL(doubleClicked(const QModelIndex &)),
+            this, SLOT(onDatabaseItemDblClicked(const QModelIndex &)));
 
     dock->setWidget(m_databaseList);
     addDockWidget(Qt::LeftDockWidgetArea, dock);
@@ -676,6 +678,24 @@ void MainWindow::onParserStateChanged(int /*state*/)
 {
     core::AtomParser *parser = core::Application::theApp()->streamParser();
     statusBar()->showMessage(parser->statusMessage(), 2000);
+}
+
+void MainWindow::onDatabaseItemDblClicked(const QModelIndex &index)
+{
+    core::Database *db = core::Application::theApp()->database();
+    QTreeWidgetItem *item = m_databaseList->topLevelItem(index.row());
+    QString dbName = item->text(1);
+    QList<QMdiSubWindow *> mdiWindows = m_mdiArea.subWindowList();
+    foreach(QMdiSubWindow *mdiWindow, mdiWindows) {
+        if (DatabaseView *dbView =
+            qobject_cast<DatabaseView *>(mdiWindow->widget())){
+            if (dbView->hasTable(db->database(dbName), "post")) {
+                setActiveSubWindow(mdiWindow);
+                break;
+            }
+        }
+    }
+
 }
 
 } // namespace gui

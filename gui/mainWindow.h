@@ -122,6 +122,8 @@ private slots:
 
     void onParserStateChanged(int state);
 
+    void onDatabaseItemDblClicked(const QModelIndex &);
+
 private:
     /// Saves the window state.
     void saveWindow() const;
