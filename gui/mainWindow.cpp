@@ -544,7 +544,8 @@ void MainWindow::onStreamStop()
 
 void MainWindow::onDatabaseOpen()
 {
-    QFileDialog dlg(this, "Open Database File", ".", tr("Databases (*.db)"));
+    QFileDialog dlg(this, "Open Database File", ".",
+                    tr("Databases (*.db);;All files (*.*)"));
     if(dlg.exec() == QDialog::Accepted) {
         QStringList files = dlg.selectedFiles();
         if (files.size() > 0) {
