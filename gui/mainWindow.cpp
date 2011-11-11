@@ -592,7 +592,7 @@ void MainWindow::onDatabaseContextMenu(const QPoint &pos)
         QString dbName = treeItem->text(1);
         bool active = db->isActive(dbName);
         if (!active) {
-            QAction *action = menu.addAction(QIcon(":/icons/job_watch"),
+            QAction *action = menu.addAction(QIcon(":/icons/db_activate"),
                                              "Active",
                                              this,
                                              SLOT(onDatabaseActivate(bool)));
@@ -600,6 +600,12 @@ void MainWindow::onDatabaseContextMenu(const QPoint &pos)
             action->setCheckable(true);
             action->setChecked(active);
         }
+
+        QAction *action = menu.addAction(QIcon(":/icons/db_remove"),
+                                         "&Remove",
+                                         this,
+                                         SLOT(onDatabaseRemove()));
+        action->setData(dbName);
 
         menu.exec(m_databaseList->mapToGlobal(QPoint(pos.x(), pos.y() + 20)));
     }
@@ -610,6 +616,14 @@ void MainWindow::onDatabaseActivate(bool activate)
     if(QAction *action = qobject_cast<QAction *>(sender())) {
         core::Database *db = core::Application::theApp()->database();
         db->setActive(action->data().toString());
+    }
+}
+
+void MainWindow::onDatabaseRemove()
+{
+     if(QAction *action = qobject_cast<QAction *>(sender())) {
+        core::Database *db = core::Application::theApp()->database();
+        db->remove(action->data().toString());
     }
 }
 

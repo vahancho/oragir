@@ -118,6 +118,8 @@ private slots:
 
     void onDatabaseActivate(bool);
 
+    void onDatabaseRemove();
+
     void onParserStateChanged(int state);
 
 private:
