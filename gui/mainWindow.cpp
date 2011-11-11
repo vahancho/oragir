@@ -640,6 +640,13 @@ void MainWindow::onDatabaseRemove()
         core::Database *db = core::Application::theApp()->database();
         QString dbName = action->data().toString();
 
+        // Stop parsing before removing the target database.
+        if (db->isActive(dbName)) {
+            core::AtomParser *parser =
+                    core::Application::theApp()->streamParser();
+            parser->stop();
+        }
+
         // Find database view(s) that has to be closed.
         QList<QMdiSubWindow *> mdiWindows = m_mdiArea.subWindowList();
         foreach(QMdiSubWindow *mdiWindow, mdiWindows) {
