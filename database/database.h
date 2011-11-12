@@ -66,6 +66,9 @@ public:
     /// Returns true if given connection is the active one.
     bool isActive(const QString &connectionName) const;
 
+    /// Returns the list of all database names.
+    QStringList databases() const;
+
 signals:
     void recordInserted(const QSqlDatabase &db, const QString &table);
 

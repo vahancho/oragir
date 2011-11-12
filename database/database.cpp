@@ -227,4 +227,9 @@ bool Database::isActive(const QString &connectionName) const
     return connectionName == m_dbActiveConnection;
 }
 
+QStringList Database::databases() const
+{
+    return QSqlDatabase::connectionNames();
+}
+
 } // namespace core
