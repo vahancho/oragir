@@ -98,6 +98,15 @@ private:
     */
     void init();
 
+    /// Create and initializes the database defaults.
+    void registerDatabaseDefaults() const;
+
+    /// Restores the database state.
+    void restoreDatabase() const;
+
+    /// Saves database defaults.
+    void saveDatabaseDefaults() const;
+
     /// Pointer to the only existing object of Application.
     static Application *m_theApp;
 

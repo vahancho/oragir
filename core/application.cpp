@@ -53,12 +53,7 @@ Application::~Application()
     m_atomParser->stop();
     delete m_atomParser;
 
-    // Save database settings before closing the application.
-    m_defaultManager->setValue("Databases", m_dataBase->databases());
-    QString filtersFile = m_defaultManager->value("Filters").toString();
-    if (!filtersFile.isEmpty())
-        m_dataBase->saveFilters(filtersFile);
-
+    saveDatabaseDefaults();
     delete m_dataBase;
 
     // Save defaults
@@ -91,13 +86,7 @@ void Application::init()
     // Create all application components
     m_defaultManager = new DefaultManager;
     m_dataBase = new Database;
-
-    // Register database defaults.
-    m_defaultManager->addProperty("Databases", QStringList(), QStringList());
-
-    QString filterFile = QCoreApplication::applicationDirPath() + "/filters.flt";
-    filterFile = QDir::toNativeSeparators(filterFile);
-    m_defaultManager->addProperty("Filters", filterFile, filterFile);
+    registerDatabaseDefaults();
 
     m_atomParser = new AtomParser;
     QObject::connect(m_atomParser, SIGNAL(fetched(const Post &, const Blog &)),
@@ -110,16 +99,7 @@ void Application::init()
     // Read and set all defaults.
     m_defaultManager->readDefaults();
 
-    // Restore saved databases.
-    QStringList databases = m_defaultManager->value("Databases").toStringList();
-    foreach(const QString &db, databases) {
-        if (m_dataBase->create(db)) {
-            m_mainWindow->setDatabaseTable(m_dataBase->database(db), "post");
-        }
-    }
-    QString filtersFile = m_defaultManager->value("Filters").toString();
-    m_dataBase->openFilters(filtersFile);
-
+    restoreDatabase();
     m_mainWindow->restoreWindow();
     m_mainWindow->show();
 }
@@ -142,6 +122,44 @@ Database *Application::database() const
 AtomParser *Application::streamParser() const
 {
     return m_atomParser;
+}
+
+void Application::registerDatabaseDefaults() const
+{
+    Q_ASSERT(m_defaultManager);
+    Q_ASSERT(m_dataBase);
+
+    m_defaultManager->addProperty("Databases", QStringList(), QStringList());
+
+    QString filterFile = QCoreApplication::applicationDirPath() + "/filters.flt";
+    filterFile = QDir::toNativeSeparators(filterFile);
+    m_defaultManager->addProperty("Filters", filterFile, filterFile);
+}
+
+void Application::restoreDatabase() const
+{
+    Q_ASSERT(m_defaultManager);
+    Q_ASSERT(m_dataBase);
+
+    QStringList databases = m_defaultManager->value("Databases").toStringList();
+    foreach(const QString &db, databases) {
+        if (m_dataBase->create(db)) {
+            m_mainWindow->setDatabaseTable(m_dataBase->database(db), "post");
+        }
+    }
+    QString filtersFile = m_defaultManager->value("Filters").toString();
+    m_dataBase->openFilters(filtersFile);
+}
+
+void Application::saveDatabaseDefaults() const
+{
+    Q_ASSERT(m_defaultManager);
+    Q_ASSERT(m_dataBase);
+
+    m_defaultManager->setValue("Databases", m_dataBase->databases());
+    QString filtersFile = m_defaultManager->value("Filters").toString();
+    if (!filtersFile.isEmpty())
+        m_dataBase->saveFilters(filtersFile);
 }
 
 } // namespace core
