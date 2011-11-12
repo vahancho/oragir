@@ -619,6 +619,17 @@ void MainWindow::onDatabaseRemove()
 
         // Finally remove the database itself.
         db->remove(dbName);
+
+        // Update the activation state in the databases list.
+        for(int i = 0; i < m_databaseList->topLevelItemCount(); i++) {
+            QTreeWidgetItem *item = m_databaseList->topLevelItem(i);
+            QString dbName = item->text(1);
+            if (db->isActive(dbName)) {
+                item->setIcon(0, QIcon(":/icons/db_active"));
+            } else {
+                item->setIcon(0, QIcon(":/icons/db"));
+            }
+        }
     }
 }
 
