@@ -95,8 +95,27 @@ MainWindow::MainWindow(QWidget *parent, Qt::WFlags flags)
 MainWindow::~MainWindow()
 {}
 
-void MainWindow::setDatabaseTable(const QSqlDatabase &db, const QString &table)
+void MainWindow::setDatabaseTable(const QString &dbName, const QString &table)
 {
+    core::Database *dbObj = core::Application::theApp()->database();
+    QSqlDatabase db = dbObj->database(dbName);
+    if (!db.isValid())
+        return;
+
+    // Add tree node for the given database.
+    QTreeWidgetItem *node = new QTreeWidgetItem;
+    if (dbObj->isActive(dbName))
+        node->setIcon(0, QIcon(":/icons/db_active"));
+    else
+        node->setIcon(0, QIcon(":/icons/db"));
+    QFileInfo fi(dbName);
+    node->setText(0, fi.fileName());
+    node->setToolTip(0, fi.fileName());
+    node->setText(1, dbName);
+    node->setToolTip(1, dbName);
+    m_databaseList->addTopLevelItem(node);
+
+    // Create and show database view.
     DatabaseView *dbView = new DatabaseView;
     dbView->init(db, table);
 
@@ -495,19 +514,7 @@ void MainWindow::onDatabaseOpen()
             core::Database *db = core::Application::theApp()->database();
             QString file = files.at(0);
             if (db->create(file)) {
-                setDatabaseTable(db->database(file), "post");
-
-                QTreeWidgetItem *node = new QTreeWidgetItem;
-                if (db->isActive(file))
-                    node->setIcon(0, QIcon(":/icons/db_active"));
-                else
-                    node->setIcon(0, QIcon(":/icons/db"));
-                QFileInfo fi(file);
-                node->setText(0, fi.fileName());
-                node->setToolTip(0, fi.fileName());
-                node->setText(1, file);
-                node->setToolTip(1, file);
-                m_databaseList->addTopLevelItem(node);
+                setDatabaseTable(file, "post");
             } else {
                 QMessageBox::critical(this, str::DatabaseError,
                                       db->errorMessage());
