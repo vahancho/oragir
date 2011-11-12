@@ -87,17 +87,32 @@ void Application::init()
     // Create all application components
     m_defaultManager = new DefaultManager;
     m_dataBase = new Database;
+
+    // Register database defaults.
+    m_defaultManager->addProperty("Databases", QList<QVariant>(), QList<QVariant>());
+    m_defaultManager->addProperty("Filters", QString(), QString());
+
     m_atomParser = new AtomParser;
     QObject::connect(m_atomParser, SIGNAL(fetched(const Post &, const Blog &)),
                      m_dataBase, SLOT(onFetched(const Post &, const Blog &)));
 
-    // Restore Main Window state based on saved defaults
     m_mainWindow = new gui::MainWindow;
     QObject::connect(m_dataBase, SIGNAL(recordInserted(const QSqlDatabase &, const QString &)),
                      m_mainWindow, SLOT(onRecordInserted(const QSqlDatabase &, const QString &)));
 
-    // Read and set all defaults
+    // Read and set all defaults.
     m_defaultManager->readDefaults();
+
+    // Restore saved databases.
+    QList<QVariant> databases = m_defaultManager->value("Databases").toList();
+    foreach(const QVariant &vDb, databases) {
+        const QString &db = vDb.toString();
+        if (m_dataBase->create(db)) {
+            m_mainWindow->setDatabaseTable(m_dataBase->database(db), "post");
+        }
+    }
+    QString filtersFile = m_defaultManager->value("Filters").toString();
+    m_dataBase->openFilters(filtersFile);
 
     m_mainWindow->restoreWindow();
     m_mainWindow->show();
