@@ -107,6 +107,20 @@ private:
     /// Saves database defaults.
     void saveDatabaseDefaults() const;
 
+    /// Create and initializes main window defaults.
+    void registerMainWindowDefaults() const;
+
+    /// Restores the window's state based on defaults values.
+    /*!
+        Window's state is saved on closing the Application and restore on
+        next session. State includes window's size, position, dock windows
+        geometries and tool bars state.
+    */
+    void restoreMainWindow() const;
+
+    /// Saves database defaults.
+    void saveMainWindowDefaults() const;
+
     /// Pointer to the only existing object of Application.
     static Application *m_theApp;
 

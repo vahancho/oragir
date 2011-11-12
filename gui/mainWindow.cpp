@@ -31,12 +31,6 @@
 namespace gui
 {
 
-// Default window size and position
-const int defSizeX  = 800;
-const int defSizeY  = 700;
-const int defPosX   = 200;
-const int defPosY   = 200;
-
 // Tool bars icon size
 const int iconSizeX = 16;
 const int iconSizeY = 16;
@@ -68,9 +62,6 @@ MainWindow::MainWindow(QWidget *parent, Qt::WFlags flags)
 
     // Set window title
     setWindowTitle(str::AppName);
-
-    // Register Main Window defaults
-    addDefaults();
 
     if(QSystemTrayIcon::isSystemTrayAvailable())
         createTrayIcon();
@@ -359,47 +350,6 @@ void MainWindow::onStatusBarShowHide()
 void MainWindow::onToolsOptions()
 {}
 
-void MainWindow::saveWindow() const
-{
-    core::DefaultManager *defaultMngr = core::Application::theApp()->defaultManager();
-
-    // Save Main Window configuration to defaults
-    defaultMngr->setValue(str::MainWindowSize, size());
-    defaultMngr->setValue(str::MainWindowPos, pos());
-    defaultMngr->setValue(str::MainWindowMax, isMaximized());
-    defaultMngr->setValue(str::MainWindowState, saveState());
-    defaultMngr->setValue(str::ShowStatusBar, m_statusBarAction->isChecked());
-}
-
-void MainWindow::restoreWindow()
-{
-    // Read Main Window configuration from defaults and restore the state
-    core::DefaultManager *defaultMngr =
-                    core::Application::theApp()->defaultManager();
-
-    // Set maximized state
-    bool max = defaultMngr->value(str::MainWindowMax).toBool();
-    if(max)
-        showMaximized();
-
-    // Set window size
-    QSize size = defaultMngr->value(str::MainWindowSize).toSize();
-    resize(size);
-
-    // Set window position
-    QPoint pos = defaultMngr->value(str::MainWindowPos).toPoint();
-    move(pos);
-
-    // Restore tool bars state
-    QByteArray state = defaultMngr->value(str::MainWindowState).toByteArray();
-    restoreState(state);
-
-    // Restore status bar state
-    bool showStatus = defaultMngr->value(str::ShowStatusBar).toBool();
-    statusBar()->setVisible(showStatus);
-    m_statusBarAction->setChecked(showStatus);
-}
-
 void MainWindow::closeEvent(QCloseEvent *event)
 {
     core::DefaultManager *defaultMngr = 
@@ -412,21 +362,6 @@ void MainWindow::closeEvent(QCloseEvent *event)
         event->ignore();
     } else
         event->accept();
-
-    saveWindow();
-}
-
-void MainWindow::addDefaults() const
-{
-    core::DefaultManager *defaultMngr = core::Application::theApp()->defaultManager();
-
-    // Add Main Window related defaults with initial and factory values.
-    defaultMngr->addProperty(str::MainWindowSize, QSize(defSizeX, defSizeY), QSize(defSizeX, defSizeY));
-    defaultMngr->addProperty(str::MainWindowPos, QPoint(defPosX, defPosY), QPoint(defPosX, defPosY));
-    defaultMngr->addProperty(str::MainWindowMax, bool(false), bool(false));
-    defaultMngr->addProperty(str::MainWindowState, QByteArray(), QByteArray());
-    defaultMngr->addProperty(str::ShowStatusBar, bool(true), bool(true));
-    defaultMngr->addProperty(str::QuitOnClose, bool(false), bool(false));
 }
 
 void MainWindow::updateWindowMenu()

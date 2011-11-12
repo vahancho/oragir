@@ -18,6 +18,7 @@
 *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
 ***************************************************************************/
 
+#include <QStatusBar>
 #include "application.h"
 #include "defaultManager.h"
 #include "../parser/atomParser.h"
@@ -26,6 +27,12 @@
 
 namespace core
 {
+
+// Default main window size and position
+const int defSizeX  = 800;
+const int defSizeY  = 700;
+const int defPosX   = 200;
+const int defPosY   = 200;
 
 // Definition of the pointer to the only application object.
 Application *Application::m_theApp = 0;
@@ -45,9 +52,8 @@ Application::Application()
 Application::~Application()
 {
     // Delete Application components.
-    if(m_mainWindow)
-        m_mainWindow->close();
-
+    saveMainWindowDefaults();
+    m_mainWindow->close();
     delete m_mainWindow;
 
     m_atomParser->stop();
@@ -85,6 +91,7 @@ void Application::init()
 {
     // Create all application components
     m_defaultManager = new DefaultManager;
+
     m_dataBase = new Database;
     registerDatabaseDefaults();
 
@@ -93,6 +100,7 @@ void Application::init()
                      m_dataBase, SLOT(onFetched(const Post &, const Blog &)));
 
     m_mainWindow = new gui::MainWindow;
+    registerMainWindowDefaults();
     QObject::connect(m_dataBase, SIGNAL(recordInserted(const QSqlDatabase &, const QString &)),
                      m_mainWindow, SLOT(onRecordInserted(const QSqlDatabase &, const QString &)));
 
@@ -100,7 +108,7 @@ void Application::init()
     m_defaultManager->readDefaults();
 
     restoreDatabase();
-    m_mainWindow->restoreWindow();
+    restoreMainWindow();
     m_mainWindow->show();
 }
 
@@ -161,6 +169,58 @@ void Application::saveDatabaseDefaults() const
     QString filtersFile = m_defaultManager->value(str::Filters).toString();
     if (!filtersFile.isEmpty())
         m_dataBase->saveFilters(filtersFile);
+}
+
+void Application::registerMainWindowDefaults() const
+{
+    Q_ASSERT(m_defaultManager);
+
+    m_defaultManager->addProperty(str::MainWindowSize, QSize(defSizeX, defSizeY), QSize(defSizeX, defSizeY));
+    m_defaultManager->addProperty(str::MainWindowPos, QPoint(defPosX, defPosY), QPoint(defPosX, defPosY));
+    m_defaultManager->addProperty(str::MainWindowMax, bool(false), bool(false));
+    m_defaultManager->addProperty(str::MainWindowState, QByteArray(), QByteArray());
+    m_defaultManager->addProperty(str::ShowStatusBar, bool(true), bool(true));
+    m_defaultManager->addProperty(str::QuitOnClose, bool(false), bool(false));
+}
+
+void Application::restoreMainWindow() const
+{
+    Q_ASSERT(m_defaultManager);
+    Q_ASSERT(m_mainWindow);
+
+    // Set maximized state
+    bool max = m_defaultManager->value(str::MainWindowMax).toBool();
+    if(max)
+        m_mainWindow->showMaximized();
+
+    // Set window size
+    QSize size = m_defaultManager->value(str::MainWindowSize).toSize();
+    m_mainWindow->resize(size);
+
+    // Set window position
+    QPoint pos = m_defaultManager->value(str::MainWindowPos).toPoint();
+    m_mainWindow->move(pos);
+
+    // Restore tool bars state
+    QByteArray state = m_defaultManager->value(str::MainWindowState).toByteArray();
+    m_mainWindow->restoreState(state);
+
+    // Restore status bar state
+    bool showStatus = m_defaultManager->value(str::ShowStatusBar).toBool();
+    m_mainWindow->statusBar()->setVisible(showStatus);
+}
+
+void Application::saveMainWindowDefaults() const
+{
+    Q_ASSERT(m_defaultManager);
+    Q_ASSERT(m_mainWindow);
+
+    // Save Main Window configuration to defaults
+    m_defaultManager->setValue(str::MainWindowSize, m_mainWindow->size());
+    m_defaultManager->setValue(str::MainWindowPos, m_mainWindow->pos());
+    m_defaultManager->setValue(str::MainWindowMax, m_mainWindow->isMaximized());
+    m_defaultManager->setValue(str::MainWindowState, m_mainWindow->saveState());
+    m_defaultManager->setValue(str::ShowStatusBar, m_mainWindow->statusBar()->isVisible());
 }
 
 } // namespace core

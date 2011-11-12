@@ -44,14 +44,6 @@ public:
     /// Destructor.
     ~MainWindow();
 
-    /// Restores the window's state based on defaults values.
-    /*!
-        Window's state is saved on closing the Application and restore on
-        next session. State includes window's size, position, dock windows
-        geometries and tool bars state.
-    */
-    void restoreWindow();
-
     /// Set up the table mdi child view for the given database table.
     void setDatabaseTable(const QSqlDatabase &db, const QString &table);
 
@@ -125,9 +117,6 @@ private slots:
     void onDatabaseItemDblClicked(const QModelIndex &);
 
 private:
-    /// Saves the window state.
-    void saveWindow() const;
-
     /// Returns the active MDI sub window.
     /*!
         Returns the active MDI sub window if any, otherwise returns 0.
@@ -140,9 +129,6 @@ private:
 
     /// Create dockable windows.
     void createDockWindows();
-
-    /// Registers and set Main Window defaults.
-    void addDefaults() const;
 
     /// Creates the system tray icon.
     void createTrayIcon();
