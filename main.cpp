@@ -34,27 +34,9 @@ int main(int argc, char *argv[])
     a.setWindowIcon(QIcon(":/icons/app"));
 
     Application *app = Application::create();
-    Database *db = app->database();
-    QString appPath = QCoreApplication::applicationDirPath();
-    if (!db->create(appPath + "/posts.db")) {
-        printf("%s \n", db->errorMessage().toAscii().data());
-        return -1;
-    }
-
-    if (!db->openFilters(appPath + "/filters.xml")) {
-        Filter<Post> filter("Test filter");
-        filter.setRule(str::TagContent, "test", Filter<Post>::Contains);
-        filter.setRule(str::TagTitle, "test", Filter<Post>::Contains);
-        filter.setRule(str::TagName, "test", Filter<Post>::Contains);
-        db->addFilter(filter);
-    }
-
-    gui::MainWindow *mw = app->mainWindow();
-    mw->setDatabaseTable(db->database(appPath + "/posts.db"), "post");
 
     int ret = a.exec();
 
-    db->saveFilters(appPath + "/filters.xml");
     core::Application::destroy();
 
     return ret;
