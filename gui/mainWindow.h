@@ -67,6 +67,9 @@ private slots:
     /// This slot is called when Views sub menu is about to show.
     void updateViewsMenu();
 
+    /// This slot called when View menu is about to show.
+    void setStatusBarActionState();
+
     /// This slot is called when Window menu is about to show.
     void updateWindowMenu();
 

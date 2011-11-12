@@ -206,6 +206,7 @@ void MainWindow::createMenus()
     // View menu
     //
     QMenu *viewMenu = new QMenu(str::MenuView, this);
+    connect(viewMenu, SIGNAL(aboutToShow()), this, SLOT(setStatusBarActionState()));
 
     //QToolBar *viewToolBar = new QToolBar(str::MenuView, this);
     //viewToolBar->setObjectName(str::MenuView);
@@ -429,6 +430,11 @@ void MainWindow::updateViewsMenu()
                 m_viewsMenu->addAction(dockWidgets.at(i)->toggleViewAction());
         }
     }
+}
+
+void MainWindow::setStatusBarActionState()
+{
+    m_statusBarAction->setChecked(statusBar()->isVisible());
 }
 
 QMdiSubWindow *MainWindow::activeSubWindow() const
