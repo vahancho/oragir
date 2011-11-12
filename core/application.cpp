@@ -129,25 +129,26 @@ void Application::registerDatabaseDefaults() const
     Q_ASSERT(m_defaultManager);
     Q_ASSERT(m_dataBase);
 
-    m_defaultManager->addProperty("Databases", QStringList(), QStringList());
+    m_defaultManager->addProperty(str::Databases, QStringList(), QStringList());
 
     QString filterFile = QCoreApplication::applicationDirPath() + "/filters.flt";
     filterFile = QDir::toNativeSeparators(filterFile);
-    m_defaultManager->addProperty("Filters", filterFile, filterFile);
+    m_defaultManager->addProperty(str::Filters, filterFile, filterFile);
 }
 
 void Application::restoreDatabase() const
 {
     Q_ASSERT(m_defaultManager);
     Q_ASSERT(m_dataBase);
+    Q_ASSERT(m_mainWindow);
 
-    QStringList databases = m_defaultManager->value("Databases").toStringList();
+    QStringList databases = m_defaultManager->value(str::Databases).toStringList();
     foreach(const QString &db, databases) {
         if (m_dataBase->create(db)) {
             m_mainWindow->setDatabaseTable(m_dataBase->database(db), "post");
         }
     }
-    QString filtersFile = m_defaultManager->value("Filters").toString();
+    QString filtersFile = m_defaultManager->value(str::Filters).toString();
     m_dataBase->openFilters(filtersFile);
 }
 
@@ -156,8 +157,8 @@ void Application::saveDatabaseDefaults() const
     Q_ASSERT(m_defaultManager);
     Q_ASSERT(m_dataBase);
 
-    m_defaultManager->setValue("Databases", m_dataBase->databases());
-    QString filtersFile = m_defaultManager->value("Filters").toString();
+    m_defaultManager->setValue(str::Databases, m_dataBase->databases());
+    QString filtersFile = m_defaultManager->value(str::Filters).toString();
     if (!filtersFile.isEmpty())
         m_dataBase->saveFilters(filtersFile);
 }

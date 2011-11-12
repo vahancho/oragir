@@ -60,6 +60,8 @@ namespace str
     const char *MainWindowState = "MainWindowState";
     const char *ShowStatusBar = "ShowStatusBar";
     const char *QuitOnClose = "QuitOnClose";
+    const char *Databases = "Databases";
+    const char *Filters = "Filters";
     
     // Version related strings
     const char *Version = "0.1a";
