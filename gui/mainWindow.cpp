@@ -540,7 +540,7 @@ void MainWindow::onDatabaseContextMenu(const QPoint &pos)
         bool active = db->isActive(dbName);
         if (!active) {
             QAction *action = menu.addAction(QIcon(":/icons/db_activate"),
-                                             "Active",
+                                             str::ActionDbActive,
                                              this,
                                              SLOT(onDatabaseActivate(bool)));
             action->setData(dbName);
@@ -549,7 +549,7 @@ void MainWindow::onDatabaseContextMenu(const QPoint &pos)
         }
 
         QAction *action = menu.addAction(QIcon(":/icons/db_remove"),
-                                         "&Remove",
+                                         str::ActionDbRemove,
                                          this,
                                          SLOT(onDatabaseRemove()));
         action->setData(dbName);

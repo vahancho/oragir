@@ -61,6 +61,8 @@ namespace str
     extern const char *ActionStop;
     extern const char *ActionFilters;
     extern const char *ActionOptions;
+    extern const char *ActionDbActive;
+    extern const char *ActionDbRemove;
 
     // Http status messages
     extern const char *HostLookup;
