@@ -50,16 +50,20 @@ Application::~Application()
 
     delete m_mainWindow;
 
-    if(m_defaultManager)
-        // Save defaults
-        m_defaultManager->saveDefaults();
-
-    delete m_defaultManager;
-
     m_atomParser->stop();
     delete m_atomParser;
 
+    // Save database settings before closing the application.
+    m_defaultManager->setValue("Databases", m_dataBase->databases());
+    QString filtersFile = m_defaultManager->value("Filters").toString();
+    if (!filtersFile.isEmpty())
+        m_dataBase->saveFilters(filtersFile);
+
     delete m_dataBase;
+
+    // Save defaults
+    m_defaultManager->saveDefaults();
+    delete m_defaultManager;
 }
 
 Application *Application::create()
@@ -89,8 +93,11 @@ void Application::init()
     m_dataBase = new Database;
 
     // Register database defaults.
-    m_defaultManager->addProperty("Databases", QList<QVariant>(), QList<QVariant>());
-    m_defaultManager->addProperty("Filters", QString(), QString());
+    m_defaultManager->addProperty("Databases", QStringList(), QStringList());
+
+    QString filterFile = QCoreApplication::applicationDirPath() + "/filters.flt";
+    filterFile = QDir::toNativeSeparators(filterFile);
+    m_defaultManager->addProperty("Filters", filterFile, filterFile);
 
     m_atomParser = new AtomParser;
     QObject::connect(m_atomParser, SIGNAL(fetched(const Post &, const Blog &)),
@@ -104,9 +111,8 @@ void Application::init()
     m_defaultManager->readDefaults();
 
     // Restore saved databases.
-    QList<QVariant> databases = m_defaultManager->value("Databases").toList();
-    foreach(const QVariant &vDb, databases) {
-        const QString &db = vDb.toString();
+    QStringList databases = m_defaultManager->value("Databases").toStringList();
+    foreach(const QString &db, databases) {
         if (m_dataBase->create(db)) {
             m_mainWindow->setDatabaseTable(m_dataBase->database(db), "post");
         }
