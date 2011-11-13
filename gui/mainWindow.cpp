@@ -255,15 +255,16 @@ void MainWindow::createMenus()
     streamToolBar->setObjectName(str::MenuStream);
     streamToolBar->setIconSize(QSize(iconSizeX, iconSizeY));
 
-    QAction *startAction = streamMenu->addAction(str::ActionStart);
-    connect(startAction, SIGNAL(triggered()), this, SLOT(onStreamStart()));
-    startAction->setIcon(QIcon(":icons/start"));
-    streamToolBar->addAction(startAction);
+    m_startAction = streamMenu->addAction(str::ActionStart);
+    connect(m_startAction, SIGNAL(triggered()), this, SLOT(onStreamStart()));
+    m_startAction->setIcon(QIcon(":icons/start"));
+    streamToolBar->addAction(m_startAction);
 
-    QAction *stopAction = streamMenu->addAction(str::ActionStop);
-    connect(stopAction, SIGNAL(triggered()), this, SLOT(onStreamStop()));
-    stopAction->setIcon(QIcon(":icons/stop"));
-    streamToolBar->addAction(stopAction);
+    m_stopAction = streamMenu->addAction(str::ActionStop);
+    connect(m_stopAction, SIGNAL(triggered()), this, SLOT(onStreamStop()));
+    m_stopAction->setIcon(QIcon(":icons/stop"));
+    m_stopAction->setEnabled(false);
+    streamToolBar->addAction(m_stopAction);
 
     //////////////////////////////////////////////////////////////////////////
     // Tools menu
@@ -500,6 +501,10 @@ void MainWindow::onStreamStart()
     core::AtomParser *streamParser =
                     core::Application::theApp()->streamParser();
     streamParser->start();
+
+    // Disable start action until streaming is stopped.
+    m_startAction->setEnabled(false);
+    m_stopAction->setEnabled(true);
 }
 
 void MainWindow::onStreamStop()
@@ -507,6 +512,10 @@ void MainWindow::onStreamStop()
     core::AtomParser *streamParser =
                     core::Application::theApp()->streamParser();
     streamParser->stop();
+
+    // Enable start action.
+    m_startAction->setEnabled(true);
+    m_stopAction->setEnabled(false);
 }
 
 void MainWindow::onDatabaseOpen()

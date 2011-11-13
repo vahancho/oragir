@@ -165,6 +165,10 @@ private:
     /// Store the separator action.
     QAction *m_separatorAct;
 
+    QAction *m_startAction;
+
+    QAction *m_stopAction;
+
     /// Store the Window menu.
     QMenu *m_windowMenu;
 
