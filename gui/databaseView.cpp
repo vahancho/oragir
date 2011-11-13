@@ -65,11 +65,13 @@ DatabaseView::DatabaseView(QWidget *parent, Qt::WindowFlags f)
     // Create and configure tool bar actions.
     m_openSelected = new QAction("&Open In Browser", this);
     m_openSelected->setIcon(QIcon(":/icons/web"));
+    m_openSelected->setShortcut(QKeySequence(Qt::Key_Return));
     m_openSelected->setEnabled(false);
     connect(m_openSelected, SIGNAL(triggered()), this, SLOT(onOpenSelectedInBrowser()));
 
     m_removeSelected = new QAction("&Remove Selected", this);
     m_removeSelected->setIcon(QIcon(":/icons/remove_record"));
+    m_removeSelected->setShortcut(QKeySequence(Qt::Key_Delete));
     m_removeSelected->setEnabled(false);
     connect(m_removeSelected, SIGNAL(triggered()), this, SLOT(onRemoveSelected()));
 
