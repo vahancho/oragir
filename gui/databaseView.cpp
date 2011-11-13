@@ -76,10 +76,15 @@ DatabaseView::DatabaseView(const QSqlDatabase &db, const QString &table,
     m_removeSelected->setEnabled(false);
     connect(m_removeSelected, SIGNAL(triggered()), this, SLOT(onRemoveSelected()));
 
+    QAction *act = new QAction("Remove &All", this);
+    act->setIcon(QIcon(":/icons/remove_record"));
+    connect(act, SIGNAL(triggered()), this, SLOT(onRemoveAll()));
+
     QToolBar *toolbar = new QToolBar(this);
     toolbar->setIconSize(QSize(16, 16));
     toolbar->addAction(m_openSelected);
     toolbar->addAction(m_removeSelected);
+    toolbar->addAction(act);
 
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
     mainLayout->addWidget(toolbar);
@@ -175,6 +180,12 @@ void DatabaseView::onRemoveSelected()
         m_model->removeRows(index.row(), 1);
     }
 
+    m_model->submitAll();
+}
+
+void DatabaseView::onRemoveAll()
+{
+    m_model->removeRows(0, m_model->rowCount());
     m_model->submitAll();
 }
 

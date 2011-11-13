@@ -59,6 +59,8 @@ private slots:
 
     void onRemoveSelected();
 
+    void onRemoveAll();
+
 private:
     void init(const QSqlDatabase &db, const QString &table);
 
