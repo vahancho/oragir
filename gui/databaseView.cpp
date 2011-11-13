@@ -128,7 +128,7 @@ void DatabaseView::onSelectionChanged(const QItemSelection &selected,
 void DatabaseView::onDatabaseContextMenu(const QPoint &pos)
 {
     QMenu menu;
-    QAction *action = menu.addAction(QIcon(":/icons/db_remove"),
+    QAction *action = menu.addAction(QIcon(":/icons/web"),
                                      "&Open In Browser",
                                      this,
                                      SLOT(onOpenSelectedInBrowser()));
