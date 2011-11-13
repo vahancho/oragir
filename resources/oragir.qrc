@@ -4,5 +4,6 @@
 		<file alias="exit" >icon_exit.png</file>
 		<file alias="db" >icon_db.png</file>
 		<file alias="db_active" >icon_db_active.png</file>
+        <file alias="remove_record" >icon_remove_record.png</file>
  	</qresource>
 </RCC>
