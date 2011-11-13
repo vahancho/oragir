@@ -116,9 +116,7 @@ void MainWindow::setDatabaseTable(const QString &dbName, const QString &table)
     m_databaseList->addTopLevelItem(node);
 
     // Create and show database view.
-    DatabaseView *dbView = new DatabaseView;
-    dbView->init(db, table);
-
+    DatabaseView *dbView = new DatabaseView(db, table);
     QMdiSubWindow *postTableView = new QMdiSubWindow;
     postTableView->setWidget(dbView);
     postTableView->setAttribute(Qt::WA_DeleteOnClose);

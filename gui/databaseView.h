@@ -38,12 +38,11 @@ class DatabaseView : public QWidget
 
 public:
     /// The constructor.
-    DatabaseView(QWidget *parent = 0, Qt::WindowFlags f = 0);
+    DatabaseView(const QSqlDatabase &db, const QString &table,
+                 QWidget *parent = 0, Qt::WindowFlags f = 0);
 
     /// Destructor.
     ~DatabaseView();
-
-    void init(const QSqlDatabase &db, const QString &table);
 
     void updateTable();
 
@@ -61,6 +60,8 @@ private slots:
     void onRemoveSelected();
 
 private:
+    void init(const QSqlDatabase &db, const QString &table);
+
     QSqlTableModel *m_model;
     QTableView *m_view;
     QTextEdit *m_preview;

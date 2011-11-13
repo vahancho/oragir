@@ -35,7 +35,8 @@
 namespace gui
 {
 
-DatabaseView::DatabaseView(QWidget *parent, Qt::WindowFlags f)
+DatabaseView::DatabaseView(const QSqlDatabase &db, const QString &table,
+                           QWidget *parent, Qt::WindowFlags f)
     :
         QWidget(parent, f),
         m_view(0),
@@ -84,6 +85,8 @@ DatabaseView::DatabaseView(QWidget *parent, Qt::WindowFlags f)
     mainLayout->addWidget(toolbar);
     mainLayout->addWidget(splitter);
     setLayout(mainLayout);
+
+    init(db, table);
 }
 
 DatabaseView::~DatabaseView()
@@ -91,12 +94,6 @@ DatabaseView::~DatabaseView()
 
 void DatabaseView::init(const QSqlDatabase &db, const QString &table)
 {
-    Q_ASSERT(db.isValid());
-
-    // If model already exists, delete it and create new one.
-    if (m_model)
-        delete m_model;
-
     m_model = new QSqlTableModel(this, db);
     m_model->setTable(table);
     m_model->setEditStrategy(QSqlTableModel::OnManualSubmit);
