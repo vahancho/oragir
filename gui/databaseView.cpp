@@ -28,6 +28,7 @@
 #include <QMenu>
 #include <QDesktopServices>
 #include <QUrl>
+#include <QToolBar>
 #include "databaseView.h"
 #include "../strings/strings.h"
 
@@ -61,7 +62,22 @@ DatabaseView::DatabaseView(QWidget *parent, Qt::WindowFlags f)
 
     splitter->addWidget(m_preview);
 
+    // Create and configure tool bar actions.
+    m_openSelected = new QAction("&Open In Browser", this);
+    m_openSelected->setIcon(QIcon(":/icons/web"));
+    connect(m_openSelected, SIGNAL(triggered()), this, SLOT(onOpenSelectedInBrowser()));
+
+    m_removeSelected = new QAction("&Remove Selected", this);
+    m_removeSelected->setIcon(QIcon(":/icons/remove_record"));
+    connect(m_removeSelected, SIGNAL(triggered()), this, SLOT(onRemoveSelected()));
+
+    QToolBar *toolbar = new QToolBar(this);
+    toolbar->setIconSize(QSize(16, 16));
+    toolbar->addAction(m_openSelected);
+    toolbar->addAction(m_removeSelected);
+
     QVBoxLayout *mainLayout = new QVBoxLayout;
+    mainLayout->addWidget(toolbar);
     mainLayout->addWidget(splitter);
     setLayout(mainLayout);
 }
@@ -128,14 +144,8 @@ void DatabaseView::onSelectionChanged(const QItemSelection &selected,
 void DatabaseView::onDatabaseContextMenu(const QPoint &pos)
 {
     QMenu menu;
-    QAction *action = menu.addAction(QIcon(":/icons/web"),
-                                     "&Open In Browser",
-                                     this,
-                                     SLOT(onOpenSelectedInBrowser()));
-    action = menu.addAction(QIcon(":/icons/remove_record"),
-                                  "&Remove Selected",
-                                  this,
-                                  SLOT(onRemoveSelected()));
+    menu.addAction(m_openSelected);
+    menu.addAction(m_removeSelected);
     menu.exec(m_view->mapToGlobal(QPoint(pos.x(), pos.y() + 20)));
 }
 

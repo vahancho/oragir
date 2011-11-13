@@ -64,6 +64,9 @@ private:
     QSqlTableModel *m_model;
     QTableView *m_view;
     QTextEdit *m_preview;
+
+    QAction *m_openSelected;
+    QAction *m_removeSelected;
 };
 
 } // namespace gui
