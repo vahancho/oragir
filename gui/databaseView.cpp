@@ -65,10 +65,12 @@ DatabaseView::DatabaseView(QWidget *parent, Qt::WindowFlags f)
     // Create and configure tool bar actions.
     m_openSelected = new QAction("&Open In Browser", this);
     m_openSelected->setIcon(QIcon(":/icons/web"));
+    m_openSelected->setEnabled(false);
     connect(m_openSelected, SIGNAL(triggered()), this, SLOT(onOpenSelectedInBrowser()));
 
     m_removeSelected = new QAction("&Remove Selected", this);
     m_removeSelected->setIcon(QIcon(":/icons/remove_record"));
+    m_removeSelected->setEnabled(false);
     connect(m_removeSelected, SIGNAL(triggered()), this, SLOT(onRemoveSelected()));
 
     QToolBar *toolbar = new QToolBar(this);
@@ -134,6 +136,12 @@ void DatabaseView::onSelectionChanged(const QItemSelection &selected,
                                       const QItemSelection &deselected)
 {
     QModelIndexList indexes = selected.indexes();
+    // Handle the state of the actions.
+    bool enable = indexes.size() > 0;
+    m_openSelected->setEnabled(enable);
+    m_removeSelected->setEnabled(enable);
+
+    // Set the content of preview window.
     foreach(const QModelIndex &index, indexes) {
         QSqlRecord record = m_model->record(index.row());
         if (record.fieldName(index.column()) == str::TagContent)
