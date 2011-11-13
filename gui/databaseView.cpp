@@ -57,7 +57,7 @@ DatabaseView::DatabaseView(QWidget *parent, Qt::WindowFlags f)
     QSplitter *splitter = new QSplitter(Qt::Vertical, this);
     splitter->addWidget(m_view);
 
-    m_preview = new QTextEdit;
+    m_preview = new QTextEdit(this);
     m_preview->setReadOnly(true);
 
     splitter->addWidget(m_preview);
@@ -76,7 +76,7 @@ DatabaseView::DatabaseView(QWidget *parent, Qt::WindowFlags f)
     toolbar->addAction(m_openSelected);
     toolbar->addAction(m_removeSelected);
 
-    QVBoxLayout *mainLayout = new QVBoxLayout;
+    QVBoxLayout *mainLayout = new QVBoxLayout(this);
     mainLayout->addWidget(toolbar);
     mainLayout->addWidget(splitter);
     setLayout(mainLayout);
