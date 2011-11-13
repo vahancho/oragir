@@ -53,6 +53,10 @@ public:
 private slots:
     void onSelectionChanged(const QItemSelection &selected,
                             const QItemSelection &deselected);
+    void onDatabaseContextMenu(const QPoint &);
+
+    /// Open selected rows with web browser.
+    void onOpenSelectedInBrowser();
 
 private:
     QSqlTableModel *m_model;

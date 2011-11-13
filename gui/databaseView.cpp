@@ -25,6 +25,9 @@
 #include <QTextEdit>
 #include <QSqlTableModel>
 #include <QSqlRecord>
+#include <QMenu>
+#include <QDesktopServices>
+#include <QUrl>
 #include "databaseView.h"
 #include "../strings/strings.h"
 
@@ -42,6 +45,9 @@ DatabaseView::DatabaseView(QWidget *parent, Qt::WindowFlags f)
     m_view->setAlternatingRowColors(true);
     m_view->setEditTriggers(QAbstractItemView::NoEditTriggers);
     m_view->setSelectionBehavior(QAbstractItemView::SelectRows);
+    m_view->setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(m_view, SIGNAL(customContextMenuRequested(const QPoint &)),
+            this, SLOT(onDatabaseContextMenu(const QPoint &)));
 
     // The uniformed rows height.
     QFontMetrics fm = fontMetrics();
@@ -116,6 +122,28 @@ void DatabaseView::onSelectionChanged(const QItemSelection &selected,
         QSqlRecord record = m_model->record(index.row());
         if (record.fieldName(index.column()) == str::TagContent)
             m_preview->setText(record.value(index.column()).toString());
+    }
+}
+
+void DatabaseView::onDatabaseContextMenu(const QPoint &pos)
+{
+    QMenu menu;
+    QAction *action = menu.addAction(QIcon(":/icons/db_remove"),
+                                     "&Open In Browser",
+                                     this,
+                                     SLOT(onOpenSelectedInBrowser()));
+    menu.exec(m_view->mapToGlobal(QPoint(pos.x(), pos.y() + 20)));
+}
+
+void DatabaseView::onOpenSelectedInBrowser()
+{
+    QModelIndexList indexes = m_view->selectionModel()->selectedIndexes();
+    foreach(const QModelIndex &index, indexes) {
+        QSqlRecord record = m_model->record(index.row());
+        if (record.fieldName(index.column()) == str::TagLink) {
+            QDesktopServices::openUrl(QUrl(record.value(index.column()).toString(),
+                                      QUrl::TolerantMode));
+        }
     }
 }
 
