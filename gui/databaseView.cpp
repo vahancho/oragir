@@ -132,6 +132,10 @@ void DatabaseView::onDatabaseContextMenu(const QPoint &pos)
                                      "&Open In Browser",
                                      this,
                                      SLOT(onOpenSelectedInBrowser()));
+    action = menu.addAction(QIcon(":/icons/db_remove"),
+                                  "&Remove Selected",
+                                  this,
+                                  SLOT(onRemoveSelected()));
     menu.exec(m_view->mapToGlobal(QPoint(pos.x(), pos.y() + 20)));
 }
 
@@ -145,6 +149,16 @@ void DatabaseView::onOpenSelectedInBrowser()
                                       QUrl::TolerantMode));
         }
     }
+}
+
+void DatabaseView::onRemoveSelected()
+{
+    QModelIndexList indexes = m_view->selectionModel()->selectedRows();
+    foreach(const QModelIndex &index, indexes) {
+        m_model->removeRows(index.row(), 1);
+    }
+
+    m_model->submitAll();
 }
 
 } // namespace gui

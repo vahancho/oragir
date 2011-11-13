@@ -58,6 +58,8 @@ private slots:
     /// Open selected rows with web browser.
     void onOpenSelectedInBrowser();
 
+    void onRemoveSelected();
+
 private:
     QSqlTableModel *m_model;
     QTableView *m_view;
