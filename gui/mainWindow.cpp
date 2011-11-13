@@ -213,6 +213,7 @@ void MainWindow::createMenus()
 
     QAction *openAction = fileMenu->addAction(str::ActionOpen);
     openAction->setShortcut(QKeySequence(tr("Ctrl+O")));
+    openAction->setIcon(QIcon(":icons/table"));
     connect(openAction, SIGNAL(triggered()), this, SLOT(onDatabaseOpen()));
     fileToolBar->addAction(openAction);
 
@@ -256,10 +257,12 @@ void MainWindow::createMenus()
 
     QAction *startAction = streamMenu->addAction(str::ActionStart);
     connect(startAction, SIGNAL(triggered()), this, SLOT(onStreamStart()));
+    startAction->setIcon(QIcon(":icons/start"));
     streamToolBar->addAction(startAction);
 
     QAction *stopAction = streamMenu->addAction(str::ActionStop);
     connect(stopAction, SIGNAL(triggered()), this, SLOT(onStreamStop()));
+    stopAction->setIcon(QIcon(":icons/stop"));
     streamToolBar->addAction(stopAction);
 
     //////////////////////////////////////////////////////////////////////////
@@ -272,10 +275,12 @@ void MainWindow::createMenus()
 
     QAction *filtersAction = toolsMenu->addAction(str::ActionFilters);
     connect(filtersAction, SIGNAL(triggered()), this, SLOT(onFilters()));
+    filtersAction->setIcon(QIcon(":icons/filter"));
     toolsToolBar->addAction(filtersAction);
 
     QAction *optionsAction = toolsMenu->addAction(str::ActionOptions);
     connect(optionsAction, SIGNAL(triggered()), this, SLOT(onOptions()));
+    optionsAction->setIcon(QIcon(":icons/options"));
     toolsToolBar->addAction(optionsAction);
 
     //////////////////////////////////////////////////////////////////////////
