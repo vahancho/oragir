@@ -77,12 +77,13 @@ DatabaseView::DatabaseView(const QSqlDatabase &db, const QString &table,
     connect(m_removeSelected, SIGNAL(triggered()), this, SLOT(onRemoveSelected()));
 
     QAction *act = new QAction("Remove &All", this);
-    act->setIcon(QIcon(":/icons/remove_record"));
+    act->setIcon(QIcon(":/icons/remove_all"));
     connect(act, SIGNAL(triggered()), this, SLOT(onRemoveAll()));
 
     QToolBar *toolbar = new QToolBar(this);
     toolbar->setIconSize(QSize(16, 16));
     toolbar->addAction(m_openSelected);
+    toolbar->addSeparator();
     toolbar->addAction(m_removeSelected);
     toolbar->addAction(act);
 

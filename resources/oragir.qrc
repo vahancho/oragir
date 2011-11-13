@@ -5,6 +5,7 @@
 		<file alias="db" >icon_db.png</file>
 		<file alias="db_active" >icon_db_active.png</file>
         <file alias="remove_record" >icon_remove_record.png</file>
+        <file alias="remove_all" >icon_remove_all.png</file>
         <file alias="web" >icon_web.png</file>
         <file alias="table" >icon_table.png</file>
         <file alias="start" >icon_start.png</file>
