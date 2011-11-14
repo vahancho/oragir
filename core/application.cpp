@@ -153,7 +153,7 @@ void Application::restoreDatabase() const
     QStringList databases = m_defaultManager->value(str::Databases).toStringList();
     foreach(const QString &db, databases) {
         if (m_dataBase->create(db)) {
-            m_mainWindow->setDatabaseTable(db, "post");
+            m_mainWindow->createDatabaseView(db, "post");
         }
     }
     QString filtersFile = m_defaultManager->value(str::Filters).toString();

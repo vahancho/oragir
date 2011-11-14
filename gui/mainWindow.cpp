@@ -95,7 +95,7 @@ MainWindow::MainWindow(QWidget *parent, Qt::WFlags flags)
 MainWindow::~MainWindow()
 {}
 
-void MainWindow::setDatabaseTable(const QString &dbName, const QString &table)
+void MainWindow::createDatabaseView(const QString &dbName, const QString &table)
 {
     core::Database *dbObj = core::Application::theApp()->database();
     QSqlDatabase db = dbObj->database(dbName);
@@ -526,7 +526,7 @@ void MainWindow::onDatabaseOpen()
             core::Database *db = core::Application::theApp()->database();
             QString file = files.at(0);
             if (db->create(file)) {
-                setDatabaseTable(file, "post");
+                createDatabaseView(file, "post");
             } else {
                 QMessageBox::critical(this, str::DatabaseError,
                                       db->errorMessage());
@@ -662,11 +662,14 @@ void MainWindow::onDatabaseItemDblClicked(const QModelIndex &index)
             qobject_cast<DatabaseView *>(mdiWindow->widget())){
             if (dbView->hasTable(db->database(dbName), "post")) {
                 setActiveSubWindow(mdiWindow);
-                break;
+                return;
             }
         }
     }
 
+    // If we reach here, the mdi child window wasn't found,
+    // and we need to create new one.
+    createDatabaseView(dbName, "post");
 }
 
 } // namespace gui
