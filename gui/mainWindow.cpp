@@ -102,18 +102,25 @@ void MainWindow::createDatabaseView(const QString &dbName, const QString &table)
     if (!db.isValid())
         return;
 
-    // Add tree node for the given database.
-    QTreeWidgetItem *node = new QTreeWidgetItem;
-    if (dbObj->isActive(dbName))
-        node->setIcon(0, QIcon(":/icons/db_active"));
-    else
-        node->setIcon(0, QIcon(":/icons/db"));
-    QFileInfo fi(dbName);
-    node->setText(0, fi.fileName());
-    node->setToolTip(0, fi.fileName());
-    node->setText(1, dbName);
-    node->setToolTip(1, dbName);
-    m_databaseList->addTopLevelItem(node);
+    // Duplicate nodes disallowed in database list view, so search
+    // among existing nodes and if a node with the given name exists
+    // do not add another one.
+    QList<QTreeWidgetItem *> nodes =
+                m_databaseList->findItems(dbName, Qt::MatchFixedString, 1);
+    if (nodes.size() == 0) {
+        // Add tree node for the given database.
+        QTreeWidgetItem *node = new QTreeWidgetItem;
+        if (dbObj->isActive(dbName))
+            node->setIcon(0, QIcon(":/icons/db_active"));
+        else
+            node->setIcon(0, QIcon(":/icons/db"));
+        QFileInfo fi(dbName);
+        node->setText(0, fi.fileName());
+        node->setToolTip(0, fi.fileName());
+        node->setText(1, dbName);
+        node->setToolTip(1, dbName);
+        m_databaseList->addTopLevelItem(node);
+    }
 
     // Create and show database view.
     DatabaseView *dbView = new DatabaseView(db, table);
