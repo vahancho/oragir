@@ -4,6 +4,7 @@ HEADERS += ./core/propertyTable.h \
            ./core/defaultManager.h \
            ./gui/mainWindow.h \
            ./gui/databaseView.h \
+           ./gui/dlgFilters.h \
            ./parser/atomParser.h \
            ./parser/blog.h \
            ./parser/post.h \
@@ -19,6 +20,7 @@ SOURCES += ./main.cpp \
            ./core/defaultManager.cpp \
            ./gui/mainWindow.cpp \
            ./gui/databaseView.cpp \
+           ./gui/dlgFilters.cpp \
            ./parser/blog.cpp \
            ./parser/post.cpp \
            ./database/database.cpp \
