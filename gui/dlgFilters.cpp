@@ -55,8 +55,8 @@ FiltersDialog::FiltersDialog(QWidget *parent, Qt::WindowFlags f)
     mainLayout->addLayout(btnLayout);
 
     setLayout(mainLayout);
+
+    setWindowTitle("Filters");
 }
-
-
 
 } // namespace gui
