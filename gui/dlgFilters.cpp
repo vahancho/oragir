@@ -18,7 +18,7 @@
 *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
 ***************************************************************************/
 
-#include <QTableWidget>
+#include <QTreeWidget>
 #include <QLayout>
 #include <QPushButton>
 #include <QToolBar>
@@ -37,15 +37,16 @@ FiltersDialog::FiltersDialog(QWidget *parent, Qt::WindowFlags f)
     toolBar->addAction("Change Filter...");
     toolBar->addAction("Delete");
 
-    m_tblFilters = new QTableWidget(this);
-    m_tblFilters->setColumnCount(3);
+    m_filters = new QTreeWidget;
+    m_filters->setColumnCount(2);
+    m_filters->setRootIsDecorated(false);
     QStringList headerLabels;
-    headerLabels << QString() << "Filter" << QString();
-    m_tblFilters->setHorizontalHeaderLabels(headerLabels);
+    headerLabels << "" << "Filter";
+    m_filters->setHeaderLabels(headerLabels);
 
     QVBoxLayout *tblWithBtns = new QVBoxLayout;
     tblWithBtns->addWidget(toolBar);
-    tblWithBtns->addWidget(m_tblFilters);
+    tblWithBtns->addWidget(m_filters);
 
     QPushButton *btnOk = new QPushButton(str::Ok, this);
     connect(btnOk, SIGNAL(clicked()), this, SLOT(accept()));
@@ -69,14 +70,15 @@ FiltersDialog::FiltersDialog(QWidget *parent, Qt::WindowFlags f)
 
 void FiltersDialog::addFilter(const QString &name, bool enabled)
 {
-    QTableWidgetItem *item0 = new QTableWidgetItem;
-    QTableWidgetItem *item1 = new QTableWidgetItem(name);
-    QTableWidgetItem *item2 = new QTableWidgetItem;
-    int row = m_tblFilters->rowCount();
-    m_tblFilters->insertRow(row);
-    m_tblFilters->setItem(row, 0, item0);
-    m_tblFilters->setItem(row, 1, item1);
-    m_tblFilters->setItem(row, 2, item2);
+    QTreeWidgetItem *node = new QTreeWidgetItem;
+    if (enabled)
+        node->setCheckState(0, Qt::Checked);
+    else
+        node->setCheckState(0, Qt::Unchecked);
+    node->setText(1, name);
+    node->setToolTip(1, name);
+    m_filters->addTopLevelItem(node);
+    m_filters->resizeColumnToContents(0);
 }
 
 } // namespace gui

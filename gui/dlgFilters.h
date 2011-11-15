@@ -23,7 +23,7 @@
 
 #include <QDialog>
 
-class QTableWidget;
+class QTreeWidget;
 
 namespace gui
 {
@@ -39,7 +39,7 @@ public:
     void addFilter(const QString &name, bool enabled);
 
 private:
-    QTableWidget *m_tblFilters;
+    QTreeWidget *m_filters;
 };
 
 } // namespace gui
