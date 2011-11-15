@@ -36,7 +36,12 @@ FiltersDialog::FiltersDialog(QWidget *parent, Qt::WindowFlags f)
     toolBar->addAction("New Filter...");
     toolBar->addAction("Change Filter...");
     toolBar->addAction("Delete");
+
     QTableWidget *tblFilters = new QTableWidget(this);
+    tblFilters->setColumnCount(3);
+    QStringList headerLabels;
+    headerLabels << QString() << "Filter" << QString();
+    tblFilters->setHorizontalHeaderLabels(headerLabels);
 
     QVBoxLayout *tblWithBtns = new QVBoxLayout;
     tblWithBtns->addWidget(toolBar);
