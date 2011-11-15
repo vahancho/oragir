@@ -16,6 +16,7 @@ SOURCES += testApplication.cpp \
           ../../core/defaultManager.cpp \
           ../../gui/mainWindow.cpp \
           ../../gui/databaseView.cpp \
+          ../../gui/dlgFilters.cpp \
           ../../core/propertyTable.cpp \
           ../../parser/post.cpp \
           ../../parser/blog.cpp \
@@ -26,4 +27,5 @@ SOURCES += testApplication.cpp \
           ../../GeneratedFiles/release/moc_defaultManager.cpp \
           ../../GeneratedFiles/release/moc_propertyTable.cpp \
           ../../GeneratedFiles/release/moc_mainWindow.cpp \
+          ../../GeneratedFiles/release/moc_dlgFilters.cpp \
           ../../GeneratedFiles/release/moc_databaseView.cpp

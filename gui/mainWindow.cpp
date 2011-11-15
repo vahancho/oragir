@@ -21,6 +21,7 @@
 #include <QtGui>
 #include "mainWindow.h"
 #include "databaseView.h"
+#include "dlgFilters.h"
 #include "../core/application.h"
 #include "../core/defaultManager.h"
 #include "../parser/atomParser.h"
@@ -551,6 +552,9 @@ void MainWindow::onItemProcessed()
 
 void MainWindow::onFilters()
 {
+    FiltersDialog dlg;
+    if (dlg.exec() == QDialog::Accepted) {
+    }
 }
 
 void MainWindow::onOptions()
