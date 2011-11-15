@@ -232,4 +232,9 @@ QStringList Database::databases() const
     return QSqlDatabase::connectionNames();
 }
 
+const std::set<Filter<Post> > &Database::filters() const
+{
+    return m_filters;
+}
+
 } // namespace core

@@ -69,6 +69,8 @@ public:
     /// Returns the list of all database names.
     QStringList databases() const;
 
+    const std::set<Filter<Post> > &filters() const;
+
 signals:
     void recordInserted(const QSqlDatabase &db, const QString &table);
 
