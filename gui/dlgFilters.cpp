@@ -43,8 +43,11 @@ FiltersDialog::FiltersDialog(QWidget *parent, Qt::WindowFlags f)
     tblWithBtns->addWidget(tblFilters);
     tblWithBtns->addLayout(addRemoveLayout);
 
-    QPushButton *btnOk = new QPushButton("OK", this);
-    QPushButton *btnCancel = new QPushButton("Cancel", this);
+    QPushButton *btnOk = new QPushButton("&OK", this);
+    connect(btnOk, SIGNAL(clicked()), this, SLOT(accept()));
+    QPushButton *btnCancel = new QPushButton("&Cancel", this);
+    connect(btnCancel, SIGNAL(clicked()), this, SLOT(reject()));
+
     QHBoxLayout *btnLayout = new QHBoxLayout;
     btnLayout->addStretch();
     btnLayout->addWidget(btnOk);
