@@ -22,6 +22,7 @@
 #include <QLayout>
 #include <QPushButton>
 #include "dlgFilters.h"
+#include "../strings/guiStrings.h"
 
 namespace gui
 {
@@ -43,9 +44,10 @@ FiltersDialog::FiltersDialog(QWidget *parent, Qt::WindowFlags f)
     tblWithBtns->addWidget(tblFilters);
     tblWithBtns->addLayout(addRemoveLayout);
 
-    QPushButton *btnOk = new QPushButton("&OK", this);
+    QPushButton *btnOk = new QPushButton(str::Ok, this);
     connect(btnOk, SIGNAL(clicked()), this, SLOT(accept()));
-    QPushButton *btnCancel = new QPushButton("&Cancel", this);
+    btnOk->setDefault(true);
+    QPushButton *btnCancel = new QPushButton(str::Cancel, this);
     connect(btnCancel, SIGNAL(clicked()), this, SLOT(reject()));
 
     QHBoxLayout *btnLayout = new QHBoxLayout;
