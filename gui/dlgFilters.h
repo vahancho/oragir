@@ -23,6 +23,8 @@
 
 #include <QDialog>
 
+class QTableWidget;
+
 namespace gui
 {
 
@@ -33,10 +35,11 @@ class FiltersDialog : public QDialog
 public:
     FiltersDialog(QWidget *parent = 0, Qt::WindowFlags f = 0);
 
-    
+    /// Adds new filter item to dialog.
+    void addFilter(const QString &name, bool enabled);
 
 private:
-    
+    QTableWidget *m_tblFilters;
 };
 
 } // namespace gui

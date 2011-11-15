@@ -37,15 +37,15 @@ FiltersDialog::FiltersDialog(QWidget *parent, Qt::WindowFlags f)
     toolBar->addAction("Change Filter...");
     toolBar->addAction("Delete");
 
-    QTableWidget *tblFilters = new QTableWidget(this);
-    tblFilters->setColumnCount(3);
+    m_tblFilters = new QTableWidget(this);
+    m_tblFilters->setColumnCount(3);
     QStringList headerLabels;
     headerLabels << QString() << "Filter" << QString();
-    tblFilters->setHorizontalHeaderLabels(headerLabels);
+    m_tblFilters->setHorizontalHeaderLabels(headerLabels);
 
     QVBoxLayout *tblWithBtns = new QVBoxLayout;
     tblWithBtns->addWidget(toolBar);
-    tblWithBtns->addWidget(tblFilters);
+    tblWithBtns->addWidget(m_tblFilters);
 
     QPushButton *btnOk = new QPushButton(str::Ok, this);
     connect(btnOk, SIGNAL(clicked()), this, SLOT(accept()));
@@ -65,6 +65,18 @@ FiltersDialog::FiltersDialog(QWidget *parent, Qt::WindowFlags f)
     setLayout(mainLayout);
 
     setWindowTitle("Filters");
+}
+
+void FiltersDialog::addFilter(const QString &name, bool enabled)
+{
+    QTableWidgetItem *item0 = new QTableWidgetItem;
+    QTableWidgetItem *item1 = new QTableWidgetItem(name);
+    QTableWidgetItem *item2 = new QTableWidgetItem;
+    int row = m_tblFilters->rowCount();
+    m_tblFilters->insertRow(row);
+    m_tblFilters->setItem(row, 0, item0);
+    m_tblFilters->setItem(row, 1, item1);
+    m_tblFilters->setItem(row, 2, item2);
 }
 
 } // namespace gui
