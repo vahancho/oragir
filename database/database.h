@@ -69,7 +69,9 @@ public:
     /// Returns the list of all database names.
     QStringList databases() const;
 
-    const std::set<Filter<Post> > &filters() const;
+    typedef std::set<Filter<Post> > Filters;
+
+    const Filters &filters() const;
 
 signals:
     void recordInserted(const QSqlDatabase &db, const QString &table);
@@ -82,7 +84,7 @@ private:
     void addRecord(const Post &post, const Blog &blog);
 
     /// Stores the list of filters.
-    std::set<Filter<Post> > m_filters;
+    Filters m_filters;
 
     /// Stores the error message.
     QString m_error;

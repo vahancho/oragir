@@ -95,7 +95,7 @@ void Database::remove(const QString &connectionName)
 
 void Database::onFetched(const Post &post, const Blog &blog)
 {
-    std::set<Filter<Post> >::iterator it = m_filters.begin();
+    Filters::iterator it = m_filters.begin();
     while (it != m_filters.end()) {
         const Filter<Post> &filter = *it;
         if (filter.enabled() && filter.match(post)) {
@@ -150,7 +150,7 @@ bool Database::saveFilters(const QString &fileName)
         writer.writeStartDocument();
         writer.writeStartElement(str::TagFilters);
 
-        std::set<Filter<Post> >::iterator it = m_filters.begin();
+        Filters::iterator it = m_filters.begin();
 
         while (it != m_filters.end()) {
             Filter<Post> filter = *it;
@@ -232,7 +232,7 @@ QStringList Database::databases() const
     return QSqlDatabase::connectionNames();
 }
 
-const std::set<Filter<Post> > &Database::filters() const
+const Database::Filters &Database::filters() const
 {
     return m_filters;
 }

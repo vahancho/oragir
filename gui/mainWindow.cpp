@@ -554,8 +554,8 @@ void MainWindow::onFilters()
 {
     core::Database *db = core::Application::theApp()->database();
     FiltersDialog dlg;
-    const std::set<core::Filter<core::Post> > filters = db->filters();
-    std::set<core::Filter<core::Post> >::const_iterator it = filters.begin();
+    const core::Database::Filters filters = db->filters();
+    core::Database::Filters::const_iterator it = filters.begin();
     while (it != filters.end()) {
         const core::Filter<core::Post> &filter = *it;
         dlg.addFilter(filter.name(), filter.enabled());
