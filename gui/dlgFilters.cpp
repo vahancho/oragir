@@ -21,6 +21,7 @@
 #include <QTableWidget>
 #include <QLayout>
 #include <QPushButton>
+#include <QToolBar>
 #include "dlgFilters.h"
 #include "../strings/guiStrings.h"
 
@@ -31,18 +32,15 @@ FiltersDialog::FiltersDialog(QWidget *parent, Qt::WindowFlags f)
     :
         QDialog(parent, f)
 {
+    QToolBar *toolBar = new QToolBar(this);
+    toolBar->addAction("New Filter...");
+    toolBar->addAction("Change Filter...");
+    toolBar->addAction("Delete");
     QTableWidget *tblFilters = new QTableWidget(this);
 
-    QPushButton *btnAdd = new QPushButton("Add", this);
-    QPushButton *btnRemove = new QPushButton("Remove", this);
-    QVBoxLayout *addRemoveLayout = new QVBoxLayout;
-    addRemoveLayout->addWidget(btnAdd);
-    addRemoveLayout->addWidget(btnRemove);
-    addRemoveLayout->addStretch();
-
-    QHBoxLayout *tblWithBtns = new QHBoxLayout;
+    QVBoxLayout *tblWithBtns = new QVBoxLayout;
+    tblWithBtns->addWidget(toolBar);
     tblWithBtns->addWidget(tblFilters);
-    tblWithBtns->addLayout(addRemoveLayout);
 
     QPushButton *btnOk = new QPushButton(str::Ok, this);
     connect(btnOk, SIGNAL(clicked()), this, SLOT(accept()));
