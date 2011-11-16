@@ -34,9 +34,11 @@ FiltersDialog::FiltersDialog(QWidget *parent, Qt::WindowFlags f)
         QDialog(parent, f)
 {
     QToolBar *toolBar = new QToolBar(this);
-    toolBar->addAction("New Filter...");
-    toolBar->addAction("Change Filter...", this, SLOT(onFilterEdit()));
-    toolBar->addAction("Delete");
+    toolBar->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+    toolBar->addAction(QIcon(":icons/filter_add"), "New Filter...");
+    toolBar->addAction(QIcon(":icons/filter_edit"), "Change Filter...",
+                       this, SLOT(onFilterEdit()));
+    toolBar->addAction(QIcon(":icons/filter_delete"), "Delete");
 
     m_filters = new QTreeWidget;
     m_filters->setColumnCount(2);
