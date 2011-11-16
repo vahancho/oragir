@@ -23,6 +23,7 @@
 #include <QPushButton>
 #include <QToolBar>
 #include "dlgFilters.h"
+#include "dlgFilterEditor.h"
 #include "../strings/guiStrings.h"
 
 namespace gui
@@ -34,7 +35,7 @@ FiltersDialog::FiltersDialog(QWidget *parent, Qt::WindowFlags f)
 {
     QToolBar *toolBar = new QToolBar(this);
     toolBar->addAction("New Filter...");
-    toolBar->addAction("Change Filter...");
+    toolBar->addAction("Change Filter...", this, SLOT(onFilterEdit()));
     toolBar->addAction("Delete");
 
     m_filters = new QTreeWidget;
@@ -79,6 +80,13 @@ void FiltersDialog::addFilter(const QString &name, bool enabled)
     node->setToolTip(1, name);
     m_filters->addTopLevelItem(node);
     m_filters->resizeColumnToContents(0);
+}
+
+void FiltersDialog::onFilterEdit()
+{
+    FilterEditor editor;
+    if (editor.exec() == QDialog::Accepted) {
+    }
 }
 
 } // namespace gui

@@ -38,6 +38,9 @@ public:
     /// Adds new filter item to dialog.
     void addFilter(const QString &name, bool enabled);
 
+private slots:
+    void onFilterEdit();
+
 private:
     QTreeWidget *m_filters;
 };
