@@ -562,6 +562,14 @@ void MainWindow::onFilters()
     const core::Database::Filters &filters = db->filters();
     dlg.setFilters(filters);
     if (dlg.exec() == QDialog::Accepted) {
+        // Read the filters from dialog and update database.
+        const core::Database::Filters &tmpFilters = dlg.filters();
+        core::Database::Filters::const_iterator it = tmpFilters.begin();
+        while (it != tmpFilters.end()) {
+            const core::Filter<core::Post> &filter = *it;
+            db->addFilter(filter);
+            ++it;
+        }
     }
 }
 

@@ -108,6 +108,14 @@ void Database::onFetched(const Post &post, const Blog &blog)
 
 void Database::addFilter(const Filter<Post> &filter)
 {
+    // If this filter already exists, delete it from container
+    // and replace with a new one. This will guarantee that
+    // filters will be updated, otherwise the new filter
+    // will not add, and the old filter would remain.
+    Filters::iterator it = m_filters.find(filter);
+    if (it != m_filters.end())
+        m_filters.erase(it);
+
     m_filters.insert(filter);
 }
 

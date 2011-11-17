@@ -52,7 +52,11 @@ public:
     /// Set the active (current) database.
     void setActive(const QString &connectionName);
 
-    /// Adds new filter to the list of filters.
+    /// Adds or update a filter to the list of filters.
+    /*!
+        This function either adds a new filter to container
+        or replace existing one (with the same name).
+    */
     void addFilter(const Filter<Post> &filter);
 
     bool saveFilters(const QString &fileName);
