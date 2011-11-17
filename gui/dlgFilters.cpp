@@ -40,16 +40,16 @@ FiltersDialog::FiltersDialog(QWidget *parent, Qt::WindowFlags f)
                        this, SLOT(onFilterEdit()));
     toolBar->addAction(QIcon(":icons/filter_delete"), "Delete");
 
-    m_filters = new QTreeWidget;
-    m_filters->setColumnCount(2);
-    m_filters->setRootIsDecorated(false);
+    m_filtersTree = new QTreeWidget;
+    m_filtersTree->setColumnCount(2);
+    m_filtersTree->setRootIsDecorated(false);
     QStringList headerLabels;
     headerLabels << "" << "Filter";
-    m_filters->setHeaderLabels(headerLabels);
+    m_filtersTree->setHeaderLabels(headerLabels);
 
     QVBoxLayout *tblWithBtns = new QVBoxLayout;
     tblWithBtns->addWidget(toolBar);
-    tblWithBtns->addWidget(m_filters);
+    tblWithBtns->addWidget(m_filtersTree);
 
     QPushButton *btnOk = new QPushButton(str::Ok, this);
     connect(btnOk, SIGNAL(clicked()), this, SLOT(accept()));
@@ -71,17 +71,25 @@ FiltersDialog::FiltersDialog(QWidget *parent, Qt::WindowFlags f)
     setWindowTitle("Filters");
 }
 
-void FiltersDialog::addFilter(const QString &name, bool enabled)
+void FiltersDialog::setFilters(const core::Database::Filters &filters)
 {
-    QTreeWidgetItem *node = new QTreeWidgetItem;
-    if (enabled)
-        node->setCheckState(0, Qt::Checked);
-    else
-        node->setCheckState(0, Qt::Unchecked);
-    node->setText(1, name);
-    node->setToolTip(1, name);
-    m_filters->addTopLevelItem(node);
-    m_filters->resizeColumnToContents(0);
+    core::Database::Filters::const_iterator it = filters.begin();
+    while (it != filters.end()) {
+        const core::Filter<core::Post> &filter = *it;
+        QTreeWidgetItem *node = new QTreeWidgetItem;
+        if (filter.enabled())
+            node->setCheckState(0, Qt::Checked);
+        else
+            node->setCheckState(0, Qt::Unchecked);
+        node->setText(1, filter.name());
+        node->setToolTip(1, filter.name());
+        m_filtersTree->addTopLevelItem(node);
+        m_filtersTree->resizeColumnToContents(0);
+        ++it;
+    }
+
+    // Finally store the filters.
+    m_filters = filters;
 }
 
 void FiltersDialog::onFilterEdit()

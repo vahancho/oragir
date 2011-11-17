@@ -22,6 +22,7 @@
 #define __DLGFILTERS_H__
 
 #include <QDialog>
+#include "../database/database.h"
 
 class QTreeWidget;
 
@@ -36,13 +37,14 @@ public:
     FiltersDialog(QWidget *parent = 0, Qt::WindowFlags f = 0);
 
     /// Adds new filter item to dialog.
-    void addFilter(const QString &name, bool enabled);
+    void setFilters(const core::Database::Filters &filters);
 
 private slots:
     void onFilterEdit();
 
 private:
-    QTreeWidget *m_filters;
+    QTreeWidget *m_filtersTree;
+    core::Database::Filters m_filters;
 };
 
 } // namespace gui
