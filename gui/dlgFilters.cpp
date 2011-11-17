@@ -52,7 +52,7 @@ FiltersDialog::FiltersDialog(QWidget *parent, Qt::WindowFlags f)
     tblWithBtns->addWidget(m_filtersTree);
 
     QPushButton *btnOk = new QPushButton(str::Ok, this);
-    connect(btnOk, SIGNAL(clicked()), this, SLOT(accept()));
+    connect(btnOk, SIGNAL(clicked()), this, SLOT(onOk()));
     btnOk->setDefault(true);
     QPushButton *btnCancel = new QPushButton(str::Cancel, this);
     connect(btnCancel, SIGNAL(clicked()), this, SLOT(reject()));
@@ -97,6 +97,25 @@ void FiltersDialog::onFilterEdit()
     FilterEditor editor;
     if (editor.exec() == QDialog::Accepted) {
     }
+}
+
+void FiltersDialog::onOk()
+{
+    // Iterate over all filters and read state from the
+    // corresponding tree items.
+    core::Database::Filters::iterator it = m_filters.begin();
+    while (it != m_filters.end()) {
+        core::Filter<core::Post> &filter = *it;
+        QList<QTreeWidgetItem *> nodes =
+                 m_filtersTree->findItems(filter.name(), Qt::MatchFixedString, 1);
+        // We should not have two nodes with the same name.
+        if (nodes.size() > 0) {
+            QTreeWidgetItem *node = nodes.at(0);
+            filter.setEnabled(node->checkState(0) == Qt::Checked);
+        }
+        ++it;
+    }
+    accept();
 }
 
 } // namespace gui
