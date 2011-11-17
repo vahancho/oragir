@@ -39,6 +39,9 @@ public:
     /// Adds new filter item to dialog.
     void setFilters(const core::Database::Filters &filters);
 
+    /// Returns the temporary stored list of filters.
+    const core::Database::Filters &filters() const;
+
 private slots:
     void onFilterEdit();
 

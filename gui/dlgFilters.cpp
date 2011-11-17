@@ -118,4 +118,9 @@ void FiltersDialog::onOk()
     accept();
 }
 
+const core::Database::Filters &FiltersDialog::filters() const
+{
+    return m_filters;
+}
+
 } // namespace gui
