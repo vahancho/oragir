@@ -107,6 +107,8 @@ private slots:
 
     void onFilters();
 
+    void onFiltersExport();
+
     void onOptions();
 
     void onDatabaseContextMenu(const QPoint &pos);

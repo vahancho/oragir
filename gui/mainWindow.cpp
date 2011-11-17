@@ -285,6 +285,11 @@ void MainWindow::createMenus()
     filtersAction->setIcon(QIcon(":icons/filter"));
     toolsToolBar->addAction(filtersAction);
 
+    QAction *fltExportAction = toolsMenu->addAction(str::ActionFilterExport);
+    connect(fltExportAction, SIGNAL(triggered()), this, SLOT(onFiltersExport()));
+    //fltExportAction->setIcon(QIcon(":icons/filter"));
+    toolsToolBar->addAction(fltExportAction);
+
     QAction *optionsAction = toolsMenu->addAction(str::ActionOptions);
     connect(optionsAction, SIGNAL(triggered()), this, SLOT(onOptions()));
     optionsAction->setIcon(QIcon(":icons/options"));
@@ -563,6 +568,18 @@ void MainWindow::onFilters()
     }
 
     if (dlg.exec() == QDialog::Accepted) {
+    }
+}
+
+void MainWindow::onFiltersExport()
+{
+    QString fileName =
+        QFileDialog::getSaveFileName(this, "Save Filter File",
+                                     ".",
+                                     tr("Oragir Filters (*.flt)"));
+    if(!fileName.isEmpty()) {
+        core::Database *db = core::Application::theApp()->database();
+        db->saveFilters(fileName);
     }
 }
 

@@ -60,6 +60,7 @@ namespace str
     extern const char *ActionStart;
     extern const char *ActionStop;
     extern const char *ActionFilters;
+    extern const char *ActionFilterExport;
     extern const char *ActionOptions;
     extern const char *ActionDbActive;
     extern const char *ActionDbRemove;

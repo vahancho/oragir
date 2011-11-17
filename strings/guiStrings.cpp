@@ -54,6 +54,7 @@ namespace str
     const char *ActionStart = QT_TRANSLATE_NOOP("Oragir", "&Start");
     const char *ActionStop = QT_TRANSLATE_NOOP("Oragir", "S&top");
     const char *ActionFilters = QT_TRANSLATE_NOOP("Oragir", "&Filters...");
+    const char *ActionFilterExport = QT_TRANSLATE_NOOP("Oragir", "&Export Filters...");
     const char *ActionOptions = QT_TRANSLATE_NOOP("Oragir", "&Options...");
     const char *ActionDbActive = QT_TRANSLATE_NOOP("Oragir", "Set &Active");
     const char *ActionDbRemove = QT_TRANSLATE_NOOP("Oragir", "&Remove");
