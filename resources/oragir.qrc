@@ -15,5 +15,6 @@
         <file alias="filter_add" >icon_filter_add.png</file>
         <file alias="filter_delete" >icon_filter_delete.png</file>
         <file alias="filter_edit" >icon_filter_edit.png</file>
+        <file alias="filter_export" >icon_filter_export.png</file>
  	</qresource>
 </RCC>

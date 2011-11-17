@@ -287,7 +287,7 @@ void MainWindow::createMenus()
 
     QAction *fltExportAction = toolsMenu->addAction(str::ActionFilterExport);
     connect(fltExportAction, SIGNAL(triggered()), this, SLOT(onFiltersExport()));
-    //fltExportAction->setIcon(QIcon(":icons/filter"));
+    fltExportAction->setIcon(QIcon(":icons/filter_export"));
     toolsToolBar->addAction(fltExportAction);
 
     QAction *optionsAction = toolsMenu->addAction(str::ActionOptions);
