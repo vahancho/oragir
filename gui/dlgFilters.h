@@ -25,6 +25,7 @@
 #include "../database/database.h"
 
 class QTreeWidget;
+class QTreeWidgetItem;
 
 namespace gui
 {
@@ -40,16 +41,14 @@ public:
     void setFilters(const core::Database::Filters &filters);
 
     /// Returns the temporary stored list of filters.
-    const core::Database::Filters &filters() const;
+    core::Database::Filters filters() const;
 
 private slots:
     void onFilterEdit();
 
-    void onOk();
-
 private:
     QTreeWidget *m_filtersTree;
-    core::Database::Filters m_filters;
+    std::map<QTreeWidgetItem *, core::Filter<core::Post> > m_filters;
 };
 
 } // namespace gui

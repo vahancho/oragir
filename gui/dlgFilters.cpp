@@ -52,7 +52,7 @@ FiltersDialog::FiltersDialog(QWidget *parent, Qt::WindowFlags f)
     tblWithBtns->addWidget(m_filtersTree);
 
     QPushButton *btnOk = new QPushButton(str::Ok, this);
-    connect(btnOk, SIGNAL(clicked()), this, SLOT(onOk()));
+    connect(btnOk, SIGNAL(clicked()), this, SLOT(accept()));
     btnOk->setDefault(true);
     QPushButton *btnCancel = new QPushButton(str::Cancel, this);
     connect(btnCancel, SIGNAL(clicked()), this, SLOT(reject()));
@@ -85,11 +85,9 @@ void FiltersDialog::setFilters(const core::Database::Filters &filters)
         node->setToolTip(1, filter.name());
         m_filtersTree->addTopLevelItem(node);
         m_filtersTree->resizeColumnToContents(0);
+        m_filters[node] = filter;
         ++it;
     }
-
-    // Finally store the filters.
-    m_filters = filters;
 }
 
 void FiltersDialog::onFilterEdit()
@@ -99,33 +97,20 @@ void FiltersDialog::onFilterEdit()
     }
 }
 
-void FiltersDialog::onOk()
+core::Database::Filters FiltersDialog::filters() const
 {
-    // Iterate over all filters and read state from the
-    // corresponding tree items.
-    core::Database::Filters::iterator it = m_filters.begin();
-    while (it != m_filters.end()) {
-        // Filter will be changed.
-        core::Filter<core::Post> filter = *it;
-        QList<QTreeWidgetItem *> nodes =
-                 m_filtersTree->findItems(filter.name(), Qt::MatchFixedString, 1);
-        // We should not have two nodes with the same name.
-        if (nodes.size() > 0) {
-            QTreeWidgetItem *node = nodes.at(0);
-            filter.setEnabled(node->checkState(0) == Qt::Checked);
-
-            // Replace existin filter item with the new one.
-            m_filters.erase(it);
-            m_filters.insert(filter);
-        }
+    core::Database::Filters filters;
+    std::map<QTreeWidgetItem *, core::Filter<core::Post> >::const_iterator it =
+                                            m_filters.begin();
+    while(it != m_filters.end()) {
+        QTreeWidgetItem *node = (*it).first;
+        core::Filter<core::Post> filter = (*it).second;
+        filter.setEnabled(node->checkState(0) == Qt::Checked);
+        filters.insert(filter);
         ++it;
     }
-    accept();
-}
 
-const core::Database::Filters &FiltersDialog::filters() const
-{
-    return m_filters;
+    return filters;
 }
 
 } // namespace gui
