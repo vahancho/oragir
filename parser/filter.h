@@ -42,7 +42,7 @@ class Filter
 {
 public:
     /// Constructs the named filter.
-    Filter(const QString &name);
+    Filter(const QString &name = QString());
 
     /// Defines rules values matching options.
     enum Option {
