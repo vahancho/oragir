@@ -92,8 +92,11 @@ void FiltersDialog::setFilters(const core::Database::Filters &filters)
 
 void FiltersDialog::onFilterEdit()
 {
-    FilterEditor editor;
-    if (editor.exec() == QDialog::Accepted) {
+    if (QTreeWidgetItem *currentItem = m_filtersTree->currentItem()) {
+        FilterEditor editor;
+        editor.setFilter(m_filters[currentItem]);
+        if (editor.exec() == QDialog::Accepted) {
+        }
     }
 }
 

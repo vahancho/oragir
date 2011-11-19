@@ -36,19 +36,19 @@ FilterEditor::FilterEditor(QWidget *parent, Qt::WindowFlags f)
         QDialog(parent, f)
 {
     QLabel *lblName = new QLabel("Name:", this);
-    QLineEdit *editName = new QLineEdit(this);
+    m_editName = new QLineEdit(this);
     QHBoxLayout *nameLayout = new QHBoxLayout;
     nameLayout->addWidget(lblName);
-    nameLayout->addWidget(editName);
+    nameLayout->addWidget(m_editName);
 
     QGroupBox *groupBox = new QGroupBox("Matching Criterion", this);
-    QRadioButton *radio1 = new QRadioButton("&All rules matched");
-    QRadioButton *radio2 = new QRadioButton("One of the rules matched");
-    radio1->setChecked(true);
+    m_radAll = new QRadioButton("&All rules matched");
+    m_radOne = new QRadioButton("One of the rules matched");
+    m_radAll->setChecked(true);
 
     QHBoxLayout *radioLayout = new QHBoxLayout;
-    radioLayout->addWidget(radio1);
-    radioLayout->addWidget(radio2);
+    radioLayout->addWidget(m_radAll);
+    radioLayout->addWidget(m_radOne);
     radioLayout->addStretch(1);
     groupBox->setLayout(radioLayout);
 
@@ -77,6 +77,14 @@ FilterEditor::FilterEditor(QWidget *parent, Qt::WindowFlags f)
     mainLayout->addLayout(btnLayout);
 
     setLayout(mainLayout);
+}
+
+void FilterEditor::setFilter(const core::Filter<core::Post> &filter)
+{
+    if (filter.ruleMatch() == core::Filter<core::Post>::All)
+        m_radAll->setChecked(true);
+
+    m_editName->setText(filter.name());
 }
 
 } // namespace gui

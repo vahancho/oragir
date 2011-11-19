@@ -22,6 +22,10 @@
 #define __DLGFILTEREDITOR_H__
 
 #include <QDialog>
+#include "../parser/filter.h"
+
+class QLineEdit;
+class QRadioButton;
 
 namespace gui
 {
@@ -32,6 +36,15 @@ class FilterEditor : public QDialog
 
 public:
     FilterEditor(QWidget *parent = 0, Qt::WindowFlags f = 0);
+
+    void setFilter(const core::Filter<core::Post> &filter);
+
+private:
+    core::Filter<core::Post> m_filter;
+
+    QLineEdit *m_editName;
+    QRadioButton *m_radAll;
+    QRadioButton *m_radOne;
 };
 
 } // namespace gui
