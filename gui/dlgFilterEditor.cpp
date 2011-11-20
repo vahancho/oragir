@@ -52,12 +52,12 @@ FilterEditor::FilterEditor(QWidget *parent, Qt::WindowFlags f)
     radioLayout->addStretch(1);
     groupBox->setLayout(radioLayout);
 
-    QTreeWidget *rules = new QTreeWidget;
-    rules->setColumnCount(3);
-    rules->setRootIsDecorated(false);
+    m_rulesTree = new QTreeWidget;
+    m_rulesTree->setColumnCount(3);
+    m_rulesTree->setRootIsDecorated(false);
     QStringList headerLabels;
     headerLabels << "Property" << "Option" << "Value";
-    rules->setHeaderLabels(headerLabels);
+    m_rulesTree->setHeaderLabels(headerLabels);
 
     QPushButton *btnOk = new QPushButton(str::Ok, this);
     connect(btnOk, SIGNAL(clicked()), this, SLOT(accept()));
@@ -73,7 +73,7 @@ FilterEditor::FilterEditor(QWidget *parent, Qt::WindowFlags f)
     QVBoxLayout *mainLayout = new QVBoxLayout;
     mainLayout->addLayout(nameLayout);
     mainLayout->addWidget(groupBox);
-    mainLayout->addWidget(rules);
+    mainLayout->addWidget(m_rulesTree);
     mainLayout->addLayout(btnLayout);
 
     setLayout(mainLayout);
@@ -90,6 +90,11 @@ void FilterEditor::setFilter(const core::Filter<core::Post> &filter)
     while (it != rules.constEnd()) {
         const core::Filter<core::Post>::Rule &rule = it.value();
         const QString name = it.key();
+        QTreeWidgetItem *node = new QTreeWidgetItem;
+        node->setText(0, name);
+        node->setText(1, QString::number(rule.option()));
+        node->setText(2, rule.value());
+        m_rulesTree->addTopLevelItem(node);
         ++it;
     }
 

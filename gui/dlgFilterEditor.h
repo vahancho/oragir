@@ -26,6 +26,7 @@
 
 class QLineEdit;
 class QRadioButton;
+class QTreeWidget;
 
 namespace gui
 {
@@ -45,6 +46,7 @@ private:
     QLineEdit *m_editName;
     QRadioButton *m_radAll;
     QRadioButton *m_radOne;
+    QTreeWidget *m_rulesTree;
 };
 
 } // namespace gui
