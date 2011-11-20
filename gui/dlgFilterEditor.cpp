@@ -92,11 +92,15 @@ void FilterEditor::setFilter(const core::Filter<core::Post> &filter)
         const core::Filter<core::Post>::Rule &rule = it.value();
         const QString name = it.key();
         QTreeWidgetItem *node = new QTreeWidgetItem;
-        node->setText(1, QString::number(rule.option()));
         node->setText(2, rule.value());
+
         m_rulesTree->addTopLevelItem(node);
         QComboBox *combo = propertiesCombo(filter, name);
         m_rulesTree->setItemWidget(node, 0, combo);
+
+        QComboBox *comboOpt = optionsCombo(filter, rule.option());
+        m_rulesTree->setItemWidget(node, 1, comboOpt);
+
         ++it;
     }
 
@@ -115,6 +119,19 @@ QComboBox *FilterEditor::propertiesCombo(const core::Filter<core::Post> &filter,
 
     int index = propNames.indexOf(currentText);
     combo->setCurrentIndex(index);
+    return combo;
+}
+
+QComboBox *FilterEditor::optionsCombo(const core::Filter<core::Post> &filter,
+                                      int currentOption)
+{
+    QComboBox *combo = new QComboBox(this);
+    combo->setEditable(false);
+
+    combo->addItem("Ignore");
+    combo->addItem("Match exactly");
+    combo->addItem("Contains");
+    combo->setCurrentIndex(currentOption);
     return combo;
 }
 

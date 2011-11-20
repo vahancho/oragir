@@ -44,6 +44,9 @@ public:
 private:
     QComboBox *propertiesCombo(const core::Filter<core::Post> &filter,
                                const QString &currentText);
+
+    QComboBox *optionsCombo(const core::Filter<core::Post> &filter,
+                            int currentOption);
     core::Filter<core::Post> m_filter;
 
     QLineEdit *m_editName;
