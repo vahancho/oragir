@@ -335,8 +335,7 @@ void Filter<Source>::readXml(QXmlStreamReader &reader)
                 ruleName = reader.attributes().value(str::TagNameAttr).toString();
         } else if (reader.isEndElement()) {
             if (reader.name().toString() == str::TagRule) {
-                if (option != Ignore)
-                    setRule(ruleName, ruleValue, option);
+                setRule(ruleName, ruleValue, option);
             }
         } else if (reader.isCharacters() && !reader.isWhitespace()) {
             if (elementName == str::TagValue)
