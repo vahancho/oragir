@@ -49,7 +49,6 @@ private:
 
     QComboBox *optionsCombo(const core::Filter<core::Post> &filter,
                             int currentOption);
-    core::Filter<core::Post> m_filter;
 
     QLineEdit *m_editName;
     QRadioButton *m_radAll;
