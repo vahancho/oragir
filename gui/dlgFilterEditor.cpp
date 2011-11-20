@@ -83,8 +83,16 @@ void FilterEditor::setFilter(const core::Filter<core::Post> &filter)
 {
     if (filter.ruleMatch() == core::Filter<core::Post>::All)
         m_radAll->setChecked(true);
-
     m_editName->setText(filter.name());
+
+    const core::Filter<core::Post>::Rules &rules = filter.rules();
+    core::Filter<core::Post>::Rules::const_iterator it = rules.constBegin();
+    while (it != rules.constEnd()) {
+        const core::Filter<core::Post>::Rule &rule = it.value();
+        const QString name = it.key();
+        ++it;
+    }
+
 }
 
 } // namespace gui
