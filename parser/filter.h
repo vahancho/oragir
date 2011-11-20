@@ -58,13 +58,26 @@ public:
     };
 
      /// Implements the filter's rule class.
-    struct Rule
+    class Rule
     {
+    public:
         Rule(const QString &value = QString(), Option option = Ignore)
             :
                 m_value(value),
                 m_option(option)
         {}
+
+        QString value() const
+        {
+            return m_value;
+        }
+
+        Option option() const
+        {
+            return m_option;
+        }
+
+    private:
         QString m_value;
         Option m_option;
     };
@@ -206,7 +219,7 @@ typename Filter<Source>::Result Filter<Source>::match(const QString &name,
         const Rule &rule = it.value();
 
         // For ignored rules return immediately.
-        if (rule.m_option == Ignore)
+        if (rule.option() == Ignore)
             return Undefined;
 
         // Strip the html tags before comparing strings.
@@ -219,18 +232,18 @@ typename Filter<Source>::Result Filter<Source>::match(const QString &name,
         stripped.replace("&nbsp;", " ");
         stripped.replace( QRegExp("<[^>]*>"), "" );
 
-        if (rule.m_option == Contains &&
-            stripped.contains(rule.m_value, Qt::CaseInsensitive)) {
+        if (rule.option() == Contains &&
+            stripped.contains(rule.value(), Qt::CaseInsensitive)) {
             QRegExp rx;
-            QString pat = QString("\\s.{0,40}%1.{0,40}\\s").arg(rule.m_value);
+            QString pat = QString("\\s.{0,40}%1.{0,40}\\s").arg(rule.value());
             rx.setPattern(pat);
             if (rx.indexIn(stripped) != -1) {
                 QString s = rx.cap(0);
                 qDebug(s.toAscii().data());
             }
             return Matched;
-        } else if (rule.m_option == ExactMatch &&
-                   stripped == rule.m_value) {
+        } else if (rule.option() == ExactMatch &&
+                   stripped == rule.value()) {
             return Matched;
         }
 
@@ -283,14 +296,14 @@ void Filter<Source>::writeXml(QXmlStreamWriter &writer)
 
     typename Rules::const_iterator it = m_rules.constBegin();
     while (it != m_rules.constEnd()) {
-        const Rule &flt = it.value();
+        const Rule &rule = it.value();
         const QString &name = it.key();
 
         writer.writeStartElement(str::TagRule);
 
         writer.writeAttribute(str::TagName, name);
-        writer.writeTextElement(str::TagValue, flt.m_value);
-        writer.writeTextElement(str::TagOption, QString::number(flt.m_option));
+        writer.writeTextElement(str::TagValue, rule.value());
+        writer.writeTextElement(str::TagOption, QString::number(rule.option()));
 
         writer.writeEndElement(); // rule
 
