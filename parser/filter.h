@@ -96,6 +96,9 @@ public:
     /// Returns the list of rules.
     const Rules &rules() const;
 
+    /// Returns the list of possible properties names.
+    QStringList propertyNames() const;
+
     /// Returns true if data matches to the filter rules.
     bool match(const Source &source) const;
 
@@ -348,6 +351,14 @@ template<class Source>
 const typename Filter<Source>::Rules &Filter<Source>::rules() const
 {
     return m_rules;
+}
+
+template<class Source>
+QStringList Filter<Source>::propertyNames() const
+{
+    Source source;
+    QMap<QString, QVariant> properties = source.propertyMap();
+    return properties.keys();
 }
 
 template<class Source>
