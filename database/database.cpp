@@ -245,4 +245,9 @@ const Database::Filters &Database::filters() const
     return m_filters;
 }
 
+void Database::clearFilters()
+{
+    m_filters.clear();
+}
+
 } // namespace core

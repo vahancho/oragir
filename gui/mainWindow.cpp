@@ -565,6 +565,8 @@ void MainWindow::onFilters()
         // Read the filters from dialog and update database.
         const core::Database::Filters &tmpFilters = dlg.filters();
         core::Database::Filters::const_iterator it = tmpFilters.begin();
+        // Clear old filters before adding new ones.
+        db->clearFilters();
         while (it != tmpFilters.end()) {
             const core::Filter<core::Post> &filter = *it;
             db->addFilter(filter);

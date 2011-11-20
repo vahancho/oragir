@@ -62,6 +62,8 @@ public:
     bool saveFilters(const QString &fileName);
     bool openFilters(const QString &fileName);
 
+    void clearFilters();
+
     /// Reports the last error if any.
     QString errorMessage() const;
 
