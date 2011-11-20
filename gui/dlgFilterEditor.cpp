@@ -92,6 +92,10 @@ void FilterEditor::setFilter(const core::Filter<core::Post> &filter)
         const core::Filter<core::Post>::Rule &rule = it.value();
         const QString name = it.key();
         QTreeWidgetItem *node = new QTreeWidgetItem;
+        node->setFlags(Qt::ItemIsSelectable |
+                       Qt::ItemIsUserCheckable |
+                       Qt::ItemIsEnabled |
+                       Qt::ItemIsEditable);
         node->setText(2, rule.value());
 
         m_rulesTree->addTopLevelItem(node);
