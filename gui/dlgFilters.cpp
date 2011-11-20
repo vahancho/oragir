@@ -96,6 +96,8 @@ void FiltersDialog::onFilterEdit()
         FilterEditor editor;
         editor.setFilter(m_filters[currentItem]);
         if (editor.exec() == QDialog::Accepted) {
+            // Update the filter.
+            m_filters[currentItem] = editor.filter();
         }
     }
 }
