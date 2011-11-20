@@ -57,6 +57,18 @@ public:
         All      // All non empty rules match.
     };
 
+     /// Implements the filter's rule class.
+    struct Rule
+    {
+        Rule(const QString &value = QString(), Option option = Ignore)
+            :
+                m_value(value),
+                m_option(option)
+        {}
+        QString m_value;
+        Option m_option;
+    };
+
     /// Sets the new filtering rule.
     /*
         @param name  The property name,
@@ -99,18 +111,6 @@ private:
         Matched = 0,
         NotMatched,
         Undefined
-    };
-
-    /// Implements the filter's rule class.
-    struct Rule
-    {
-        Rule(const QString &value = QString(), Option option = Ignore)
-            :
-                m_value(value),
-                m_option(option)
-        {}
-        QString m_value;
-        Option m_option;
     };
 
     /// Returns result of applying rule named 'name' on a given value.
