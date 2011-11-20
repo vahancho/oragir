@@ -41,6 +41,8 @@ public:
 
     void setFilter(const core::Filter<core::Post> &filter);
 
+    core::Filter<core::Post> filter() const;
+
 private:
     QComboBox *propertiesCombo(const core::Filter<core::Post> &filter,
                                const QString &currentText);

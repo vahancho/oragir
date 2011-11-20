@@ -103,7 +103,6 @@ void FilterEditor::setFilter(const core::Filter<core::Post> &filter)
 
         ++it;
     }
-
 }
 
 QComboBox *FilterEditor::propertiesCombo(const core::Filter<core::Post> &filter,
@@ -114,7 +113,7 @@ QComboBox *FilterEditor::propertiesCombo(const core::Filter<core::Post> &filter,
 
     QStringList propNames = filter.propertyNames();
     foreach(const QString &name, propNames) {
-        combo->addItem(name);
+        combo->addItem(name, name);
     }
 
     int index = propNames.indexOf(currentText);
@@ -133,6 +132,23 @@ QComboBox *FilterEditor::optionsCombo(const core::Filter<core::Post> &filter,
     combo->addItem("Contains");
     combo->setCurrentIndex(currentOption);
     return combo;
+}
+
+core::Filter<core::Post> FilterEditor::filter() const
+{
+    core::Filter<core::Post> filter;
+    for (int i = 0; i < m_rulesTree->topLevelItemCount(); ++i) {
+        QTreeWidgetItem *node = m_rulesTree->topLevelItem(i);
+        QComboBox *combo =
+            qobject_cast<QComboBox *>(m_rulesTree->itemWidget(node, 0));
+        QComboBox *comboOpt =
+            qobject_cast<QComboBox *>(m_rulesTree->itemWidget(node, 1));
+        filter.setRule(combo->itemData(combo->currentIndex()).toString(),
+                       node->text(2),
+                       (core::Filter<core::Post>::Option)comboOpt->currentIndex());
+    }
+
+    return filter;
 }
 
 } // namespace gui
