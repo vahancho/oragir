@@ -78,6 +78,11 @@ public:
     */
     bool setRule(const QString &name, const QString &value, Option opt);
 
+    typedef QMultiMap<QString, Rule> Rules;
+
+    /// Returns the list of rules.
+    const Rules &rules() const;
+
     /// Returns true if data matches to the filter rules.
     bool match(const Source &source) const;
 
@@ -118,8 +123,6 @@ private:
 
     /// Returns true if rule for the given property supported.
     bool canAddRule(const QString &propertyName) const;
-
-    typedef QMultiMap<QString, Rule> Rules;
 
     Rules m_rules;
     QString m_name;
@@ -326,6 +329,12 @@ void Filter<Source>::readXml(QXmlStreamReader &reader)
                 option = (Option)reader.text().toString().toInt();
         }
     }
+}
+
+template<class Source>
+const typename Filter<Source>::Rules &Filter<Source>::rules() const
+{
+    return m_rules;
 }
 
 template<class Source>
