@@ -136,7 +136,7 @@ QComboBox *FilterEditor::optionsCombo(const core::Filter<core::Post> &filter,
 
 core::Filter<core::Post> FilterEditor::filter() const
 {
-    core::Filter<core::Post> filter;
+    core::Filter<core::Post> filter(m_editName->text());
     for (int i = 0; i < m_rulesTree->topLevelItemCount(); ++i) {
         QTreeWidgetItem *node = m_rulesTree->topLevelItem(i);
         QComboBox *combo =
