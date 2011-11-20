@@ -25,6 +25,7 @@
 #include <QLabel>
 #include <QTreeWidget>
 #include <QPushButton>
+#include <QComboBox>
 #include "dlgFilterEditor.h"
 #include "../strings/guiStrings.h"
 
@@ -91,13 +92,30 @@ void FilterEditor::setFilter(const core::Filter<core::Post> &filter)
         const core::Filter<core::Post>::Rule &rule = it.value();
         const QString name = it.key();
         QTreeWidgetItem *node = new QTreeWidgetItem;
-        node->setText(0, name);
         node->setText(1, QString::number(rule.option()));
         node->setText(2, rule.value());
         m_rulesTree->addTopLevelItem(node);
+        QComboBox *combo = propertiesCombo(filter, name);
+        m_rulesTree->setItemWidget(node, 0, combo);
         ++it;
     }
 
+}
+
+QComboBox *FilterEditor::propertiesCombo(const core::Filter<core::Post> &filter,
+                                         const QString &currentText)
+{
+    QComboBox *combo = new QComboBox(this);
+    combo->setEditable(false);
+
+    QStringList propNames = filter.propertyNames();
+    foreach(const QString &name, propNames) {
+        combo->addItem(name);
+    }
+
+    int index = propNames.indexOf(currentText);
+    combo->setCurrentIndex(index);
+    return combo;
 }
 
 } // namespace gui

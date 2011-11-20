@@ -27,6 +27,7 @@
 class QLineEdit;
 class QRadioButton;
 class QTreeWidget;
+class QComboBox;
 
 namespace gui
 {
@@ -41,6 +42,8 @@ public:
     void setFilter(const core::Filter<core::Post> &filter);
 
 private:
+    QComboBox *propertiesCombo(const core::Filter<core::Post> &filter,
+                               const QString &currentText);
     core::Filter<core::Post> m_filter;
 
     QLineEdit *m_editName;
