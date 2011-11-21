@@ -22,6 +22,7 @@
 #include <QLayout>
 #include <QPushButton>
 #include <QToolBar>
+#include <QHeaderView>
 #include "dlgFilters.h"
 #include "dlgFilterEditor.h"
 #include "../strings/guiStrings.h"
@@ -45,8 +46,10 @@ FiltersDialog::FiltersDialog(QWidget *parent, Qt::WindowFlags f)
     m_filtersTree->setColumnCount(2);
     m_filtersTree->setRootIsDecorated(false);
     QStringList headerLabels;
-    headerLabels << "" << "Filter";
+    headerLabels << "Enable" << "Filter";
     m_filtersTree->setHeaderLabels(headerLabels);
+    m_filtersTree->header()->setResizeMode(0, QHeaderView::Fixed);
+    m_filtersTree->header()->resizeSection(0, 48);
 
     QVBoxLayout *tblWithBtns = new QVBoxLayout;
     tblWithBtns->addWidget(toolBar);
