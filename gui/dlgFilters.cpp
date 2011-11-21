@@ -34,7 +34,7 @@ FiltersDialog::FiltersDialog(QWidget *parent, Qt::WindowFlags f)
         QDialog(parent, f)
 {
     QToolBar *toolBar = new QToolBar(this);
-    toolBar->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+    toolBar->setIconSize(QSize(16, 16));
     toolBar->addAction(QIcon(":icons/filter_add"), "New Filter...");
     toolBar->addAction(QIcon(":icons/filter_edit"), "Change Filter...",
                        this, SLOT(onFilterEdit()));
