@@ -43,7 +43,7 @@ FiltersDialog::FiltersDialog(QWidget *parent, Qt::WindowFlags f)
     toolBar->addAction(QIcon(":icons/filter_delete"), "Delete",
                        this, SLOT(onFilterDelete()));
 
-    m_filtersTree = new QTreeWidget;
+    m_filtersTree = new QTreeWidget(this);
     m_filtersTree->setColumnCount(2);
     m_filtersTree->setRootIsDecorated(false);
     QStringList headerLabels;

@@ -43,8 +43,8 @@ FilterEditor::FilterEditor(QWidget *parent, Qt::WindowFlags f)
     nameLayout->addWidget(m_editName);
 
     QGroupBox *groupBox = new QGroupBox("Matching Criterion", this);
-    m_radAll = new QRadioButton("&All rules matched");
-    m_radOne = new QRadioButton("One of the rules matched");
+    m_radAll = new QRadioButton("&All of below matched");
+    m_radOne = new QRadioButton("Any &of below matched");
     m_radAll->setChecked(true);
 
     QHBoxLayout *radioLayout = new QHBoxLayout;
@@ -53,7 +53,7 @@ FilterEditor::FilterEditor(QWidget *parent, Qt::WindowFlags f)
     radioLayout->addStretch(1);
     groupBox->setLayout(radioLayout);
 
-    m_rulesTree = new QTreeWidget;
+    m_rulesTree = new QTreeWidget(this);
     m_rulesTree->setColumnCount(3);
     m_rulesTree->setRootIsDecorated(false);
     QStringList headerLabels;
