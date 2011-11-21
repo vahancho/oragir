@@ -102,6 +102,9 @@ public:
     /// Returns true if data matches to the filter rules.
     bool match(const Source &source) const;
 
+    /// Sets the new name.
+    void setName(const QString &name);
+
     /// Returs the name of the filter.
     QString name() const;
 
@@ -358,6 +361,12 @@ QStringList Filter<Source>::propertyNames() const
     Source source;
     QMap<QString, QVariant> properties = source.propertyMap();
     return properties.keys();
+}
+
+template<class Source>
+void Filter<Source>::setName(const QString &name)
+{
+    m_name = name;
 }
 
 template<class Source>

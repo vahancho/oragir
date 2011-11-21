@@ -113,6 +113,7 @@ core::Database::Filters FiltersDialog::filters() const
         QTreeWidgetItem *node = (*it).first;
         core::Filter<core::Post> filter = (*it).second;
         filter.setEnabled(node->checkState(0) == Qt::Checked);
+        filter.setName(node->text(1));
         filters.insert(filter);
         ++it;
     }
