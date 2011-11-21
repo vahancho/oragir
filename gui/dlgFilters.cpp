@@ -40,7 +40,8 @@ FiltersDialog::FiltersDialog(QWidget *parent, Qt::WindowFlags f)
                        this, SLOT(onNewFilter()));
     toolBar->addAction(QIcon(":icons/filter_edit"), "Change Filter...",
                        this, SLOT(onFilterEdit()));
-    toolBar->addAction(QIcon(":icons/filter_delete"), "Delete");
+    toolBar->addAction(QIcon(":icons/filter_delete"), "Delete",
+                       this, SLOT(onFilterDelete()));
 
     m_filtersTree = new QTreeWidget;
     m_filtersTree->setColumnCount(2);
@@ -134,6 +135,15 @@ void FiltersDialog::addFilterNode(const core::Filter<core::Post> &filter)
     node->setToolTip(1, filter.name());
     m_filtersTree->addTopLevelItem(node);
     m_filters[node] = filter;
+}
+
+void FiltersDialog::onFilterDelete()
+{
+    if (QTreeWidgetItem *currentItem = m_filtersTree->currentItem()) {
+        m_filters.erase(currentItem);
+        int index = m_filtersTree->indexOfTopLevelItem(currentItem);
+        m_filtersTree->takeTopLevelItem(index);
+    }
 }
 
 } // namespace gui

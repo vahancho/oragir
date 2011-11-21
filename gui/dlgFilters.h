@@ -46,6 +46,7 @@ public:
 private slots:
     void onFilterEdit();
     void onNewFilter();
+    void onFilterDelete();
 
 private:
     /// Adds new top level node to the tree configured as filter.
