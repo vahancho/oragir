@@ -45,6 +45,7 @@ public:
 
 private slots:
     void onFilterEdit();
+    void onNewFilter();
 
 private:
     QTreeWidget *m_filtersTree;

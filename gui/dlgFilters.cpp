@@ -35,7 +35,8 @@ FiltersDialog::FiltersDialog(QWidget *parent, Qt::WindowFlags f)
 {
     QToolBar *toolBar = new QToolBar(this);
     toolBar->setIconSize(QSize(16, 16));
-    toolBar->addAction(QIcon(":icons/filter_add"), "New Filter...");
+    toolBar->addAction(QIcon(":icons/filter_add"), "New Filter...",
+                       this, SLOT(onNewFilter()));
     toolBar->addAction(QIcon(":icons/filter_edit"), "Change Filter...",
                        this, SLOT(onFilterEdit()));
     toolBar->addAction(QIcon(":icons/filter_delete"), "Delete");
@@ -77,6 +78,10 @@ void FiltersDialog::setFilters(const core::Database::Filters &filters)
     while (it != filters.end()) {
         const core::Filter<core::Post> &filter = *it;
         QTreeWidgetItem *node = new QTreeWidgetItem;
+        node->setFlags(Qt::ItemIsSelectable |
+                       Qt::ItemIsUserCheckable |
+                       Qt::ItemIsEnabled |
+                       Qt::ItemIsEditable);
         if (filter.enabled())
             node->setCheckState(0, Qt::Checked);
         else
@@ -100,6 +105,21 @@ void FiltersDialog::onFilterEdit()
             m_filters[currentItem] = editor.filter();
         }
     }
+}
+
+void FiltersDialog::onNewFilter()
+{
+    core::Filter<core::Post> filter("New filter");
+    QTreeWidgetItem *node = new QTreeWidgetItem;
+    node->setFlags(Qt::ItemIsSelectable |
+                   Qt::ItemIsUserCheckable |
+                   Qt::ItemIsEnabled |
+                   Qt::ItemIsEditable);
+    node->setCheckState(0, Qt::Checked);
+    node->setText(1, filter.name());
+    node->setToolTip(1, filter.name());
+    m_filtersTree->addTopLevelItem(node);
+    m_filters[node] = filter;
 }
 
 core::Database::Filters FiltersDialog::filters() const
