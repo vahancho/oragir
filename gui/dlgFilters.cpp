@@ -77,20 +77,7 @@ void FiltersDialog::setFilters(const core::Database::Filters &filters)
     core::Database::Filters::const_iterator it = filters.begin();
     while (it != filters.end()) {
         const core::Filter<core::Post> &filter = *it;
-        QTreeWidgetItem *node = new QTreeWidgetItem;
-        node->setFlags(Qt::ItemIsSelectable |
-                       Qt::ItemIsUserCheckable |
-                       Qt::ItemIsEnabled |
-                       Qt::ItemIsEditable);
-        if (filter.enabled())
-            node->setCheckState(0, Qt::Checked);
-        else
-            node->setCheckState(0, Qt::Unchecked);
-        node->setText(1, filter.name());
-        node->setToolTip(1, filter.name());
-        m_filtersTree->addTopLevelItem(node);
-        m_filtersTree->resizeColumnToContents(0);
-        m_filters[node] = filter;
+        addFilterNode(filter);
         ++it;
     }
 }
@@ -110,16 +97,7 @@ void FiltersDialog::onFilterEdit()
 void FiltersDialog::onNewFilter()
 {
     core::Filter<core::Post> filter("New filter");
-    QTreeWidgetItem *node = new QTreeWidgetItem;
-    node->setFlags(Qt::ItemIsSelectable |
-                   Qt::ItemIsUserCheckable |
-                   Qt::ItemIsEnabled |
-                   Qt::ItemIsEditable);
-    node->setCheckState(0, Qt::Checked);
-    node->setText(1, filter.name());
-    node->setToolTip(1, filter.name());
-    m_filtersTree->addTopLevelItem(node);
-    m_filters[node] = filter;
+    addFilterNode(filter);
 }
 
 core::Database::Filters FiltersDialog::filters() const
@@ -136,6 +114,23 @@ core::Database::Filters FiltersDialog::filters() const
     }
 
     return filters;
+}
+
+void FiltersDialog::addFilterNode(const core::Filter<core::Post> &filter)
+{
+    QTreeWidgetItem *node = new QTreeWidgetItem;
+    node->setFlags(Qt::ItemIsSelectable |
+                   Qt::ItemIsUserCheckable |
+                   Qt::ItemIsEnabled |
+                   Qt::ItemIsEditable);
+    if (filter.enabled())
+        node->setCheckState(0, Qt::Checked);
+    else
+        node->setCheckState(0, Qt::Unchecked);
+    node->setText(1, filter.name());
+    node->setToolTip(1, filter.name());
+    m_filtersTree->addTopLevelItem(node);
+    m_filters[node] = filter;
 }
 
 } // namespace gui

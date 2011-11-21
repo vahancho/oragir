@@ -48,6 +48,9 @@ private slots:
     void onNewFilter();
 
 private:
+    /// Adds new top level node to the tree configured as filter.
+    void addFilterNode(const core::Filter<core::Post> &filter);
+
     QTreeWidget *m_filtersTree;
     std::map<QTreeWidgetItem *, core::Filter<core::Post> > m_filters;
 };
