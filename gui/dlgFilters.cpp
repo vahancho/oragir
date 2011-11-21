@@ -84,6 +84,11 @@ void FiltersDialog::setFilters(const core::Database::Filters &filters)
         addFilterNode(filter);
         ++it;
     }
+
+    // Finally select the first item if any.
+    if (QTreeWidgetItem *node = m_filtersTree->topLevelItem(0)) {
+        m_filtersTree->setCurrentItem(node);
+    }
 }
 
 void FiltersDialog::onFilterEdit()
