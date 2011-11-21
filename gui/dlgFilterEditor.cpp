@@ -84,6 +84,8 @@ void FilterEditor::setFilter(const core::Filter<core::Post> &filter)
 {
     if (filter.ruleMatch() == core::Filter<core::Post>::All)
         m_radAll->setChecked(true);
+    else if (filter.ruleMatch() == core::Filter<core::Post>::One)
+        m_radOne->setChecked(true);
     m_editName->setText(filter.name());
 
     const core::Filter<core::Post>::Rules &rules = filter.rules();
