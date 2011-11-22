@@ -662,7 +662,7 @@ void MainWindow::onDatabaseItemDblClicked(const QModelIndex &index)
 {
     core::Database *db = core::Application::theApp()->database();
     QTreeWidgetItem *item = m_databaseList->topLevelItem(index.row());
-    QString tableName = item->text(1);
+    QString tableName = item->text(0);
     QList<QMdiSubWindow *> mdiWindows = m_mdiArea.subWindowList();
     foreach(QMdiSubWindow *mdiWindow, mdiWindows) {
         if (DatabaseView *dbView =
