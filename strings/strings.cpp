@@ -61,6 +61,7 @@ namespace str
     const char *ShowStatusBar = "ShowStatusBar";
     const char *QuitOnClose = "QuitOnClose";
     const char *Database = "Database";
+    const char *Folders = "Folders";
     const char *Filters = "Filters";
     
     // Version related strings
