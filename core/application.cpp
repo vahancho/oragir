@@ -156,7 +156,7 @@ void Application::restoreDatabase() const
         QStringList tables = m_defaultManager->value(str::Folders).toStringList();
         foreach(const QString &table, tables) {
             m_dataBase->addTable(table);
-            m_mainWindow->createDatabaseView(database, table);
+            m_mainWindow->createFolderView(table);
         }
     }
 

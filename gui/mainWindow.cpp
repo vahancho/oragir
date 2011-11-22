@@ -96,7 +96,7 @@ MainWindow::MainWindow(QWidget *parent, Qt::WFlags flags)
 MainWindow::~MainWindow()
 {}
 
-void MainWindow::createDatabaseView(const QString &dbName, const QString &table)
+void MainWindow::createFolderView(const QString &table)
 {
     core::Database *dbObj = core::Application::theApp()->database();
     QSqlDatabase db = dbObj->database();
@@ -107,16 +107,13 @@ void MainWindow::createDatabaseView(const QString &dbName, const QString &table)
     // among existing nodes and if a node with the given name exists
     // do not add another one.
     QList<QTreeWidgetItem *> nodes =
-                m_databaseList->findItems(dbName, Qt::MatchFixedString, 1);
+                m_databaseList->findItems(table, Qt::MatchFixedString, 1);
     if (nodes.size() == 0) {
         // Add tree node for the given database.
         QTreeWidgetItem *node = new QTreeWidgetItem;
         node->setIcon(0, QIcon(":/icons/db"));
-        QFileInfo fi(dbName);
-        node->setText(0, fi.fileName());
-        node->setToolTip(0, fi.fileName());
-        node->setText(1, dbName);
-        node->setToolTip(1, dbName);
+        node->setText(0, table);
+        node->setToolTip(0, table);
         m_databaseList->addTopLevelItem(node);
     }
 
@@ -528,19 +525,17 @@ void MainWindow::onStreamStop()
 
 void MainWindow::onDatabaseOpen()
 {
-    QFileDialog dlg(this, "Open Database File", ".",
-                    tr("Databases (*.db);;All files (*.*)"));
-    if(dlg.exec() == QDialog::Accepted) {
-        QStringList files = dlg.selectedFiles();
-        if (files.size() > 0) {
-            core::Database *db = core::Application::theApp()->database();
-            QString file = files.at(0);
-            if (db->create(file)) {
-                createDatabaseView(file, "post");
-            } else {
-                QMessageBox::critical(this, str::DatabaseError,
-                                      db->errorMessage());
-            }
+    bool ok;
+    QString table = QInputDialog::getText(this, tr("Create New Folder"),
+                                          tr("Folder name:"), QLineEdit::Normal,
+                                          QDir::home().dirName(), &ok);
+    if (ok && !table.isEmpty()) {
+        core::Database *db = core::Application::theApp()->database();
+        if (db->addTable(table)) {
+            createFolderView(table);
+        } else {
+            QMessageBox::critical(this, str::DatabaseError,
+                                  db->errorMessage());
         }
     }
 }
@@ -667,12 +662,12 @@ void MainWindow::onDatabaseItemDblClicked(const QModelIndex &index)
 {
     core::Database *db = core::Application::theApp()->database();
     QTreeWidgetItem *item = m_databaseList->topLevelItem(index.row());
-    QString dbName = item->text(1);
+    QString tableName = item->text(1);
     QList<QMdiSubWindow *> mdiWindows = m_mdiArea.subWindowList();
     foreach(QMdiSubWindow *mdiWindow, mdiWindows) {
         if (DatabaseView *dbView =
             qobject_cast<DatabaseView *>(mdiWindow->widget())){
-            if (dbView->hasTable(db->database(), "post")) {
+            if (dbView->hasTable(db->database(), tableName)) {
                 setActiveSubWindow(mdiWindow);
                 return;
             }
@@ -681,7 +676,7 @@ void MainWindow::onDatabaseItemDblClicked(const QModelIndex &index)
 
     // If we reach here, the mdi child window wasn't found,
     // and we need to create new one.
-    createDatabaseView(dbName, "post");
+    createFolderView(tableName);
 }
 
 } // namespace gui

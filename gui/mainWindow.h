@@ -45,7 +45,7 @@ public:
     ~MainWindow();
 
     /// Set up the table mdi child view for the given database table.
-    void createDatabaseView(const QString &dbName, const QString &table);
+    void createFolderView(const QString &table);
 
 public slots:
     void onRecordInserted(const QSqlDatabase &db, const QString &table);
