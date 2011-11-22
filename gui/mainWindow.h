@@ -187,7 +187,7 @@ private:
     QMdiArea m_mdiArea;
 
     /// Stores the list of opened databases.
-    QTreeWidget *m_databaseList;
+    QTreeWidget *m_foldersList;
 
     /// The number of processed streaming items.
     int m_processedItemCount;

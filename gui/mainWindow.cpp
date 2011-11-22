@@ -73,22 +73,22 @@ MainWindow::MainWindow(QWidget *parent, Qt::WFlags flags)
     connect(parser, SIGNAL(stateChanged(int)),
             this, SLOT(onParserStateChanged(int)));
 
-    QDockWidget *dock = new QDockWidget("Databases", this);
-    dock->setObjectName("Databases");
+    QDockWidget *dock = new QDockWidget("Folders", this);
+    dock->setObjectName("Folders");
 
-    m_databaseList = new QTreeWidget;
-    m_databaseList->setColumnCount(2);
-    m_databaseList->setRootIsDecorated(false);
+    m_foldersList = new QTreeWidget;
+    m_foldersList->setColumnCount(1);
+    m_foldersList->setRootIsDecorated(false);
     QStringList headerLabels;
-    headerLabels << "Alias" << "Full Name";
-    m_databaseList->setHeaderLabels(headerLabels);
-    m_databaseList->setContextMenuPolicy(Qt::CustomContextMenu);
-    connect(m_databaseList, SIGNAL(customContextMenuRequested(const QPoint &)),
+    headerLabels << "Name";
+    m_foldersList->setHeaderLabels(headerLabels);
+    m_foldersList->setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(m_foldersList, SIGNAL(customContextMenuRequested(const QPoint &)),
             this, SLOT(onDatabaseContextMenu(const QPoint &)));
-    connect(m_databaseList, SIGNAL(doubleClicked(const QModelIndex &)),
+    connect(m_foldersList, SIGNAL(doubleClicked(const QModelIndex &)),
             this, SLOT(onDatabaseItemDblClicked(const QModelIndex &)));
 
-    dock->setWidget(m_databaseList);
+    dock->setWidget(m_foldersList);
     addDockWidget(Qt::LeftDockWidgetArea, dock);
 }
 
@@ -107,14 +107,14 @@ void MainWindow::createFolderView(const QString &table)
     // among existing nodes and if a node with the given name exists
     // do not add another one.
     QList<QTreeWidgetItem *> nodes =
-                m_databaseList->findItems(table, Qt::MatchFixedString, 1);
+                m_foldersList->findItems(table, Qt::MatchFixedString, 1);
     if (nodes.size() == 0) {
         // Add tree node for the given database.
         QTreeWidgetItem *node = new QTreeWidgetItem;
         node->setIcon(0, QIcon(":/icons/db"));
         node->setText(0, table);
         node->setToolTip(0, table);
-        m_databaseList->addTopLevelItem(node);
+        m_foldersList->addTopLevelItem(node);
     }
 
     // Create and show database view.
@@ -585,7 +585,7 @@ void MainWindow::onOptions()
 
 void MainWindow::onDatabaseContextMenu(const QPoint &pos)
 {
-    if(QTreeWidgetItem *treeItem = m_databaseList->itemAt(pos)) {
+    if(QTreeWidgetItem *treeItem = m_foldersList->itemAt(pos)) {
         QMenu menu;
         core::Database *db = core::Application::theApp()->database();
         QString dbName = treeItem->text(1);
@@ -596,7 +596,7 @@ void MainWindow::onDatabaseContextMenu(const QPoint &pos)
                                          SLOT(onDatabaseRemove()));
         action->setData(dbName);
 
-        menu.exec(m_databaseList->mapToGlobal(QPoint(pos.x(), pos.y() + 20)));
+        menu.exec(m_foldersList->mapToGlobal(QPoint(pos.x(), pos.y() + 20)));
     }
 }
 
@@ -607,8 +607,8 @@ void MainWindow::onDatabaseActivate(bool /*activate*/)
         QString dbName = action->data().toString();
 
         // Set the active icon for the active db item.
-        for(int i = 0; i < m_databaseList->topLevelItemCount(); i++) {
-            QTreeWidgetItem *item = m_databaseList->topLevelItem(i);
+        for(int i = 0; i < m_foldersList->topLevelItemCount(); i++) {
+            QTreeWidgetItem *item = m_foldersList->topLevelItem(i);
             if (item->text(1) == dbName) {
                 item->setIcon(0, QIcon(":/icons/db_active"));
             } else {
@@ -638,15 +638,15 @@ void MainWindow::onDatabaseRemove()
 
         // Remove all nodes for the given database.
         // Start from bottom to top to prevent shifting the indexes.
-        for(int i = m_databaseList->topLevelItemCount() - 1; i >= 0 ; --i) {
-            QTreeWidgetItem *item = m_databaseList->topLevelItem(i);
+        for(int i = m_foldersList->topLevelItemCount() - 1; i >= 0 ; --i) {
+            QTreeWidgetItem *item = m_foldersList->topLevelItem(i);
             if (item->text(1) == dbName)
-                m_databaseList->takeTopLevelItem(i);
+                m_foldersList->takeTopLevelItem(i);
         }
 
         // Update the activation state in the databases list.
-        for(int i = 0; i < m_databaseList->topLevelItemCount(); i++) {
-            QTreeWidgetItem *item = m_databaseList->topLevelItem(i);
+        for(int i = 0; i < m_foldersList->topLevelItemCount(); i++) {
+            QTreeWidgetItem *item = m_foldersList->topLevelItem(i);
             QString dbName = item->text(1);
         }
     }
@@ -661,7 +661,7 @@ void MainWindow::onParserStateChanged(int /*state*/)
 void MainWindow::onDatabaseItemDblClicked(const QModelIndex &index)
 {
     core::Database *db = core::Application::theApp()->database();
-    QTreeWidgetItem *item = m_databaseList->topLevelItem(index.row());
+    QTreeWidgetItem *item = m_foldersList->topLevelItem(index.row());
     QString tableName = item->text(0);
     QList<QMdiSubWindow *> mdiWindows = m_mdiArea.subWindowList();
     foreach(QMdiSubWindow *mdiWindow, mdiWindows) {
