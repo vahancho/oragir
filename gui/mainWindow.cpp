@@ -99,7 +99,7 @@ MainWindow::~MainWindow()
 void MainWindow::createDatabaseView(const QString &dbName, const QString &table)
 {
     core::Database *dbObj = core::Application::theApp()->database();
-    QSqlDatabase db = dbObj->database(dbName);
+    QSqlDatabase db = dbObj->database();
     if (!db.isValid())
         return;
 
@@ -111,10 +111,7 @@ void MainWindow::createDatabaseView(const QString &dbName, const QString &table)
     if (nodes.size() == 0) {
         // Add tree node for the given database.
         QTreeWidgetItem *node = new QTreeWidgetItem;
-        if (dbObj->isActive(dbName))
-            node->setIcon(0, QIcon(":/icons/db_active"));
-        else
-            node->setIcon(0, QIcon(":/icons/db"));
+        node->setIcon(0, QIcon(":/icons/db"));
         QFileInfo fi(dbName);
         node->setText(0, fi.fileName());
         node->setToolTip(0, fi.fileName());
@@ -597,16 +594,6 @@ void MainWindow::onDatabaseContextMenu(const QPoint &pos)
         QMenu menu;
         core::Database *db = core::Application::theApp()->database();
         QString dbName = treeItem->text(1);
-        bool active = db->isActive(dbName);
-        if (!active) {
-            QAction *action = menu.addAction(QIcon(":/icons/db_activate"),
-                                             str::ActionDbActive,
-                                             this,
-                                             SLOT(onDatabaseActivate(bool)));
-            action->setData(dbName);
-            action->setCheckable(true);
-            action->setChecked(active);
-        }
 
         QAction *action = menu.addAction(QIcon(":/icons/db_remove"),
                                          str::ActionDbRemove,
@@ -623,7 +610,6 @@ void MainWindow::onDatabaseActivate(bool /*activate*/)
     if(QAction *action = qobject_cast<QAction *>(sender())) {
         core::Database *db = core::Application::theApp()->database();
         QString dbName = action->data().toString();
-        db->setActive(dbName);
 
         // Set the active icon for the active db item.
         for(int i = 0; i < m_databaseList->topLevelItemCount(); i++) {
@@ -643,19 +629,12 @@ void MainWindow::onDatabaseRemove()
         core::Database *db = core::Application::theApp()->database();
         QString dbName = action->data().toString();
 
-        // Stop parsing before removing the target database.
-        if (db->isActive(dbName)) {
-            core::AtomParser *parser =
-                    core::Application::theApp()->streamParser();
-            parser->stop();
-        }
-
         // Find database view(s) that has to be closed.
         QList<QMdiSubWindow *> mdiWindows = m_mdiArea.subWindowList();
         foreach(QMdiSubWindow *mdiWindow, mdiWindows) {
             if (DatabaseView *dbView =
                 qobject_cast<DatabaseView *>(mdiWindow->widget())){
-                if (dbView->hasTable(db->database(dbName), "post")) {
+                if (dbView->hasTable(db->database(), "post")) {
                     delete dbView;
                     mdiWindow->close();
                 }
@@ -670,18 +649,10 @@ void MainWindow::onDatabaseRemove()
                 m_databaseList->takeTopLevelItem(i);
         }
 
-        // Finally remove the database itself.
-        db->remove(dbName);
-
         // Update the activation state in the databases list.
         for(int i = 0; i < m_databaseList->topLevelItemCount(); i++) {
             QTreeWidgetItem *item = m_databaseList->topLevelItem(i);
             QString dbName = item->text(1);
-            if (db->isActive(dbName)) {
-                item->setIcon(0, QIcon(":/icons/db_active"));
-            } else {
-                item->setIcon(0, QIcon(":/icons/db"));
-            }
         }
     }
 }
@@ -701,7 +672,7 @@ void MainWindow::onDatabaseItemDblClicked(const QModelIndex &index)
     foreach(QMdiSubWindow *mdiWindow, mdiWindows) {
         if (DatabaseView *dbView =
             qobject_cast<DatabaseView *>(mdiWindow->widget())){
-            if (dbView->hasTable(db->database(dbName), "post")) {
+            if (dbView->hasTable(db->database(), "post")) {
                 setActiveSubWindow(mdiWindow);
                 return;
             }

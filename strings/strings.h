@@ -64,7 +64,7 @@ namespace str
     extern const char *MainWindowState;
     extern const char *ShowStatusBar;
     extern const char *QuitOnClose;
-    extern const char *Databases;
+    extern const char *Database;
     extern const char *Filters;
 
     // Version related strings

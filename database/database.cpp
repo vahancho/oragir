@@ -30,9 +30,7 @@ Database::Database()
 
 Database::~Database()
 {
-    QStringList connections = QSqlDatabase::connectionNames();
-    foreach(const QString &connection, connections)
-        remove(connection);
+    remove();
 }
 
 bool Database::create(const QString &fileName)
@@ -51,10 +49,9 @@ bool Database::create(const QString &fileName)
     }
 
     QSqlQuery query(db);
-    if (!query.exec(str::SqlCreateBlogTable) ||
-        !query.exec(str::SqlCreatePostTable))
-    {
+    if (!query.exec(str::SqlCreateBlogTable)) {
         m_error = query.lastError().text();
+        remove();
         return false;
     }
 
@@ -65,19 +62,15 @@ bool Database::create(const QString &fileName)
     query.exec("PRAGMA locking_mode = EXCLUSIVE");
     query.exec("PRAGMA synchronous = OFF");
 
-    if (m_dbActiveConnection.isEmpty())
-        m_dbActiveConnection = fileName;
+    m_connection = fileName;
 
     return true;
 }
 
-void Database::remove(const QString &connectionName)
+void Database::remove()
 {
-    if (!QSqlDatabase::contains(connectionName))
-        return;
-
     {
-        QSqlDatabase db = QSqlDatabase::database(connectionName);
+        QSqlDatabase db = QSqlDatabase::database(m_connection);
         if (!db.isValid())
             return;
 
@@ -85,12 +78,8 @@ void Database::remove(const QString &connectionName)
             db.close();
     }
 
-    QSqlDatabase::removeDatabase(connectionName);
-    QStringList remainingConnections = QSqlDatabase::connectionNames();
-    if (remainingConnections.size() > 0)
-        m_dbActiveConnection = remainingConnections.at(0);
-    else
-        m_dbActiveConnection = QString();
+    QSqlDatabase::removeDatabase(m_connection);
+    m_connection.clear();
 }
 
 void Database::onFetched(const Post &post, const Blog &blog)
@@ -128,7 +117,7 @@ void Database::addRecord(const Post &post, const Blog &blog)
                             .arg(blog.value(str::TagJournal).toString())
                             .arg(blog.value(str::TagTitle).toString());
 
-    QSqlDatabase db = QSqlDatabase::database(m_dbActiveConnection);
+    QSqlDatabase db = QSqlDatabase::database(m_connection);
     QSqlQuery query(db);
 
     query.prepare("INSERT INTO post (posterid, link, updated, name, content, title) "
@@ -219,27 +208,6 @@ QString Database::errorMessage() const
     return m_error;
 }
 
-QSqlDatabase Database::database(const QString &connectionName) const
-{
-     return QSqlDatabase::database(connectionName);
-}
-
-void Database::setActive(const QString &connectionName)
-{
-    if (QSqlDatabase::contains(connectionName))
-        m_dbActiveConnection = connectionName;
-}
-
-bool Database::isActive(const QString &connectionName) const
-{
-    return connectionName == m_dbActiveConnection;
-}
-
-QStringList Database::databases() const
-{
-    return QSqlDatabase::connectionNames();
-}
-
 const Database::Filters &Database::filters() const
 {
     return m_filters;
@@ -248,6 +216,45 @@ const Database::Filters &Database::filters() const
 void Database::clearFilters()
 {
     m_filters.clear();
+}
+
+QString Database::databaseName() const
+{
+    return m_connection;
+}
+
+QSqlDatabase Database::database() const
+{
+    return QSqlDatabase::database(m_connection);
+}
+
+bool Database::addTable(const QString &table)
+{
+    QSqlDatabase db = database();
+    QSqlQuery query(db);
+
+    QString queryStr = QString(str::SqlCreatePostTable).arg(table);
+    if (query.exec(queryStr)) {
+        return true;
+    } else {
+        m_error = query.lastError().text();
+        return false;
+    }
+}
+
+void Database::removeTable(const QString &table)
+{
+    QSqlDatabase db = database();
+    QSqlQuery query(db);
+
+    QString queryStr = QString("DROP TABLE %1").arg(table);
+    query.exec(queryStr);
+}
+
+QStringList Database::tables() const
+{
+    QSqlDatabase db = database();
+    return db.tables(QSql::Tables);
 }
 
 } // namespace core

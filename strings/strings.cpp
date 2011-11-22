@@ -60,7 +60,7 @@ namespace str
     const char *MainWindowState = "MainWindowState";
     const char *ShowStatusBar = "ShowStatusBar";
     const char *QuitOnClose = "QuitOnClose";
-    const char *Databases = "Databases";
+    const char *Database = "Database";
     const char *Filters = "Filters";
     
     // Version related strings
@@ -74,7 +74,7 @@ namespace str
                                      "journal   VARCHAR(256)    NOT NULL,"
                                      "title     NVARCHAR(256))";
 
-    const char *SqlCreatePostTable = "CREATE TABLE IF NOT EXISTS post ("
+    const char *SqlCreatePostTable = "CREATE TABLE IF NOT EXISTS %1 ("
                                      "posterid INTEGER         NOT NULL,"
                                      "link     VARCHAR(256)    NOT NULL,"
                                      "updated  DATATIME        NOT NULL,"

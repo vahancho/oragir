@@ -46,11 +46,11 @@ public:
     */
     bool create(const QString &fileName);
 
-    /// Closes, if open, and removes the given database connection.
-    void remove(const QString &connectionName);
+    bool addTable(const QString &table);
 
-    /// Set the active (current) database.
-    void setActive(const QString &connectionName);
+    void removeTable(const QString &table);
+
+    QStringList tables() const;
 
     /// Adds or update a filter to the list of filters.
     /*!
@@ -67,17 +67,13 @@ public:
     /// Reports the last error if any.
     QString errorMessage() const;
 
-    QSqlDatabase database(const QString &connectionName) const;
-
-    /// Returns true if given connection is the active one.
-    bool isActive(const QString &connectionName) const;
-
-    /// Returns the list of all database names.
-    QStringList databases() const;
-
     typedef std::set<Filter<Post> > Filters;
 
     const Filters &filters() const;
+
+    QSqlDatabase database() const;
+
+    QString databaseName() const;
 
 signals:
     void recordInserted(const QSqlDatabase &db, const QString &table);
@@ -86,6 +82,8 @@ public slots:
     void onFetched(const Post &post, const Blog &blog);
 
 private:
+    void remove();
+
     /// Adds new recored to the database.
     void addRecord(const Post &post, const Blog &blog);
 
@@ -95,7 +93,7 @@ private:
     /// Stores the error message.
     QString m_error;
 
-    QString m_dbActiveConnection;
+    QString m_connection;
 };
 
 } // namespace core
