@@ -171,6 +171,7 @@ void Application::saveDatabaseDefaults() const
     Q_ASSERT(m_dataBase);
 
     m_defaultManager->setValue(str::Database, m_dataBase->databaseName());
+    m_defaultManager->setValue(str::Folders, m_dataBase->tables());
     QString filtersFile = m_defaultManager->value(str::Filters).toString();
     if (!filtersFile.isEmpty())
         m_dataBase->saveFilters(filtersFile);
