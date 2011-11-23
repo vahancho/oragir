@@ -107,7 +107,7 @@ void MainWindow::createFolderView(const QString &table)
     // among existing nodes and if a node with the given name exists
     // do not add another one.
     QList<QTreeWidgetItem *> nodes =
-                m_foldersList->findItems(table, Qt::MatchFixedString, 1);
+                m_foldersList->findItems(table, Qt::MatchFixedString, 0);
     if (nodes.size() == 0) {
         // Add tree node for the given database.
         QTreeWidgetItem *node = new QTreeWidgetItem;
