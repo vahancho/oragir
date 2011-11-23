@@ -587,14 +587,12 @@ void MainWindow::onDatabaseContextMenu(const QPoint &pos)
 {
     if(QTreeWidgetItem *treeItem = m_foldersList->itemAt(pos)) {
         QMenu menu;
-        core::Database *db = core::Application::theApp()->database();
-        QString dbName = treeItem->text(1);
-
         QAction *action = menu.addAction(QIcon(":/icons/db_remove"),
-                                         str::ActionDbRemove,
+                                         str::ActionDelete,
                                          this,
-                                         SLOT(onDatabaseRemove()));
-        action->setData(dbName);
+                                         SLOT(onFolderDelete()));
+        QString folderName = treeItem->text(0);
+        action->setData(folderName);
 
         menu.exec(m_foldersList->mapToGlobal(QPoint(pos.x(), pos.y() + 20)));
     }
@@ -618,18 +616,18 @@ void MainWindow::onDatabaseActivate(bool /*activate*/)
     }
 }
 
-void MainWindow::onDatabaseRemove()
+void MainWindow::onFolderDelete()
 {
      if(QAction *action = qobject_cast<QAction *>(sender())) {
         core::Database *db = core::Application::theApp()->database();
-        QString dbName = action->data().toString();
+        QString folderName = action->data().toString();
 
         // Find database view(s) that has to be closed.
         QList<QMdiSubWindow *> mdiWindows = m_mdiArea.subWindowList();
         foreach(QMdiSubWindow *mdiWindow, mdiWindows) {
             if (DatabaseView *dbView =
                 qobject_cast<DatabaseView *>(mdiWindow->widget())){
-                if (dbView->hasTable(db->database(), "post")) {
+                if (dbView->hasTable(db->database(), folderName)) {
                     delete dbView;
                     mdiWindow->close();
                 }
@@ -640,14 +638,8 @@ void MainWindow::onDatabaseRemove()
         // Start from bottom to top to prevent shifting the indexes.
         for(int i = m_foldersList->topLevelItemCount() - 1; i >= 0 ; --i) {
             QTreeWidgetItem *item = m_foldersList->topLevelItem(i);
-            if (item->text(1) == dbName)
+            if (item->text(0) == folderName)
                 m_foldersList->takeTopLevelItem(i);
-        }
-
-        // Update the activation state in the databases list.
-        for(int i = 0; i < m_foldersList->topLevelItemCount(); i++) {
-            QTreeWidgetItem *item = m_foldersList->topLevelItem(i);
-            QString dbName = item->text(1);
         }
     }
 }

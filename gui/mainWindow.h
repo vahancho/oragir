@@ -115,7 +115,7 @@ private slots:
 
     void onDatabaseActivate(bool);
 
-    void onDatabaseRemove();
+    void onFolderDelete();
 
     void onParserStateChanged(int state);
 
