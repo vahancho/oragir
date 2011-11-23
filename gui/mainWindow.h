@@ -111,7 +111,7 @@ private slots:
 
     void onOptions();
 
-    void onDatabaseContextMenu(const QPoint &pos);
+    void onFolderContextMenu(const QPoint &pos);
 
     void onFolderDelete();
 

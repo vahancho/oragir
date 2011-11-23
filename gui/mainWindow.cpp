@@ -84,7 +84,7 @@ MainWindow::MainWindow(QWidget *parent, Qt::WFlags flags)
     m_foldersList->setHeaderLabels(headerLabels);
     m_foldersList->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(m_foldersList, SIGNAL(customContextMenuRequested(const QPoint &)),
-            this, SLOT(onDatabaseContextMenu(const QPoint &)));
+            this, SLOT(onFolderContextMenu(const QPoint &)));
     connect(m_foldersList, SIGNAL(doubleClicked(const QModelIndex &)),
             this, SLOT(onFolderDblClicked(const QModelIndex &)));
 
@@ -583,7 +583,7 @@ void MainWindow::onOptions()
 {
 }
 
-void MainWindow::onDatabaseContextMenu(const QPoint &pos)
+void MainWindow::onFolderContextMenu(const QPoint &pos)
 {
     if(QTreeWidgetItem *treeItem = m_foldersList->itemAt(pos)) {
         QMenu menu;
