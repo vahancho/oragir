@@ -98,14 +98,14 @@ void FilterEditor::setFilter(const core::Filter<core::Post> &filter)
                        Qt::ItemIsUserCheckable |
                        Qt::ItemIsEnabled |
                        Qt::ItemIsEditable);
-        node->setText(2, rule.value());
+        node->setText(Value, rule.value());
 
         m_rulesTree->addTopLevelItem(node);
         QComboBox *combo = propertiesCombo(filter, name);
-        m_rulesTree->setItemWidget(node, 0, combo);
+        m_rulesTree->setItemWidget(node, Property, combo);
 
         QComboBox *comboOpt = optionsCombo(filter, rule.option());
-        m_rulesTree->setItemWidget(node, 1, comboOpt);
+        m_rulesTree->setItemWidget(node, Option, comboOpt);
 
         ++it;
     }
@@ -150,11 +150,11 @@ core::Filter<core::Post> FilterEditor::filter() const
     for (int i = 0; i < m_rulesTree->topLevelItemCount(); ++i) {
         QTreeWidgetItem *node = m_rulesTree->topLevelItem(i);
         QComboBox *combo =
-            qobject_cast<QComboBox *>(m_rulesTree->itemWidget(node, 0));
+            qobject_cast<QComboBox *>(m_rulesTree->itemWidget(node, Property));
         QComboBox *comboOpt =
-            qobject_cast<QComboBox *>(m_rulesTree->itemWidget(node, 1));
+            qobject_cast<QComboBox *>(m_rulesTree->itemWidget(node, Option));
         filter.setRule(combo->itemData(combo->currentIndex()).toString(),
-                       node->text(2),
+                       node->text(Value),
                        (core::Filter<core::Post>::Option)comboOpt->currentIndex());
     }
 

@@ -44,6 +44,14 @@ public:
     core::Filter<core::Post> filter() const;
 
 private:
+    /// The rules tree column numbers.
+    enum RulesTreeColumns
+    {
+        Property = 0,
+        Option,
+        Value
+    };
+
     QComboBox *propertiesCombo(const core::Filter<core::Post> &filter,
                                const QString &currentText);
 
