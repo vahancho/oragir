@@ -108,6 +108,12 @@ public:
     /// Returs the name of the filter.
     QString name() const;
 
+    /// Sets the target table name.
+    void setTable(const QString &table);
+
+    /// Returns the target table name.
+    QString table() const;
+
     /// Returns whethe filter enabled or not.
     bool enabled() const;
 
@@ -147,6 +153,13 @@ private:
     QString m_name;
     bool m_enabled;
     RuleMatch m_ruleMatch;
+
+    /// Stores the target table.
+    /*!
+        This table defines where a record filtered by this
+        filter will be written in the database.
+    */
+    QString m_table;
 };
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -367,6 +380,18 @@ template<class Source>
 void Filter<Source>::setName(const QString &name)
 {
     m_name = name;
+}
+
+template<class Source>
+void Filter<Source>::setTable(const QString &table)
+{
+    m_table = table;
+}
+
+template<class Source>
+QString Filter<Source>::table() const
+{
+    return m_table;
 }
 
 template<class Source>
