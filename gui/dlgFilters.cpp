@@ -49,8 +49,8 @@ FiltersDialog::FiltersDialog(QWidget *parent, Qt::WindowFlags f)
     QStringList headerLabels;
     headerLabels << "Enable" << "Filter";
     m_filtersTree->setHeaderLabels(headerLabels);
-    m_filtersTree->header()->setResizeMode(0, QHeaderView::Fixed);
-    m_filtersTree->header()->resizeSection(0, 48);
+    m_filtersTree->header()->setResizeMode(Enable, QHeaderView::Fixed);
+    m_filtersTree->header()->resizeSection(Enable, 48);
 
     QVBoxLayout *tblWithBtns = new QVBoxLayout;
     tblWithBtns->addWidget(toolBar);
@@ -117,8 +117,8 @@ core::Database::Filters FiltersDialog::filters() const
     while(it != m_filters.end()) {
         QTreeWidgetItem *node = (*it).first;
         core::Filter<core::Post> filter = (*it).second;
-        filter.setEnabled(node->checkState(0) == Qt::Checked);
-        filter.setName(node->text(1));
+        filter.setEnabled(node->checkState(Enable) == Qt::Checked);
+        filter.setName(node->text(Name));
         filters.insert(filter);
         ++it;
     }
@@ -134,11 +134,11 @@ void FiltersDialog::addFilterNode(const core::Filter<core::Post> &filter)
                    Qt::ItemIsEnabled |
                    Qt::ItemIsEditable);
     if (filter.enabled())
-        node->setCheckState(0, Qt::Checked);
+        node->setCheckState(Enable, Qt::Checked);
     else
-        node->setCheckState(0, Qt::Unchecked);
-    node->setText(1, filter.name());
-    node->setToolTip(1, filter.name());
+        node->setCheckState(Enable, Qt::Unchecked);
+    node->setText(Name, filter.name());
+    node->setToolTip(Name, filter.name());
     m_filtersTree->addTopLevelItem(node);
     m_filters[node] = filter;
 }

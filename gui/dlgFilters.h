@@ -49,6 +49,12 @@ private slots:
     void onFilterDelete();
 
 private:
+    enum FiltersTreeColumn
+    {
+        Enable = 0,
+        Name
+    };
+
     /// Adds new top level node to the tree configured as filter.
     void addFilterNode(const core::Filter<core::Post> &filter);
 
