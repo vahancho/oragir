@@ -641,6 +641,9 @@ void MainWindow::onFolderDelete()
             if (item->text(0) == folderName)
                 m_foldersList->takeTopLevelItem(i);
         }
+
+        // Finally remove table from the database.
+        db->removeTable(folderName);
     }
 }
 
