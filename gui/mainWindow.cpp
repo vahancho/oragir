@@ -107,13 +107,13 @@ void MainWindow::createFolderView(const QString &table)
     // among existing nodes and if a node with the given name exists
     // do not add another one.
     QList<QTreeWidgetItem *> nodes =
-                m_foldersList->findItems(table, Qt::MatchFixedString, 0);
+                m_foldersList->findItems(table, Qt::MatchFixedString, Name);
     if (nodes.size() == 0) {
         // Add tree node for the given database.
         QTreeWidgetItem *node = new QTreeWidgetItem;
-        node->setIcon(0, QIcon(":/icons/folder"));
-        node->setText(0, table);
-        node->setToolTip(0, table);
+        node->setIcon(Name, QIcon(":/icons/folder"));
+        node->setText(Name, table);
+        node->setToolTip(Name, table);
         m_foldersList->addTopLevelItem(node);
     }
 
@@ -591,7 +591,7 @@ void MainWindow::onDatabaseContextMenu(const QPoint &pos)
                                          str::ActionDelete,
                                          this,
                                          SLOT(onFolderDelete()));
-        QString folderName = treeItem->text(0);
+        QString folderName = treeItem->text(Name);
         action->setData(folderName);
 
         menu.exec(m_foldersList->mapToGlobal(QPoint(pos.x(), pos.y() + 20)));
@@ -638,7 +638,7 @@ void MainWindow::onFolderDelete()
         // Start from bottom to top to prevent shifting the indexes.
         for(int i = m_foldersList->topLevelItemCount() - 1; i >= 0 ; --i) {
             QTreeWidgetItem *item = m_foldersList->topLevelItem(i);
-            if (item->text(0) == folderName)
+            if (item->text(Name) == folderName)
                 m_foldersList->takeTopLevelItem(i);
         }
 
@@ -657,7 +657,7 @@ void MainWindow::onFolderDblClicked(const QModelIndex &index)
 {
     core::Database *db = core::Application::theApp()->database();
     QTreeWidgetItem *item = m_foldersList->topLevelItem(index.row());
-    QString tableName = item->text(0);
+    QString tableName = item->text(Name);
     QList<QMdiSubWindow *> mdiWindows = m_mdiArea.subWindowList();
     foreach(QMdiSubWindow *mdiWindow, mdiWindows) {
         if (DatabaseView *dbView =

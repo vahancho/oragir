@@ -122,6 +122,13 @@ private slots:
     void onFolderDblClicked(const QModelIndex &);
 
 private:
+
+    /// Defines the column numbers in the folders view.
+    enum FolderViewColumn
+    {
+        Name = 0
+    };
+
     /// Returns the active MDI sub window.
     /*!
         Returns the active MDI sub window if any, otherwise returns 0.
