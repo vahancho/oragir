@@ -111,7 +111,7 @@ void MainWindow::createFolderView(const QString &table)
     if (nodes.size() == 0) {
         // Add tree node for the given database.
         QTreeWidgetItem *node = new QTreeWidgetItem;
-        node->setIcon(0, QIcon(":/icons/db"));
+        node->setIcon(0, QIcon(":/icons/folder"));
         node->setText(0, table);
         node->setToolTip(0, table);
         m_foldersList->addTopLevelItem(node);
