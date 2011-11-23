@@ -86,7 +86,7 @@ MainWindow::MainWindow(QWidget *parent, Qt::WFlags flags)
     connect(m_foldersList, SIGNAL(customContextMenuRequested(const QPoint &)),
             this, SLOT(onDatabaseContextMenu(const QPoint &)));
     connect(m_foldersList, SIGNAL(doubleClicked(const QModelIndex &)),
-            this, SLOT(onDatabaseItemDblClicked(const QModelIndex &)));
+            this, SLOT(onFolderDblClicked(const QModelIndex &)));
 
     dock->setWidget(m_foldersList);
     addDockWidget(Qt::LeftDockWidgetArea, dock);
@@ -650,7 +650,7 @@ void MainWindow::onParserStateChanged(int /*state*/)
     statusBar()->showMessage(parser->statusMessage(), 2000);
 }
 
-void MainWindow::onDatabaseItemDblClicked(const QModelIndex &index)
+void MainWindow::onFolderDblClicked(const QModelIndex &index)
 {
     core::Database *db = core::Application::theApp()->database();
     QTreeWidgetItem *item = m_foldersList->topLevelItem(index.row());

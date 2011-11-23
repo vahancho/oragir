@@ -119,7 +119,7 @@ private slots:
 
     void onParserStateChanged(int state);
 
-    void onDatabaseItemDblClicked(const QModelIndex &);
+    void onFolderDblClicked(const QModelIndex &);
 
 private:
     /// Returns the active MDI sub window.
