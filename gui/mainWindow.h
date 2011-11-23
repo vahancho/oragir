@@ -113,8 +113,6 @@ private slots:
 
     void onDatabaseContextMenu(const QPoint &pos);
 
-    void onDatabaseActivate(bool);
-
     void onFolderDelete();
 
     void onParserStateChanged(int state);
