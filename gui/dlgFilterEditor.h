@@ -23,6 +23,7 @@
 
 #include <QDialog>
 #include "../parser/filter.h"
+#include "../parser/post.h"
 
 class QLineEdit;
 class QRadioButton;

@@ -20,6 +20,7 @@
 
 #include <QtTest/QtTest>
 #include "../../parser/filter.h"
+#include "../../parser/post.h"
 
 using namespace core;
 

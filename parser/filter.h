@@ -22,7 +22,7 @@
 #define __RULE_H__
 
 #include <QXmlStreamWriter>
-#include "post.h"
+#include <QMultiMap>
 #include "../strings/strings.h"
 
 namespace core
