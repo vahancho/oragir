@@ -24,6 +24,7 @@
 #include "../parser/atomParser.h"
 #include "../database/database.h"
 #include "../gui/mainWindow.h"
+#include "../strings/strings.h"
 
 namespace core
 {
@@ -89,6 +90,9 @@ void Application::destroy()
 
 void Application::init()
 {
+    // Set the application name.
+    QCoreApplication::setApplicationName(str::AppName);
+
     // Create all application components
     m_defaultManager = new DefaultManager;
 

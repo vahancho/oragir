@@ -20,13 +20,14 @@
 
 #include <QSettings>
 #include <QApplication>
+#include <QDesktopServices>
 #include <QDir>
 #include "defaultManager.h"
 
 namespace core
 {
 
-const QString defaultsFileName("settings.ini");
+const char defaultsFileName[] = "settings.ini";
 
 DefaultManager::DefaultManager(QObject *parent)
     :
@@ -68,8 +69,10 @@ void DefaultManager::readDefaults()
 
 QString DefaultManager::file() const
 {
-    QString path = QCoreApplication::applicationDirPath() + '/' + defaultsFileName;
-    return QDir::toNativeSeparators(path);
+    QString location =
+                QDesktopServices::storageLocation(QDesktopServices::DataLocation) +
+                '/' + defaultsFileName;
+    return QDir::toNativeSeparators(location);
 }
 
 } // namespace core
