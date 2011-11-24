@@ -19,6 +19,7 @@
 ***************************************************************************/
 
 #include <QStatusBar>
+#include <QDesktopServices>
 #include "application.h"
 #include "defaultManager.h"
 #include "../parser/atomParser.h"
@@ -141,11 +142,15 @@ void Application::registerDatabaseDefaults() const
     Q_ASSERT(m_defaultManager);
     Q_ASSERT(m_dataBase);
 
-    m_defaultManager->addProperty(str::Database, QString(), QString());
+    QString location =
+       QDesktopServices::storageLocation(QDesktopServices::DataLocation) + '/';
+    location = QDir::toNativeSeparators(location);
+
+    QString appDataFile = QString(location + "oragir.data");
+    m_defaultManager->addProperty(str::Database, appDataFile, appDataFile);
     m_defaultManager->addProperty(str::Folders, QStringList(), QStringList());
 
-    QString filterFile = QCoreApplication::applicationDirPath() + "/filters.flt";
-    filterFile = QDir::toNativeSeparators(filterFile);
+    QString filterFile = QString(location + "filters.flt");
     m_defaultManager->addProperty(str::Filters, filterFile, filterFile);
 }
 
