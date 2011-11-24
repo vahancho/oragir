@@ -142,9 +142,13 @@ void Application::registerDatabaseDefaults() const
     Q_ASSERT(m_defaultManager);
     Q_ASSERT(m_dataBase);
 
+    // Get settings directory and create it if it does not exist.
     QString location =
        QDesktopServices::storageLocation(QDesktopServices::DataLocation) + '/';
     location = QDir::toNativeSeparators(location);
+    QDir dir(location);
+    if (!dir.exists())
+        dir.mkpath(location);
 
     QString appDataFile = QString(location + "oragir.data");
     m_defaultManager->addProperty(str::Database, appDataFile, appDataFile);
