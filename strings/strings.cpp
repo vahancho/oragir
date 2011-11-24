@@ -83,4 +83,7 @@ namespace str
                                      "content  NVARCHAR,"
                                      "title    NVARCHAR(256))";
 
+    const char *SqlInsertPostToTable = "INSERT INTO %1 (posterid, link, updated, name, content, title) "
+                                       "VALUES (:posterid, :link, :updated, :name, :content, :title)";
+
 } // namespace str

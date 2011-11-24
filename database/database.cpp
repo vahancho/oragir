@@ -90,7 +90,7 @@ void Database::onFetched(const Post &post, const Blog &blog)
     while (it != m_filters.end()) {
         const Filter<Post> &filter = *it;
         if (filter.enabled() && filter.match(post)) {
-            addRecord(post, blog);
+            addRecord(post, blog, filter.table());
             break;
         }
         ++it;
@@ -110,7 +110,8 @@ void Database::addFilter(const Filter<Post> &filter)
     m_filters.insert(filter);
 }
 
-void Database::addRecord(const Post &post, const Blog &blog)
+void Database::addRecord(const Post &post, const Blog &blog,
+                         const QString &table)
 {
     QString sBlog = QString("%1\n%2\n%3\n%4\n%5\n%6\n")
                             .arg(blog.value(str::TagJournalId).toInt())
@@ -119,11 +120,10 @@ void Database::addRecord(const Post &post, const Blog &blog)
                             .arg(blog.value(str::TagJournal).toString())
                             .arg(blog.value(str::TagTitle).toString());
 
-    QSqlDatabase db = QSqlDatabase::database(m_connection);
+    QSqlDatabase db = database();
     QSqlQuery query(db);
-
-    query.prepare("INSERT INTO post (posterid, link, updated, name, content, title) "
-                  "VALUES (:posterid, :link, :updated, :name, :content, :title)");
+    QString queryStr = QString(str::SqlInsertPostToTable).arg(table);
+    query.prepare(queryStr);
 
     query.bindValue(":posterid", post.value(str::TagPosterId).toInt());
     query.bindValue(":link", post.value(str::TagLink).toString());
@@ -133,8 +133,9 @@ void Database::addRecord(const Post &post, const Blog &blog)
     query.bindValue(":title", post.value(str::TagTitle).toString());
     bool inserted = query.exec();
 
+    // If record inserted inform the world.
     if (inserted) {
-        emit recordInserted(db, "post");
+        emit recordInserted(db, table);
     }
 }
 

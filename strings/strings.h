@@ -79,6 +79,9 @@ namespace str
     /// SQL query to create table posts.
     extern const char *SqlCreatePostTable;
 
+    /// SQL query to add post recored to the table.
+    extern const char *SqlInsertPostToTable;
+
 } // namespace str
 
 #endif // __STRINGS_H__

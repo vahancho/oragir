@@ -84,8 +84,9 @@ public slots:
 private:
     void remove();
 
-    /// Adds new recored to the database.
-    void addRecord(const Post &post, const Blog &blog);
+    /// Adds new recors to the given table.
+    void addRecord(const Post &post, const Blog &blog,
+                   const QString &table);
 
     /// Stores the list of filters.
     Filters m_filters;
