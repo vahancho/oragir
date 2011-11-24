@@ -63,6 +63,7 @@ private:
     QRadioButton *m_radAll;
     QRadioButton *m_radOne;
     QTreeWidget *m_rulesTree;
+    QComboBox *m_tableCombo;
 };
 
 } // namespace gui

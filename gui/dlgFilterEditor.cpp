@@ -28,6 +28,8 @@
 #include <QComboBox>
 #include "dlgFilterEditor.h"
 #include "../strings/guiStrings.h"
+#include "../core/application.h"
+#include "../database/database.h"
 
 namespace gui
 {
@@ -60,6 +62,8 @@ FilterEditor::FilterEditor(QWidget *parent, Qt::WindowFlags f)
     headerLabels << "Property" << "Option" << "Value";
     m_rulesTree->setHeaderLabels(headerLabels);
 
+    m_tableCombo = new QComboBox(this);
+
     QPushButton *btnOk = new QPushButton(str::Ok, this);
     connect(btnOk, SIGNAL(clicked()), this, SLOT(accept()));
     btnOk->setDefault(true);
@@ -75,6 +79,7 @@ FilterEditor::FilterEditor(QWidget *parent, Qt::WindowFlags f)
     mainLayout->addLayout(nameLayout);
     mainLayout->addWidget(groupBox);
     mainLayout->addWidget(m_rulesTree);
+    mainLayout->addWidget(m_tableCombo);
     mainLayout->addLayout(btnLayout);
 
     setLayout(mainLayout);
@@ -87,6 +92,14 @@ void FilterEditor::setFilter(const core::Filter<core::Post> &filter)
     else if (filter.ruleMatch() == core::Filter<core::Post>::One)
         m_radOne->setChecked(true);
     m_editName->setText(filter.name());
+
+    // Set the target folders (tables) combo box and select
+    // the target folder name for the given filter.
+    core::Database *db = core::Application::theApp()->database();
+    QStringList tables = db->tables();
+    m_tableCombo->addItems(tables);
+    int tblIndex = tables.indexOf(filter.table());
+    m_tableCombo->setCurrentIndex(tblIndex);
 
     const core::Filter<core::Post>::Rules &rules = filter.rules();
     core::Filter<core::Post>::Rules::const_iterator it = rules.constBegin();
@@ -143,6 +156,8 @@ QComboBox *FilterEditor::optionsCombo(const core::Filter<core::Post> &filter,
 core::Filter<core::Post> FilterEditor::filter() const
 {
     core::Filter<core::Post> filter(m_editName->text());
+    filter.setTable(m_tableCombo->currentText());
+
     if (m_radAll->isChecked())
         filter.setRuleMatch(core::Filter<core::Post>::All);
     else if (m_radOne->isChecked())
