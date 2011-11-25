@@ -105,8 +105,9 @@ void FiltersDialog::onFilterEdit()
 
 void FiltersDialog::onNewFilter()
 {
-    core::Filter<core::Post> filter("New filter");
-    addFilterNode(filter);
+    QString newName = QString("New Filter %1").arg(qrand());
+    core::Filter<core::Post> filter(newName);
+    addFilterNode(filter, true);
 }
 
 core::Database::Filters FiltersDialog::filters() const
@@ -126,7 +127,8 @@ core::Database::Filters FiltersDialog::filters() const
     return filters;
 }
 
-void FiltersDialog::addFilterNode(const core::Filter<core::Post> &filter)
+void FiltersDialog::addFilterNode(const core::Filter<core::Post> &filter,
+                                  bool edit)
 {
     QTreeWidgetItem *node = new QTreeWidgetItem;
     node->setFlags(Qt::ItemIsSelectable |
@@ -141,6 +143,9 @@ void FiltersDialog::addFilterNode(const core::Filter<core::Post> &filter)
     node->setToolTip(Name, filter.name());
     m_filtersTree->addTopLevelItem(node);
     m_filters[node] = filter;
+
+    if (edit)
+        m_filtersTree->editItem(node, Name);
 }
 
 void FiltersDialog::onFilterDelete()

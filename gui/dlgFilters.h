@@ -56,7 +56,12 @@ private:
     };
 
     /// Adds new top level node to the tree configured as filter.
-    void addFilterNode(const core::Filter<core::Post> &filter);
+    /*!
+        If edit flag is true the newly added node gets the editable
+        state for further renaming if necessary.
+    */
+    void addFilterNode(const core::Filter<core::Post> &filter,
+                       bool edit = false);
 
     QTreeWidget *m_filtersTree;
     std::map<QTreeWidgetItem *, core::Filter<core::Post> > m_filters;
