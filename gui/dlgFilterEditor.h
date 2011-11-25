@@ -44,6 +44,11 @@ public:
 
     core::Filter<core::Post> filter() const;
 
+private slots:
+    void onAddRule();
+
+    void onRemoveRule();
+
 private:
     /// The rules tree column numbers.
     enum RulesTreeColumns
@@ -61,6 +66,12 @@ private:
                             int currentOption);
 
     QWidget *addRemoveButton();
+
+    void addTreeNode(const core::Filter<core::Post> &filter,
+                     const QString &currentProperty = QString(),
+                     const QString &value = QString(),
+                     int currentOption = -1);
+
 
     QLineEdit *m_editName;
     QRadioButton *m_radAll;

@@ -32,6 +32,8 @@
 #include "../core/application.h"
 #include "../database/database.h"
 
+using namespace core;
+
 namespace gui
 {
 
@@ -100,49 +102,33 @@ FilterEditor::FilterEditor(QWidget *parent, Qt::WindowFlags f)
     setLayout(mainLayout);
 }
 
-void FilterEditor::setFilter(const core::Filter<core::Post> &filter)
+void FilterEditor::setFilter(const Filter<Post> &filter)
 {
-    if (filter.ruleMatch() == core::Filter<core::Post>::All)
+    if (filter.ruleMatch() == Filter<Post>::All)
         m_radAll->setChecked(true);
-    else if (filter.ruleMatch() == core::Filter<core::Post>::One)
+    else if (filter.ruleMatch() == Filter<Post>::One)
         m_radOne->setChecked(true);
     m_editName->setText(filter.name());
 
     // Set the target folders (tables) combo box and select
     // the target folder name for the given filter.
-    core::Database *db = core::Application::theApp()->database();
+    Database *db = Application::theApp()->database();
     QStringList tables = db->tables();
     m_tableCombo->addItems(tables);
     int tblIndex = tables.indexOf(filter.table());
     m_tableCombo->setCurrentIndex(tblIndex);
 
-    const core::Filter<core::Post>::Rules &rules = filter.rules();
-    core::Filter<core::Post>::Rules::const_iterator it = rules.constBegin();
+    const Filter<Post>::Rules &rules = filter.rules();
+    Filter<Post>::Rules::const_iterator it = rules.constBegin();
     while (it != rules.constEnd()) {
-        const core::Filter<core::Post>::Rule &rule = it.value();
-        const QString name = it.key();
-        QTreeWidgetItem *node = new QTreeWidgetItem;
-        node->setFlags(Qt::ItemIsSelectable |
-                       Qt::ItemIsUserCheckable |
-                       Qt::ItemIsEnabled |
-                       Qt::ItemIsEditable);
-        node->setText(Value, rule.value());
-
-        m_rulesTree->addTopLevelItem(node);
-        QComboBox *combo = propertiesCombo(filter, name);
-        m_rulesTree->setItemWidget(node, Property, combo);
-
-        QComboBox *comboOpt = optionsCombo(filter, rule.option());
-        m_rulesTree->setItemWidget(node, Option, comboOpt);
-
-        QWidget *addRemoveBtn = addRemoveButton();
-        m_rulesTree->setItemWidget(node, AddRemove, addRemoveBtn);
-
+        const Filter<Post>::Rule &rule = it.value();
+        const QString currentProperty = it.key();
+        addTreeNode(filter, currentProperty, rule.value(), rule.option());
         ++it;
     }
 }
 
-QComboBox *FilterEditor::propertiesCombo(const core::Filter<core::Post> &filter,
+QComboBox *FilterEditor::propertiesCombo(const Filter<Post> &filter,
                                          const QString &currentText)
 {
     QComboBox *combo = new QComboBox(this);
@@ -158,7 +144,7 @@ QComboBox *FilterEditor::propertiesCombo(const core::Filter<core::Post> &filter,
     return combo;
 }
 
-QComboBox *FilterEditor::optionsCombo(const core::Filter<core::Post> &filter,
+QComboBox *FilterEditor::optionsCombo(const Filter<Post> &filter,
                                       int currentOption)
 {
     QComboBox *combo = new QComboBox(this);
@@ -191,15 +177,15 @@ QWidget *FilterEditor::addRemoveButton()
     return widget;
 }
 
-core::Filter<core::Post> FilterEditor::filter() const
+Filter<Post> FilterEditor::filter() const
 {
-    core::Filter<core::Post> filter(m_editName->text());
+    Filter<Post> filter(m_editName->text());
     filter.setTable(m_tableCombo->currentText());
 
     if (m_radAll->isChecked())
-        filter.setRuleMatch(core::Filter<core::Post>::All);
+        filter.setRuleMatch(Filter<Post>::All);
     else if (m_radOne->isChecked())
-        filter.setRuleMatch(core::Filter<core::Post>::One);
+        filter.setRuleMatch(Filter<Post>::One);
     for (int i = 0; i < m_rulesTree->topLevelItemCount(); ++i) {
         QTreeWidgetItem *node = m_rulesTree->topLevelItem(i);
         QComboBox *combo =
@@ -208,10 +194,43 @@ core::Filter<core::Post> FilterEditor::filter() const
             qobject_cast<QComboBox *>(m_rulesTree->itemWidget(node, Option));
         filter.setRule(combo->itemData(combo->currentIndex()).toString(),
                        node->text(Value),
-                       (core::Filter<core::Post>::Option)comboOpt->currentIndex());
+                       (Filter<Post>::Option)comboOpt->currentIndex());
     }
 
     return filter;
+}
+
+void FilterEditor::addTreeNode(const Filter<Post> &filter,
+                               const QString &currentProperty,
+                               const QString &value,
+                               int currentOption)
+{
+    QTreeWidgetItem *node = new QTreeWidgetItem;
+    node->setFlags(Qt::ItemIsSelectable |
+                   Qt::ItemIsUserCheckable |
+                   Qt::ItemIsEnabled |
+                   Qt::ItemIsEditable);
+    node->setText(Value, value);
+
+    m_rulesTree->addTopLevelItem(node);
+    QComboBox *combo = propertiesCombo(filter, currentProperty);
+    m_rulesTree->setItemWidget(node, Property, combo);
+
+    QComboBox *comboOpt = optionsCombo(filter, currentOption);
+    m_rulesTree->setItemWidget(node, Option, comboOpt);
+
+    QWidget *addRemoveBtn = addRemoveButton();
+    m_rulesTree->setItemWidget(node, AddRemove, addRemoveBtn);
+}
+
+void FilterEditor::onAddRule()
+{
+    Filter<Post> filter;
+    addTreeNode(filter);
+}
+
+void FilterEditor::onRemoveRule()
+{
 }
 
 } // namespace gui
