@@ -26,6 +26,7 @@
 #include <QTreeWidget>
 #include <QPushButton>
 #include <QComboBox>
+#include <QGridLayout>
 #include "dlgFilterEditor.h"
 #include "../strings/guiStrings.h"
 #include "../core/application.h"
@@ -56,11 +57,21 @@ FilterEditor::FilterEditor(QWidget *parent, Qt::WindowFlags f)
     groupBox->setLayout(radioLayout);
 
     m_rulesTree = new QTreeWidget(this);
-    m_rulesTree->setColumnCount(3);
+    m_rulesTree->setColumnCount(4);
     m_rulesTree->setRootIsDecorated(false);
     QStringList headerLabels;
-    headerLabels << "Property" << "Option" << "Value";
+    headerLabels << "Property" << "Option" << "Value" << "";
     m_rulesTree->setHeaderLabels(headerLabels);
+
+    QPushButton *btnAdd = new QPushButton("New", this);
+    connect(btnAdd, SIGNAL(clicked()), this, SLOT(onAddRule()));
+    QPushButton *btnRemove = new QPushButton("Remove", this);
+    connect(btnRemove, SIGNAL(clicked()), this, SLOT(onRemoveRule()));
+
+    QVBoxLayout *addRemoveLayout = new QVBoxLayout;
+    addRemoveLayout->addWidget(btnAdd);
+    addRemoveLayout->addWidget(btnRemove);
+    addRemoveLayout->addStretch();
 
     m_tableCombo = new QComboBox(this);
 
@@ -75,11 +86,15 @@ FilterEditor::FilterEditor(QWidget *parent, Qt::WindowFlags f)
     btnLayout->addWidget(btnOk);
     btnLayout->addWidget(btnCancel);
 
+    QGridLayout *grid = new QGridLayout;
+    grid->addLayout(nameLayout, 0, 0);
+    grid->addWidget(groupBox, 1, 0);
+    grid->addWidget(m_rulesTree, 2, 0);
+    grid->addLayout(addRemoveLayout, 2, 1);
+    grid->addWidget(m_tableCombo, 3, 0);
+
     QVBoxLayout *mainLayout = new QVBoxLayout;
-    mainLayout->addLayout(nameLayout);
-    mainLayout->addWidget(groupBox);
-    mainLayout->addWidget(m_rulesTree);
-    mainLayout->addWidget(m_tableCombo);
+    mainLayout->addLayout(grid);
     mainLayout->addLayout(btnLayout);
 
     setLayout(mainLayout);
@@ -120,6 +135,9 @@ void FilterEditor::setFilter(const core::Filter<core::Post> &filter)
         QComboBox *comboOpt = optionsCombo(filter, rule.option());
         m_rulesTree->setItemWidget(node, Option, comboOpt);
 
+        QWidget *addRemoveBtn = addRemoveButton();
+        m_rulesTree->setItemWidget(node, AddRemove, addRemoveBtn);
+
         ++it;
     }
 }
@@ -151,6 +169,26 @@ QComboBox *FilterEditor::optionsCombo(const core::Filter<core::Post> &filter,
     combo->addItem("Contains");
     combo->setCurrentIndex(currentOption);
     return combo;
+}
+
+QWidget *FilterEditor::addRemoveButton()
+{
+    QPushButton *btnAdd = new QPushButton("+", this);
+    connect(btnAdd, SIGNAL(clicked()), this, SLOT(onAddRule()));
+    QPushButton *btnRemove = new QPushButton("-", this);
+    connect(btnRemove, SIGNAL(clicked()), this, SLOT(onRemoveRule()));
+
+    QHBoxLayout *layout = new QHBoxLayout;
+    layout->setMargin(0);
+    layout->setContentsMargins(0, 0, 0, 0);
+    layout->addWidget(btnAdd);
+    layout->addWidget(btnRemove);
+    layout->addStretch();
+
+    QWidget *widget = new QWidget(this);
+    widget->setLayout(layout);
+
+    return widget;
 }
 
 core::Filter<core::Post> FilterEditor::filter() const

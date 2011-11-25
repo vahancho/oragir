@@ -50,7 +50,8 @@ private:
     {
         Property = 0,
         Option,
-        Value
+        Value,
+        AddRemove
     };
 
     QComboBox *propertiesCombo(const core::Filter<core::Post> &filter,
@@ -58,6 +59,8 @@ private:
 
     QComboBox *optionsCombo(const core::Filter<core::Post> &filter,
                             int currentOption);
+
+    QWidget *addRemoveButton();
 
     QLineEdit *m_editName;
     QRadioButton *m_radAll;
