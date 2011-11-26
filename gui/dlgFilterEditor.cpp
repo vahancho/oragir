@@ -27,6 +27,7 @@
 #include <QPushButton>
 #include <QComboBox>
 #include <QGridLayout>
+#include <QHeaderView>
 #include "dlgFilterEditor.h"
 #include "../strings/guiStrings.h"
 #include "../core/application.h"
@@ -64,6 +65,9 @@ FilterEditor::FilterEditor(QWidget *parent, Qt::WindowFlags f)
     QStringList headerLabels;
     headerLabels << "Property" << "Option" << "Value" << "";
     m_rulesTree->setHeaderLabels(headerLabels);
+    m_rulesTree->header()->setStretchLastSection(false);
+    m_rulesTree->header()->setResizeMode(AddRemove, QHeaderView::Fixed);
+    m_rulesTree->header()->resizeSection(AddRemove, 64);
 
     QPushButton *btnAdd = new QPushButton("New", this);
     connect(btnAdd, SIGNAL(clicked()), this, SLOT(onAddRule()));
@@ -144,7 +148,7 @@ QComboBox *FilterEditor::propertiesCombo(const Filter<Post> &filter,
     return combo;
 }
 
-QComboBox *FilterEditor::optionsCombo(const Filter<Post> &filter,
+QComboBox *FilterEditor::optionsCombo(const Filter<Post> &/*filter*/,
                                       int currentOption)
 {
     QComboBox *combo = new QComboBox(this);
