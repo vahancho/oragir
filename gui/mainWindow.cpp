@@ -123,8 +123,7 @@ void MainWindow::createFolderView(const QString &table)
     postTableView->setWidget(dbView);
     postTableView->setAttribute(Qt::WA_DeleteOnClose);
     postTableView->resize(200, 200);
-    postTableView->setWindowTitle("Database: " + db.databaseName() + " " +
-                                  " [" +  table + "]");
+    postTableView->setWindowTitle(table);
     m_mdiArea.addSubWindow(postTableView);
     postTableView->showMaximized();
 }
