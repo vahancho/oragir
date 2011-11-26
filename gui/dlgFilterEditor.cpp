@@ -67,6 +67,7 @@ FilterEditor::FilterEditor(QWidget *parent, Qt::WindowFlags f)
     m_rulesTree->setHeaderLabels(headerLabels);
     m_rulesTree->header()->setStretchLastSection(false);
     m_rulesTree->header()->setResizeMode(AddRemove, QHeaderView::Fixed);
+    m_rulesTree->header()->resizeSection(Value, 200);
     m_rulesTree->header()->resizeSection(AddRemove, 64);
 
     QPushButton *btnAdd = new QPushButton("New", this);
@@ -104,6 +105,7 @@ FilterEditor::FilterEditor(QWidget *parent, Qt::WindowFlags f)
     mainLayout->addLayout(btnLayout);
 
     setLayout(mainLayout);
+    resize(600, 400);
 }
 
 void FilterEditor::setFilter(const Filter<Post> &filter)
@@ -112,7 +114,10 @@ void FilterEditor::setFilter(const Filter<Post> &filter)
         m_radAll->setChecked(true);
     else if (filter.ruleMatch() == Filter<Post>::One)
         m_radOne->setChecked(true);
-    m_editName->setText(filter.name());
+    QString filterName = filter.name();
+    m_editName->setText(filterName);
+    QString title = QString("%1 Properties").arg(filterName);
+    setWindowTitle(title);
 
     // Set the target folders (tables) combo box and select
     // the target folder name for the given filter.
@@ -169,8 +174,8 @@ QWidget *FilterEditor::addRemoveButton()
     connect(btnRemove, SIGNAL(clicked()), this, SLOT(onRemoveRule()));
 
     QHBoxLayout *layout = new QHBoxLayout;
-    layout->setMargin(0);
     layout->setContentsMargins(0, 0, 0, 0);
+    layout->setSpacing(0);
     layout->addWidget(btnAdd);
     layout->addWidget(btnRemove);
     layout->addStretch();
