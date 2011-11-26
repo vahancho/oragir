@@ -240,6 +240,10 @@ void FilterEditor::onAddRule()
 
 void FilterEditor::onRemoveRule()
 {
+    if (QTreeWidgetItem *currentItem = m_rulesTree->currentItem()) {
+        int index = m_rulesTree->indexOfTopLevelItem(currentItem);
+        m_rulesTree->takeTopLevelItem(index);
+    }
 }
 
 } // namespace gui
