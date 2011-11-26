@@ -18,61 +18,40 @@
 *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
 ***************************************************************************/
 
-#ifndef __DATABASEVIEW_H__
-#define __DATABASEVIEW_H__
+#ifndef __PREVIEWWINDOW_H__
+#define __PREVIEWWINDOW_H__
 
 #include <QWidget>
-#include <QSqlDatabase>
 
-class QSqlTableModel;
-class QTableView;
-class QItemSelection;
+class QTextEdit;
+class QLabel;
 
 namespace gui
 {
 
-class PreviewWindow;
-
-class DatabaseView : public QWidget
+class PreviewWindow : public QWidget
 {
     Q_OBJECT
 
 public:
     /// The constructor.
-    DatabaseView(const QSqlDatabase &db, const QString &table,
-                 QWidget *parent = 0, Qt::WindowFlags f = 0);
+    PreviewWindow(QWidget *parent = 0, Qt::WindowFlags f = 0);
 
     /// Destructor.
-    ~DatabaseView();
+    ~PreviewWindow();
 
-    void updateTable();
-
-    /// Returns true if view shows the given database table.
-    bool hasTable(const QSqlDatabase &db, const QString &table) const;
-
-private slots:
-    void onSelectionChanged(const QItemSelection &selected,
-                            const QItemSelection &deselected);
-    void onDatabaseContextMenu(const QPoint &);
-
-    /// Open selected rows with web browser.
-    void onOpenSelectedInBrowser();
-
-    void onRemoveSelected();
-
-    void onRemoveAll();
+    void setText(const QString &text);
+    void setAuthor(const QString &author);
+    void setUrl(const QString &url);
+    void setTitle(const QString &title);
 
 private:
-    void init(const QSqlDatabase &db, const QString &table);
-
-    QSqlTableModel *m_model;
-    QTableView *m_view;
-    PreviewWindow *m_preview;
-
-    QAction *m_openSelected;
-    QAction *m_removeSelected;
+    QTextEdit *m_preview;
+    QLabel *m_author;
+    QLabel *m_url;
+    QLabel *m_title;
 };
 
 } // namespace gui
 
-#endif // __DATABASEVIEW_H__
+#endif // __PREVIEWWINDOW_H__

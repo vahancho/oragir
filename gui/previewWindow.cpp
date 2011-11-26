@@ -18,61 +18,59 @@
 *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
 ***************************************************************************/
 
-#ifndef __DATABASEVIEW_H__
-#define __DATABASEVIEW_H__
-
-#include <QWidget>
-#include <QSqlDatabase>
-
-class QSqlTableModel;
-class QTableView;
-class QItemSelection;
+#include <QTextEdit>
+#include <QLayout>
+#include <QFormLayout>
+#include <QLabel>
+#include "previewWindow.h"
 
 namespace gui
 {
 
-class PreviewWindow;
-
-class DatabaseView : public QWidget
+PreviewWindow::PreviewWindow(QWidget *parent, Qt::WindowFlags f)
+    :
+        QWidget(parent, f)
 {
-    Q_OBJECT
+    m_author = new QLabel(this);
+    m_url = new QLabel(this);
+    m_title = new QLabel(this);
+    QFormLayout *formLayout = new QFormLayout;
+    formLayout->addRow(tr("&Author:"), m_author);   
+    formLayout->addRow(tr("&Link URL:"), m_url);
+    formLayout->addRow("&Title:", m_title);
 
-public:
-    /// The constructor.
-    DatabaseView(const QSqlDatabase &db, const QString &table,
-                 QWidget *parent = 0, Qt::WindowFlags f = 0);
+    m_preview = new QTextEdit(this);
+    m_preview->setReadOnly(true);
+    
+    QVBoxLayout *mainLayout = new QVBoxLayout;
+    mainLayout->setContentsMargins(0, 0, 0, 0);
+    mainLayout->addLayout(formLayout);
+    mainLayout->addWidget(m_preview);
 
-    /// Destructor.
-    ~DatabaseView();
+    setLayout(mainLayout);
+}
 
-    void updateTable();
+PreviewWindow::~PreviewWindow()
+{}
 
-    /// Returns true if view shows the given database table.
-    bool hasTable(const QSqlDatabase &db, const QString &table) const;
+void PreviewWindow::setText(const QString &text)
+{
+    m_preview->setText(text);
+}
 
-private slots:
-    void onSelectionChanged(const QItemSelection &selected,
-                            const QItemSelection &deselected);
-    void onDatabaseContextMenu(const QPoint &);
+void PreviewWindow::setAuthor(const QString &author)
+{
+    m_author->setText(author);
+}
 
-    /// Open selected rows with web browser.
-    void onOpenSelectedInBrowser();
+void PreviewWindow::setUrl(const QString &url)
+{
+    m_url->setText(url);
+}
 
-    void onRemoveSelected();
-
-    void onRemoveAll();
-
-private:
-    void init(const QSqlDatabase &db, const QString &table);
-
-    QSqlTableModel *m_model;
-    QTableView *m_view;
-    PreviewWindow *m_preview;
-
-    QAction *m_openSelected;
-    QAction *m_removeSelected;
-};
+void PreviewWindow::setTitle(const QString &title)
+{
+    m_title->setText(title);
+}
 
 } // namespace gui
-
-#endif // __DATABASEVIEW_H__

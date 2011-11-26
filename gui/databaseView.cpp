@@ -30,6 +30,7 @@
 #include <QUrl>
 #include <QToolBar>
 #include "databaseView.h"
+#include "previewWindow.h"
 #include "../strings/strings.h"
 
 namespace gui
@@ -58,9 +59,7 @@ DatabaseView::DatabaseView(const QSqlDatabase &db, const QString &table,
     QSplitter *splitter = new QSplitter(Qt::Vertical, this);
     splitter->addWidget(m_view);
 
-    m_preview = new QTextEdit(this);
-    m_preview->setReadOnly(true);
-
+    m_preview = new PreviewWindow(this);
     splitter->addWidget(m_preview);
 
     // Create and configure tool bar actions.
@@ -149,8 +148,15 @@ void DatabaseView::onSelectionChanged(const QItemSelection &selected,
     // Set the content of preview window.
     foreach(const QModelIndex &index, indexes) {
         QSqlRecord record = m_model->record(index.row());
-        if (record.fieldName(index.column()) == str::TagContent)
+        QString colName = record.fieldName(index.column());
+        if (colName == str::TagContent)
             m_preview->setText(record.value(index.column()).toString());
+        else if (colName == str::TagAuthor)
+            m_preview->setAuthor(record.value(index.column()).toString());
+        else if (colName == str::TagLink)
+            m_preview->setUrl(record.value(index.column()).toString());
+        else if (colName == str::TagTitle)
+            m_preview->setTitle(record.value(index.column()).toString());
     }
 }
 
