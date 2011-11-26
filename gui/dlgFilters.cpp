@@ -72,8 +72,8 @@ FiltersDialog::FiltersDialog(QWidget *parent, Qt::WindowFlags f)
     mainLayout->addLayout(btnLayout);
 
     setLayout(mainLayout);
-
     setWindowTitle("Filters");
+    resize(400, 300);
 }
 
 void FiltersDialog::setFilters(const core::Database::Filters &filters)
