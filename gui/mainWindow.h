@@ -101,7 +101,7 @@ private slots:
 
     void onStreamStop();
 
-    void onDatabaseOpen();
+    void onNewFolder();
 
     void onItemProcessed();
 

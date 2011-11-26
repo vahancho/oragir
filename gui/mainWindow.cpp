@@ -214,7 +214,7 @@ void MainWindow::createMenus()
     QAction *openAction = fileMenu->addAction(str::ActionOpen);
     openAction->setShortcut(QKeySequence(tr("Ctrl+O")));
     openAction->setIcon(QIcon(":icons/table"));
-    connect(openAction, SIGNAL(triggered()), this, SLOT(onDatabaseOpen()));
+    connect(openAction, SIGNAL(triggered()), this, SLOT(onNewFolder()));
     fileToolBar->addAction(openAction);
 
     fileMenu->addSeparator();
@@ -523,7 +523,7 @@ void MainWindow::onStreamStop()
     m_stopAction->setEnabled(false);
 }
 
-void MainWindow::onDatabaseOpen()
+void MainWindow::onNewFolder()
 {
     bool ok;
     QString table = QInputDialog::getText(this, tr("Create New Folder"),
