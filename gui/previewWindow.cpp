@@ -33,6 +33,7 @@ PreviewWindow::PreviewWindow(QWidget *parent, Qt::WindowFlags f)
 {
     m_author = new QLabel(this);
     m_url = new QLabel(this);
+    m_url->setOpenExternalLinks(true);
     m_title = new QLabel(this);
     QFormLayout *formLayout = new QFormLayout;
     formLayout->addRow(tr("&Author:"), m_author);   
@@ -65,7 +66,9 @@ void PreviewWindow::setAuthor(const QString &author)
 
 void PreviewWindow::setUrl(const QString &url)
 {
-    m_url->setText(url);
+    QString urlLink =
+        QString("<a href=%1 style=\"text-decoration:none;\">%1</a>").arg(url);
+    m_url->setText(urlLink);
 }
 
 void PreviewWindow::setTitle(const QString &title)
