@@ -178,19 +178,8 @@ bool Database::openFilters(const QString &fileName)
             reader.readNext();
             if(reader.isStartElement()) {
                 if(reader.name() == str::TagFilter) {
-                    QXmlStreamAttributes attr = reader.attributes();
-                    QString name = attr.value(str::TagNameAttr).toString();
-                    bool enabled = QVariant::fromValue(attr.value(str::TagEnabled)
-                                                           .toString()).toBool();
-                    int ruleMatch = QVariant::fromValue(attr.value(str::TagRuleMatch)
-                                                           .toString()).toInt();
-                    QString table = QVariant::fromValue(attr.value(str::TagFolder)
-                                                        .toString()).toString();
-                    Filter<Post> filter(name);
+                    Filter<Post> filter;
                     filter.readXml(reader);
-                    filter.setEnabled(enabled);
-                    filter.setRuleMatch((Filter<Post>::RuleMatch)ruleMatch);
-                    filter.setTable(table);
                     addFilter(filter);
                 }
             }

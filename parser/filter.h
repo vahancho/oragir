@@ -338,8 +338,26 @@ void Filter<Source>::writeXml(QXmlStreamWriter &writer)
 template<class Source>
 void Filter<Source>::readXml(QXmlStreamReader &reader)
 {
+    // We have to be in a start element named Filter.
     Q_ASSERT(reader.isStartElement());
+    Q_ASSERT(reader.name() == str::TagFilter);
 
+    // Read filter's attributes and set them up.
+    QXmlStreamAttributes attr = reader.attributes();
+    QString name = QVariant::fromValue(attr.value(str::TagNameAttr).toString())
+                                       .toString();
+    setName(name);
+    bool enabled = QVariant::fromValue(attr.value(str::TagEnabled)
+                                       .toString()).toBool();
+    setEnabled(enabled);
+    int ruleMatch = QVariant::fromValue(attr.value(str::TagRuleMatch)
+                                        .toString()).toInt();
+    setRuleMatch((Filter<Post>::RuleMatch)ruleMatch);
+    QString table = QVariant::fromValue(attr.value(str::TagFolder)
+                                        .toString()).toString();
+    setTable(table);
+
+    // Read the rules and set them up.
     reader.readNext();
     QString ruleName;
     QString ruleValue;
