@@ -313,6 +313,8 @@ void Filter<Source>::writeXml(QXmlStreamWriter &writer)
                           QVariant::fromValue(m_enabled).toString());
     writer.writeAttribute(str::TagRuleMatch,
                           QString::number(m_ruleMatch));
+    writer.writeAttribute(str::TagFolder,
+                          m_table);
 
     typename Rules::const_iterator it = m_rules.constBegin();
     while (it != m_rules.constEnd()) {

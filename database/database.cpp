@@ -184,10 +184,13 @@ bool Database::openFilters(const QString &fileName)
                                                            .toString()).toBool();
                     int ruleMatch = QVariant::fromValue(attr.value(str::TagRuleMatch)
                                                            .toString()).toInt();
+                    QString table = QVariant::fromValue(attr.value(str::TagFolder)
+                                                        .toString()).toString();
                     Filter<Post> filter(name);
                     filter.readXml(reader);
                     filter.setEnabled(enabled);
                     filter.setRuleMatch((Filter<Post>::RuleMatch)ruleMatch);
+                    filter.setTable(table);
                     addFilter(filter);
                 }
             }

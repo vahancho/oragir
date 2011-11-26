@@ -53,6 +53,7 @@ namespace str
     const char *TagValue = "value";
     const char *TagNameAttr = "name";
     const char *TagOption = "option";
+    const char *TagFolder = "folder";
 
     const char *MainWindowSize = "MainWindowSize";
     const char *MainWindowPos = "MainWindowPos";

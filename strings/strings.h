@@ -56,6 +56,7 @@ namespace str
     extern const char *TagValue;
     extern const char *TagNameAttr;
     extern const char *TagOption;
+    extern const char *TagFolder;
 
     // Defaults names.
     extern const char *MainWindowSize;
