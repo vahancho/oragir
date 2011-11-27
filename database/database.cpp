@@ -49,13 +49,14 @@ bool Database::create(const QString &fileName)
     }
 
     QSqlQuery query(db);
-    /* Temporary do not add blogs table.
-    if (!query.exec(str::SqlCreateBlogTable)) {
+    // Temporary do not add blogs table.
+    QString queryStr = QString(str::SqlCreateBlogTable)
+                              .arg(str::BlogTableName);
+    if (!query.exec(queryStr)) {
         m_error = query.lastError().text();
         remove();
         return false;
     }
-    */
 
     query.exec("PRAGMA page_size = 4096");
     query.exec("PRAGMA cache_size = 16384");

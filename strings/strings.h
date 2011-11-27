@@ -72,6 +72,9 @@ namespace str
     // Version related strings
     extern const char *Version;
 
+    /// The name of blogs table. This should be unique.
+    extern const char *BlogTableName;
+
     // SQL Queries
 
     /// SQL query to create table blogs.

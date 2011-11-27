@@ -68,8 +68,10 @@ namespace str
     // Version related strings
     const char *Version = "0.1a";
 
+    const char *BlogTableName = "ad0ccb7f0813d3363f66b3fbc6b64eb66f680d8c";
+
     // SQL Queries.
-    const char *SqlCreateBlogTable = "CREATE TABLE IF NOT EXISTS blog ("
+    const char *SqlCreateBlogTable = "CREATE TABLE IF NOT EXISTS %1 ("
                                      "journalid INTEGER PRIMARY KEY NOT NULL,"
                                      "link      VARCHAR(256)    NOT NULL,"
                                      "name      NVARCHAR(128)   NOT NULL,"
