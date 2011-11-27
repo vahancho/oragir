@@ -48,6 +48,7 @@ DatabaseView::DatabaseView(const QSqlDatabase &db, const QString &table,
     m_view->setAlternatingRowColors(true);
     m_view->setEditTriggers(QAbstractItemView::NoEditTriggers);
     m_view->setSelectionBehavior(QAbstractItemView::SelectRows);
+    m_view->verticalHeader()->setVisible(false);
     m_view->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(m_view, SIGNAL(customContextMenuRequested(const QPoint &)),
             this, SLOT(onDatabaseContextMenu(const QPoint &)));
