@@ -48,7 +48,7 @@ FilterEditor::FilterEditor(QWidget *parent, Qt::WindowFlags f)
     nameLayout->addWidget(lblName);
     nameLayout->addWidget(m_editName);
 
-    QGroupBox *groupBox = new QGroupBox("Matching Criterion", this);
+    QGroupBox *groupBox = new QGroupBox(this);
     m_radAll = new QRadioButton("&All of below matched");
     m_radOne = new QRadioButton("Any &of below matched");
     m_radAll->setChecked(true);
@@ -80,7 +80,11 @@ FilterEditor::FilterEditor(QWidget *parent, Qt::WindowFlags f)
     addRemoveLayout->addWidget(btnRemove);
     addRemoveLayout->addStretch();
 
+    QLabel *lblTable = new QLabel("Target folder:", this);
     m_tableCombo = new QComboBox(this);
+    QHBoxLayout *folderLayout = new QHBoxLayout;
+    folderLayout->addWidget(lblTable);
+    folderLayout->addWidget(m_tableCombo);
 
     QPushButton *btnOk = new QPushButton(str::Ok, this);
     connect(btnOk, SIGNAL(clicked()), this, SLOT(accept()));
@@ -98,7 +102,7 @@ FilterEditor::FilterEditor(QWidget *parent, Qt::WindowFlags f)
     grid->addWidget(groupBox, 1, 0);
     grid->addWidget(m_rulesTree, 2, 0);
     grid->addLayout(addRemoveLayout, 2, 1);
-    grid->addWidget(m_tableCombo, 3, 0);
+    grid->addLayout(folderLayout, 3, 0);
 
     QVBoxLayout *mainLayout = new QVBoxLayout;
     mainLayout->addLayout(grid);
