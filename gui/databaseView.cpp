@@ -151,7 +151,7 @@ void DatabaseView::onSelectionChanged(const QItemSelection &selected,
         QString colName = record.fieldName(index.column());
         if (colName == str::TagContent)
             m_preview->setText(record.value(index.column()).toString());
-        else if (colName == str::TagAuthor)
+        else if (colName == str::TagName)
             m_preview->setAuthor(record.value(index.column()).toString());
         else if (colName == str::TagLink)
             m_preview->setUrl(record.value(index.column()).toString());
