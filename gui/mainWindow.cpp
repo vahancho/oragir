@@ -586,7 +586,7 @@ void MainWindow::onFolderContextMenu(const QPoint &pos)
 {
     if(QTreeWidgetItem *treeItem = m_foldersList->itemAt(pos)) {
         QMenu menu;
-        QAction *action = menu.addAction(QIcon(":/icons/db_remove"),
+        QAction *action = menu.addAction(QIcon(":/icons/folder_delete"),
                                          str::ActionDelete,
                                          this,
                                          SLOT(onFolderDelete()));
