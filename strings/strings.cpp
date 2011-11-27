@@ -89,4 +89,7 @@ namespace str
     const char *SqlInsertPostToTable = "INSERT INTO %1 (posterid, link, updated, name, content, title) "
                                        "VALUES (:posterid, :link, :updated, :name, :content, :title)";
 
+    const char *SqlInsertBlogToTable = "INSERT INTO %1 (journalid, link, name, journal, title) "
+                                       "VALUES (:journalid, :link, :name, :journal, :title)";
+
 } // namespace str

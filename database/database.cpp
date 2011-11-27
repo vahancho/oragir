@@ -114,29 +114,37 @@ void Database::addFilter(const Filter<Post> &filter)
 void Database::addRecord(const Post &post, const Blog &blog,
                          const QString &table)
 {
-    QString sBlog = QString("%1\n%2\n%3\n%4\n%5\n%6\n")
-                            .arg(blog.value(str::TagJournalId).toInt())
-                            .arg(blog.value(str::TagLink).toString())
-                            .arg(blog.value(str::TagName).toString())
-                            .arg(blog.value(str::TagJournal).toString())
-                            .arg(blog.value(str::TagTitle).toString());
-
     QSqlDatabase db = database();
     QSqlQuery query(db);
-    QString queryStr = QString(str::SqlInsertPostToTable).arg(table);
-    query.prepare(queryStr);
 
+    // Insert blog record into blogs table.
+    QString queryStr = QString(str::SqlInsertBlogToTable).arg(str::BlogTableName);
+    query.prepare(queryStr);
+    query.bindValue(":journalid", blog.value(str::TagJournalId).toInt());
+    query.bindValue(":link", blog.value(str::TagLink).toString());
+    query.bindValue(":name", blog.value(str::TagName).toString());
+    query.bindValue(":journal", blog.value(str::TagJournal).toString());
+    query.bindValue(":title", blog.value(str::TagTitle).toString());
+    bool inserted = query.exec();
+    if (!inserted)
+        m_error = query.lastError().text();
+
+    // Insert post record into the target table.
+    queryStr = QString(str::SqlInsertPostToTable).arg(table);
+    query.prepare(queryStr);
     query.bindValue(":posterid", post.value(str::TagPosterId).toInt());
     query.bindValue(":link", post.value(str::TagLink).toString());
     query.bindValue(":updated", post.value(str::TagUpdated).toString());
     query.bindValue(":name", post.value(str::TagName).toString());
     query.bindValue(":content", post.value(str::TagContent).toString());
     query.bindValue(":title", post.value(str::TagTitle).toString());
-    bool inserted = query.exec();
+    inserted = query.exec();
 
     // If record inserted inform the world.
     if (inserted) {
         emit recordInserted(db, table);
+    } else {
+        m_error = query.lastError().text();
     }
 }
 

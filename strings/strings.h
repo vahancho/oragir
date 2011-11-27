@@ -83,8 +83,11 @@ namespace str
     /// SQL query to create table posts.
     extern const char *SqlCreatePostTable;
 
-    /// SQL query to add post recored to the table.
+    /// SQL query to add post record to the table.
     extern const char *SqlInsertPostToTable;
+
+    /// SQL query to insert blog record to the table.
+    extern const char *SqlInsertBlogToTable;
 
 } // namespace str
 
