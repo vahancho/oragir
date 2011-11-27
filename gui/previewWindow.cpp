@@ -37,7 +37,7 @@ PreviewWindow::PreviewWindow(QWidget *parent, Qt::WindowFlags f)
     m_title = new QLabel(this);
     QFormLayout *formLayout = new QFormLayout;
     formLayout->addRow(tr("&Author:"), m_author);   
-    formLayout->addRow(tr("&Link URL:"), m_url);
+    formLayout->addRow(tr("&URL:"), m_url);
     formLayout->addRow("&Title:", m_title);
 
     m_preview = new QTextEdit(this);
