@@ -87,7 +87,7 @@ namespace str
                                      "content  NVARCHAR,"
                                      "userpic  NVARCHAR,"
                                      "category NVARCHAR,"
-                                     "read     BIT)";
+                                     "read     BOOLEAN)";
 
     const char *SqlInsertPostToTable = "INSERT INTO %1 (title, name, updated, posterid, link, content, userpic, category, read) "
                                        "VALUES (:title, :name, :updated, :posterid, :link, :content, :userpic, :category, :read)";
