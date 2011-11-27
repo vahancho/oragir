@@ -125,6 +125,16 @@ void DatabaseView::init(const QSqlDatabase &db, const QString &table)
 void DatabaseView::updateTable()
 {
     if (m_model && m_model->database().isValid()) {
+        // Store selected row numbers in the list in order to
+        // restore selection after update. We don't store selected
+        // indexes because they will be invalidated after model
+        // updates itself.
+        QModelIndexList indexes = m_view->selectionModel()->selectedRows();
+        QList<int> selectedRows;
+        foreach(const QModelIndex &index, indexes) {
+            selectedRows.push_back(index.row());
+        }
+
         m_model->select();
         // It selects the first 256 records only. In case of having
         // more records in the table table view will not update
@@ -132,6 +142,12 @@ void DatabaseView::updateTable()
         // records available.
         while (m_model->canFetchMore()){
             m_model->fetchMore();
+        }
+
+        foreach(int row, selectedRows) {
+            QModelIndex index = m_model->index(row, 0);
+            m_view->selectionModel()->select(index, QItemSelectionModel::Select |
+                                                    QItemSelectionModel::Rows);
         }
     }
 }
