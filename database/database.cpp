@@ -138,6 +138,8 @@ void Database::addRecord(const Post &post, const Blog &blog,
     query.bindValue(":posterid", post.value(str::TagPosterId).toInt());
     query.bindValue(":link", post.value(str::TagLink).toString());
     query.bindValue(":content", post.value(str::TagContent).toString());
+    query.bindValue(":userpic", post.value(str::TagUserPic).toString());
+    query.bindValue(":category", post.value(str::TagCategory).toStringList().join(","));
     query.bindValue(":read", false);
 
     inserted = query.exec();

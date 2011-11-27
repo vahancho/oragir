@@ -85,10 +85,12 @@ namespace str
                                      "posterid INTEGER         NOT NULL,"
                                      "link     VARCHAR(256)    NOT NULL,"
                                      "content  NVARCHAR,"
+                                     "userpic  NVARCHAR,"
+                                     "category NVARCHAR,"
                                      "read     BIT)";
 
-    const char *SqlInsertPostToTable = "INSERT INTO %1 (title, name, updated, posterid, link, content, read) "
-                                       "VALUES (:title, :name, :updated, :posterid, :link, :content, :read)";
+    const char *SqlInsertPostToTable = "INSERT INTO %1 (title, name, updated, posterid, link, content, userpic, category, read) "
+                                       "VALUES (:title, :name, :updated, :posterid, :link, :content, :userpic, :category, :read)";
 
     const char *SqlInsertBlogToTable = "INSERT INTO %1 (journalid, link, name, journal, title) "
                                        "VALUES (:journalid, :link, :name, :journal, :title)";
