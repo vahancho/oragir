@@ -258,7 +258,9 @@ void Database::removeTable(const QString &table)
 QStringList Database::tables() const
 {
     QSqlDatabase db = database();
-    return db.tables(QSql::Tables);
+    QStringList tables = db.tables(QSql::Tables);
+    tables.removeAll(str::BlogTableName);
+    return tables;
 }
 
 } // namespace core
