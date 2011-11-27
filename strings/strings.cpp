@@ -79,15 +79,16 @@ namespace str
                                      "title     NVARCHAR(256))";
 
     const char *SqlCreatePostTable = "CREATE TABLE IF NOT EXISTS %1 ("
+                                     "title    NVARCHAR(256),"
+                                     "name     NVARCHAR(128)   NOT NULL,"
+                                     "updated  DATATIME        NOT NULL,"
                                      "posterid INTEGER         NOT NULL,"
                                      "link     VARCHAR(256)    NOT NULL,"
-                                     "updated  DATATIME        NOT NULL,"
-                                     "name     NVARCHAR(128)   NOT NULL,"
                                      "content  NVARCHAR,"
-                                     "title    NVARCHAR(256))";
+                                     "read     BIT)";
 
-    const char *SqlInsertPostToTable = "INSERT INTO %1 (posterid, link, updated, name, content, title) "
-                                       "VALUES (:posterid, :link, :updated, :name, :content, :title)";
+    const char *SqlInsertPostToTable = "INSERT INTO %1 (title, name, updated, posterid, link, content, read) "
+                                       "VALUES (:title, :name, :updated, :posterid, :link, :content, :read)";
 
     const char *SqlInsertBlogToTable = "INSERT INTO %1 (journalid, link, name, journal, title) "
                                        "VALUES (:journalid, :link, :name, :journal, :title)";

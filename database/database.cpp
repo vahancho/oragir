@@ -132,12 +132,14 @@ void Database::addRecord(const Post &post, const Blog &blog,
     // Insert post record into the target table.
     queryStr = QString(str::SqlInsertPostToTable).arg(table);
     query.prepare(queryStr);
+    query.bindValue(":title", post.value(str::TagTitle).toString());
+    query.bindValue(":name", post.value(str::TagName).toString());
+    query.bindValue(":updated", post.value(str::TagUpdated).toString());
     query.bindValue(":posterid", post.value(str::TagPosterId).toInt());
     query.bindValue(":link", post.value(str::TagLink).toString());
-    query.bindValue(":updated", post.value(str::TagUpdated).toString());
-    query.bindValue(":name", post.value(str::TagName).toString());
     query.bindValue(":content", post.value(str::TagContent).toString());
-    query.bindValue(":title", post.value(str::TagTitle).toString());
+    query.bindValue(":read", false);
+
     inserted = query.exec();
 
     // If record inserted inform the world.

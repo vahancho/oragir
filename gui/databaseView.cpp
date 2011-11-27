@@ -111,7 +111,15 @@ void DatabaseView::init(const QSqlDatabase &db, const QString &table)
             this, SLOT(onSelectionChanged(const QItemSelection &, const QItemSelection &)));
 
     // Hide content column for now.
-    m_view->hideColumn(4);
+    for (int i = 0; i < m_model->columnCount(); ++i) {
+        QString title =
+            m_model->headerData(i, Qt::Horizontal, Qt::DisplayRole).toString();
+        if (title != str::TagTitle &&
+            title != str::TagName &&
+            title != str::TagUpdated) {
+            m_view->hideColumn(i);
+        }
+    }
 }
 
 void DatabaseView::updateTable()
