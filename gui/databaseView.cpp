@@ -50,6 +50,7 @@ DatabaseView::DatabaseView(const QSqlDatabase &db, const QString &table,
     m_view->setSelectionBehavior(QAbstractItemView::SelectRows);
     m_view->verticalHeader()->setVisible(false);
     m_view->setContextMenuPolicy(Qt::CustomContextMenu);
+    m_view->setSortingEnabled(true);
     connect(m_view, SIGNAL(customContextMenuRequested(const QPoint &)),
             this, SLOT(onDatabaseContextMenu(const QPoint &)));
 
