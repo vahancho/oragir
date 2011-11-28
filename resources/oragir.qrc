@@ -18,5 +18,7 @@
         <file alias="filter_export" >icon_filter_export.png</file>
         <file alias="folder" >icon_folder.png</file>
         <file alias="folder_delete" >icon_folder_delete.png</file>
+        <file alias="star_on" >icon_star_on.png</file>
+        <file alias="star_off" >icon_star_off.png</file>
  	</qresource>
 </RCC>

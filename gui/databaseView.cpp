@@ -127,7 +127,7 @@ void DatabaseView::init(const QSqlDatabase &db, const QString &table)
     m_model->insertColumns(2, 1);
     m_model->setHeaderData(0, Qt::Horizontal, QString());
     m_model->setHeaderData(2, Qt::Horizontal, QString());
-    m_model->setHeaderData(0, Qt::Horizontal, QIcon(":/icons/db_active"), Qt::DecorationRole);
+    m_model->setHeaderData(0, Qt::Horizontal, QIcon(":/icons/star_off"), Qt::DecorationRole);
     m_model->setHeaderData(2, Qt::Horizontal, QIcon(":/icons/db_active"), Qt::DecorationRole);
     m_view->horizontalHeader()->resizeSection(0, 24);
     m_view->horizontalHeader()->resizeSection(2, 24);
