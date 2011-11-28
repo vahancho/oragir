@@ -121,6 +121,18 @@ void DatabaseView::init(const QSqlDatabase &db, const QString &table)
             m_view->hideColumn(i);
         }
     }
+
+    // Add and configure first custom column in the table.
+    m_model->insertColumns(0, 1);
+    m_model->insertColumns(2, 1);
+    m_model->setHeaderData(0, Qt::Horizontal, QString());
+    m_model->setHeaderData(2, Qt::Horizontal, QString());
+    m_model->setHeaderData(0, Qt::Horizontal, QIcon(":/icons/db_active"), Qt::DecorationRole);
+    m_model->setHeaderData(2, Qt::Horizontal, QIcon(":/icons/db_active"), Qt::DecorationRole);
+    m_view->horizontalHeader()->resizeSection(0, 24);
+    m_view->horizontalHeader()->resizeSection(2, 24);
+    m_view->horizontalHeader()->setResizeMode(0, QHeaderView::Fixed);
+    m_view->horizontalHeader()->setResizeMode(2, QHeaderView::Fixed);
 }
 
 void DatabaseView::updateTable()
