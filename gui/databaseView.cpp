@@ -45,7 +45,7 @@ DatabaseView::DatabaseView(const QSqlDatabase &db, const QString &table,
 {
     // Create the table view for database items.
     m_view = new QTableView(this);
-    m_view->setAlternatingRowColors(true);
+    m_view->setShowGrid(false);
     m_view->setEditTriggers(QAbstractItemView::NoEditTriggers);
     m_view->setSelectionBehavior(QAbstractItemView::SelectRows);
     m_view->verticalHeader()->setVisible(false);
