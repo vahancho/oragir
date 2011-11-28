@@ -76,7 +76,8 @@ namespace str
                                      "link      VARCHAR(256)    NOT NULL,"
                                      "name      NVARCHAR(128)   NOT NULL,"
                                      "journal   VARCHAR(256)    NOT NULL,"
-                                     "title     NVARCHAR(256))";
+                                     "title     NVARCHAR(256),"
+                                     "flag      INTEGER)";
 
     const char *SqlCreatePostTable = "CREATE TABLE IF NOT EXISTS %1 ("
                                      "title    NVARCHAR(256),"
@@ -87,12 +88,13 @@ namespace str
                                      "content  NVARCHAR,"
                                      "userpic  NVARCHAR,"
                                      "category NVARCHAR,"
-                                     "read     BOOLEAN)";
+                                     "read     BOOLEAN,"
+                                     "flag     INTEGER)";
 
-    const char *SqlInsertPostToTable = "INSERT INTO %1 (title, name, updated, posterid, link, content, userpic, category, read) "
-                                       "VALUES (:title, :name, :updated, :posterid, :link, :content, :userpic, :category, :read)";
+    const char *SqlInsertPostToTable = "INSERT INTO %1 (title, name, updated, posterid, link, content, userpic, category, read, flag) "
+                                       "VALUES (:title, :name, :updated, :posterid, :link, :content, :userpic, :category, :read, :flag)";
 
-    const char *SqlInsertBlogToTable = "INSERT INTO %1 (journalid, link, name, journal, title) "
-                                       "VALUES (:journalid, :link, :name, :journal, :title)";
+    const char *SqlInsertBlogToTable = "INSERT INTO %1 (journalid, link, name, journal, title, flag) "
+                                       "VALUES (:journalid, :link, :name, :journal, :title, :flag)";
 
 } // namespace str

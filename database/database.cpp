@@ -125,6 +125,7 @@ void Database::addRecord(const Post &post, const Blog &blog,
     query.bindValue(":name", blog.value(str::TagName).toString());
     query.bindValue(":journal", blog.value(str::TagJournal).toString());
     query.bindValue(":title", blog.value(str::TagTitle).toString());
+    query.bindValue(":flag", 0);
     bool inserted = query.exec();
     if (!inserted)
         m_error = query.lastError().text();
@@ -141,6 +142,7 @@ void Database::addRecord(const Post &post, const Blog &blog,
     query.bindValue(":userpic", post.value(str::TagUserPic).toString());
     query.bindValue(":category", post.value(str::TagCategory).toStringList().join(","));
     query.bindValue(":read", false);
+    query.bindValue(":flag", 0);
 
     inserted = query.exec();
 
