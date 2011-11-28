@@ -80,19 +80,19 @@ namespace str
                                      "flag      INTEGER)";
 
     const char *SqlCreatePostTable = "CREATE TABLE IF NOT EXISTS %1 ("
+                                     "flag     INTEGER,"
                                      "title    NVARCHAR(256),"
+                                     "read     BOOLEAN,"
                                      "name     NVARCHAR(128)   NOT NULL,"
                                      "updated  DATATIME        NOT NULL,"
                                      "posterid INTEGER         NOT NULL,"
                                      "link     VARCHAR(256)    NOT NULL,"
                                      "content  NVARCHAR,"
                                      "userpic  NVARCHAR,"
-                                     "category NVARCHAR,"
-                                     "read     BOOLEAN,"
-                                     "flag     INTEGER)";
+                                     "category NVARCHAR)";
 
-    const char *SqlInsertPostToTable = "INSERT INTO %1 (title, name, updated, posterid, link, content, userpic, category, read, flag) "
-                                       "VALUES (:title, :name, :updated, :posterid, :link, :content, :userpic, :category, :read, :flag)";
+    const char *SqlInsertPostToTable = "INSERT INTO %1 (flag, title, read, name, updated, posterid, link, content, userpic, category) "
+                                       "VALUES (:flag, :title, :read, :name, :updated, :posterid, :link, :content, :userpic, :category)";
 
     const char *SqlInsertBlogToTable = "INSERT INTO %1 (journalid, link, name, journal, title, flag) "
                                        "VALUES (:journalid, :link, :name, :journal, :title, :flag)";

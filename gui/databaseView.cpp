@@ -117,14 +117,14 @@ void DatabaseView::init(const QSqlDatabase &db, const QString &table)
             m_model->headerData(i, Qt::Horizontal, Qt::DisplayRole).toString();
         if (title != str::TagTitle &&
             title != str::TagName &&
-            title != str::TagUpdated) {
+            title != str::TagUpdated &&
+            title != "flag" &&
+            title != "read") {
             m_view->hideColumn(i);
         }
     }
 
     // Add and configure first custom column in the table.
-    m_model->insertColumns(0, 1);
-    m_model->insertColumns(2, 1);
     m_model->setHeaderData(0, Qt::Horizontal, QString());
     m_model->setHeaderData(2, Qt::Horizontal, QString());
     m_model->setHeaderData(0, Qt::Horizontal, QIcon(":/icons/star_off"), Qt::DecorationRole);
