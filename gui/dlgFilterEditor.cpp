@@ -80,7 +80,7 @@ FilterEditor::FilterEditor(QWidget *parent, Qt::WindowFlags f)
     addRemoveLayout->addWidget(btnRemove);
     addRemoveLayout->addStretch();
 
-    QLabel *lblTable = new QLabel("Target folder:", this);
+    QLabel *lblTable = new QLabel("Move filtered posts into the folder:", this);
     m_tableCombo = new QComboBox(this);
     QHBoxLayout *folderLayout = new QHBoxLayout;
     folderLayout->addWidget(lblTable);
