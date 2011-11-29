@@ -20,5 +20,6 @@
         <file alias="folder_delete" >icon_folder_delete.png</file>
         <file alias="star_on" >icon_star_on.png</file>
         <file alias="star_off" >icon_star_off.png</file>
+		<file alias="star_empty" >icon_star_empty.png</file>
  	</qresource>
 </RCC>

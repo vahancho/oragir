@@ -18,61 +18,65 @@
 *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
 ***************************************************************************/
 
-#ifndef __DATABASEVIEW_H__
-#define __DATABASEVIEW_H__
-
-#include <QWidget>
-#include <QSqlDatabase>
-
-class QTableView;
-class QItemSelection;
+#include <QIcon>
+#include <QFont>
+#include <QSqlRecord>
+#include "postTableModel.h"
 
 namespace gui
 {
 
-class PostTableModel;
-class PreviewWindow;
-
-class DatabaseView : public QWidget
+PostTableModel::PostTableModel(QObject *parent, QSqlDatabase db)
+    :
+        QSqlTableModel(parent, db)
 {
-    Q_OBJECT
+    m_titleStar = QIcon(":/icons/star_off");
+    m_emptyStar = QIcon(":/icons/star_empty");
+    m_titleRead = QIcon(":/icons/db_active");
+}
 
-public:
-    /// The constructor.
-    DatabaseView(const QSqlDatabase &db, const QString &table,
-                 QWidget *parent = 0, Qt::WindowFlags f = 0);
+QVariant PostTableModel::headerData(int section, Qt::Orientation orientation,
+                                    int role) const
+{
+    if (orientation == Qt::Horizontal) {
+        if (role == Qt::DecorationRole) {
+            if (section == 0)
+                return m_titleStar;
+            else if (section == 2)
+                return m_titleRead;
+        }
+    }
 
-    /// Destructor.
-    ~DatabaseView();
+    return QSqlTableModel::headerData(section, orientation, role);
+}
 
-    void updateTable();
+QVariant PostTableModel::data(const QModelIndex &index, int role) const
+{
+    if (!index.isValid())
+        return QVariant();
 
-    /// Returns true if view shows the given database table.
-    bool hasTable(const QSqlDatabase &db, const QString &table) const;
-
-private slots:
-    void onSelectionChanged(const QItemSelection &selected,
-                            const QItemSelection &deselected);
-    void onDatabaseContextMenu(const QPoint &);
-
-    /// Open selected rows with web browser.
-    void onOpenSelectedInBrowser();
-
-    void onRemoveSelected();
-
-    void onRemoveAll();
-
-private:
-    void init(const QSqlDatabase &db, const QString &table);
-
-    PostTableModel *m_model;
-    QTableView *m_view;
-    PreviewWindow *m_preview;
-
-    QAction *m_openSelected;
-    QAction *m_removeSelected;
-};
+    switch (role)
+    {
+    case Qt::DisplayRole:
+        if (index.column() == 0 || index.column() == 2)
+            return QString();
+        break;
+    case Qt::DecorationRole:
+        if (index.column() == 0 && role == Qt::DecorationRole)
+            return m_emptyStar;
+        break;
+    case Qt::FontRole:
+        {
+        QSqlRecord rec = record(index.row());
+        bool read = rec.value(2).toBool();
+        QFont f;
+        f.setBold(!read);
+        return f;
+        }
+    default:
+        break;
+    }
+    return QSqlTableModel::data(index, role);
+}
 
 } // namespace gui
-
-#endif // __DATABASEVIEW_H__

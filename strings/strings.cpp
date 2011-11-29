@@ -45,6 +45,7 @@ namespace str
     const char *TagPosterId = "posterid";
     const char *TagEnabled = "enabled";
     const char *TagRuleMatch = "match";
+    const char *TagRead = "read";
 
      // Filters file tags.
     const char *TagFilters = "filters";

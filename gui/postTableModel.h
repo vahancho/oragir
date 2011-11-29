@@ -18,61 +18,30 @@
 *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
 ***************************************************************************/
 
-#ifndef __DATABASEVIEW_H__
-#define __DATABASEVIEW_H__
+#ifndef __POSTTABLEMODEL_H__
+#define __POSTTABLEMODEL_H__
 
-#include <QWidget>
-#include <QSqlDatabase>
-
-class QTableView;
-class QItemSelection;
+#include <QSqlTableModel>
 
 namespace gui
 {
 
-class PostTableModel;
-class PreviewWindow;
-
-class DatabaseView : public QWidget
+class PostTableModel : public QSqlTableModel
 {
-    Q_OBJECT
-
 public:
-    /// The constructor.
-    DatabaseView(const QSqlDatabase &db, const QString &table,
-                 QWidget *parent = 0, Qt::WindowFlags f = 0);
+    PostTableModel(QObject *parent = 0, QSqlDatabase db = QSqlDatabase());
 
-    /// Destructor.
-    ~DatabaseView();
-
-    void updateTable();
-
-    /// Returns true if view shows the given database table.
-    bool hasTable(const QSqlDatabase &db, const QString &table) const;
-
-private slots:
-    void onSelectionChanged(const QItemSelection &selected,
-                            const QItemSelection &deselected);
-    void onDatabaseContextMenu(const QPoint &);
-
-    /// Open selected rows with web browser.
-    void onOpenSelectedInBrowser();
-
-    void onRemoveSelected();
-
-    void onRemoveAll();
+    virtual QVariant headerData(int section, Qt::Orientation orientation,
+                                int role = Qt::DisplayRole) const;
+    virtual QVariant data(const QModelIndex &index,
+                          int role = Qt::DisplayRole) const;
 
 private:
-    void init(const QSqlDatabase &db, const QString &table);
-
-    PostTableModel *m_model;
-    QTableView *m_view;
-    PreviewWindow *m_preview;
-
-    QAction *m_openSelected;
-    QAction *m_removeSelected;
+    QIcon m_titleStar;
+    QIcon m_emptyStar;
+    QIcon m_titleRead;
 };
 
 } // namespace gui
 
-#endif // __DATABASEVIEW_H__
+#endif // __POSTTABLEMODEL_H__

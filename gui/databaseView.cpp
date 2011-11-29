@@ -23,7 +23,6 @@
 #include <QVBoxLayout>
 #include <QHeaderView>
 #include <QTextEdit>
-#include <QSqlTableModel>
 #include <QSqlRecord>
 #include <QMenu>
 #include <QDesktopServices>
@@ -31,6 +30,7 @@
 #include <QToolBar>
 #include "databaseView.h"
 #include "previewWindow.h"
+#include "postTableModel.h"
 #include "../strings/strings.h"
 
 namespace gui
@@ -97,11 +97,13 @@ DatabaseView::DatabaseView(const QSqlDatabase &db, const QString &table,
 }
 
 DatabaseView::~DatabaseView()
-{}
+{
+    m_model->submitAll();
+}
 
 void DatabaseView::init(const QSqlDatabase &db, const QString &table)
 {
-    m_model = new QSqlTableModel(this, db);
+    m_model = new PostTableModel(this, db);
     m_model->setTable(table);
     m_model->setEditStrategy(QSqlTableModel::OnManualSubmit);
     m_model->select();
@@ -128,8 +130,6 @@ void DatabaseView::init(const QSqlDatabase &db, const QString &table)
     // Add and configure first custom column in the table.
     m_model->setHeaderData(0, Qt::Horizontal, QString());
     m_model->setHeaderData(2, Qt::Horizontal, QString());
-    m_model->setHeaderData(0, Qt::Horizontal, QIcon(":/icons/star_off"), Qt::DecorationRole);
-    m_model->setHeaderData(2, Qt::Horizontal, QIcon(":/icons/db_active"), Qt::DecorationRole);
     m_view->horizontalHeader()->resizeSection(0, 24);
     m_view->horizontalHeader()->resizeSection(2, 24);
     m_view->horizontalHeader()->setResizeMode(0, QHeaderView::Fixed);
@@ -195,6 +195,9 @@ void DatabaseView::onSelectionChanged(const QItemSelection &selected,
             m_preview->setUrl(record.value(index.column()).toString());
         else if (colName == str::TagTitle)
             m_preview->setTitle(record.value(index.column()).toString());
+
+        record.setValue(str::TagRead, true);
+        m_model->setRecord(index.row(), record);
     }
 }
 
