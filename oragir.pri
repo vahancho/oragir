@@ -7,6 +7,7 @@ HEADERS += ./core/propertyTable.h \
            ./gui/dlgFilters.h \
            ./gui/dlgFilterEditor.h \
            ./gui/previewWindow.h \
+           ./gui/postTableModel.h \
            ./parser/atomParser.h \
            ./parser/blog.h \
            ./parser/post.h \
@@ -25,6 +26,7 @@ SOURCES += ./main.cpp \
            ./gui/dlgFilters.cpp \
            ./gui/dlgFilterEditor.cpp \
            ./gui/previewWindow.cpp \
+           ./gui/postTableModel.cpp \
            ./parser/blog.cpp \
            ./parser/post.cpp \
            ./database/database.cpp \
