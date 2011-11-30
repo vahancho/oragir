@@ -172,17 +172,13 @@ void DatabaseView::onSelectionChanged(const QItemSelection &selected,
     m_removeSelected->setEnabled(enable);
 
     // Set the content of preview window.
-    foreach(const QModelIndex &index, indexes) {
+    QModelIndex index = m_view->currentIndex();
+    if (index.isValid()) {
         QSqlRecord record = m_model->record(index.row());
-        QString colName = record.fieldName(index.column());
-        if (colName == str::TagContent)
-            m_preview->setText(record.value(index.column()).toString());
-        else if (colName == str::TagName)
-            m_preview->setAuthor(record.value(index.column()).toString());
-        else if (colName == str::TagLink)
-            m_preview->setUrl(record.value(index.column()).toString());
-        else if (colName == str::TagTitle)
-            m_preview->setTitle(record.value(index.column()).toString());
+        m_preview->setText(record.value(str::TagContent).toString());
+        m_preview->setAuthor(record.value(str::TagName).toString());
+        m_preview->setUrl(record.value(str::TagLink).toString());
+        m_preview->setTitle(record.value(str::TagTitle).toString());
 
         // Mark the row as read.
         record.setValue(str::TagRead, true);
