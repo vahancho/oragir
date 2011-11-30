@@ -139,15 +139,7 @@ void DatabaseView::init(const QSqlDatabase &db, const QString &table)
 void DatabaseView::updateTable()
 {
     if (m_model && m_model->database().isValid()) {
-        // Store selected row numbers in the list in order to
-        // restore selection after update. We don't store selected
-        // indexes because they will be invalidated after model
-        // updates itself.
-        QModelIndexList indexes = m_view->selectionModel()->selectedRows();
-        QList<int> selectedRows;
-        foreach(const QModelIndex &index, indexes) {
-            selectedRows.push_back(index.row());
-        }
+        beforeUpdate();
 
         m_model->select();
         // It selects the first 256 records only. In case of having
@@ -158,11 +150,7 @@ void DatabaseView::updateTable()
             m_model->fetchMore();
         }
 
-        foreach(int row, selectedRows) {
-            QModelIndex index = m_model->index(row, 0);
-            m_view->selectionModel()->select(index, QItemSelectionModel::Select |
-                                                    QItemSelectionModel::Rows);
-        }
+        afterUpdate();
     }
 }
 
@@ -196,8 +184,12 @@ void DatabaseView::onSelectionChanged(const QItemSelection &selected,
         else if (colName == str::TagTitle)
             m_preview->setTitle(record.value(index.column()).toString());
 
+        // Mark the row as read.
         record.setValue(str::TagRead, true);
         m_model->setRecord(index.row(), record);
+        beforeUpdate();
+        m_model->submitAll();
+        afterUpdate();
     }
 }
 
@@ -235,6 +227,41 @@ void DatabaseView::onRemoveAll()
 {
     m_model->removeRows(0, m_model->rowCount());
     m_model->submitAll();
+}
+
+void DatabaseView::beforeUpdate()
+{
+    // Store selected row numbers in the list in order to
+    // restore selection after update. We don't store selected
+    // indexes because they will be invalidated after model
+    // updates itself.
+    QModelIndexList indexes = m_view->selectionModel()->selectedRows();
+    m_selectedRows.clear();
+    foreach(const QModelIndex &index, indexes) {
+        m_selectedRows.push_back(index.row());
+    }
+
+    // Disconnect selection related signal to prevent selection
+    // handling while model is updating. Restore this connection
+    // after update.
+    disconnect(m_view->selectionModel(),
+               SIGNAL(selectionChanged(const QItemSelection &, const QItemSelection &)),
+               this,
+               SLOT(onSelectionChanged(const QItemSelection &, const QItemSelection &)));
+}
+
+void DatabaseView::afterUpdate()
+{
+     foreach(int row, m_selectedRows) {
+            QModelIndex index = m_model->index(row, 0);
+            m_view->selectionModel()->select(index, QItemSelectionModel::Select |
+                                                    QItemSelectionModel::Rows);
+     }
+
+    connect(m_view->selectionModel(),
+            SIGNAL(selectionChanged(const QItemSelection &, const QItemSelection &)),
+            this,
+            SLOT(onSelectionChanged(const QItemSelection &, const QItemSelection &)));
 }
 
 } // namespace gui

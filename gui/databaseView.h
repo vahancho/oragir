@@ -65,12 +65,30 @@ private slots:
 private:
     void init(const QSqlDatabase &db, const QString &table);
 
+    /// Call this function before refreshing the table model.
+    /*!
+        This function will backup selection for the table rows
+        and store them in the list before table model updates.
+        Call afterUpdate() function after updating the model.
+    */
+    void beforeUpdate();
+
+    /// Call this function after updating the model.
+    /*!
+        This function will restore previous selection and selection
+        handling signals connections.
+    */
+    void afterUpdate();
+
     PostTableModel *m_model;
     QTableView *m_view;
     PreviewWindow *m_preview;
 
     QAction *m_openSelected;
     QAction *m_removeSelected;
+
+    /// Temporary stores slected rows indexes before model updates.
+    QList<int> m_selectedRows;
 };
 
 } // namespace gui
