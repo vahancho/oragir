@@ -40,9 +40,9 @@ QVariant PostTableModel::headerData(int section, Qt::Orientation orientation,
 {
     if (orientation == Qt::Horizontal) {
         if (role == Qt::DecorationRole) {
-            if (section == 0)
+            if (section == Star)
                 return m_titleStar;
-            else if (section == 2)
+            else if (section == Read)
                 return m_titleRead;
         }
     }
@@ -58,17 +58,17 @@ QVariant PostTableModel::data(const QModelIndex &index, int role) const
     switch (role)
     {
     case Qt::DisplayRole:
-        if (index.column() == 0 || index.column() == 2)
+        if (index.column() == Star || index.column() == Read)
             return QString();
         break;
     case Qt::DecorationRole:
-        if (index.column() == 0 && role == Qt::DecorationRole)
+        if (index.column() == Star && role == Qt::DecorationRole)
             return m_emptyStar;
         break;
     case Qt::FontRole:
         {
         QSqlRecord rec = record(index.row());
-        bool read = rec.value(2).toBool();
+        bool read = rec.value(Read).toBool();
         QFont f;
         f.setBold(!read);
         return f;
