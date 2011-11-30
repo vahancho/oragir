@@ -122,8 +122,6 @@ void DatabaseView::init(const QSqlDatabase &db, const QString &table)
     }
 
     // Add and configure first custom column in the table.
-    m_model->setHeaderData(0, Qt::Horizontal, QString());
-    m_model->setHeaderData(2, Qt::Horizontal, QString());
     m_view->horizontalHeader()->resizeSection(0, 24);
     m_view->horizontalHeader()->resizeSection(2, 24);
     m_view->horizontalHeader()->setResizeMode(0, QHeaderView::Fixed);

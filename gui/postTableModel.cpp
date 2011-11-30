@@ -44,6 +44,9 @@ QVariant PostTableModel::headerData(int section, Qt::Orientation orientation,
                 return m_titleStar;
             else if (section == Read)
                 return m_titleRead;
+        } else if (role == Qt::DisplayRole) {
+            if (section == Star || section == Read)
+                return QString();
         }
     }
 
