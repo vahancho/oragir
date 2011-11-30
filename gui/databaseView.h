@@ -63,6 +63,16 @@ private slots:
     void onRemoveAll();
 
 private:
+
+    /// Stores the visible columns numbers (indexes).
+    enum ColumnNumbers
+    {
+        Star = 0,
+        Title,
+        Read,
+        Name,
+        Updated
+    };
     void init(const QSqlDatabase &db, const QString &table);
 
     /// Call this function before refreshing the table model.

@@ -114,15 +114,9 @@ void DatabaseView::init(const QSqlDatabase &db, const QString &table)
             SIGNAL(selectionChanged(const QItemSelection &, const QItemSelection &)),
             this, SLOT(onSelectionChanged(const QItemSelection &, const QItemSelection &)));
 
-    // Hide content column for now.
     for (int i = 0; i < m_model->columnCount(); ++i) {
-        QString title =
-            m_model->headerData(i, Qt::Horizontal, Qt::DisplayRole).toString();
-        if (title != str::TagTitle &&
-            title != str::TagName &&
-            title != str::TagUpdated &&
-            title != "flag" &&
-            title != "read") {
+        // Hide all columns that follow the Updated column number.
+        if (i > Updated) {
             m_view->hideColumn(i);
         }
     }
