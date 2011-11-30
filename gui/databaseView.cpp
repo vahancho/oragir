@@ -116,7 +116,7 @@ void DatabaseView::init(const QSqlDatabase &db, const QString &table)
 
     for (int i = 0; i < m_model->columnCount(); ++i) {
         // Hide all columns that follow the Updated column number.
-        if (i > Updated) {
+        if (i > PostTableModel::Updated) {
             m_view->hideColumn(i);
         }
     }

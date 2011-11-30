@@ -31,6 +31,16 @@ class PostTableModel : public QSqlTableModel
 public:
     PostTableModel(QObject *parent = 0, QSqlDatabase db = QSqlDatabase());
 
+    /// Stores the visible columns numbers (indexes).
+    enum ColumnNumbers
+    {
+        Star = 0,
+        Title,
+        Read,
+        Name,
+        Updated
+    };
+
     virtual QVariant headerData(int section, Qt::Orientation orientation,
                                 int role = Qt::DisplayRole) const;
     virtual QVariant data(const QModelIndex &index,
