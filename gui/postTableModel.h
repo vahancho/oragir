@@ -38,7 +38,12 @@ public:
         Title,
         Read,
         Name,
-        Updated
+        Updated,
+        PosterId,
+        Link,
+        Content,
+        UserPic,
+        Category
     };
 
     virtual QVariant headerData(int section, Qt::Orientation orientation,

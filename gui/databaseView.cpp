@@ -167,10 +167,10 @@ void DatabaseView::onSelectionChanged(const QItemSelection &selected,
     QModelIndex index = m_view->currentIndex();
     if (index.isValid()) {
         QSqlRecord record = m_model->record(index.row());
-        m_preview->setText(record.value(str::TagContent).toString());
-        m_preview->setAuthor(record.value(str::TagName).toString());
-        m_preview->setUrl(record.value(str::TagLink).toString());
-        m_preview->setTitle(record.value(str::TagTitle).toString());
+        m_preview->setText(record.value(PostTableModel::Content).toString());
+        m_preview->setAuthor(record.value(PostTableModel::Name).toString());
+        m_preview->setUrl(record.value(PostTableModel::Link).toString());
+        m_preview->setTitle(record.value(PostTableModel::Title).toString());
 
         // Mark the row as read.
         record.setValue(str::TagRead, true);
