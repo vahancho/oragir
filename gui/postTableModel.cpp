@@ -32,7 +32,8 @@ PostTableModel::PostTableModel(QObject *parent, QSqlDatabase db)
 {
     m_titleStar = QIcon(":/icons/star_off");
     m_emptyStar = QIcon(":/icons/star_empty");
-    m_titleRead = QIcon(":/icons/db_active");
+    m_titleRead = QIcon(":/icons/ball_green");
+    m_iconUnread = QIcon(":/icons/ball_red");
 
     // Initialize visible columns title names.
     m_columnName[Star] = QString();
@@ -73,19 +74,29 @@ QVariant PostTableModel::data(const QModelIndex &index, int role) const
     case Qt::DecorationRole:
         if (index.column() == Star)
             return m_emptyStar;
+        else if (index.column() == Read) {
+            if (isRead(index.row()))
+                return m_titleRead;
+            else
+                return m_iconUnread;
+        }
         break;
     case Qt::FontRole:
         {
-        QSqlRecord rec = record(index.row());
-        bool read = rec.value(Read).toBool();
         QFont f;
-        f.setBold(!read);
+        f.setBold(!isRead(index.row()));
         return f;
         }
     default:
         break;
     }
     return QSqlTableModel::data(index, role);
+}
+
+bool PostTableModel::isRead(int row) const
+{
+    QSqlRecord rec = record(row);
+    return rec.value(Read).toBool();
 }
 
 } // namespace gui

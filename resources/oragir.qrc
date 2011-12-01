@@ -2,8 +2,8 @@
 	<qresource prefix="/icons" >
 		<file alias="app" >icon_app.png</file>
 		<file alias="exit" >icon_exit.png</file>
-		<file alias="db" >icon_db.png</file>
-		<file alias="db_active" >icon_db_active.png</file>
+		<file alias="ball_green" >icon_ball_green.png</file>
+		<file alias="ball_red" >icon_ball_red.png</file>
         <file alias="remove_record" >icon_remove_record.png</file>
         <file alias="remove_all" >icon_remove_all.png</file>
         <file alias="web" >icon_web.png</file>

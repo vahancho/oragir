@@ -52,9 +52,12 @@ public:
                           int role = Qt::DisplayRole) const;
 
 private:
+    bool isRead(int row) const;
+
     QIcon m_titleStar;
     QIcon m_emptyStar;
     QIcon m_titleRead;
+    QIcon m_iconUnread;
 
     QMap<ColumnNumber, QString> m_columnName;
 };
