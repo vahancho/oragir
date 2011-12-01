@@ -32,7 +32,7 @@ public:
     PostTableModel(QObject *parent = 0, QSqlDatabase db = QSqlDatabase());
 
     /// Stores the visible columns numbers (indexes).
-    enum ColumnNumbers
+    enum ColumnNumber
     {
         Star = 0,
         Title,
@@ -55,6 +55,8 @@ private:
     QIcon m_titleStar;
     QIcon m_emptyStar;
     QIcon m_titleRead;
+
+    QMap<ColumnNumber, QString> m_columnName;
 };
 
 } // namespace gui

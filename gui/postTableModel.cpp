@@ -33,6 +33,13 @@ PostTableModel::PostTableModel(QObject *parent, QSqlDatabase db)
     m_titleStar = QIcon(":/icons/star_off");
     m_emptyStar = QIcon(":/icons/star_empty");
     m_titleRead = QIcon(":/icons/db_active");
+
+    // Initialize visible columns title names.
+    m_columnName[Star] = QString();
+    m_columnName[Title] = QString("Title");
+    m_columnName[Read] = QString();
+    m_columnName[Name] = QString("Name");
+    m_columnName[Updated] = QString("Date");
 }
 
 QVariant PostTableModel::headerData(int section, Qt::Orientation orientation,
@@ -45,8 +52,7 @@ QVariant PostTableModel::headerData(int section, Qt::Orientation orientation,
             else if (section == Read)
                 return m_titleRead;
         } else if (role == Qt::DisplayRole) {
-            if (section == Star || section == Read)
-                return QString();
+                return m_columnName[(ColumnNumber)section];
         }
     }
 
