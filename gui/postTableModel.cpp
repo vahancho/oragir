@@ -71,7 +71,7 @@ QVariant PostTableModel::data(const QModelIndex &index, int role) const
             return QString();
         break;
     case Qt::DecorationRole:
-        if (index.column() == Star && role == Qt::DecorationRole)
+        if (index.column() == Star)
             return m_emptyStar;
         break;
     case Qt::FontRole:
