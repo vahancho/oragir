@@ -26,6 +26,7 @@
 
 class QTableView;
 class QItemSelection;
+class QModelIndex;
 
 namespace gui
 {
@@ -53,6 +54,9 @@ public:
 private slots:
     void onSelectionChanged(const QItemSelection &selected,
                             const QItemSelection &deselected);
+
+    void onClicked(const QModelIndex &index);
+
     void onDatabaseContextMenu(const QPoint &);
 
     /// Open selected rows with web browser.

@@ -53,10 +53,12 @@ public:
 
 private:
     bool isRead(int row) const;
+    int flag(int row) const;
 
-    QIcon m_titleStar;
-    QIcon m_emptyStar;
-    QIcon m_titleRead;
+    QIcon m_iconTitleStar;
+    QIcon m_iconStarOff;
+    QIcon m_iconStarOn;
+    QIcon m_iconTitleRead;
     QIcon m_iconUnread;
 
     QMap<ColumnNumber, QString> m_columnName;

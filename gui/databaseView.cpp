@@ -53,6 +53,8 @@ DatabaseView::DatabaseView(const QSqlDatabase &db, const QString &table,
     m_view->setSortingEnabled(true);
     connect(m_view, SIGNAL(customContextMenuRequested(const QPoint &)),
             this, SLOT(onDatabaseContextMenu(const QPoint &)));
+    connect(m_view, SIGNAL(clicked(const QModelIndex &)),
+            this, SLOT(onClicked(const QModelIndex &)));
 
     // The uniformed rows height.
     QFontMetrics fm = fontMetrics();
@@ -250,6 +252,25 @@ void DatabaseView::afterUpdate()
             SIGNAL(selectionChanged(const QItemSelection &, const QItemSelection &)),
             this,
             SLOT(onSelectionChanged(const QItemSelection &, const QItemSelection &)));
+}
+
+void DatabaseView::onClicked(const QModelIndex &index)
+{
+    if (index.column() == PostTableModel::Star) {
+        QSqlRecord record = m_model->record(index.row());
+
+        // Revert the row flag.
+        int flag = record.value(PostTableModel::Star).toInt();
+        if (flag == 0)
+            record.setValue(PostTableModel::Star, 1);
+        else if (flag == 1)
+            record.setValue(PostTableModel::Star, 0);
+
+        m_model->setRecord(index.row(), record);
+        beforeUpdate();
+        m_model->submitAll();
+        afterUpdate();
+    }
 }
 
 } // namespace gui

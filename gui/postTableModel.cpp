@@ -30,9 +30,10 @@ PostTableModel::PostTableModel(QObject *parent, QSqlDatabase db)
     :
         QSqlTableModel(parent, db)
 {
-    m_titleStar = QIcon(":/icons/star_off");
-    m_emptyStar = QIcon(":/icons/star_empty");
-    m_titleRead = QIcon(":/icons/ball_green");
+    m_iconTitleStar = QIcon(":/icons/star_off");
+    m_iconStarOff = QIcon(":/icons/star_empty");
+    m_iconStarOn = QIcon(":/icons/star_on");
+    m_iconTitleRead = QIcon(":/icons/ball_green");
     m_iconUnread = QIcon(":/icons/ball_red");
 
     // Initialize visible columns title names.
@@ -49,9 +50,9 @@ QVariant PostTableModel::headerData(int section, Qt::Orientation orientation,
     if (orientation == Qt::Horizontal) {
         if (role == Qt::DecorationRole) {
             if (section == Star)
-                return m_titleStar;
+                return m_iconTitleStar;
             else if (section == Read)
-                return m_titleRead;
+                return m_iconTitleRead;
         } else if (role == Qt::DisplayRole) {
                 return m_columnName[(ColumnNumber)section];
         }
@@ -72,11 +73,14 @@ QVariant PostTableModel::data(const QModelIndex &index, int role) const
             return QString();
         break;
     case Qt::DecorationRole:
-        if (index.column() == Star)
-            return m_emptyStar;
-        else if (index.column() == Read) {
+        if (index.column() == Star) {
+            if (flag(index.row()) == 0)
+                return m_iconStarOff;
+            else
+                return m_iconStarOn;
+        } else if (index.column() == Read) {
             if (isRead(index.row()))
-                return m_titleRead;
+                return m_iconTitleRead;
             else
                 return m_iconUnread;
         }
@@ -97,6 +101,12 @@ bool PostTableModel::isRead(int row) const
 {
     QSqlRecord rec = record(row);
     return rec.value(Read).toBool();
+}
+
+int PostTableModel::flag(int row) const
+{
+    QSqlRecord rec = record(row);
+    return rec.value(Star).toInt();
 }
 
 } // namespace gui
