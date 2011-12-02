@@ -76,7 +76,7 @@ MainWindow::MainWindow(QWidget *parent, Qt::WFlags flags)
     QDockWidget *dock = new QDockWidget("Folders", this);
     dock->setObjectName("Folders");
 
-    m_foldersList = new QTreeWidget;
+    m_foldersList = new QTreeWidget(this);
     m_foldersList->setColumnCount(1);
     m_foldersList->setRootIsDecorated(false);
     QStringList headerLabels;
@@ -90,6 +90,11 @@ MainWindow::MainWindow(QWidget *parent, Qt::WFlags flags)
 
     dock->setWidget(m_foldersList);
     addDockWidget(Qt::LeftDockWidgetArea, dock);
+
+    QLabel *statusLabel = new QLabel(this);
+    m_progress = new QMovie(":/icons/progress");
+    statusLabel->setMovie(m_progress);
+    statusBar()->addPermanentWidget(statusLabel);
 }
 
 // Destructor
@@ -509,6 +514,7 @@ void MainWindow::onStreamStart()
     // Disable start action until streaming is stopped.
     m_startAction->setEnabled(false);
     m_stopAction->setEnabled(true);
+    m_progress->start();
 }
 
 void MainWindow::onStreamStop()
@@ -520,6 +526,7 @@ void MainWindow::onStreamStop()
     // Enable start action.
     m_startAction->setEnabled(true);
     m_stopAction->setEnabled(false);
+    m_progress->stop();
 }
 
 void MainWindow::onNewFolder()

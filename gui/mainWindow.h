@@ -199,6 +199,8 @@ private:
 
     /// The number of recoreded (filtered) items.
     int m_recordedItemCount;
+
+    QMovie *m_progress;
 };
 
 } // namespace gui

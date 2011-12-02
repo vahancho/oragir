@@ -21,5 +21,6 @@
     <file alias="star_on" >icon_star_on.png</file>
     <file alias="star_off" >icon_star_off.png</file>
     <file alias="star_empty" >icon_star_empty.png</file>
+    <file alias="progress" >icon_progress.gif</file>
   </qresource>
 </RCC>
