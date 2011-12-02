@@ -56,7 +56,7 @@ namespace str
     extern const char *ActionNext;
     extern const char *ActionPrevious;
     extern const char *ActionAbout;
-    extern const char *ActionOpen;
+    extern const char *ActionNewFolder;
     extern const char *ActionStart;
     extern const char *ActionStop;
     extern const char *ActionFilters;

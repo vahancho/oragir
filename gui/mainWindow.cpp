@@ -210,11 +210,11 @@ void MainWindow::createMenus()
 
     QMenu *newMenu = fileMenu->addMenu(str::MenuNew);
 
-    QAction *openAction = fileMenu->addAction(str::ActionOpen);
-    openAction->setShortcut(QKeySequence(tr("Ctrl+O")));
-    openAction->setIcon(QIcon(":icons/table"));
-    connect(openAction, SIGNAL(triggered()), this, SLOT(onNewFolder()));
-    fileToolBar->addAction(openAction);
+    QAction *newFolderAction = newMenu->addAction(str::ActionNewFolder);
+    newFolderAction->setShortcut(QKeySequence(tr("Ctrl+N")));
+    newFolderAction->setIcon(QIcon(":icons/table"));
+    connect(newFolderAction, SIGNAL(triggered()), this, SLOT(onNewFolder()));
+    fileToolBar->addAction(newFolderAction);
 
     fileMenu->addSeparator();
     QAction *quitAction = fileMenu->addAction(str::ActionExit);

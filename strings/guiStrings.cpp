@@ -50,7 +50,7 @@ namespace str
     const char *ActionNext = QT_TRANSLATE_NOOP("Oragir", "&Next");
     const char *ActionPrevious = QT_TRANSLATE_NOOP("Oragir", "&Previous");
     const char *ActionAbout = QT_TRANSLATE_NOOP("Oragir", "&About");
-    const char *ActionOpen = QT_TRANSLATE_NOOP("Oragir", "&New Folder...");
+    const char *ActionNewFolder = QT_TRANSLATE_NOOP("Oragir", "&Folder...");
     const char *ActionStart = QT_TRANSLATE_NOOP("Oragir", "&Start");
     const char *ActionStop = QT_TRANSLATE_NOOP("Oragir", "S&top");
     const char *ActionFilters = QT_TRANSLATE_NOOP("Oragir", "&Filters...");
