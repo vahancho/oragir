@@ -21,6 +21,7 @@
 #include <QIcon>
 #include <QFont>
 #include <QSqlRecord>
+#include <QDateTime>
 #include "postTableModel.h"
 
 namespace gui
@@ -69,8 +70,18 @@ QVariant PostTableModel::data(const QModelIndex &index, int role) const
     switch (role)
     {
     case Qt::DisplayRole:
-        if (index.column() == Star || index.column() == Read)
+        if (index.column() == Star || index.column() == Read) {
             return QString();
+        } else if (index.column() == Updated) {
+            QSqlRecord rec = record(index.row());
+            QDateTime dt = rec.value(Updated).toDateTime();
+            // If the date is today, show only time, otherwise
+            // show date and time.
+            if (dt.date() == QDate::currentDate())
+                return dt.time();
+            else
+                return dt;
+        }
         break;
     case Qt::DecorationRole:
         if (index.column() == Star) {
