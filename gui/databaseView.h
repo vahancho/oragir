@@ -66,6 +66,14 @@ private slots:
 
     void onRemoveAll();
 
+    void onMarkAsRead();
+
+    void onMarkAsUnread();
+
+    void onAddStar();
+
+    void onRemoveStar();
+
 private:
     void init(const QSqlDatabase &db, const QString &table);
 

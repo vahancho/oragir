@@ -175,7 +175,7 @@ void DatabaseView::onSelectionChanged(const QItemSelection &selected,
         m_preview->setTitle(record.value(PostTableModel::Title).toString());
 
         // Mark the row as read.
-        record.setValue(str::TagRead, true);
+        record.setValue(PostTableModel::Read, true);
         m_model->setRecord(index.row(), record);
         beforeUpdate();
         m_model->submitAll();
@@ -188,12 +188,95 @@ void DatabaseView::onDatabaseContextMenu(const QPoint &pos)
     QMenu menu;
     menu.addAction(m_openSelected);
     menu.addAction(m_removeSelected);
+    menu.addSeparator();
+
+    bool read = false;
+    bool unread = false;
+    bool star = false;
+    bool unstar = false;
+    QModelIndexList indexes = m_view->selectionModel()->selectedRows();
+    foreach(const QModelIndex &index, indexes) {
+        QSqlRecord record = m_model->record(index.row());
+
+        if (record.value(PostTableModel::Read).toBool())
+            read = true;
+        else
+            unread = true;
+
+        if (record.value(PostTableModel::Star).toInt() == 1)
+            star = true;
+        else
+            unstar = true;
+    }
+
+    if (unread)
+        menu.addAction("Mark As &Read", this, SLOT(onMarkAsRead()));
+    if (read)
+        menu.addAction("Mark As &Unread", this, SLOT(onMarkAsUnread()));
+    if (unstar)
+        menu.addAction("&Add Star", this, SLOT(onAddStar()));
+    if (star)
+        menu.addAction("Remove &Star", this, SLOT(onRemoveStar()));
+
+    // Finally show the menu.
     menu.exec(m_view->mapToGlobal(QPoint(pos.x(), pos.y() + 20)));
+}
+
+void DatabaseView::onMarkAsRead()
+{
+    QModelIndexList indexes = m_view->selectionModel()->selectedRows();
+    foreach(const QModelIndex &index, indexes) {
+        QSqlRecord record = m_model->record(index.row());
+        record.setValue(PostTableModel::Read, true);
+        m_model->setRecord(index.row(), record);
+    }
+    beforeUpdate();
+    m_model->submitAll();
+    afterUpdate();
+}
+
+void DatabaseView::onMarkAsUnread()
+{
+    QModelIndexList indexes = m_view->selectionModel()->selectedRows();
+    foreach(const QModelIndex &index, indexes) {
+        QSqlRecord record = m_model->record(index.row());
+        record.setValue(PostTableModel::Read, false);
+        m_model->setRecord(index.row(), record);
+    }
+    beforeUpdate();
+    m_model->submitAll();
+    afterUpdate();
+}
+
+void DatabaseView::onAddStar()
+{
+    QModelIndexList indexes = m_view->selectionModel()->selectedRows();
+    foreach(const QModelIndex &index, indexes) {
+        QSqlRecord record = m_model->record(index.row());
+        record.setValue(PostTableModel::Star, 1);
+        m_model->setRecord(index.row(), record);
+    }
+    beforeUpdate();
+    m_model->submitAll();
+    afterUpdate();
+}
+
+void DatabaseView::onRemoveStar()
+{
+     QModelIndexList indexes = m_view->selectionModel()->selectedRows();
+    foreach(const QModelIndex &index, indexes) {
+        QSqlRecord record = m_model->record(index.row());
+        record.setValue(PostTableModel::Star, 0);
+        m_model->setRecord(index.row(), record);
+    }
+    beforeUpdate();
+    m_model->submitAll();
+    afterUpdate();
 }
 
 void DatabaseView::onOpenSelectedInBrowser()
 {
-    QModelIndexList indexes = m_view->selectionModel()->selectedIndexes();
+    QModelIndexList indexes = m_view->selectionModel()->selectedRows();
     foreach(const QModelIndex &index, indexes) {
         QSqlRecord record = m_model->record(index.row());
         if (record.fieldName(index.column()) == str::TagLink) {
