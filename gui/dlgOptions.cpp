@@ -73,10 +73,9 @@ OptionsDialog::OptionsDialog(QWidget *parent, Qt::WindowFlags f)
     mainLayout->addLayout(btnLayout);
 
     setLayout(mainLayout);
-
     setWindowTitle(str::OptionsDialogTitle);
-
     setSizeGripEnabled(true);
+    resize(483, 300);
 }
 
 OptionsDialog::~OptionsDialog()
@@ -90,8 +89,8 @@ void OptionsDialog::setupPages()
     m_navigationTree->setColumnCount(1);
     // Make header invisible
     m_navigationTree->header()->setVisible(false);
-    m_navigationTree->setMaximumWidth(120);
-    m_navigationTree->setMinimumWidth(120);
+    m_navigationTree->setMaximumWidth(75);
+    m_navigationTree->setMinimumWidth(75);
     m_navigationTree->setRootIsDecorated(false);
 
     // Set connection
