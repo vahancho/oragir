@@ -95,9 +95,9 @@ void OptionsDialog::setupPages()
     m_navigationTree->setRootIsDecorated(false);
 
     // Set connection
-    connect(m_navigationTree, 
+    connect(m_navigationTree,
             SIGNAL(currentItemChanged(QTreeWidgetItem *, QTreeWidgetItem *)),
-            this, 
+            this,
             SLOT(onChangePage(QTreeWidgetItem *, QTreeWidgetItem *)));
 
     // Create pages carrier
@@ -134,7 +134,7 @@ void OptionsDialog::onChangePage(QTreeWidgetItem *current, QTreeWidgetItem *prev
 void OptionsDialog::saveDefaults()
 {
     for (int i = 0; i < m_pages->count(); ++i) {
-        if( AbstractOptionsPage *page = 
+        if( AbstractOptionsPage *page =
             qobject_cast<AbstractOptionsPage *>(m_pages->widget(i))) {
             page->saveDefaults();
         }
