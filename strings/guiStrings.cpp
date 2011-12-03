@@ -81,6 +81,9 @@ namespace str
                                           "Oragir is made possible by the "
                                           "<a href=\"http://sourceforge.net/projects/oragir\">Oragir</a> "
                                           "open source project.");
+    const char *QuitOnCloseTitle = QT_TRANSLATE_NOOP("Oragir", "&Quit On Close");
+    const char *GeneralPageTitle = QT_TRANSLATE_NOOP("Oragir", "General");
+    const char *OptionsDialogTitle = QT_TRANSLATE_NOOP("Oragir", "Oragir Options");
 
     // Error messages.
     const char *DatabaseError = QT_TRANSLATE_NOOP("Oragir", "Database Error");

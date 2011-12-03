@@ -22,6 +22,8 @@
 #include "mainWindow.h"
 #include "databaseView.h"
 #include "dlgFilters.h"
+#include "dlgOptions.h"
+#include "generalOptionsPage.h"
 #include "../core/application.h"
 #include "../core/defaultManager.h"
 #include "../parser/atomParser.h"
@@ -587,6 +589,12 @@ void MainWindow::onFiltersExport()
 
 void MainWindow::onOptions()
 {
+    // Create and show dialog.
+    OptionsDialog dlg(this);
+    dlg.addPage(new gui::GeneralOptionsPage);
+    // If dialog accepted, i.e. Ok button pressed, save all defaults.
+    if(dlg.exec() == QDialog::Accepted)
+        dlg.saveDefaults();
 }
 
 void MainWindow::onFolderContextMenu(const QPoint &pos)
