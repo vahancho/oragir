@@ -30,7 +30,6 @@ using namespace core;
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    a.setQuitOnLastWindowClosed(false);
     a.setWindowIcon(QIcon(":/icons/app"));
 
     Application *app = Application::create();
