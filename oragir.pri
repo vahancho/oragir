@@ -8,6 +8,9 @@ HEADERS += ./core/propertyTable.h \
            ./gui/dlgFilterEditor.h \
            ./gui/previewWindow.h \
            ./gui/postTableModel.h \
+           ./gui/abstractOptionsPage.h \
+           ./gui/generalOptionsPage.h \
+           ./gui/dlgOptions.h \
            ./parser/atomParser.h \
            ./parser/blog.h \
            ./parser/post.h \
@@ -27,6 +30,8 @@ SOURCES += ./main.cpp \
            ./gui/dlgFilterEditor.cpp \
            ./gui/previewWindow.cpp \
            ./gui/postTableModel.cpp \
+           ./gui/generalOptionsPage.cpp \
+           ./gui/dlgOptions.cpp \
            ./parser/blog.cpp \
            ./parser/post.cpp \
            ./database/database.cpp \
