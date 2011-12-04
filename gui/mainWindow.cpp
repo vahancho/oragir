@@ -98,6 +98,11 @@ MainWindow::MainWindow(QWidget *parent, Qt::WFlags flags)
     m_progress = new QMovie(":/icons/progress");
     statusLabel->setMovie(m_progress);
     statusBar()->addPermanentWidget(statusLabel);
+
+    m_processedItems = new QLabel(this);
+    m_processedItems->setText("Pr 0");
+    m_processedItems->setToolTip("Number of processed items");
+    statusBar()->addPermanentWidget(m_processedItems);
 }
 
 // Destructor
@@ -554,8 +559,8 @@ void MainWindow::onNewFolder()
 void MainWindow::onItemProcessed()
 {
     m_processedItemCount++;
-    QString msg = QString("%1 stream items processed").arg(m_processedItemCount);
-    statusBar()->showMessage(msg);
+    QString msg = QString("Pr %1").arg(m_processedItemCount);
+    m_processedItems->setText(msg);
 }
 
 void MainWindow::onFilters()

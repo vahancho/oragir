@@ -28,6 +28,7 @@
 
 class QSignalMapper;
 class QTreeWidget;
+class QLabel;
 
 namespace gui
 {
@@ -208,6 +209,8 @@ private:
 
     /// Stores the status bar state.
     bool m_statusBarVisible;
+
+    QLabel *m_processedItems;
 };
 
 } // namespace gui
