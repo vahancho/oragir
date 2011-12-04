@@ -47,8 +47,14 @@ public:
     /// Set up the table mdi child view for the given database table.
     void createFolderView(const QString &table);
 
+    /// Returns visibility state of the status bar.
+    bool statusBarVisible() const;
+
 public slots:
     void onRecordInserted(const QSqlDatabase &db, const QString &table);
+
+    /// This slot is called when Status bar action is triggered.
+    void setStatusBarVisible(bool visible = true);
 
 protected:
     /// Handles the window's close event.
@@ -72,9 +78,6 @@ private slots:
 
     /// This slot is called when Window menu is about to show.
     void updateWindowMenu();
-
-    /// This slot is called when Status bar action is triggered.
-    void onStatusBarShowHide();
 
     /// This slot called when a MDI sub window activated.
     /*!
@@ -200,7 +203,11 @@ private:
     /// The number of recoreded (filtered) items.
     int m_recordedItemCount;
 
+    /// The streaming activity animation icon.
     QMovie *m_progress;
+
+    /// Stores the status bar state.
+    bool m_statusBarVisible;
 };
 
 } // namespace gui

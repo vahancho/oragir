@@ -44,7 +44,8 @@ MainWindow::MainWindow(QWidget *parent, Qt::WFlags flags)
         QMainWindow(parent, flags),
         m_trayIcon(0),
         m_processedItemCount(0),
-        m_recordedItemCount(0)
+        m_recordedItemCount(0),
+        m_statusBarVisible(true)
 {
     createMenus();
 
@@ -251,7 +252,7 @@ void MainWindow::createMenus()
     m_statusBarAction->setCheckable(true);
 
     // Set connection
-    connect(m_statusBarAction, SIGNAL(triggered()), this, SLOT(onStatusBarShowHide()));
+    connect(m_statusBarAction, SIGNAL(toggled(bool)), this, SLOT(setStatusBarVisible(bool)));
 
     //////////////////////////////////////////////////////////////////////////
     // Stream menu
@@ -375,13 +376,15 @@ void MainWindow::updateToolBarsMenu()
     }
 }
 
-void MainWindow::onStatusBarShowHide()
+void MainWindow::setStatusBarVisible(bool visible)
 {
-    if (statusBar()->isVisible())
-        // If status bar visible hide status bar
-        statusBar()->setVisible(false);
-    else
-        statusBar()->setVisible(true);
+    statusBar()->setVisible(visible);
+    m_statusBarVisible = visible;
+}
+
+bool MainWindow::statusBarVisible() const
+{
+    return m_statusBarVisible;
 }
 
 void MainWindow::onToolsOptions()

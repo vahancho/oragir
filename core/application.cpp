@@ -225,7 +225,7 @@ void Application::restoreMainWindow() const
 
     // Restore status bar state
     bool showStatus = m_defaultManager->value(str::ShowStatusBar).toBool();
-    m_mainWindow->statusBar()->setVisible(showStatus);
+    m_mainWindow->setStatusBarVisible(showStatus);
 }
 
 void Application::saveMainWindowDefaults() const
@@ -238,7 +238,7 @@ void Application::saveMainWindowDefaults() const
     m_defaultManager->setValue(str::MainWindowPos, m_mainWindow->pos());
     m_defaultManager->setValue(str::MainWindowMax, m_mainWindow->isMaximized());
     m_defaultManager->setValue(str::MainWindowState, m_mainWindow->saveState());
-    m_defaultManager->setValue(str::ShowStatusBar, m_mainWindow->statusBar()->isVisible());
+    m_defaultManager->setValue(str::ShowStatusBar, m_mainWindow->statusBarVisible());
 }
 
 } // namespace core
