@@ -32,8 +32,8 @@ namespace gui
 /// This class implements an options dialog General page class.
 class GeneralOptionsPage : public AbstractOptionsPage
 {
+    Q_OBJECT
 public:
-
     /// Default constructor
     GeneralOptionsPage(QWidget *parent = 0, Qt::WFlags flags = 0);
 
@@ -52,12 +52,6 @@ public:
 private:
     /// Quit on close settings.
     QCheckBox *m_chkQuitOnClose;
-
-    /// Data file path.
-    QLineEdit *m_editDataFile;
-
-    /// Filters file path.
-    QLineEdit *m_editFilterFile;
 };
 
 } // namespace gui
