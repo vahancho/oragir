@@ -38,27 +38,30 @@ GeneralOptionsPage::GeneralOptionsPage(QWidget *parent, Qt::WFlags flags)
     :
         AbstractOptionsPage(parent, flags)
 {
+    core::DefaultManager *defaultMngr = core::Application::theApp()->defaultManager();
+
     QLabel *lblData = new QLabel("Data file:", this);
-    QLineEdit *editData = new QLineEdit(this);
+    m_editDataFile = new QLineEdit(this);
+    m_editDataFile->setText(defaultMngr->value(str::Database).toString());
     QPushButton *btnDataBrowse = new QPushButton("...", this);
 
     QLabel *lblFilter = new QLabel("Filters file:", this);
-    QLineEdit *editFilter = new QLineEdit(this);
+    m_editFilterFile = new QLineEdit(this);
+    m_editFilterFile->setText(defaultMngr->value(str::Filters).toString());
     QPushButton *btnFilterBrowse = new QPushButton("...", this);
 
     QGridLayout *grid = new QGridLayout;
     grid->addWidget(lblData, 0, 0);
-    grid->addWidget(editData, 0, 1);
+    grid->addWidget(m_editDataFile, 0, 1);
     grid->addWidget(btnDataBrowse, 0, 2);
     grid->addWidget(lblFilter, 1, 0);
-    grid->addWidget(editFilter, 1, 1);
+    grid->addWidget(m_editFilterFile, 1, 1);
     grid->addWidget(btnFilterBrowse, 1, 2);
 
     QGroupBox *groupBox = new QGroupBox("Files", this);
     groupBox->setLayout(grid);
 
     m_chkQuitOnClose = new QCheckBox(str::QuitOnCloseTitle);
-    core::DefaultManager *defaultMngr = core::Application::theApp()->defaultManager();
     bool checked = defaultMngr->value(str::QuitOnClose).toBool();
     if(checked)
         m_chkQuitOnClose->setCheckState(Qt::Checked);

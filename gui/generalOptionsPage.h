@@ -24,6 +24,7 @@
 #include "abstractOptionsPage.h"
 
 class QCheckBox;
+class QLineEdit;
 
 namespace gui
 {
@@ -51,6 +52,12 @@ public:
 private:
     /// Quit on close settings.
     QCheckBox *m_chkQuitOnClose;
+
+    /// Data file path.
+    QLineEdit *m_editDataFile;
+
+    /// Filters file path.
+    QLineEdit *m_editFilterFile;
 };
 
 } // namespace gui
