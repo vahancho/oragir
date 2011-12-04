@@ -269,4 +269,18 @@ QStringList Database::tables() const
     return tables;
 }
 
+bool Database::renameTable(const QString &oldName, const QString &newName)
+{
+    QSqlDatabase db = database();
+    QSqlQuery query(db);
+    QString queryStr = QString("ALTER TABLE %1 RENAME TO %2")
+                               .arg(oldName).arg(newName);
+    if (query.exec(queryStr)) {
+        return true;
+    } else {
+        m_error = query.lastError().text();
+        return false;
+    }
+}
+
 } // namespace core

@@ -50,6 +50,9 @@ public:
 
     void removeTable(const QString &table);
 
+    /// Renames table oldName with the newName and returns renaming result.
+    bool renameTable(const QString &oldName, const QString &newName);
+
     QStringList tables() const;
 
     /// Adds or update a filter to the list of filters.
