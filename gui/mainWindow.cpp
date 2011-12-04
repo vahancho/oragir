@@ -75,6 +75,8 @@ MainWindow::MainWindow(QWidget *parent, Qt::WFlags flags)
             this, SLOT(onItemProcessed()));
     connect(parser, SIGNAL(stateChanged(int)),
             this, SLOT(onParserStateChanged(int)));
+    connect(parser, SIGNAL(dataReadProgress(int, int)),
+            this, SLOT(onDataReadProgress(int, int)));
 
     QDockWidget *dock = new QDockWidget("Folders", this);
     dock->setObjectName("Folders");
@@ -100,9 +102,14 @@ MainWindow::MainWindow(QWidget *parent, Qt::WFlags flags)
     statusBar()->addPermanentWidget(statusLabel);
 
     m_processedItems = new QLabel(this);
-    m_processedItems->setText("Pr 0");
+    m_processedItems->setText("  Pr 0  ");
     m_processedItems->setToolTip("Number of processed items");
     statusBar()->addPermanentWidget(m_processedItems);
+
+    m_processedData = new QLabel(this);
+    m_processedData->setText("  0 kb  ");
+    m_processedData->setToolTip("Processed data (kb)");
+    statusBar()->addPermanentWidget(m_processedData);
 }
 
 // Destructor
@@ -559,8 +566,20 @@ void MainWindow::onNewFolder()
 void MainWindow::onItemProcessed()
 {
     m_processedItemCount++;
-    QString msg = QString("Pr %1").arg(m_processedItemCount);
+    QString msg = QString("  Pr %1  ").arg(m_processedItemCount);
     m_processedItems->setText(msg);
+}
+
+void MainWindow::onDataReadProgress(int done, int /*total*/)
+{
+    QString msg;
+    if (done < 1048576) {
+        msg = QString("  %1 kb  ").arg(done / 1024);
+    } else {
+        double mb = (double)done / 1048576;
+        msg = QString("  %1 mb  ").arg(mb, 0, 'g', 3);
+    }
+    m_processedData->setText(msg);
 }
 
 void MainWindow::onFilters()

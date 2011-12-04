@@ -37,6 +37,8 @@ AtomParser::AtomParser()
 
     connect(&m_http, SIGNAL(stateChanged(int)),
             this, SLOT(onStateChanged(int)));
+    connect(&m_http, SIGNAL(dataReadProgress(int, int)),
+            this, SIGNAL(dataReadProgress(int, int)));
 
     m_http.setHost(m_url.host());
 }

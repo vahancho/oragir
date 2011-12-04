@@ -47,6 +47,7 @@ public:
 signals:
     void fetched(const Post &post, const Blog &blog);
     void stateChanged(int state);
+    void dataReadProgress(int done, int total);
 
 public slots:
     /// Start parsing the atom stream.

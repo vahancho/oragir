@@ -109,6 +109,8 @@ private slots:
 
     void onItemProcessed();
 
+    void onDataReadProgress(int done, int total);
+
     void onFilters();
 
     void onFiltersExport();
@@ -211,6 +213,8 @@ private:
     bool m_statusBarVisible;
 
     QLabel *m_processedItems;
+
+    QLabel *m_processedData;
 };
 
 } // namespace gui
