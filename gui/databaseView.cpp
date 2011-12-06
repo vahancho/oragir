@@ -300,6 +300,7 @@ void DatabaseView::onRemoveAll()
 {
     m_model->removeRows(0, m_model->rowCount());
     m_model->submitAll();
+    m_preview->clear();
 }
 
 void DatabaseView::beforeUpdate()

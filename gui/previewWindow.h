@@ -44,6 +44,7 @@ public:
     void setAuthor(const QString &author);
     void setUrl(const QString &url);
     void setTitle(const QString &title);
+    void clear();
 
 private:
     QTextEdit *m_preview;

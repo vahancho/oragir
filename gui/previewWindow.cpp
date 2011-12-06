@@ -76,4 +76,12 @@ void PreviewWindow::setTitle(const QString &title)
     m_title->setText(title);
 }
 
+void PreviewWindow::clear()
+{
+    m_preview->clear();
+    m_author->clear();
+    m_url->clear();
+    m_title->clear();
+}
+
 } // namespace gui
