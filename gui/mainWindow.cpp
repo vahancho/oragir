@@ -107,9 +107,19 @@ MainWindow::MainWindow(QWidget *parent, Qt::WFlags flags)
     statusBar()->addPermanentWidget(m_processedItems);
 
     m_processedData = new QLabel(this);
-    m_processedData->setText("  0 kb  ");
-    m_processedData->setToolTip("Processed data (kb)");
+    m_processedData->setText(" Size 0 kB  ");
+    m_processedData->setToolTip("Data downloaded (kB)");
     statusBar()->addPermanentWidget(m_processedData);
+
+    m_unreadItems = new QLabel(this);
+    m_unreadItems->setText("  Unread: 0  ");
+    m_unreadItems->setToolTip("Number of unread items");
+    statusBar()->addPermanentWidget(m_unreadItems);
+
+    m_totalItems = new QLabel(this);
+    m_totalItems->setText("  Total: 0  ");
+    m_totalItems->setToolTip("Total number of items");
+    statusBar()->addPermanentWidget(m_totalItems);
 }
 
 // Destructor
@@ -497,7 +507,21 @@ QMdiSubWindow *MainWindow::activeSubWindow() const
 }
 
 void MainWindow::onSubWindowActivated(QMdiSubWindow *subWindow)
-{}
+{
+    if (!subWindow)
+        return;
+
+    if (DatabaseView *dbView = qobject_cast<DatabaseView *>(subWindow->widget())) {
+        updateStatusLabels(dbView->table());
+    }
+}
+
+void MainWindow::updateStatusLabels(const QString &table)
+{
+    core::Database *db = core::Application::theApp()->database();
+    m_unreadItems->setText(QString("  Unread: %1  ").arg(db->unreadCount(table)));
+    m_totalItems->setText(QString("  Total: %1  ").arg(db->totalCount(table)));
+}
 
 void MainWindow::setActiveSubWindow(QWidget *subWindow)
 {
@@ -516,6 +540,7 @@ void MainWindow::onRecordInserted(const QSqlDatabase &db, const QString &table)
             qobject_cast<DatabaseView *>(mdiWindow->widget())){
             if (dbView->hasTable(db, table)) {
                 dbView->updateTable();
+                updateStatusLabels(table);
                 break;
             }
         }
@@ -574,10 +599,10 @@ void MainWindow::onDataReadProgress(int done, int /*total*/)
 {
     QString msg;
     if (done < 1048576) {
-        msg = QString("  %1 kb  ").arg(done / 1024);
+        msg = QString("  Size %1 kB  ").arg(done / 1024);
     } else {
         double mb = (double)done / 1048576;
-        msg = QString("  %1 mb  ").arg(mb, 0, 'g', 3);
+        msg = QString("  Size %1 mB  ").arg(mb, 0, 'g', 3);
     }
     m_processedData->setText(msg);
 }

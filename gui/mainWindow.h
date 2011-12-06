@@ -149,7 +149,8 @@ private:
     /// Creates the system tray icon.
     void createTrayIcon();
 
-    void storeInClipboard(const QString &text) const;
+    /// Updates status bar labels with items statistics.
+    void updateStatusLabels(const QString &table);
 
     /// The system tray icon.
     QSystemTrayIcon *m_trayIcon;
@@ -215,6 +216,10 @@ private:
     QLabel *m_processedItems;
 
     QLabel *m_processedData;
+
+    QLabel *m_unreadItems;
+
+    QLabel *m_totalItems;
 };
 
 } // namespace gui
