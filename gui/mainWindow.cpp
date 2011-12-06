@@ -409,9 +409,6 @@ bool MainWindow::statusBarVisible() const
     return m_statusBarVisible;
 }
 
-void MainWindow::onToolsOptions()
-{}
-
 void MainWindow::closeEvent(QCloseEvent *event)
 {
     core::DefaultManager *defaultMngr = 

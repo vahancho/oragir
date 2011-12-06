@@ -65,9 +65,6 @@ protected:
     void closeEvent(QCloseEvent *event);
 
 private slots:
-    /// Opens Options dialog.
-    void onToolsOptions();
-
     /// This slot is called when Tool bars sub menu is about to show.
     void updateToolBarsMenu();
 
@@ -115,6 +112,7 @@ private slots:
 
     void onFiltersExport();
 
+    /// Opens Options dialog.
     void onOptions();
 
     void onFolderContextMenu(const QPoint &pos);
