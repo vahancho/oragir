@@ -247,6 +247,12 @@ void MainWindow::createMenus()
     connect(newFolderAction, SIGNAL(triggered()), this, SLOT(onNewFolder()));
     fileToolBar->addAction(newFolderAction);
 
+    m_folderDeleteAction = fileMenu->addAction(QIcon(":/icons/folder_delete"),
+                                               str::ActionDelete,
+                                               this,
+                                               SLOT(onFolderDelete()));
+    fileToolBar->addAction(m_folderDeleteAction);
+
     fileMenu->addSeparator();
     QAction *quitAction = fileMenu->addAction(str::ActionExit);
     quitAction->setShortcut(QKeySequence(tr("Ctrl+Q")));
@@ -656,12 +662,8 @@ void MainWindow::onFolderContextMenu(const QPoint &pos)
 {
     if(QTreeWidgetItem *treeItem = m_foldersList->itemAt(pos)) {
         QMenu menu;
-        QAction *action = menu.addAction(QIcon(":/icons/folder_delete"),
-                                         str::ActionDelete,
-                                         this,
-                                         SLOT(onFolderDelete()));
+        menu.addAction(m_folderDeleteAction);
         QString folderName = treeItem->text(Name);
-        action->setData(folderName);
 
         menu.exec(m_foldersList->mapToGlobal(QPoint(pos.x(), pos.y() + 20)));
     }
@@ -669,33 +671,31 @@ void MainWindow::onFolderContextMenu(const QPoint &pos)
 
 void MainWindow::onFolderDelete()
 {
-     if(QAction *action = qobject_cast<QAction *>(sender())) {
-        core::Database *db = core::Application::theApp()->database();
-        QString folderName = action->data().toString();
+    core::Database *db = core::Application::theApp()->database();
+    QString folderName = m_foldersList->currentItem()->text(Name);
 
-        // Find database view(s) that has to be closed.
-        QList<QMdiSubWindow *> mdiWindows = m_mdiArea.subWindowList();
-        foreach(QMdiSubWindow *mdiWindow, mdiWindows) {
-            if (DatabaseView *dbView =
-                qobject_cast<DatabaseView *>(mdiWindow->widget())){
-                if (dbView->hasTable(db->database(), folderName)) {
-                    delete dbView;
-                    mdiWindow->close();
-                }
+    // Find database view(s) that has to be closed.
+    QList<QMdiSubWindow *> mdiWindows = m_mdiArea.subWindowList();
+    foreach(QMdiSubWindow *mdiWindow, mdiWindows) {
+        if (DatabaseView *dbView =
+            qobject_cast<DatabaseView *>(mdiWindow->widget())){
+            if (dbView->hasTable(db->database(), folderName)) {
+                delete dbView;
+                mdiWindow->close();
             }
         }
-
-        // Remove all nodes for the given database.
-        // Start from bottom to top to prevent shifting the indexes.
-        for(int i = m_foldersList->topLevelItemCount() - 1; i >= 0 ; --i) {
-            QTreeWidgetItem *item = m_foldersList->topLevelItem(i);
-            if (item->text(Name) == folderName)
-                m_foldersList->takeTopLevelItem(i);
-        }
-
-        // Finally remove table from the database.
-        db->removeTable(folderName);
     }
+
+    // Remove all nodes for the given database.
+    // Start from bottom to top to prevent shifting the indexes.
+    for(int i = m_foldersList->topLevelItemCount() - 1; i >= 0 ; --i) {
+        QTreeWidgetItem *item = m_foldersList->topLevelItem(i);
+        if (item->text(Name) == folderName)
+            m_foldersList->takeTopLevelItem(i);
+    }
+
+    // Finally remove table from the database.
+    db->removeTable(folderName);
 }
 
 void MainWindow::onParserStateChanged(int /*state*/)

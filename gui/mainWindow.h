@@ -181,6 +181,8 @@ private:
 
     QAction *m_stopAction;
 
+    QAction *m_folderDeleteAction;
+
     /// Store the Window menu.
     QMenu *m_windowMenu;
 
