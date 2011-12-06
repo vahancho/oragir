@@ -57,15 +57,14 @@ namespace str
     const char *TagFolder = "folder";
     const char *TagVersion = "version";
 
-    const char *MainWindowSize = "MainWindowSize";
-    const char *MainWindowPos = "MainWindowPos";
-    const char *MainWindowMax = "MainWindowMax";
-    const char *MainWindowState = "MainWindowState";
-    const char *ShowStatusBar = "ShowStatusBar";
-    const char *QuitOnClose = "QuitOnClose";
-    const char *Database = "Database";
-    const char *Folders = "Folders";
-    const char *Filters = "Filters";
+    const char *MainWindowSize = "MainWindow/MainWindowSize";
+    const char *MainWindowPos = "MainWindow/MainWindowPos";
+    const char *MainWindowMax = "MainWindow/MainWindowMax";
+    const char *MainWindowState = "MainWindow/MainWindowState";
+    const char *ShowStatusBar = "MainWindow/ShowStatusBar";
+    const char *QuitOnClose = "MainWindow/QuitOnClose";
+    const char *Database = "Data/Database";
+    const char *Filters = "Data/Filters";
     
     // Version related strings
     const char *Version = "0.1a";
