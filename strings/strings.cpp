@@ -55,6 +55,7 @@ namespace str
     const char *TagNameAttr = "name";
     const char *TagOption = "option";
     const char *TagFolder = "folder";
+    const char *TagVersion = "version";
 
     const char *MainWindowSize = "MainWindowSize";
     const char *MainWindowPos = "MainWindowPos";
@@ -68,6 +69,7 @@ namespace str
     
     // Version related strings
     const char *Version = "0.1a";
+    const char *FilterVersion = "1.0";
 
     const char *BlogTableName = "ad0ccb7f0813d3363f66b3fbc6b64eb66f680d8c";
 

@@ -58,6 +58,7 @@ namespace str
     extern const char *TagNameAttr;
     extern const char *TagOption;
     extern const char *TagFolder;
+    extern const char *TagVersion;
 
     // Defaults names.
     extern const char *MainWindowSize;
@@ -72,6 +73,7 @@ namespace str
 
     // Version related strings
     extern const char *Version;
+    extern const char *FilterVersion;
 
     /// The name of blogs table. This should be unique.
     extern const char *BlogTableName;

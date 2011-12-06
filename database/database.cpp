@@ -164,6 +164,7 @@ bool Database::saveFilters(const QString &fileName)
 
         writer.writeStartDocument();
         writer.writeStartElement(str::TagFilters);
+        writer.writeAttribute(str::TagVersion, str::FilterVersion);
 
         Filters::iterator it = m_filters.begin();
 
@@ -192,7 +193,12 @@ bool Database::openFilters(const QString &fileName)
         while (!reader.atEnd()) {
             reader.readNext();
             if(reader.isStartElement()) {
-                if(reader.name() == str::TagFilter) {
+                if (reader.name() == str::TagFilters) {
+                    QXmlStreamAttributes attr = reader.attributes();
+                    QString version =
+                        QVariant::fromValue(attr.value(str::TagVersion).toString())
+                                           .toString();
+                } else if(reader.name() == str::TagFilter) {
                     Filter<Post> filter;
                     filter.readXml(reader);
                     addFilter(filter);
