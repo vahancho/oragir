@@ -283,4 +283,24 @@ bool Database::renameTable(const QString &oldName, const QString &newName)
     }
 }
 
+int Database::unreadCount(const QString &table) const
+{
+    QSqlDatabase db = database();
+    QSqlQuery query(db);
+    QString str = QString("SELECT COUNT(*) FROM %1 WHERE read='false'").arg(table);
+    query.exec(str);
+    query.next();
+    return query.value(0).toInt();
+}
+
+int Database::totalCount(const QString &table) const
+{
+    QSqlDatabase db = database();
+    QSqlQuery query(db);
+    QString str = QString("SELECT COUNT(*) FROM %1").arg(table);
+    query.exec(str);
+    query.next();
+    return query.value(0).toInt();
+}
+
 } // namespace core

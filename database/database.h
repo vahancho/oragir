@@ -78,6 +78,9 @@ public:
 
     QString databaseName() const;
 
+    int unreadCount(const QString &table) const;
+    int totalCount(const QString &table) const;
+
 signals:
     void recordInserted(const QSqlDatabase &db, const QString &table);
 
