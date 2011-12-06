@@ -145,6 +145,7 @@ void MainWindow::createFolderView(const QString &table)
         node->setText(Name, table);
         node->setToolTip(Name, table);
         m_foldersList->addTopLevelItem(node);
+        m_foldersList->setCurrentItem(node);
     }
 
     // Create and show database view.
