@@ -537,7 +537,10 @@ void MainWindow::onRecordInserted(const QSqlDatabase &db, const QString &table)
             qobject_cast<DatabaseView *>(mdiWindow->widget())){
             if (dbView->hasTable(db, table)) {
                 dbView->updateTable();
-                updateStatusLabels(table);
+
+                // Update statistics for the active mdi window table.
+                if (mdiWindow == m_mdiArea.activeSubWindow())
+                    updateStatusLabels(table);
                 break;
             }
         }
