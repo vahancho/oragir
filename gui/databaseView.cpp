@@ -356,4 +356,9 @@ void DatabaseView::onClicked(const QModelIndex &index)
     }
 }
 
+QString DatabaseView::table() const
+{
+    return m_model->tableName();
+}
+
 } // namespace gui

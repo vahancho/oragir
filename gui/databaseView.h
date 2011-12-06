@@ -51,6 +51,8 @@ public:
     /// Returns true if view shows the given database table.
     bool hasTable(const QSqlDatabase &db, const QString &table) const;
 
+    QString table() const;
+
 private slots:
     void onSelectionChanged(const QItemSelection &selected,
                             const QItemSelection &deselected);
