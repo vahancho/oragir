@@ -152,7 +152,6 @@ void Application::registerDatabaseDefaults() const
 
     QString appDataFile = QString(location + "oragir.data");
     m_defaultManager->addProperty(str::Database, appDataFile, appDataFile);
-    m_defaultManager->addProperty(str::Folders, QStringList(), QStringList());
 
     QString filterFile = QString(location + "filters.flt");
     m_defaultManager->addProperty(str::Filters, filterFile, filterFile);
@@ -166,7 +165,7 @@ void Application::restoreDatabase() const
 
     QString database = m_defaultManager->value(str::Database).toString();
     if (m_dataBase->create(database)) {
-        QStringList tables = m_defaultManager->value(str::Folders).toStringList();
+        QStringList tables = m_dataBase->tables();
         foreach(const QString &table, tables) {
             m_dataBase->addTable(table);
             m_mainWindow->createFolderView(table);
@@ -183,7 +182,6 @@ void Application::saveDatabaseDefaults() const
     Q_ASSERT(m_dataBase);
 
     m_defaultManager->setValue(str::Database, m_dataBase->databaseName());
-    m_defaultManager->setValue(str::Folders, m_dataBase->tables());
     QString filtersFile = m_defaultManager->value(str::Filters).toString();
     if (!filtersFile.isEmpty())
         m_dataBase->saveFilters(filtersFile);
