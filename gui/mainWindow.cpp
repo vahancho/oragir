@@ -557,6 +557,8 @@ void MainWindow::onStreamStart()
     m_startAction->setEnabled(false);
     m_stopAction->setEnabled(true);
     m_progress->start();
+    // Reset the counter.
+    m_processedItemCount = 0;
 }
 
 void MainWindow::onStreamStop()
