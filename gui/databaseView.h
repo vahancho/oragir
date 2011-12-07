@@ -48,9 +48,6 @@ public:
 
     void updateTable();
 
-    /// Returns true if view shows the given database table.
-    bool hasTable(const QSqlDatabase &db, const QString &table) const;
-
     QString table() const;
 
 signals:

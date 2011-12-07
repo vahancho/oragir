@@ -526,7 +526,7 @@ void MainWindow::updateStatusLabels(const QString &table)
 {
     // Update status labels only for the active table view.
     if (QMdiSubWindow *mdiWindow = m_mdiArea.activeSubWindow()) {
-        if(DatabaseView *dbView = 
+        if(DatabaseView *dbView =
            qobject_cast<DatabaseView *>(mdiWindow->widget())) {
             if (dbView->table() == table) {
                 core::Database *db = core::Application::theApp()->database();
@@ -554,7 +554,7 @@ void MainWindow::onRecordInserted(const QSqlDatabase &db, const QString &table)
     foreach(QMdiSubWindow *mdiWindow, mdiWindows) {
         if (DatabaseView *dbView =
             qobject_cast<DatabaseView *>(mdiWindow->widget())){
-            if (dbView->hasTable(db, table)) {
+            if (dbView->table() == table) {
                 dbView->updateTable();
                 break;
             }
@@ -687,7 +687,7 @@ void MainWindow::onFolderDelete()
     foreach(QMdiSubWindow *mdiWindow, mdiWindows) {
         if (DatabaseView *dbView =
             qobject_cast<DatabaseView *>(mdiWindow->widget())){
-            if (dbView->hasTable(db->database(), folderName)) {
+            if (dbView->table() == folderName) {
                 delete dbView;
                 mdiWindow->close();
             }
@@ -721,7 +721,7 @@ void MainWindow::onFolderDblClicked(const QModelIndex &index)
     foreach(QMdiSubWindow *mdiWindow, mdiWindows) {
         if (DatabaseView *dbView =
             qobject_cast<DatabaseView *>(mdiWindow->widget())){
-            if (dbView->hasTable(db->database(), tableName)) {
+            if (dbView->table() == tableName) {
                 setActiveSubWindow(mdiWindow);
                 return;
             }
