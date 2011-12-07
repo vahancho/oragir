@@ -106,8 +106,8 @@ void Application::init()
 
     m_mainWindow = new gui::MainWindow;
     registerMainWindowDefaults();
-    QObject::connect(m_dataBase, SIGNAL(recordInserted(const QSqlDatabase &, const QString &)),
-                     m_mainWindow, SLOT(onRecordInserted(const QSqlDatabase &, const QString &)));
+    QObject::connect(m_dataBase, SIGNAL(recordInserted(const QString &)),
+                     m_mainWindow, SLOT(onRecordInserted(const QString &)));
 
     // Read and set all defaults.
     m_defaultManager->readDefaults();

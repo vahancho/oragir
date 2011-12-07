@@ -52,7 +52,7 @@ public:
     bool statusBarVisible() const;
 
 public slots:
-    void onRecordInserted(const QSqlDatabase &db, const QString &table);
+    void onRecordInserted(const QString &table);
 
     /// This slot is called when Status bar action is triggered.
     void setStatusBarVisible(bool visible = true);

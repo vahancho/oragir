@@ -82,7 +82,7 @@ public:
     int totalCount(const QString &table) const;
 
 signals:
-    void recordInserted(const QSqlDatabase &db, const QString &table);
+    void recordInserted(const QString &table);
 
 public slots:
     void onFetched(const Post &post, const Blog &blog);

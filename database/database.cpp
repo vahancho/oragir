@@ -148,7 +148,7 @@ void Database::addRecord(const Post &post, const Blog &blog,
 
     // If record inserted inform the world.
     if (inserted) {
-        emit recordInserted(db, table);
+        emit recordInserted(table);
     } else {
         m_error = query.lastError().text();
     }

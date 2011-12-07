@@ -547,7 +547,7 @@ void MainWindow::setActiveSubWindow(QWidget *subWindow)
     m_mdiArea.setActiveSubWindow(qobject_cast<QMdiSubWindow *>(subWindow));
 }
 
-void MainWindow::onRecordInserted(const QSqlDatabase &db, const QString &table)
+void MainWindow::onRecordInserted(const QString &table)
 {
     // Find database view that has to be updated.
     QList<QMdiSubWindow *> mdiWindows = m_mdiArea.subWindowList();
