@@ -53,6 +53,10 @@ public:
 
     QString table() const;
 
+signals:
+    /// Emited when the containing table changed.
+    void changed(const QString &table);
+
 private slots:
     void onSelectionChanged(const QItemSelection &selected,
                             const QItemSelection &deselected);

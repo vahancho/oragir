@@ -145,6 +145,8 @@ void DatabaseView::updateTable()
         }
 
         afterUpdate();
+
+        emit changed(table());
     }
 }
 
@@ -180,6 +182,8 @@ void DatabaseView::onSelectionChanged(const QItemSelection &selected,
         beforeUpdate();
         m_model->submitAll();
         afterUpdate();
+
+        emit changed(table());
     }
 }
 
@@ -233,6 +237,8 @@ void DatabaseView::onMarkAsRead()
     beforeUpdate();
     m_model->submitAll();
     afterUpdate();
+
+    emit changed(table());
 }
 
 void DatabaseView::onMarkAsUnread()
@@ -246,6 +252,8 @@ void DatabaseView::onMarkAsUnread()
     beforeUpdate();
     m_model->submitAll();
     afterUpdate();
+
+    emit changed(table());
 }
 
 void DatabaseView::onAddStar()
@@ -294,6 +302,7 @@ void DatabaseView::onRemoveSelected()
     }
 
     m_model->submitAll();
+    emit changed(table());
 }
 
 void DatabaseView::onRemoveAll()
@@ -301,6 +310,7 @@ void DatabaseView::onRemoveAll()
     m_model->removeRows(0, m_model->rowCount());
     m_model->submitAll();
     m_preview->clear();
+    emit changed(table());
 }
 
 void DatabaseView::beforeUpdate()

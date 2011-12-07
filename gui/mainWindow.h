@@ -123,6 +123,9 @@ private slots:
 
     void onFolderDblClicked(const QModelIndex &);
 
+     /// Updates status bar labels with items statistics.
+    void updateStatusLabels(const QString &table);
+
 private:
 
     /// Defines the column numbers in the folders view.
@@ -146,9 +149,6 @@ private:
 
     /// Creates the system tray icon.
     void createTrayIcon();
-
-    /// Updates status bar labels with items statistics.
-    void updateStatusLabels(const QString &table);
 
     /// The system tray icon.
     QSystemTrayIcon *m_trayIcon;

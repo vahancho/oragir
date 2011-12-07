@@ -157,6 +157,8 @@ void MainWindow::createFolderView(const QString &table)
     postTableView->setWindowTitle(table);
     m_mdiArea.addSubWindow(postTableView);
     postTableView->showMaximized();
+    connect(dbView, SIGNAL(changed(const QString &)), this,
+            SLOT(updateStatusLabels(const QString &)));
 }
 
 void MainWindow::createTrayIcon()
@@ -522,9 +524,19 @@ void MainWindow::onSubWindowActivated(QMdiSubWindow *subWindow)
 
 void MainWindow::updateStatusLabels(const QString &table)
 {
-    core::Database *db = core::Application::theApp()->database();
-    m_unreadItems->setText(QString("  Unread: %1  ").arg(db->unreadCount(table)));
-    m_totalItems->setText(QString("  Total: %1  ").arg(db->totalCount(table)));
+    // Update status labels only for the active table view.
+    if (QMdiSubWindow *mdiWindow = m_mdiArea.activeSubWindow()) {
+        if(DatabaseView *dbView = 
+           qobject_cast<DatabaseView *>(mdiWindow->widget())) {
+            if (dbView->table() == table) {
+                core::Database *db = core::Application::theApp()->database();
+                m_unreadItems->setText(QString("  Unread: %1  ")
+                                       .arg(db->unreadCount(table)));
+                m_totalItems->setText(QString("  Total: %1  ")
+                                      .arg(db->totalCount(table)));
+            }
+        }
+    }
 }
 
 void MainWindow::setActiveSubWindow(QWidget *subWindow)
@@ -544,10 +556,6 @@ void MainWindow::onRecordInserted(const QSqlDatabase &db, const QString &table)
             qobject_cast<DatabaseView *>(mdiWindow->widget())){
             if (dbView->hasTable(db, table)) {
                 dbView->updateTable();
-
-                // Update statistics for the active mdi window table.
-                if (mdiWindow == m_mdiArea.activeSubWindow())
-                    updateStatusLabels(table);
                 break;
             }
         }
