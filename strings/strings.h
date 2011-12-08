@@ -72,6 +72,7 @@ namespace str
 
     // Version related strings
     extern const char *Version;
+    extern const char *VersionUrl;
     extern const char *FilterVersion;
 
     /// The name of blogs table. This should be unique.

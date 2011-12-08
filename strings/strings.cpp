@@ -68,6 +68,7 @@ namespace str
     
     // Version related strings
     const char *Version = "0.1a";
+    const char *VersionUrl = "http://oragir.sourceforge.net/version";
     const char *FilterVersion = "1.0";
 
     const char *BlogTableName = "ad0ccb7f0813d3363f66b3fbc6b64eb66f680d8c";
