@@ -77,6 +77,8 @@ MainWindow::MainWindow(QWidget *parent, Qt::WFlags flags)
             this, SLOT(onParserStateChanged(int)));
     connect(parser, SIGNAL(dataReadProgress(int, int)),
             this, SLOT(onDataReadProgress(int, int)));
+    connect(parser, SIGNAL(stopped(bool)),
+            this, SLOT(onStreamStop()));
 
     QDockWidget *dock = new QDockWidget("Folders", this);
     dock->setObjectName("Folders");
@@ -299,7 +301,8 @@ void MainWindow::createMenus()
     streamToolBar->addAction(m_startAction);
 
     m_stopAction = streamMenu->addAction(str::ActionStop);
-    connect(m_stopAction, SIGNAL(triggered()), this, SLOT(onStreamStop()));
+    connect(m_stopAction, SIGNAL(triggered()),
+            core::Application::theApp()->streamParser(), SLOT(stop()));
     m_stopAction->setIcon(QIcon(":icons/stop"));
     m_stopAction->setEnabled(false);
     streamToolBar->addAction(m_stopAction);

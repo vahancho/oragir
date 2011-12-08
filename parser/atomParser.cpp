@@ -115,6 +115,8 @@ void AtomParser::onHttpDone(bool error)
         m_status = m_http.errorString();
     else
         m_status.clear();
+
+    emit stopped(error);
 }
 
 bool AtomParser::parseXmlData()
