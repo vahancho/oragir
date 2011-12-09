@@ -37,8 +37,6 @@ VersionManager::VersionManager()
             this, SLOT(onHttpDone(bool)));
 
     m_http.setHost(m_versionUrl.host());
-
-    checkForUpdates();
 }
 
 VersionManager::~VersionManager()
@@ -68,13 +66,10 @@ bool VersionManager::updatesAvailable() const
 
 void VersionManager::fetchHttpData(const QHttpResponseHeader &resp)
 {
-    if (resp.statusCode() == 200)
-    {
+    if (resp.statusCode() == 200) {
         QByteArray newVersion = m_http.readAll();
         m_updatedVersion.fromString(newVersion);
-    }
-    else
-    {
+    } else {
         // Done with fail.
         m_http.abort();
     }
@@ -84,7 +79,7 @@ void VersionManager::onHttpDone(bool error)
 {
     // Reset updated version on Http error.
     if (error)
-    m_updatedVersion.reset();
+        m_updatedVersion.reset();
 }
 
 } // namespace core
