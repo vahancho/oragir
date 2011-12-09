@@ -26,6 +26,7 @@
 #include "generalOptionsPage.h"
 #include "../core/application.h"
 #include "../core/defaultManager.h"
+#include "../core/versionManager.h"
 #include "../parser/atomParser.h"
 #include "../database/database.h"
 #include "../strings/strings.h"
@@ -79,6 +80,11 @@ MainWindow::MainWindow(QWidget *parent, Qt::WFlags flags)
             this, SLOT(onDataReadProgress(int, int)));
     connect(parser, SIGNAL(stopped(bool)),
             this, SLOT(onStreamStop()));
+
+    // Handle application upsates.
+    connect(core::Application::theApp()->versionManager(),
+            SIGNAL(checked()), this,
+            SLOT(onVersionChecked()));
 
     QDockWidget *dock = new QDockWidget("Folders", this);
     dock->setObjectName("Folders");
@@ -734,6 +740,28 @@ void MainWindow::onFolderDblClicked(const QModelIndex &index)
     // If we reach here, the mdi child window wasn't found,
     // and we need to create new one.
     createFolderView(tableName);
+}
+
+void MainWindow::onVersionChecked()
+{
+    core::VersionManager *vm = core::Application::theApp()->versionManager();
+    if (vm->updatesAvailable()) {
+        QString title = QString("New %1 Version Available").arg(str::AppName);
+        QString text = QString("A The new version %1 of %2 is available online.")
+                              .arg(vm->updatedVersion())
+                              .arg(str::AppName);
+
+        QMessageBox msgBox;
+        msgBox.setWindowTitle(title);
+        msgBox.setText(text);
+        msgBox.setIcon(QMessageBox::Question);
+        msgBox.setInformativeText("Would you like to download and install it?");
+        QAbstractButton *btnYes = msgBox.addButton("Update Now", QMessageBox::YesRole);
+        QAbstractButton *btnNo = msgBox.addButton("Cancel", QMessageBox::NoRole);
+        msgBox.exec();
+        if (msgBox.clickedButton() == btnYes) {
+        }
+    }
 }
 
 } // namespace gui

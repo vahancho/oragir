@@ -126,6 +126,8 @@ private slots:
      /// Updates status bar labels with items statistics.
     void updateStatusLabels(const QString &table);
 
+    void onVersionChecked();
+
 private:
 
     /// Defines the column numbers in the folders view.

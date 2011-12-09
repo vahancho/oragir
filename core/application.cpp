@@ -100,6 +100,9 @@ void Application::init()
     // Create all application components
     m_defaultManager = new DefaultManager;
 
+    m_versionManager = new VersionManager;
+    m_defaultManager->addProperty(str::CheckUpdates, bool(true), bool(true));
+
     m_dataBase = new Database;
     registerDatabaseDefaults();
 
@@ -112,15 +115,17 @@ void Application::init()
     QObject::connect(m_dataBase, SIGNAL(recordInserted(const QString &)),
                      m_mainWindow, SLOT(onRecordInserted(const QString &)));
 
-    m_versionManager = new VersionManager;
-    m_defaultManager->addProperty(str::CheckUpdates, bool(true), bool(true));
-
     // Read and set all defaults.
     m_defaultManager->readDefaults();
 
     restoreDatabase();
     restoreMainWindow();
     m_mainWindow->show();
+
+    // Check for updates if needed.
+    if (m_defaultManager->value(str::CheckUpdates).toBool() == true) {
+        m_versionManager->checkForUpdates();
+    }
 }
 
 gui::MainWindow *Application::mainWindow() const
