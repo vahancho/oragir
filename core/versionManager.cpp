@@ -68,7 +68,11 @@ void VersionManager::fetchHttpData(const QHttpResponseHeader &resp)
 {
     if (resp.statusCode() == 200) {
         QByteArray newVersion = m_http.readAll();
-        m_updatedVersion.fromString(newVersion);
+        QList<QByteArray> tokens = newVersion.split('\n');
+        if (tokens.size() > 1) {
+            m_updatedVersion.fromString(tokens.at(0));
+            m_downloadUrl = tokens.at(1);
+        }
         emit checked();
     } else {
         // Done with fail.

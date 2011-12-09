@@ -65,6 +65,8 @@ private:
     QHttp m_http;
 
     QUrl m_versionUrl;
+
+    QString m_downloadUrl;
 };
 
 } // namespace core
