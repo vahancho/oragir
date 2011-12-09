@@ -746,8 +746,8 @@ void MainWindow::onVersionChecked()
 {
     core::VersionManager *vm = core::Application::theApp()->versionManager();
     if (vm->updatesAvailable()) {
-        QString title = QString("New %1 Version Available").arg(str::AppName);
-        QString text = QString("A The new version %1 of %2 is available online.")
+        QString title = QString("New Version Available");
+        QString text = QString("<b>A new version %1 of %2 is available.</b>")
                               .arg(vm->updatedVersion())
                               .arg(str::AppName);
 
