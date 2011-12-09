@@ -45,6 +45,9 @@ public:
     void checkForUpdates();
 
     bool updatesAvailable() const;
+signals:
+    /// This signal emitted when version check finished.
+    void checked();
 
 private slots:
     /// Fetches the fetched data from HTTP.

@@ -69,6 +69,7 @@ void VersionManager::fetchHttpData(const QHttpResponseHeader &resp)
     if (resp.statusCode() == 200) {
         QByteArray newVersion = m_http.readAll();
         m_updatedVersion.fromString(newVersion);
+        emit checked();
     } else {
         // Done with fail.
         m_http.abort();
