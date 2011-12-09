@@ -33,6 +33,7 @@ namespace core
 class DefaultManager;
 class AtomParser;
 class Database;
+class VersionManager;
 
 /// Application class implements the core of the program.
 /*!
@@ -74,6 +75,9 @@ public:
 
     /// Returns the Sream parser.
     AtomParser *streamParser() const;
+
+    /// Returns the version manager.
+    VersionManager *versionManager() const;
 
 private:
     /// Default constructor.
@@ -135,6 +139,9 @@ private:
 
     /// The atom parser.
     AtomParser *m_atomParser;
+
+    /// The version manager.
+    VersionManager *m_versionManager;
 };
 
 } // namespace core

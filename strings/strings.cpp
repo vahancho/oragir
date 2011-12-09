@@ -65,6 +65,7 @@ namespace str
     const char *QuitOnClose = "MainWindow/QuitOnClose";
     const char *Database = "Data/Database";
     const char *Filters = "Data/Filters";
+    const char *CheckUpdates = "Version/CheckUpdates";
     
     // Version related strings
     const char *Version = "0.1 (alpha)";

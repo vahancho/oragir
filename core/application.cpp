@@ -22,6 +22,7 @@
 #include <QDesktopServices>
 #include "application.h"
 #include "defaultManager.h"
+#include "versionManager.h"
 #include "../parser/atomParser.h"
 #include "../database/database.h"
 #include "../gui/mainWindow.h"
@@ -63,6 +64,8 @@ Application::~Application()
 
     saveDatabaseDefaults();
     delete m_dataBase;
+
+    delete m_versionManager;
 
     // Save defaults
     m_defaultManager->saveDefaults();
@@ -109,6 +112,9 @@ void Application::init()
     QObject::connect(m_dataBase, SIGNAL(recordInserted(const QString &)),
                      m_mainWindow, SLOT(onRecordInserted(const QString &)));
 
+    m_versionManager = new VersionManager;
+    m_defaultManager->addProperty(str::CheckUpdates, bool(true), bool(true));
+
     // Read and set all defaults.
     m_defaultManager->readDefaults();
 
@@ -135,6 +141,11 @@ Database *Application::database() const
 AtomParser *Application::streamParser() const
 {
     return m_atomParser;
+}
+
+VersionManager *Application::versionManager() const
+{
+    return m_versionManager;
 }
 
 void Application::registerDatabaseDefaults() const

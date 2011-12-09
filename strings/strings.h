@@ -69,6 +69,7 @@ namespace str
     extern const char *QuitOnClose;
     extern const char *Database;
     extern const char *Filters;
+    extern const char *CheckUpdates;
 
     // Version related strings
     extern const char *Version;
