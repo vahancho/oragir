@@ -134,7 +134,6 @@ void DatabaseView::updateTable()
 {
     if (m_model && m_model->database().isValid()) {
         beforeUpdate();
-
         m_model->select();
         // It selects the first 256 records only. In case of having
         // more records in the table table view will not update
@@ -145,7 +144,6 @@ void DatabaseView::updateTable()
         }
 
         afterUpdate();
-
         emit changed(table());
     }
 }
@@ -158,25 +156,6 @@ void DatabaseView::onSelectionChanged(const QItemSelection &selected,
     bool enable = indexes.size() > 0;
     m_openSelected->setEnabled(enable);
     m_removeSelected->setEnabled(enable);
-
-    // Set the content of preview window.
-    QModelIndex index = m_view->currentIndex();
-    if (index.isValid()) {
-        QSqlRecord record = m_model->record(index.row());
-        m_preview->setText(record.value(PostTableModel::Content).toString());
-        m_preview->setAuthor(record.value(PostTableModel::Name).toString());
-        m_preview->setUrl(record.value(PostTableModel::Link).toString());
-        m_preview->setTitle(record.value(PostTableModel::Title).toString());
-
-        // Mark the row as read.
-        record.setValue(PostTableModel::Read, true);
-        m_model->setRecord(index.row(), record);
-        beforeUpdate();
-        m_model->submitAll();
-        afterUpdate();
-
-        emit changed(table());
-    }
 }
 
 void DatabaseView::onDatabaseContextMenu(const QPoint &pos)
@@ -316,14 +295,6 @@ void DatabaseView::beforeUpdate()
     foreach(const QModelIndex &index, indexes) {
         m_selectedRows.push_back(index.row());
     }
-
-    // Disconnect selection related signal to prevent selection
-    // handling while model is updating. Restore this connection
-    // after update.
-    disconnect(m_view->selectionModel(),
-               SIGNAL(selectionChanged(const QItemSelection &, const QItemSelection &)),
-               this,
-               SLOT(onSelectionChanged(const QItemSelection &, const QItemSelection &)));
 }
 
 void DatabaseView::afterUpdate()
@@ -333,30 +304,36 @@ void DatabaseView::afterUpdate()
             m_view->selectionModel()->select(index, QItemSelectionModel::Select |
                                                     QItemSelectionModel::Rows);
      }
-
-    connect(m_view->selectionModel(),
-            SIGNAL(selectionChanged(const QItemSelection &, const QItemSelection &)),
-            this,
-            SLOT(onSelectionChanged(const QItemSelection &, const QItemSelection &)));
 }
 
 void DatabaseView::onClicked(const QModelIndex &index)
 {
-    if (index.column() == PostTableModel::Star) {
-        QSqlRecord record = m_model->record(index.row());
+    QSqlRecord record = m_model->record(index.row());
+    m_preview->setText(record.value(PostTableModel::Content).toString());
+    m_preview->setAuthor(record.value(PostTableModel::Name).toString());
+    m_preview->setUrl(record.value(PostTableModel::Link).toString());
+    m_preview->setTitle(record.value(PostTableModel::Title).toString());
 
+    if (record.value(PostTableModel::Read) == false) {
+        // Mark the row as read.
+        record.setValue(PostTableModel::Read, true);
+    }
+
+    if (index.column() == PostTableModel::Star) {
         // Revert the row flag.
         int flag = record.value(PostTableModel::Star).toInt();
         if (flag == 0)
             record.setValue(PostTableModel::Star, 1);
         else if (flag == 1)
             record.setValue(PostTableModel::Star, 0);
-
-        m_model->setRecord(index.row(), record);
-        beforeUpdate();
-        m_model->submitAll();
-        afterUpdate();
     }
+
+    m_model->setRecord(index.row(), record);
+    beforeUpdate();
+    m_model->submitAll();
+    afterUpdate();
+
+    emit changed(table());
 }
 
 QString DatabaseView::table() const
