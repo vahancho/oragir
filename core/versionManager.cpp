@@ -19,6 +19,7 @@
 ***************************************************************************/
 
 #include <QString>
+#include <QDesktopServices>
 #include "versionManager.h"
 #include "../strings/strings.h"
 
@@ -70,8 +71,8 @@ void VersionManager::fetchHttpData(const QHttpResponseHeader &resp)
         QByteArray newVersion = m_http.readAll();
         QList<QByteArray> tokens = newVersion.split('\n');
         if (tokens.size() > 1) {
-            m_updatedVersion.fromString(tokens.at(0));
-            m_downloadUrl = tokens.at(1);
+            m_updatedVersion.fromString(tokens.at(0).trimmed());
+            m_downloadUrl = tokens.at(1).trimmed();
         }
         emit checked();
     } else {
@@ -85,6 +86,11 @@ void VersionManager::onHttpDone(bool error)
     // Reset updated version on Http error.
     if (error)
         m_updatedVersion.reset();
+}
+
+void VersionManager::download() const
+{
+    QDesktopServices::openUrl(QUrl(m_downloadUrl, QUrl::TolerantMode));
 }
 
 } // namespace core

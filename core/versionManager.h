@@ -45,6 +45,9 @@ public:
     void checkForUpdates();
 
     bool updatesAvailable() const;
+
+    /// Downloads the software.
+    void download() const;
 signals:
     /// This signal emitted when version check finished.
     void checked();
@@ -64,8 +67,10 @@ private:
     /// Http
     QHttp m_http;
 
+    /// Stores the version file url.
     QUrl m_versionUrl;
 
+    /// Stores the software download url.
     QString m_downloadUrl;
 };
 

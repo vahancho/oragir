@@ -760,6 +760,7 @@ void MainWindow::onVersionChecked()
         QAbstractButton *btnNo = msgBox.addButton("Cancel", QMessageBox::NoRole);
         msgBox.exec();
         if (msgBox.clickedButton() == btnYes) {
+            vm->download();
         }
     }
 }
