@@ -166,6 +166,7 @@ QComboBox *FilterEditor::optionsCombo(const Filter<Post> &/*filter*/,
     combo->addItem("Ignore");
     combo->addItem("Match exactly");
     combo->addItem("Contains");
+    combo->addItem("Does not contain");
     combo->setCurrentIndex(currentOption);
     return combo;
 }

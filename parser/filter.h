@@ -49,7 +49,8 @@ public:
     enum Option {
         Ignore = 0,
         ExactMatch,
-        Contains
+        Contains,
+        NotContain
     };
 
     /// Enumerate rules matching creteria.
@@ -252,19 +253,34 @@ typename Filter<Source>::Result Filter<Source>::match(const QString &name,
         stripped.replace("&nbsp;", " ");
         stripped.replace( QRegExp("<[^>]*>"), "" );
 
-        if (rule.option() == Contains &&
-            stripped.contains(rule.value(), Qt::CaseInsensitive)) {
-            QRegExp rx;
-            QString pat = QString("\\s.{0,40}%1.{0,40}\\s").arg(rule.value());
-            rx.setPattern(pat);
-            if (rx.indexIn(stripped) != -1) {
-                QString s = rx.cap(0);
-                qDebug(s.toAscii().data());
+        const QString &ruleValue = rule.value();
+
+        switch (rule.option())
+        {
+        case Contains:
+            if (stripped.contains(ruleValue, Qt::CaseInsensitive)) {
+                QRegExp rx;
+                QString pat = QString("\\s.{0,40}%1.{0,40}\\s").arg(ruleValue);
+                rx.setPattern(pat);
+                if (rx.indexIn(stripped) != -1) {
+                    QString s = rx.cap(0);
+                    qDebug(s.toAscii().data());
+                }
+                return Matched;
             }
-            return Matched;
-        } else if (rule.option() == ExactMatch &&
-                   stripped == rule.value()) {
-            return Matched;
+            break;
+        case ExactMatch:
+            if (stripped == ruleValue) {
+                return Matched;
+            }
+            break;
+        case NotContain:
+            if (!stripped.contains(ruleValue, Qt::CaseInsensitive)) {
+                return Matched;
+            }
+            break;
+        default:
+            break;
         }
 
         ++it;
