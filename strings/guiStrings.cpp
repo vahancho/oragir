@@ -83,7 +83,9 @@ namespace str
                                           "open source project.");
     const char *QuitOnCloseTitle = QT_TRANSLATE_NOOP("Oragir", "&Quit On Close");
     const char *GeneralPageTitle = QT_TRANSLATE_NOOP("Oragir", "General");
+    const char *AdvancedPageTitle = QT_TRANSLATE_NOOP("Oragir", "Advanced");
     const char *OptionsDialogTitle = QT_TRANSLATE_NOOP("Oragir", "Oragir Options");
+    const char *CheckUpdatesTitle = QT_TRANSLATE_NOOP("Oragir", "&Check for updates on start up");
 
     // Error messages.
     const char *DatabaseError = QT_TRANSLATE_NOOP("Oragir", "Database Error");

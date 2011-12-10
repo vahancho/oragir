@@ -78,7 +78,9 @@ namespace str
     extern const char *About;
     extern const char *QuitOnCloseTitle;
     extern const char *GeneralPageTitle;
+    extern const char *AdvancedPageTitle;
     extern const char *OptionsDialogTitle;
+    extern const char *CheckUpdatesTitle;
 
     // Error messages.
     extern const char *DatabaseError;
