@@ -153,6 +153,7 @@ void MainWindow::createFolderView(const QString &table)
         node->setIcon(Name, QIcon(":/icons/folder"));
         node->setText(Name, table);
         node->setToolTip(Name, table);
+        node->setData(Name, Qt::UserRole, table);
         m_foldersList->addTopLevelItem(node);
         m_foldersList->setCurrentItem(node);
     }
@@ -534,6 +535,9 @@ void MainWindow::onSubWindowActivated(QMdiSubWindow *subWindow)
 
 void MainWindow::updateStatusLabels(const QString &table)
 {
+    core::Database *db = core::Application::theApp()->database();
+    int unreadCount = db->unreadCount(table);
+
     // Update status labels only for the active table view.
     if (QMdiSubWindow *mdiWindow = m_mdiArea.activeSubWindow()) {
         if(DatabaseView *dbView =
@@ -541,10 +545,29 @@ void MainWindow::updateStatusLabels(const QString &table)
             if (dbView->table() == table) {
                 core::Database *db = core::Application::theApp()->database();
                 m_unreadItems->setText(QString("  Unread: %1  ")
-                                       .arg(db->unreadCount(table)));
+                                       .arg(unreadCount));
                 m_totalItems->setText(QString("  Total: %1  ")
                                       .arg(db->totalCount(table)));
             }
+        }
+    }
+
+    // Update the corresponding folder (table) name with the number
+    // of unread items.
+    for(int i = 0; i < m_foldersList->topLevelItemCount(); ++i) {
+        QTreeWidgetItem *item = m_foldersList->topLevelItem(i);
+        QString name = item->data(Name, Qt::UserRole).toString();
+        if (name == table) {
+            QFont f;
+            if (unreadCount > 0) {
+                name += QString(" (%1)").arg(unreadCount);
+                f.setBold(true);
+            } else {
+                f.setBold(false);
+            }
+            item->setText(Name, name);
+            item->setData(Name, Qt::FontRole, f);
+            break;
         }
     }
 }
@@ -682,7 +705,7 @@ void MainWindow::onFolderContextMenu(const QPoint &pos)
     if(QTreeWidgetItem *treeItem = m_foldersList->itemAt(pos)) {
         QMenu menu;
         menu.addAction(m_folderDeleteAction);
-        QString folderName = treeItem->text(Name);
+        QString folderName = treeItem->data(Name, Qt::UserRole).toString();
 
         menu.exec(m_foldersList->mapToGlobal(QPoint(pos.x(), pos.y() + 20)));
     }
@@ -691,7 +714,7 @@ void MainWindow::onFolderContextMenu(const QPoint &pos)
 void MainWindow::onFolderDelete()
 {
     core::Database *db = core::Application::theApp()->database();
-    QString folderName = m_foldersList->currentItem()->text(Name);
+    QString folderName = m_foldersList->currentItem()->data(Name, Qt::UserRole).toString();
 
     // Find database view(s) that has to be closed.
     QList<QMdiSubWindow *> mdiWindows = m_mdiArea.subWindowList();
@@ -709,7 +732,7 @@ void MainWindow::onFolderDelete()
     // Start from bottom to top to prevent shifting the indexes.
     for(int i = m_foldersList->topLevelItemCount() - 1; i >= 0 ; --i) {
         QTreeWidgetItem *item = m_foldersList->topLevelItem(i);
-        if (item->text(Name) == folderName)
+        if (item->data(Name, Qt::UserRole) == folderName)
             m_foldersList->takeTopLevelItem(i);
     }
 
@@ -727,7 +750,7 @@ void MainWindow::onFolderDblClicked(const QModelIndex &index)
 {
     core::Database *db = core::Application::theApp()->database();
     QTreeWidgetItem *item = m_foldersList->topLevelItem(index.row());
-    QString tableName = item->text(Name);
+    QString tableName = item->data(Name, Qt::UserRole).toString();
     QList<QMdiSubWindow *> mdiWindows = m_mdiArea.subWindowList();
     foreach(QMdiSubWindow *mdiWindow, mdiWindows) {
         if (DatabaseView *dbView =
