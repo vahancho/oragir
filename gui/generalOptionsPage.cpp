@@ -20,12 +20,6 @@
 
 #include <QCheckBox>
 #include <QLayout>
-#include <QLabel>
-#include <QLineEdit>
-#include <QPushButton>
-#include <QGroupBox>
-#include <QGridLayout>
-#include <QFileDialog>
 #include "core/defaultManager.h"
 #include "core/application.h"
 #include "strings/guiStrings.h"
