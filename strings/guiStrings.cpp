@@ -84,8 +84,10 @@ namespace str
     const char *QuitOnCloseTitle = QT_TRANSLATE_NOOP("Oragir", "&Quit On Close");
     const char *GeneralPageTitle = QT_TRANSLATE_NOOP("Oragir", "General");
     const char *AdvancedPageTitle = QT_TRANSLATE_NOOP("Oragir", "Advanced");
+    const char *ConnectionPageTitle = QT_TRANSLATE_NOOP("Oragir", "Connection");
     const char *OptionsDialogTitle = QT_TRANSLATE_NOOP("Oragir", "Oragir Options");
     const char *CheckUpdatesTitle = QT_TRANSLATE_NOOP("Oragir", "&Check for updates on start up");
+    const char *ReconnectTitle = QT_TRANSLATE_NOOP("Oragir", "&Maximum number of connection attempts on error");
 
     // Error messages.
     const char *DatabaseError = QT_TRANSLATE_NOOP("Oragir", "Database Error");

@@ -24,6 +24,7 @@
 #include "dlgFilters.h"
 #include "dlgOptions.h"
 #include "generalOptionsPage.h"
+#include "connectOptionsPage.h"
 #include "advancedOptionsPage.h"
 #include "../core/application.h"
 #include "../core/defaultManager.h"
@@ -690,6 +691,7 @@ void MainWindow::onOptions()
     // Create and show dialog.
     OptionsDialog dlg(this);
     dlg.addPage(new gui::GeneralOptionsPage);
+    dlg.addPage(new gui::ConnectOptionsPage);
     dlg.addPage(new gui::AdvancedOptionsPage);
     // If dialog accepted, i.e. Ok button pressed, save all defaults.
     if(dlg.exec() == QDialog::Accepted)
