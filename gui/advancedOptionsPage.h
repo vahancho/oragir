@@ -49,7 +49,7 @@ public:
     virtual void saveDefaults();
 
 private:
-    /// Quit on close settings.
+    /// Check for updates settings.
     QCheckBox *m_chkCheckUpdates;
 };
 

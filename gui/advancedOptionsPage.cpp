@@ -61,11 +61,8 @@ QString AdvancedOptionsPage::name() const
 void AdvancedOptionsPage::saveDefaults()
 {
     core::DefaultManager *defaultMngr = core::Application::theApp()->defaultManager();
-
-    if(m_chkCheckUpdates->checkState() == Qt::Checked)
-        defaultMngr->setValue(str::CheckUpdates, true);
-    else
-        defaultMngr->setValue(str::CheckUpdates, false);
+    bool check = bool(m_chkCheckUpdates->checkState() == Qt::Checked);
+    defaultMngr->setValue(str::CheckUpdates, check);
 }
 
 } // namespace gui

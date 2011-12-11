@@ -61,11 +61,8 @@ QString GeneralOptionsPage::name() const
 void GeneralOptionsPage::saveDefaults()
 {
     core::DefaultManager *defaultMngr = core::Application::theApp()->defaultManager();
-
-    if(m_chkQuitOnClose->checkState() == Qt::Checked)
-        defaultMngr->setValue(str::QuitOnClose, true);
-    else
-        defaultMngr->setValue(str::QuitOnClose, false);
+    bool quit = bool(m_chkQuitOnClose->checkState() == Qt::Checked);
+    defaultMngr->setValue(str::QuitOnClose, quit);
 }
 
 } // namespace gui
