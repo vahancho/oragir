@@ -27,7 +27,8 @@ namespace core
 
 AtomParser::AtomParser()
     :
-        m_url(str::FeedUrl)
+        m_url(str::FeedUrl),
+        m_restart(false)
 {
     connect(&m_http, SIGNAL(readyRead(const QHttpResponseHeader &)), this,
             SLOT(fetchHttpData(const QHttpResponseHeader &)));
@@ -56,10 +57,12 @@ void AtomParser::start()
 
     m_xml.clear();
     m_http.get(m_url.path());
+    m_restart = true;
 }
 
 void AtomParser::stop()
 {
+    m_restart = false;
     m_http.abort();
 }
 
@@ -116,7 +119,10 @@ void AtomParser::onHttpDone(bool error)
     else
         m_status.clear();
 
-    emit stopped(error);
+    if (m_restart)
+        start();
+    else
+        emit stopped(error);
 }
 
 bool AtomParser::parseXmlData()
