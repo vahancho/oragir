@@ -19,6 +19,8 @@
 ***************************************************************************/
 
 #include "atomParser.h"
+#include "../core/application.h"
+#include "../core/defaultManager.h"
 #include "../strings/strings.h"
 #include "../strings/guiStrings.h"
 
@@ -28,7 +30,7 @@ namespace core
 AtomParser::AtomParser()
     :
         m_url(str::FeedUrl),
-        m_restart(false)
+        m_reconnect(false)
 {
     connect(&m_http, SIGNAL(readyRead(const QHttpResponseHeader &)), this,
             SLOT(fetchHttpData(const QHttpResponseHeader &)));
@@ -57,12 +59,15 @@ void AtomParser::start()
 
     m_xml.clear();
     m_http.get(m_url.path());
-    m_restart = true;
+
+    core::DefaultManager *defaultMngr =
+                            core::Application::theApp()->defaultManager();
+    m_reconnect = defaultMngr->value(str::Reconnect).toBool();
 }
 
 void AtomParser::stop()
 {
-    m_restart = false;
+    m_reconnect = false;
     m_http.abort();
 }
 
@@ -112,17 +117,23 @@ void AtomParser::fetchHttpData(const QHttpResponseHeader &resp)
     }
 }
 
-void AtomParser::onHttpDone(bool error)
+void AtomParser::onHttpDone(bool /*error*/)
 {
-    if (error)
-        m_status = m_http.errorString();
-    else
-        m_status.clear();
+    // Store the number of previous attempts to reconnect.
+    static int count = 0;
+    core::DefaultManager *defaultMngr =
+                            core::Application::theApp()->defaultManager();
+    int reconnectMax = defaultMngr->value(str::ReconnectCount).toInt();
 
-    if (m_restart)
+    // If reconnection enabled and we do not reach to the maximum
+    // reconnections count start over again.
+    if (m_reconnect && count < reconnectMax) {
+        ++count;
         start();
-    else
+    } else {
+        count = 0;
         emit stopped();
+    }
 }
 
 bool AtomParser::parseXmlData()

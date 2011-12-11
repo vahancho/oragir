@@ -66,6 +66,8 @@ namespace str
     const char *Database = "Data/Database";
     const char *Filters = "Data/Filters";
     const char *CheckUpdates = "Version/CheckUpdates";
+    const char *Reconnect = "Parser/Reconnect";
+    const char *ReconnectCount = "Parser/ReconnectCount";
     
     // Version related strings
     const char *Version = "0.1 (alpha)";

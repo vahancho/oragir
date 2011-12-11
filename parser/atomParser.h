@@ -89,7 +89,7 @@ private:
     QHttp m_http;
 
     /// Restart parsing on error.
-    bool m_restart;
+    bool m_reconnect;
 };
 
 } // namespace core

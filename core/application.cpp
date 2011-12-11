@@ -107,6 +107,8 @@ void Application::init()
     registerDatabaseDefaults();
 
     m_atomParser = new AtomParser;
+    m_defaultManager->addProperty(str::Reconnect, bool(true), bool(true));
+    m_defaultManager->addProperty(str::ReconnectCount, int(20), int(20));
     QObject::connect(m_atomParser, SIGNAL(fetched(const Post &, const Blog &)),
                      m_dataBase, SLOT(onFetched(const Post &, const Blog &)));
 

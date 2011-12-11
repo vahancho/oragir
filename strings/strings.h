@@ -70,6 +70,8 @@ namespace str
     extern const char *Database;
     extern const char *Filters;
     extern const char *CheckUpdates;
+    extern const char *Reconnect;
+    extern const char *ReconnectCount;
 
     // Version related strings
     extern const char *Version;
