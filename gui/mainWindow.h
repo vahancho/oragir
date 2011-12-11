@@ -100,7 +100,8 @@ private slots:
 
     void onStreamStart();
 
-    void onStreamStop();
+    /// Called when stream parsing stopped by any reason.
+    void onStreamStopped();
 
     void onNewFolder();
 

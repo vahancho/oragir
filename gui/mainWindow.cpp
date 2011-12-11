@@ -79,8 +79,8 @@ MainWindow::MainWindow(QWidget *parent, Qt::WFlags flags)
             this, SLOT(onParserStateChanged(int)));
     connect(parser, SIGNAL(dataReadProgress(int, int)),
             this, SLOT(onDataReadProgress(int, int)));
-    connect(parser, SIGNAL(stopped(bool)),
-            this, SLOT(onStreamStop()));
+    connect(parser, SIGNAL(stopped()),
+            this, SLOT(onStreamStopped()));
 
     // Handle application upsates.
     connect(core::Application::theApp()->versionManager(),
@@ -609,12 +609,8 @@ void MainWindow::onStreamStart()
     m_processedItemCount = 0;
 }
 
-void MainWindow::onStreamStop()
+void MainWindow::onStreamStopped()
 {
-    core::AtomParser *streamParser =
-                    core::Application::theApp()->streamParser();
-    streamParser->stop();
-
     // Enable start action.
     m_startAction->setEnabled(true);
     m_stopAction->setEnabled(false);

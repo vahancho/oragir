@@ -122,7 +122,7 @@ void AtomParser::onHttpDone(bool error)
     if (m_restart)
         start();
     else
-        emit stopped(error);
+        emit stopped();
 }
 
 bool AtomParser::parseXmlData()
