@@ -129,6 +129,9 @@ private slots:
 
     void onVersionChecked();
 
+    /// Called when opening a table view action triggered.
+    void onTableViewOpen();
+
 private:
 
     /// Defines the column numbers in the folders view.
@@ -152,6 +155,8 @@ private:
 
     /// Creates the system tray icon.
     void createTrayIcon();
+
+    void openTableView(const QString &tableName);
 
     /// The system tray icon.
     QSystemTrayIcon *m_trayIcon;

@@ -702,16 +702,23 @@ void MainWindow::onFolderContextMenu(const QPoint &pos)
 {
     if(QTreeWidgetItem *treeItem = m_foldersList->itemAt(pos)) {
         QMenu menu;
+        QAction *act = menu.addAction("&Open", this, SLOT(onTableViewOpen()));
+        menu.setDefaultAction(act);
         menu.addAction(m_folderDeleteAction);
-        QString folderName = treeItem->data(Name, Qt::UserRole).toString();
 
         menu.exec(m_foldersList->mapToGlobal(QPoint(pos.x(), pos.y() + 20)));
     }
 }
 
+void MainWindow::onTableViewOpen()
+{
+    QString folderName =
+        m_foldersList->currentItem()->data(Name, Qt::UserRole).toString();
+    openTableView(folderName);
+}
+
 void MainWindow::onFolderDelete()
 {
-    core::Database *db = core::Application::theApp()->database();
     QString folderName = m_foldersList->currentItem()->data(Name, Qt::UserRole).toString();
 
     // Find database view(s) that has to be closed.
@@ -735,6 +742,7 @@ void MainWindow::onFolderDelete()
     }
 
     // Finally remove table from the database.
+    core::Database *db = core::Application::theApp()->database();
     db->removeTable(folderName);
 }
 
@@ -746,9 +754,15 @@ void MainWindow::onParserStateChanged(int /*state*/)
 
 void MainWindow::onFolderDblClicked(const QModelIndex &index)
 {
-    core::Database *db = core::Application::theApp()->database();
-    QTreeWidgetItem *item = m_foldersList->topLevelItem(index.row());
-    QString tableName = item->data(Name, Qt::UserRole).toString();
+    if (index.isValid()) {
+        QTreeWidgetItem *item = m_foldersList->topLevelItem(index.row());
+        QString tableName = item->data(Name, Qt::UserRole).toString();
+        openTableView(tableName);
+    }
+}
+
+void MainWindow::openTableView(const QString &tableName)
+{
     QList<QMdiSubWindow *> mdiWindows = m_mdiArea.subWindowList();
     foreach(QMdiSubWindow *mdiWindow, mdiWindows) {
         if (DatabaseView *dbView =
