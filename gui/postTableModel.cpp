@@ -35,7 +35,8 @@ PostTableModel::PostTableModel(QObject *parent, QSqlDatabase db)
     m_iconStarOff = QIcon(":/icons/star_empty");
     m_iconStarOn = QIcon(":/icons/star_on");
     m_iconTitleRead = QIcon(":/icons/ball_green");
-    m_iconUnread = QIcon(":/icons/ball_red");
+    m_iconRead = QIcon(":/icons/ball_gray");
+    m_iconUnread = QIcon(":/icons/ball_green");
 
     // Initialize visible columns title names.
     m_columnName[Star] = QString();
@@ -91,7 +92,7 @@ QVariant PostTableModel::data(const QModelIndex &index, int role) const
                 return m_iconStarOn;
         } else if (index.column() == Read) {
             if (isRead(index.row()))
-                return m_iconTitleRead;
+                return m_iconRead;
             else
                 return m_iconUnread;
         }

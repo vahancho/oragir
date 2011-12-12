@@ -59,6 +59,7 @@ private:
     QIcon m_iconStarOff;
     QIcon m_iconStarOn;
     QIcon m_iconTitleRead;
+    QIcon m_iconRead;
     QIcon m_iconUnread;
 
     QMap<ColumnNumber, QString> m_columnName;
