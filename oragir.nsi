@@ -11,7 +11,7 @@
 ;General
 
   ; Define version
-  !define VERSION "0.1b"
+  !define VERSION "0.1"
   !define NAME "Oragir"
 
   ;Name and file
@@ -142,6 +142,8 @@ Section "Gmail Herald" SecDummy
   File "distrib\QtCore4.dll"
   File "distrib\QtGui4.dll"
   File "distrib\QtNetwork4.dll"
+  File "distrib\QtSql4.dll"
+  File "distrib\qsqlite4.dll"
   File "distrib\license.txt"
   File "qt.conf"
 
@@ -160,7 +162,7 @@ Section "Gmail Herald" SecDummy
     ;Create shortcuts
     CreateDirectory "$SMPROGRAMS\$StartMenuFolder"
     CreateShortCut "$SMPROGRAMS\$StartMenuFolder\Uninstall.lnk" "$INSTDIR\Uninstall.exe"
-	CreateShortCut "$SMPROGRAMS\$StartMenuFolder\${NAME}.lnk" "$INSTDIR\gherald.exe"
+	CreateShortCut "$SMPROGRAMS\$StartMenuFolder\${NAME}.lnk" "$INSTDIR\oragir.exe"
 
   !insertmacro MUI_STARTMENU_WRITE_END
 
@@ -197,6 +199,8 @@ Section "Uninstall"
   Delete "$INSTDIR\QtCore4.dll"
   Delete "$INSTDIR\QtGui4.dll"
   Delete "$INSTDIR\QtNetwork4.dll"
+  Delete "$INSTDIR\QtSql4.dll"
+  Delete "$INSTDIR\qsqlite4.dll"
   Delete "$INSTDIR\license.txt"
   Delete "$INSTDIR\qt.conf"
   Delete "$INSTDIR\Uninstall.exe"
