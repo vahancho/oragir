@@ -49,8 +49,9 @@ FiltersDialog::FiltersDialog(QWidget *parent, Qt::WindowFlags f)
     QStringList headerLabels;
     headerLabels << "Enable" << "Filter";
     m_filtersTree->setHeaderLabels(headerLabels);
+    m_filtersTree->header()->resizeSection(Name, 250);
     m_filtersTree->header()->setResizeMode(Enable, QHeaderView::Fixed);
-    m_filtersTree->header()->resizeSection(Enable, 48);
+    m_filtersTree->header()->setStretchLastSection(false);
 
     QVBoxLayout *tblWithBtns = new QVBoxLayout;
     tblWithBtns->addWidget(toolBar);
