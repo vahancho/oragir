@@ -51,8 +51,8 @@ private slots:
 private:
     enum FiltersTreeColumn
     {
-        Enable = 0,
-        Name
+        Name = 0,
+        Enable
     };
 
     /// Adds new top level node to the tree configured as filter.
