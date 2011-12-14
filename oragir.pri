@@ -2,6 +2,8 @@
 HEADERS += ./core/propertyTable.h \
            ./core/application.h \
            ./core/defaultManager.h \
+           ./core/versionManager.h \
+           ./core/version.h \
            ./gui/mainWindow.h \
            ./gui/databaseView.h \
            ./gui/dlgFilters.h \
@@ -10,6 +12,8 @@ HEADERS += ./core/propertyTable.h \
            ./gui/postTableModel.h \
            ./gui/abstractOptionsPage.h \
            ./gui/generalOptionsPage.h \
+           ./gui/advancedOptionsPage.h \
+           ./gui/connectOptionsPage.h \
            ./gui/dlgOptions.h \
            ./parser/atomParser.h \
            ./parser/blog.h \
@@ -24,6 +28,8 @@ SOURCES += ./main.cpp \
            ./core/propertyTable.cpp \
            ./core/application.cpp \
            ./core/defaultManager.cpp \
+           ./core/versionManager.cpp \
+           ./core/version.cpp \
            ./gui/mainWindow.cpp \
            ./gui/databaseView.cpp \
            ./gui/dlgFilters.cpp \
@@ -31,6 +37,8 @@ SOURCES += ./main.cpp \
            ./gui/previewWindow.cpp \
            ./gui/postTableModel.cpp \
            ./gui/generalOptionsPage.cpp \
+           ./gui/advancedOptionsPage.cpp \
+           ./gui/connectOptionsPage.cpp \
            ./gui/dlgOptions.cpp \
            ./parser/blog.cpp \
            ./parser/post.cpp \
