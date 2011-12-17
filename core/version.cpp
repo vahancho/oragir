@@ -18,7 +18,8 @@
 *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
 ***************************************************************************/
 
-#include <QStringList>
+#include <stdlib.h>
+#include <sstream>
 #include "version.h"
 
 namespace core
@@ -63,12 +64,12 @@ void Version::fromString(const std::string &verStr)
 std::string Version::toString() const
 {
     std::string retStr;
-    char buff[8];
     for (size_t i = 0; i < m_versions.size(); ++i) {
         if (i != 0)
             retStr.push_back(sNumSeparator);
-        itoa(m_versions[i], buff, 10);
-        retStr.append(buff);
+        std::ostringstream sin;
+        sin << m_versions[i];
+        retStr.append(sin.str());
     }
     retStr += m_mode;
 
