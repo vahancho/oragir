@@ -30,6 +30,8 @@ class testVersion : public QObject
 private slots:
     void test_data();
     void test();
+    void versionCompare_data();
+    void versionCompare();
 };
 
 void testVersion::test_data()
@@ -97,6 +99,40 @@ void testVersion::test()
         QString qOut = QString::fromStdString(out);
         QCOMPARE(qOut, versionOut);
     }
+}
+
+void testVersion::versionCompare_data()
+{
+    QTest::addColumn<QString>("version1");
+    QTest::addColumn<QString>("version2");
+    QTest::addColumn<bool>("result");
+
+    QTest::newRow("version1") << "1" << "1" << false;
+    QTest::newRow("version2") << "0.1" << "1.1" << false;
+    QTest::newRow("version3") << "1.0" << "0.1" << true;
+    QTest::newRow("version4") << "1.0a" << "1.0a" << false;
+    QTest::newRow("version5") << "1.0b" << "1.0a" << false;
+    QTest::newRow("version6") << "0.234" << "0.233" << true;
+    QTest::newRow("version7") << "0.2345a" << "0.23444b" << false;
+    QTest::newRow("version8") << "0.10000 a" << "0.2345a" << true;
+    QTest::newRow("version9") << "1.2.3.4.5.6 beta" << "1.2.3.4.5.5 beta" << true;
+}
+
+void testVersion::versionCompare()
+{
+    QFETCH(QString, version1);
+    QFETCH(QString, version2);
+    QFETCH(bool, result);
+
+    QByteArray ba1 = version1.toAscii();
+    const char *cc1 = ba1.data();
+    QByteArray ba2 = version2.toAscii();
+    const char *cc2 = ba2.data();
+
+    Version v1(cc1);
+    Version v2(cc2);
+
+    QCOMPARE(v1 > v2, result);
 }
 
 QTEST_MAIN(testVersion)
