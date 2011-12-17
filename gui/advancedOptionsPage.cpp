@@ -20,10 +20,10 @@
 
 #include <QCheckBox>
 #include <QLayout>
-#include "core/defaultManager.h"
-#include "core/application.h"
-#include "strings/guiStrings.h"
-#include "strings/strings.h"
+#include "../core/defaultManager.h"
+#include "../core/application.h"
+#include "../strings/guiStrings.h"
+#include "../strings/strings.h"
 #include "advancedOptionsPage.h"
 
 namespace gui

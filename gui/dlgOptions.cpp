@@ -29,8 +29,8 @@
 // Options pages
 #include "abstractOptionsPage.h"
 
-#include "strings/guiStrings.h"
-#include "core/defaultManager.h"
+#include "../strings/guiStrings.h"
+#include "../core/defaultManager.h"
 
 namespace gui
 {
