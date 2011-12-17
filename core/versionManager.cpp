@@ -47,12 +47,12 @@ VersionManager::~VersionManager()
 
 QString VersionManager::currentVersion() const
 {
-    return m_currentVersion.toString();
+    return QString::fromStdString(m_currentVersion.toString());
 }
 
 QString VersionManager::updatedVersion() const
 {
-    return m_updatedVersion.toString();
+    return QString::fromStdString(m_updatedVersion.toString());
 }
 
 void VersionManager::checkForUpdates()
@@ -71,7 +71,7 @@ void VersionManager::fetchHttpData(const QHttpResponseHeader &resp)
         QByteArray newVersion = m_http.readAll();
         QList<QByteArray> tokens = newVersion.split('\n');
         if (tokens.size() > 1) {
-            m_updatedVersion.fromString(tokens.at(0).trimmed());
+            m_updatedVersion.fromString(tokens.at(0).trimmed().data());
             m_downloadUrl = tokens.at(1).trimmed();
         }
         emit checked();
