@@ -70,7 +70,7 @@ namespace str
     const char *ReconnectCount = "Parser/ReconnectCount";
     
     // Version related strings
-    const char *Version = "0.1 (alpha)";
+    const char *Version = "0.1a";
     const char *VersionUrl = "http://oragir.sourceforge.net/version";
     const char *FilterVersion = "1.0";
 
