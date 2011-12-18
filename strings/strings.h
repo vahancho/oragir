@@ -31,6 +31,7 @@ namespace str
     extern const char *AppName;
 
     extern const char *FeedUrl;
+    extern const char *HelpUrl;
 
     // XML Tags
     extern const char *TagFeed;

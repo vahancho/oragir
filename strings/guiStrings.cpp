@@ -57,6 +57,7 @@ namespace str
     const char *ActionFilterExport = QT_TRANSLATE_NOOP("Oragir", "&Export Filters...");
     const char *ActionOptions = QT_TRANSLATE_NOOP("Oragir", "&Options...");
     const char *ActionDelete = QT_TRANSLATE_NOOP("Oragir", "&Delete Folder");
+    const char *ActionHelp = QT_TRANSLATE_NOOP("Oragir", "&Help");
 
     // Http status messages
     const char *HostLookup = QT_TRANSLATE_NOOP("Oragir", "A host name lookup is in progress...");

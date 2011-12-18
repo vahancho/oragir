@@ -28,6 +28,7 @@ namespace str
     const char *AppName = "Oragir";
     
     const char *FeedUrl = "http://atom.services.livejournal.com/atom-stream.xml";
+    const char *HelpUrl = "http://oragir.sourceforge.net/documentation.html";
 
     // XML Tags
     const char *TagFeed = "feed";

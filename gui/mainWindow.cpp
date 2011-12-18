@@ -239,6 +239,11 @@ void MainWindow::onAbout()
                        QString(str::About).arg(str::Version));
 }
 
+void MainWindow::onHelp()
+{
+    QDesktopServices::openUrl(QUrl(str::HelpUrl, QUrl::TolerantMode));
+}
+
 void MainWindow::createDockWindows()
 {}
 
@@ -377,6 +382,8 @@ void MainWindow::createMenus()
     //////////////////////////////////////////////////////////////////////////
     // Help menu
     QMenu *helpMenu = new QMenu(str::MenuHelp, this);
+    QAction *aboutHelp = helpMenu->addAction(str::ActionHelp);
+    connect(aboutHelp, SIGNAL(triggered()), this, SLOT(onHelp()));
     QAction *aboutAction = helpMenu->addAction(str::ActionAbout);
     connect(aboutAction, SIGNAL(triggered()), this, SLOT(onAbout()));
 

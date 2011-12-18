@@ -63,6 +63,7 @@ namespace str
     extern const char *ActionFilterExport;
     extern const char *ActionOptions;
     extern const char *ActionDelete;
+    extern const char *ActionHelp;
 
     // Http status messages
     extern const char *HostLookup;

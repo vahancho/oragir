@@ -98,6 +98,8 @@ private slots:
     /// This slot called when About menu action triggered.
     void onAbout();
 
+    void onHelp();
+
     void onStreamStart();
 
     /// Called when stream parsing stopped by any reason.
