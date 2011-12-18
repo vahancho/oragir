@@ -109,6 +109,7 @@ FilterEditor::FilterEditor(QWidget *parent, Qt::WindowFlags f)
     mainLayout->addLayout(btnLayout);
 
     setLayout(mainLayout);
+    setWindowTitle("Filter Properties");
     resize(600, 400);
 }
 
@@ -120,8 +121,6 @@ void FilterEditor::setFilter(const Filter<Post> &filter)
         m_radOne->setChecked(true);
     QString filterName = filter.name();
     m_editName->setText(filterName);
-    QString title = QString("%1 Properties").arg(filterName);
-    setWindowTitle(title);
 
     // Set the target folders (tables) combo box and select
     // the target folder name for the given filter.
@@ -164,9 +163,9 @@ QComboBox *FilterEditor::optionsCombo(const Filter<Post> &/*filter*/,
     combo->setEditable(false);
 
     combo->addItem("Ignore");
-    combo->addItem("Match exactly");
+    combo->addItem("Match Exactly");
     combo->addItem("Contains");
-    combo->addItem("Does not contain");
+    combo->addItem("Does Not Contain");
     combo->setCurrentIndex(currentOption);
     return combo;
 }
