@@ -89,6 +89,11 @@ namespace str
     const char *OptionsDialogTitle = QT_TRANSLATE_NOOP("Oragir", "Oragir Options");
     const char *CheckUpdatesTitle = QT_TRANSLATE_NOOP("Oragir", "&Check for updates on start up");
     const char *ReconnectTitle = QT_TRANSLATE_NOOP("Oragir", "&Maximum number of connection attempts on error");
+    const char *FoldersTitle = QT_TRANSLATE_NOOP("Oragir", "Folders");
+    const char *ProcessedRecords = QT_TRANSLATE_NOOP("Oragir", "Number of processed records");
+    const char *Downloaded = QT_TRANSLATE_NOOP("Oragir", "Downloaded (kB)");
+    const char *Unread = QT_TRANSLATE_NOOP("Oragir", "Number of unread records");
+    const char *Total = QT_TRANSLATE_NOOP("Oragir", "Total number of records");
 
     // Error messages.
     const char *DatabaseError = QT_TRANSLATE_NOOP("Oragir", "Database Error");

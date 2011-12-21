@@ -84,6 +84,11 @@ namespace str
     extern const char *OptionsDialogTitle;
     extern const char *CheckUpdatesTitle;
     extern const char *ReconnectTitle;
+    extern const char *FoldersTitle;
+    extern const char *ProcessedRecords;
+    extern const char *Downloaded;
+    extern const char *Unread;
+    extern const char *Total;
 
     // Error messages.
     extern const char *DatabaseError;

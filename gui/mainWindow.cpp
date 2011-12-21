@@ -88,14 +88,14 @@ MainWindow::MainWindow(QWidget *parent, Qt::WFlags flags)
             SIGNAL(checked()), this,
             SLOT(onVersionChecked()));
 
-    QDockWidget *dock = new QDockWidget("Folders", this);
-    dock->setObjectName("Folders");
+    QDockWidget *dock = new QDockWidget(str::FoldersTitle, this);
+    dock->setObjectName(str::FoldersTitle);
 
     m_foldersList = new QTreeWidget(this);
     m_foldersList->setColumnCount(1);
     m_foldersList->setRootIsDecorated(false);
     QStringList headerLabels;
-    headerLabels << "Name";
+    headerLabels << QString();
     m_foldersList->setHeaderLabels(headerLabels);
     m_foldersList->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(m_foldersList, SIGNAL(customContextMenuRequested(const QPoint &)),
@@ -113,22 +113,22 @@ MainWindow::MainWindow(QWidget *parent, Qt::WFlags flags)
 
     m_processedItems = new QLabel(this);
     m_processedItems->setText("  Pr 0  ");
-    m_processedItems->setToolTip("Number of processed items");
+    m_processedItems->setToolTip(str::ProcessedRecords);
     statusBar()->addPermanentWidget(m_processedItems);
 
     m_processedData = new QLabel(this);
     m_processedData->setText(" Size 0 kB  ");
-    m_processedData->setToolTip("Data downloaded (kB)");
+    m_processedData->setToolTip(str::Downloaded);
     statusBar()->addPermanentWidget(m_processedData);
 
     m_unreadItems = new QLabel(this);
     m_unreadItems->setText("  Unread: 0  ");
-    m_unreadItems->setToolTip("Number of unread items");
+    m_unreadItems->setToolTip(str::Unread);
     statusBar()->addPermanentWidget(m_unreadItems);
 
     m_totalItems = new QLabel(this);
     m_totalItems->setText("  Total: 0  ");
-    m_totalItems->setToolTip("Total number of items");
+    m_totalItems->setToolTip(str::Total);
     statusBar()->addPermanentWidget(m_totalItems);
 }
 
