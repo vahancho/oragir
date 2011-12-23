@@ -232,9 +232,9 @@ const Database::Filters &Database::filters() const
     return m_filters;
 }
 
-Database::Filters Database::copyFilters() const
+void Database::clearFilters()
 {
-    return m_filters;
+    m_filters.clear();
 }
 
 QString Database::databaseName() const
