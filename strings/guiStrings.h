@@ -61,6 +61,7 @@ namespace str
     extern const char *ActionStop;
     extern const char *ActionFilters;
     extern const char *ActionFilterExport;
+    extern const char *ActionFilterImport;
     extern const char *ActionOptions;
     extern const char *ActionDelete;
     extern const char *ActionHelp;
@@ -89,6 +90,9 @@ namespace str
     extern const char *Downloaded;
     extern const char *Unread;
     extern const char *Total;
+    extern const char *ExportFilterTitle;
+    extern const char *ImportFilterTitle;
+    extern const char *FilterDialogFilter;
 
     // Error messages.
     extern const char *DatabaseError;

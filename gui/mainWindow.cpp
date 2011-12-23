@@ -282,10 +282,6 @@ void MainWindow::createMenus()
     QMenu *viewMenu = new QMenu(str::MenuView, this);
     connect(viewMenu, SIGNAL(aboutToShow()), this, SLOT(setStatusBarActionState()));
 
-    //QToolBar *viewToolBar = new QToolBar(str::MenuView, this);
-    //viewToolBar->setObjectName(str::MenuView);
-    //viewToolBar->setIconSize(QSize(iconSizeX, iconSizeY));
-
     // Add 'Views' sub menu
     m_viewsMenu = viewMenu->addMenu(str::MenuViews);
     connect(m_viewsMenu, SIGNAL(aboutToShow()), this, SLOT(updateViewsMenu()));
@@ -336,6 +332,8 @@ void MainWindow::createMenus()
 
     QAction *fltExportAction = toolsMenu->addAction(str::ActionFilterExport);
     connect(fltExportAction, SIGNAL(triggered()), this, SLOT(onFiltersExport()));
+    QAction *fltImportAction = toolsMenu->addAction(str::ActionFilterImport);
+    connect(fltImportAction, SIGNAL(triggered()), this, SLOT(onFiltersImport()));
 
     QAction *optionsAction = toolsMenu->addAction(str::ActionOptions);
     connect(optionsAction, SIGNAL(triggered()), this, SLOT(onOptions()));
@@ -682,12 +680,34 @@ void MainWindow::onFilters()
 void MainWindow::onFiltersExport()
 {
     QString fileName =
-        QFileDialog::getSaveFileName(this, "Save Filter File",
+        QFileDialog::getSaveFileName(this, str::ExportFilterTitle,
                                      ".",
-                                     tr("Oragir Filters (*.flt)"));
+                                     str::FilterDialogFilter);
     if(!fileName.isEmpty()) {
         core::Database *db = core::Application::theApp()->database();
         db->saveFilters(fileName);
+    }
+}
+
+void MainWindow::onFiltersImport()
+{
+    QString fileName =
+        QFileDialog::getOpenFileName(this, str::ImportFilterTitle,
+                                     ".",
+                                     str::FilterDialogFilter);
+    if(!fileName.isEmpty()) {
+        core::Database *db = core::Application::theApp()->database();
+        // Backup the filters in case of the loading errors.
+        core::Database::Filters filters = db->filters();
+        if (!db->openFilters(fileName)) {
+            QMessageBox::critical(this, str::DatabaseError,
+                                  db->errorMessage());
+
+            // Restore filters back.
+            foreach(const core::Filter<core::Post> &filter, filters) {
+                db->addFilter(filter);
+            }
+        }
     }
 }
 

@@ -55,6 +55,7 @@ namespace str
     const char *ActionStop = QT_TRANSLATE_NOOP("Oragir", "S&top");
     const char *ActionFilters = QT_TRANSLATE_NOOP("Oragir", "&Filters...");
     const char *ActionFilterExport = QT_TRANSLATE_NOOP("Oragir", "&Export Filters...");
+    const char *ActionFilterImport = QT_TRANSLATE_NOOP("Oragir", "&Import Filters...");
     const char *ActionOptions = QT_TRANSLATE_NOOP("Oragir", "&Options...");
     const char *ActionDelete = QT_TRANSLATE_NOOP("Oragir", "&Delete Folder");
     const char *ActionHelp = QT_TRANSLATE_NOOP("Oragir", "&Help");
@@ -94,6 +95,9 @@ namespace str
     const char *Downloaded = QT_TRANSLATE_NOOP("Oragir", "Downloaded (kB)");
     const char *Unread = QT_TRANSLATE_NOOP("Oragir", "Number of unread records");
     const char *Total = QT_TRANSLATE_NOOP("Oragir", "Total number of records");
+    const char *ExportFilterTitle = QT_TRANSLATE_NOOP("Oragir", "Save Filter File");
+    const char *ImportFilterTitle = QT_TRANSLATE_NOOP("Oragir", "Open Filter File");
+    const char *FilterDialogFilter = QT_TRANSLATE_NOOP("Oragir", "Filter files (*.flt);;XML files (*.xml)");
 
     // Error messages.
     const char *DatabaseError = QT_TRANSLATE_NOOP("Oragir", "Database Error");

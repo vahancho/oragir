@@ -189,6 +189,8 @@ bool Database::openFilters(const QString &fileName)
 
     if(file.open(QIODevice::Text | QIODevice::ReadOnly)) {
         QXmlStreamReader reader(&file);
+        // Clear all existing filters before loading new ones.
+        clearFilters();
 
         while (!reader.atEnd()) {
             reader.readNext();
@@ -209,9 +211,10 @@ bool Database::openFilters(const QString &fileName)
         if (!reader.hasError()) {
             return true;
         } else {
-            m_error = QString("XML ERROR: %1 : line %2")
+            m_error = QString("Failed to load filter file. Error: %1 Line %2, column %3")
                               .arg(reader.errorString())
-                              .arg(reader.lineNumber());
+                              .arg(reader.lineNumber())
+                              .arg(reader.columnNumber());
             return false;
         }
     }
@@ -229,9 +232,9 @@ const Database::Filters &Database::filters() const
     return m_filters;
 }
 
-void Database::clearFilters()
+Database::Filters Database::copyFilters() const
 {
-    m_filters.clear();
+    return m_filters;
 }
 
 QString Database::databaseName() const

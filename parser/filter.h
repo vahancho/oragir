@@ -396,6 +396,9 @@ void Filter<Source>::readXml(QXmlStreamReader &reader)
             else if (elementName == str::TagOption)
                 option = (Option)reader.text().toString().toInt();
         }
+
+        if (reader.hasError())
+            return;
     }
 }
 

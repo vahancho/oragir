@@ -115,6 +115,8 @@ private slots:
 
     void onFiltersExport();
 
+    void onFiltersImport();
+
     /// Opens Options dialog.
     void onOptions();
 

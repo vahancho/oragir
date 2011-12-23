@@ -63,6 +63,12 @@ public:
     void addFilter(const Filter<Post> &filter);
 
     bool saveFilters(const QString &fileName);
+
+    /// Loades new filters files.
+    /*!
+        Callee should take care of backing up existing filters and restore
+        them in case of errors in loading new file.
+    */
     bool openFilters(const QString &fileName);
 
     void clearFilters();
@@ -72,6 +78,7 @@ public:
 
     typedef std::set<Filter<Post> > Filters;
 
+    /// Returns the filters list.
     const Filters &filters() const;
 
     QSqlDatabase database() const;
