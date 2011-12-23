@@ -1,4 +1,4 @@
-;NSIS Gmail Herald Install Script
+;NSIS Oragir Install Script
 ;by Vahan Aghajanyan
 
 ;--------------------------------
@@ -54,11 +54,14 @@ Function .onInit
   ; Convert version if some characters used, f. e. "0.2.226b"
   ${VersionConvert} "$R1" "" $R1
 
+  ; Convert the current version too.
+  ${VersionConvert} "${VERSION}" "" $R2
+
   ; Compare new and installed versions.
-  ${VersionCompare} "${VERSION}" "$R1" "$R2"
+  ${VersionCompare} "$R2" "$R1" "$R3"
 
   ; Decide what to do.
-  IntCmp $R2 1 ask_to_update same_version do_not_update
+  IntCmp $R3 1 ask_to_update same_version do_not_update
 
 do_not_update:
   MessageBox MB_OK|MB_ICONEXCLAMATION \
