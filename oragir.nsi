@@ -133,7 +133,7 @@ FunctionEnd
 ;--------------------------------
 ;Installer Sections
 
-Section "Gmail Herald" SecDummy
+Section "Oragir" SecDummy
 
   SetOutPath "$INSTDIR"
 
@@ -148,9 +148,10 @@ Section "Gmail Herald" SecDummy
   File "distrib\QtSql4.dll"
   File "distrib\license.txt"
   File "qt.conf"
-
-  SetOutPath "$INSTDIR\plugins\sqldrivers"
+  SetOutPath "$INSTDIR\sqldrivers"
   File "distrib\qsqlite4.dll"
+  SetOutPath "$INSTDIR\imageformats"
+  File "distrib\qgif4.dll"
   ;SetOutPath "$INSTDIR\translations"
   ;File "oragir_ru.qm"
 
@@ -204,10 +205,11 @@ Section "Uninstall"
   Delete "$INSTDIR\QtGui4.dll"
   Delete "$INSTDIR\QtNetwork4.dll"
   Delete "$INSTDIR\QtSql4.dll"
-  Delete "$INSTDIR\plugins\sqldrivers\qsqlite4.dll"
   Delete "$INSTDIR\license.txt"
   Delete "$INSTDIR\qt.conf"
   Delete "$INSTDIR\Uninstall.exe"
+  Delete "$INSTDIR\sqldrivires\qsqlite4.dll"
+  Delete "$INSTDIR\imageformats\qgif4.dll"
   ;Delete "$INSTDIR\translations\oragir_ru.qm"
   ;RMDir "$INSTDIR\translations"
   RMDir "$INSTDIR"
