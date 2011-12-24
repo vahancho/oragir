@@ -107,6 +107,7 @@ MainWindow::MainWindow(QWidget *parent, Qt::WFlags flags)
     addDockWidget(Qt::LeftDockWidgetArea, dock);
 
     QLabel *statusLabel = new QLabel(this);
+    statusLabel->setMinimumWidth(24);
     m_progress = new QMovie(":/icons/progress");
     statusLabel->setMovie(m_progress);
     statusBar()->addPermanentWidget(statusLabel);
