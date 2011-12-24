@@ -725,7 +725,7 @@ void MainWindow::onOptions()
 
 void MainWindow::onFolderContextMenu(const QPoint &pos)
 {
-    if(QTreeWidgetItem *treeItem = m_foldersList->itemAt(pos)) {
+    if(m_foldersList->itemAt(pos) != 0) {
         QMenu menu;
         QAction *act = menu.addAction("&Open", this, SLOT(onTableViewOpen()));
         menu.setDefaultAction(act);
@@ -819,7 +819,7 @@ void MainWindow::onVersionChecked()
         msgBox.setIcon(QMessageBox::Question);
         msgBox.setInformativeText("Would you like to download and install it?");
         QAbstractButton *btnYes = msgBox.addButton("Update Now", QMessageBox::YesRole);
-        QAbstractButton *btnNo = msgBox.addButton("Cancel", QMessageBox::NoRole);
+        msgBox.addButton("Cancel", QMessageBox::NoRole);
         msgBox.exec();
         if (msgBox.clickedButton() == btnYes) {
             vm->download();

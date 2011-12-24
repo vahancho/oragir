@@ -29,6 +29,8 @@ PropertyTable::PropertyTable(QObject *parent)
 {}
 
 PropertyTable::PropertyTable(const PropertyTable &other)
+    :
+        QObject()
 {
     // Reparent.
     setParent(other.parent());

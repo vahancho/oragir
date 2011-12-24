@@ -32,7 +32,7 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
     a.setWindowIcon(QIcon(":/icons/app"));
 
-    Application *app = Application::create();
+    Application::create();
 
     int ret = a.exec();
 

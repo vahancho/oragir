@@ -149,7 +149,7 @@ void DatabaseView::updateTable()
 }
 
 void DatabaseView::onSelectionChanged(const QItemSelection &selected,
-                                      const QItemSelection &deselected)
+                                      const QItemSelection & /*deselected*/)
 {
     QModelIndexList indexes = selected.indexes();
     // Handle the state of the actions.
