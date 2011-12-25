@@ -24,6 +24,7 @@
 #include <QDesktopServices>
 #include <QInputDialog>
 #include <QColorDialog>
+#include <QFontDatabase>
 #include "htmlEditor.h"
 
 namespace gui

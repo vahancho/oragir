@@ -105,8 +105,8 @@ void BlogEventView::setUserPics(const QStringList &userpics)
 
 void BlogEventView::setupActions(const HtmlActions &actions)
 {
-    HtmlActions::iterator it = actions.begin();
-    while (it != actions.end()) {
+    HtmlActions::const_iterator it = actions.constBegin();
+    while (it != actions.constEnd()) {
         // Handle the html actions' connection.
         QAction *action = it.value();
         action->disconnect();
