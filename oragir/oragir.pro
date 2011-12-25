@@ -14,7 +14,7 @@ INCLUDEPATH += GeneratedFiles \
                GeneratedFiles/release \
                .
 win32:LIBS += -lqtmain -lQtCore4 -lQtGui4 -lQtNetwork4 -lQtSql -l../release/ljcommunicator
-unix:LIBS += -lQtCore -lQtGui -lQtNetwork -lQtSql -l../release/ljcommunicator
+unix:LIBS += -lQtCore -lQtGui -lQtNetwork -lQtSql -L../release -lljcommunicator
 
 DEPENDPATH += .
 MOC_DIR += GeneratedFiles/release

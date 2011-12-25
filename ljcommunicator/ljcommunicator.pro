@@ -14,7 +14,7 @@ INCLUDEPATH += GeneratedFiles \
                GeneratedFiles/release \
                .
 win32:LIBS += -lqtmain -lQtCore4 -lQtNetwork4
-unix:LIBS += -lQtCore-lQtNetwork
+unix:LIBS += -lQtCore -lQtNetwork
 
 win32:DEFINES += LJCOMMUNICATOR_LIB
 
