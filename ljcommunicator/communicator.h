@@ -48,6 +48,7 @@ public:
 
     /// Implements LJ getchellange command.
     QByteArray getChallenge();
+    QMap<QString, QVariant> login();
 
 protected slots:
     void requestFinished(int id, bool error);

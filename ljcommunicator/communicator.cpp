@@ -20,6 +20,7 @@
 
 #include <memory>
 #include <QtNetwork>
+#include <QCryptographicHash>
 #include "communicator.h"
 #include "request.h"
 #include "response.h"
@@ -105,6 +106,49 @@ QByteArray Communicator::getChallenge()
     }
 
     return challenge;
+}
+
+QMap<QString, QVariant> Communicator::login()
+{
+    QMap<QString, QVariant> result;
+    QByteArray challenge = getChallenge();
+    if (challenge.size() == 0)
+        return result;
+
+    // Encode user credentials.
+    // From LJ docs: "For your response, you then build a MD5 hex digest of the
+    // formula (challenge + MD5_hex(password))...".
+    QByteArray passMd5 = QCryptographicHash::hash(m_password.toUtf8(),
+                                                  QCryptographicHash::Md5).toHex();
+    QString authStr = QCryptographicHash::hash(challenge + passMd5,
+                                               QCryptographicHash::Md5).toHex();
+
+    QMap<QString, QVariant> loginRequest;
+    loginRequest["username"] = m_userName;
+    loginRequest["auth_method"] = "challenge";
+    loginRequest["auth_challenge"] = challenge;
+    loginRequest["auth_response"] = authStr;
+    QVariantList vl;
+    vl.push_back(loginRequest);
+
+    // Send request for the challenge.
+    m_currentRequestId = request("LJ.XMLRPC.login", vl);
+
+    // Block the event loop untill request finished.
+    m_eventLoop.exec();
+
+    std::auto_ptr<QBuffer> buffer(m_responses.take(m_currentRequestId));
+    QByteArray buf = buffer->buffer();
+
+    xmlrpc::Response response;
+
+    if (response.parse(buf)) {
+        QVariant responceData = response.data();
+        result = responceData.toMap();
+        QString name = result.value("fullname").toString();
+    }
+
+    return result;
 }
 
 int Communicator::request(QString methodName, const QVariantList &params)
