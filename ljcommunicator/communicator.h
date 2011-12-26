@@ -49,12 +49,11 @@ public:
     /// Implements LJ getchellange command.
     QByteArray getChallenge();
 
-    int request(QString methodName, const QVariantList &params);
-
 protected slots:
     void requestFinished(int id, bool error);
 
 private:
+    int request(QString methodName, const QVariantList &params);
     void init();
 
     QString m_host;

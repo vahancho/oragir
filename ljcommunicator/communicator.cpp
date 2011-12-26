@@ -18,6 +18,7 @@
 *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
 ***************************************************************************/
 
+#include <memory>
 #include <QtNetwork>
 #include "communicator.h"
 #include "request.h"
@@ -88,7 +89,7 @@ QByteArray Communicator::getChallenge()
     // Block the event loop untill request finished.
     m_eventLoop.exec();
 
-    QBuffer *buffer = m_responses.take(m_currentRequestId);
+    std::auto_ptr<QBuffer> buffer(m_responses.take(m_currentRequestId));
     QByteArray buf = buffer->buffer();
 
     xmlrpc::Response response;
@@ -103,7 +104,6 @@ QByteArray Communicator::getChallenge()
         int challangeLife = expireTime - serverTime;
     }
 
-    delete buffer;
     return challenge;
 }
 
