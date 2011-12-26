@@ -23,6 +23,7 @@
 
 #include <QAuthenticator>
 #include <QHttp>
+#include <QEventLoop>
 #include "export.h"
 
 class QBuffer;
@@ -36,6 +37,7 @@ class LJCOMMUNICATOR_EXPORT Communicator : public QObject
     Q_OBJECT
 public:
     Communicator(QObject *parent = 0);
+    ~Communicator();
 
     void setHost(const QString &host, quint16 port = 80);
     void setPath(const QString &path);
@@ -44,15 +46,10 @@ public:
     void setUser(const QString &userName, const QString &password);
     void setUserAgent(const QString &userAgent);
 
-    ~Communicator();
+    /// Implements LJ getchellange command.
+    QByteArray getChallenge();
 
     int request(QString methodName, const QVariantList &params);
-
-signals:
-    void done(int requestId, const QVariant &value);
-    void failed(int requestId, const QString &errorString);
-    void authenticationRequired(const QString &hostname, quint16 port, QAuthenticator *);
-    void proxyAuthenticationRequired(const QNetworkProxy &, QAuthenticator *);
 
 protected slots:
     void requestFinished(int id, bool error);
@@ -67,9 +64,13 @@ private:
     QString m_userAgent;
 
     QHttp *m_http;
-    QAuthenticator m_proxyAuth;
-
     QMap<int, QBuffer *> m_responses;
+
+    /// Stores the current Http request id.
+    int m_currentRequestId;
+
+    /// Event loop to make Http requests work synchronously.
+    QEventLoop m_eventLoop;
 };
 
 } // namespace

@@ -50,12 +50,6 @@ void Communicator::init()
     setHost("www.livejournal.com", 80);
     setPath("/interface/xmlrpc");
     connect(m_http, SIGNAL(requestFinished(int, bool)), SLOT(requestFinished(int, bool)));
-
-    connect(m_http, SIGNAL(proxyAuthenticationRequired(const QNetworkProxy &, QAuthenticator *)),
-            this, SIGNAL(proxyAuthenticationRequired(const QNetworkProxy &, QAuthenticator *)));
-
-    connect(m_http, SIGNAL(authenticationRequired (const QString &, quint16, QAuthenticator *)),
-            this, SIGNAL(authenticationRequired (const QString &, quint16, QAuthenticator *)));
 }
 
 void Communicator::setHost(const QString &host, quint16 port)
@@ -86,13 +80,38 @@ void Communicator::setUserAgent(const QString &userAgent)
     m_userAgent = userAgent;
 }
 
+QByteArray Communicator::getChallenge()
+{
+    // Send request for the challenge.
+    m_currentRequestId = request("LJ.XMLRPC.getchallenge", QVariantList());
+
+    // Block the event loop untill request finished.
+    m_eventLoop.exec();
+
+    QBuffer *buffer = m_responses.take(m_currentRequestId);
+    QByteArray buf = buffer->buffer();
+
+    xmlrpc::Response response;
+    QByteArray challenge;
+
+    if (response.parse(buf)) {
+        QVariant responceData = response.data();
+        QMap<QString, QVariant> map = responceData.toMap();
+        challenge = map.value("challenge").toByteArray();
+        int serverTime = map.value("server_time").toInt();
+        int expireTime = map.value("expire_time").toInt();
+        int challangeLife = expireTime - serverTime;
+    }
+
+    delete buffer;
+    return challenge;
+}
+
 int Communicator::request(QString methodName, const QVariantList &params)
 {
     QBuffer *responceBuffer = new QBuffer;
-
     xmlrpc::Request request;
     QByteArray data = request.compose(methodName, params);
-    qDebug(data);
 
     // Generate a header according to XML-RPC spec (http://www.xmlrpc.com/spec)
     QHttpRequestHeader header("POST", m_path);
@@ -112,37 +131,10 @@ int Communicator::request(QString methodName, const QVariantList &params)
 
 void Communicator::requestFinished(int id, bool error)
 {
-    if (!m_responses.count(id))
+    if (id != m_currentRequestId)
         return;
 
-    if (error) {
-        QBuffer *buffer = m_responses.take(id);
-        delete buffer;
-        emit failed(id, m_http->errorString() );
-        return;
-    }
-
-    if ( m_responses.count(id) ) {
-        QBuffer *buffer = m_responses.take(id);
-        QByteArray buf = buffer->buffer();
-
-        qDebug() << buf;
-
-        xmlrpc::Response response;
-
-        if (response.parse(buf)) {
-            QVariant responceData = response.data();
-            if (!responceData.isValid()) {
-                emit failed(id, "ERROR" );
-            } else {
-                emit done(id, responceData);
-            }
-
-        } else {
-            emit failed(id, "Server error");
-        }
-        delete buffer;
-    }
+    m_eventLoop.exit();
 }
 
 }
