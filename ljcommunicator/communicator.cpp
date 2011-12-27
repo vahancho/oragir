@@ -144,7 +144,7 @@ QMap<QString, QVariant> Communicator::login()
     return result;
 }
 
-int Communicator::request(QString methodName, const QVariantList &params)
+void Communicator::request(QString methodName, const QVariantList &params)
 {
     QBuffer *responceBuffer = new QBuffer;
     xmlrpc::Request request;
@@ -165,8 +165,6 @@ int Communicator::request(QString methodName, const QVariantList &params)
 
     // Block the event loop untill request finished.
     m_eventLoop.exec();
-
-    return m_currentRequestId;
 }
 
 void Communicator::requestFinished(int id, bool error)
