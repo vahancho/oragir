@@ -105,31 +105,40 @@ QByteArray Communicator::getChallenge()
     return challenge;
 }
 
-QMap<QString, QVariant> Communicator::login()
+QVariantList Communicator::authParams()
 {
-    QMap<QString, QVariant> result;
+    QVariantList params;
     QByteArray challenge = getChallenge();
     if (challenge.size() == 0)
-        return result;
+        return params;
 
     // Encode user credentials.
     // From LJ docs: "For your response, you then build a MD5 hex digest of the
     // formula (challenge + MD5_hex(password))...".
     QByteArray passMd5 = QCryptographicHash::hash(m_password.toUtf8(),
                                                   QCryptographicHash::Md5).toHex();
-    QString authStr = QCryptographicHash::hash(challenge + passMd5,
-                                               QCryptographicHash::Md5).toHex();
+    QByteArray authStr = QCryptographicHash::hash(challenge + passMd5,
+                                                  QCryptographicHash::Md5).toHex();
 
-    QMap<QString, QVariant> loginRequest;
-    loginRequest["username"] = m_userName;
-    loginRequest["auth_method"] = "challenge";
-    loginRequest["auth_challenge"] = challenge;
-    loginRequest["auth_response"] = authStr;
-    QVariantList vl;
-    vl.push_back(loginRequest);
+    QMap<QString, QVariant> requestStruct;
+    requestStruct["username"] = m_userName;
+    requestStruct["auth_method"] = "challenge";
+    requestStruct["auth_challenge"] = challenge;
+    requestStruct["auth_response"] = authStr;
+
+    params.push_back(requestStruct);
+    return params;
+}
+
+QMap<QString, QVariant> Communicator::login()
+{
+    QMap<QString, QVariant> result;
+    QVariantList params = authParams();
+    if (params.size() == 0)
+        return result;
 
     // Send request to login.
-    request("LJ.XMLRPC.login", vl);
+    request("LJ.XMLRPC.login", params);
 
     std::auto_ptr<QBuffer> buffer(m_responses.take(m_currentRequestId));
     QByteArray buf = buffer->buffer();
@@ -146,12 +155,8 @@ QMap<QString, QVariant> Communicator::login()
 
 void Communicator::getUserTags()
 {
-    QMap<QString, QVariant> params;
-    params["username"] = m_userName;
-
-    QVariantList vl;
-    vl.push_back(params);
-    request("LJ.XMLRPC.getusertags", vl);
+    QVariantList params = authParams();
+    request("LJ.XMLRPC.getusertags", params);
 
     std::auto_ptr<QBuffer> buffer(m_responses.take(m_currentRequestId));
     QByteArray buf = buffer->buffer();

@@ -55,8 +55,16 @@ protected slots:
     void requestFinished(int id, bool error);
 
 private:
-    void request(QString methodName, const QVariantList &params);
     void init();
+    void request(QString methodName, const QVariantList &params);
+
+    /// Create and returns authentication parameters list.
+    /*!
+        This is is a challenge based authentication parameters
+        that can be used in query requests to LJ server, such as
+        login, getusertags etc.
+    */
+    QVariantList authParams();
 
     QString m_host;
     QString m_path;
