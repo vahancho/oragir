@@ -153,9 +153,13 @@ QMap<QString, QVariant> Communicator::login()
     return result;
 }
 
-void Communicator::getUserTags()
+QMap<QString, QVariant> Communicator::getUserTags()
 {
+    QMap<QString, QVariant> result;
     QVariantList params = authParams();
+    if (params.size() == 0)
+        return result;
+
     request("LJ.XMLRPC.getusertags", params);
 
     std::auto_ptr<QBuffer> buffer(m_responses.take(m_currentRequestId));
@@ -166,8 +170,10 @@ void Communicator::getUserTags()
 
     if (response.isValid()) {
         QVariant responceData = response.data();
-        QMap<QString, QVariant> result = responceData.toMap();
+        result = responceData.toMap();
     }
+
+    return result;
 }
 
 void Communicator::request(QString methodName, const QVariantList &params)

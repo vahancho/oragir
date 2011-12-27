@@ -48,7 +48,7 @@ public:
 
     /// Implements LJ getchellange command.
     QByteArray getChallenge();
-    void getUserTags();
+    QMap<QString, QVariant> getUserTags();
     QMap<QString, QVariant> login();
 
 protected slots:
