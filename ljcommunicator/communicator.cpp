@@ -145,7 +145,6 @@ QMap<QString, QVariant> Communicator::login()
     if (response.parse(buf)) {
         QVariant responceData = response.data();
         result = responceData.toMap();
-        QString name = result.value("fullname").toString();
     }
 
     return result;
