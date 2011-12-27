@@ -31,14 +31,18 @@ class Response
 {
 
 public:
-    Response();
+    Response(const QByteArray &response);
 
-    bool parse(const QByteArray &responce);
     QVariant data() const;
+    bool isValid() const;
 
 private:
+    /// Parses the given response and check for its correctness.
+    bool parse(const QByteArray &response);
+
     QVariant m_data;
     QString m_errorString;
+    bool m_isValid;
 };
 
 } // namespace xmlrpc

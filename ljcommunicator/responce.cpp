@@ -25,21 +25,30 @@
 namespace xmlrpc
 {
 
-Response::Response()
-{}
+Response::Response(const QByteArray &response)
+    :
+        m_isValid(false)
+{
+    m_isValid = parse(response);
+}
 
 QVariant Response::data() const
 {
     return m_data;
 }
 
-bool Response::parse(const QByteArray &responce)
+bool Response::isValid() const
+{
+    return m_isValid;
+}
+
+bool Response::parse(const QByteArray &response)
 {
     QDomDocument doc;
     int domErrorLine;
     int domErrorColumn;
 
-    if (!doc.setContent(responce, &m_errorString, &domErrorLine, &domErrorColumn)) {
+    if (!doc.setContent(response, &m_errorString, &domErrorLine, &domErrorColumn)) {
         return false;
     }
 

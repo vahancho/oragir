@@ -90,10 +90,10 @@ QByteArray Communicator::getChallenge()
     std::auto_ptr<QBuffer> buffer(m_responses.take(m_currentRequestId));
     QByteArray buf = buffer->buffer();
 
-    xmlrpc::Response response;
+    xmlrpc::Response response(buf);
     QByteArray challenge;
 
-    if (response.parse(buf)) {
+    if (response.isValid()) {
         QVariant responceData = response.data();
         QMap<QString, QVariant> map = responceData.toMap();
         challenge = map.value("challenge").toByteArray();
@@ -143,9 +143,9 @@ QMap<QString, QVariant> Communicator::login()
     std::auto_ptr<QBuffer> buffer(m_responses.take(m_currentRequestId));
     QByteArray buf = buffer->buffer();
 
-    xmlrpc::Response response;
+    xmlrpc::Response response(buf);
 
-    if (response.parse(buf)) {
+    if (response.isValid()) {
         QVariant responceData = response.data();
         result = responceData.toMap();
     }
@@ -162,9 +162,9 @@ void Communicator::getUserTags()
     QByteArray buf = buffer->buffer();
     qDebug() << buf;
 
-    xmlrpc::Response response;
+    xmlrpc::Response response(buf);
 
-    if (response.parse(buf)) {
+    if (response.isValid()) {
         QVariant responceData = response.data();
         QMap<QString, QVariant> result = responceData.toMap();
     }
