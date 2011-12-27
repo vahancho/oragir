@@ -85,10 +85,7 @@ void Communicator::setUserAgent(const QString &userAgent)
 QByteArray Communicator::getChallenge()
 {
     // Send request for the challenge.
-    m_currentRequestId = request("LJ.XMLRPC.getchallenge", QVariantList());
-
-    // Block the event loop untill request finished.
-    m_eventLoop.exec();
+    request("LJ.XMLRPC.getchallenge", QVariantList());
 
     std::auto_ptr<QBuffer> buffer(m_responses.take(m_currentRequestId));
     QByteArray buf = buffer->buffer();
@@ -131,11 +128,8 @@ QMap<QString, QVariant> Communicator::login()
     QVariantList vl;
     vl.push_back(loginRequest);
 
-    // Send request for the challenge.
-    m_currentRequestId = request("LJ.XMLRPC.login", vl);
-
-    // Block the event loop untill request finished.
-    m_eventLoop.exec();
+    // Send request to login.
+    request("LJ.XMLRPC.login", vl);
 
     std::auto_ptr<QBuffer> buffer(m_responses.take(m_currentRequestId));
     QByteArray buf = buffer->buffer();
@@ -165,11 +159,14 @@ int Communicator::request(QString methodName, const QVariantList &params)
     header.setContentLength(data.size());
 
     // Send the request to server.
-    int id = m_http->request(header, data, responceBuffer);
-    m_responses[id] = responceBuffer;
+    m_currentRequestId = m_http->request(header, data, responceBuffer);
+    m_responses[m_currentRequestId] = responceBuffer;
     m_http->close();
 
-    return id;
+    // Block the event loop untill request finished.
+    m_eventLoop.exec();
+
+    return m_currentRequestId;
 }
 
 void Communicator::requestFinished(int id, bool error)
