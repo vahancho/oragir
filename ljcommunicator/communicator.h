@@ -50,6 +50,7 @@ public:
     QByteArray getChallenge();
     QMap<QString, QVariant> getUserTags();
     QMap<QString, QVariant> login();
+    QMap<QString, QVariant> getComments(int postid);
 
 protected slots:
     void requestFinished(int id, bool error);

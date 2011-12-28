@@ -176,6 +176,34 @@ QMap<QString, QVariant> Communicator::getUserTags()
     return result;
 }
 
+QMap<QString, QVariant> Communicator::getComments(int postid)
+{
+    QMap<QString, QVariant> result;
+    QVariantList params = authParams();
+    if (params.size() == 0)
+        return result;
+
+    // Modify params by adding the item id.
+    QMap<QString, QVariant> param = params.takeAt(0).toMap();
+    param["ditemid"] = postid;
+    params.push_back(param);
+
+    request("LJ.XMLRPC.getcomments", params);
+
+    std::auto_ptr<QBuffer> buffer(m_responses.take(m_currentRequestId));
+    QByteArray buf = buffer->buffer();
+    qDebug() << buf;
+
+    xmlrpc::Response response(buf);
+
+    if (response.isValid()) {
+        QVariant responceData = response.data();
+        result = responceData.toMap();
+    }
+
+    return result;
+}
+
 void Communicator::request(QString methodName, const QVariantList &params)
 {
     QBuffer *responceBuffer = new QBuffer;
