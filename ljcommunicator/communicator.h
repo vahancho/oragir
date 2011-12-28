@@ -51,6 +51,7 @@ public:
     QMap<QString, QVariant> getUserTags();
     QMap<QString, QVariant> login();
     QMap<QString, QVariant> getComments(int postid);
+    QMap<QString, QVariant> syncitems();
 
 protected slots:
     void requestFinished(int id, bool error);
