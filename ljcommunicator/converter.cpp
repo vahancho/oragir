@@ -137,7 +137,9 @@ QVariant Converter::fromDomElement(const QDomElement &node)
             } else if (tagName == tagDouble) {
                 return tagText.toDouble();
             } else if (tagName == tagBase64) {
-                return QByteArray::fromBase64(tagText.toAscii());
+                // Decode from base64 and than from utf-8.
+                QByteArray ba = QByteArray::fromBase64(tagText.toAscii());
+                return QString::fromUtf8(ba.data());
             } else if (tagName == tagBool) {
                 bool val = tagText.toInt() == 1;
                 return val;
