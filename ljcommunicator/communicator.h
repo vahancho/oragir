@@ -52,7 +52,7 @@ public:
     QMap<QString, QVariant> login();
     QMap<QString, QVariant> getComments(int postid);
     QMap<QString, QVariant> syncitems();
-    QMap<QString, QVariant> getEvents();
+    QMap<QString, QVariant> getEvents(bool subjectsOnly = false);
 
 protected slots:
     void requestFinished(int id, bool error);

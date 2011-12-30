@@ -227,7 +227,7 @@ QMap<QString, QVariant> Communicator::syncitems()
     return result;
 }
 
-QMap<QString, QVariant> Communicator::getEvents()
+QMap<QString, QVariant> Communicator::getEvents(bool subjectsOnly)
 {
     QMap<QString, QVariant> result;
     QVariantList params = authParams();
@@ -236,7 +236,9 @@ QMap<QString, QVariant> Communicator::getEvents()
 
     // Modify params by adding the item id.
     QMap<QString, QVariant> param = params.takeAt(0).toMap();
+    // Make sure we use utf-8 encoded strings in response.
     param["ver"] = 1;
+    param["prefersubject"] = subjectsOnly ? 1 : 0;
     //param["selecttype"] = "lastn";
     //param["howmany"] = 8;
     param["selecttype"] = "syncitems";
