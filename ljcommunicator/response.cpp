@@ -25,6 +25,13 @@
 namespace xmlrpc
 {
 
+const char tagParams[] = "params";
+const char tagParam[] = "param";
+const char tagValue[] = "value";
+const char tagFault[] = "fault";
+const char tagFaultCode[] = "faultCode";
+const char tagFaultString[] = "faultString";
+
 Response::Response(const QByteArray &response)
     :
         m_isValid(false)
@@ -52,51 +59,74 @@ bool Response::parse(const QByteArray &response)
         return false;
     }
 
-    // The body of the response is a single XML structure, a <methodResponse>,
-    // which can contain a single <params> which contains a single <param> which
-    // contains a single <value>.
+    // From the xmlrpc spec: The body of the response is a single XML structure,
+    // a <methodResponse>, which can contain a single <params> which 
+    // contains a single <param> which contains a single <value>.
     QDomElement methodResponse = doc.firstChildElement("methodResponse");
 
     if (methodResponse.isNull()) {
-        m_errorString = "Missing methodResponse tag";
+        m_errorString = "XMLRPC format error: missed methodResponse tag";
         return false;
     }
 
-    QDomElement resNode = methodResponse.firstChildElement();
+    QDomElement subNode = methodResponse.firstChildElement();
+
     // The <methodResponse> could also contain a <fault> which contains
     // a <value> which is a <struct> containing two elements, one named
     // <faultCode>, an <int> and one named <faultString>, a <string>.
     // A <methodResponse> can not contain both a <fault> and a <params>.
+    QString tagName = subNode.tagName();
 
-    QString tagName = resNode.tagName();
-
-    if (tagName == "params") {
+    if (tagName == tagParams) {
         // <params> contains a single <param> which contains a single <value>.
-        QDomElement paramValue = resNode.firstChild().firstChild().toElement();
+        QDomElement paramElement = subNode.firstChild().toElement();
+        tagName = paramElement.tagName();
+        if (tagName != tagParam) {
+            m_errorString = QString("XMLRPC format error: expected %1, found %2")
+                                    .arg(tagParam)
+                                    .arg(tagName);
+            return false;
+        }
 
-        m_data = QVariant(Converter::fromDomElement(paramValue));
+        QDomElement valueElement = paramElement.firstChild().toElement();
+        tagName = valueElement.tagName();
+        if (tagName != tagValue) {
+            m_errorString = QString("XMLRPC format error: expected %1, found %2")
+                                    .arg(tagValue)
+                                    .arg(tagName);
+            return false;
+        }
+
+        // Read param data.
+        m_data = Converter::fromDomElement(valueElement);
 
         if (!m_data.isValid()) {
-            m_errorString = "Invalid return value";
+            m_errorString = "Invalid responce value";
+            return false;
         }
-    } else if (tagName == "fault" ) {
-        QDomElement paramValue = resNode.firstChildElement();
+    } else if (tagName == tagFault ) {
+        QDomElement paramValue = subNode.firstChildElement();
 
         // Should be QMap
         QVariant res = Converter::fromDomElement(paramValue);
         if (res.type() != QVariant::Map) {
-            m_errorString = QString("Expected struct for xmlrpc fault, but received %1")
-                                    .arg(paramValue.firstChildElement().nodeName());
+            m_errorString = QString("XMLRPC format error: responce fault "
+                                    "value is not a struct");
             return false;
         }
 
         QMap<QString, QVariant> map = res.toMap();
-        if (!map.contains("faultCode") || !map.contains("faultString")) {
-            m_errorString = "Fault struct doesn't contain fault code or string values";
+        if (!map.contains(tagFaultCode) || !map.contains(tagFaultString)) {
+            m_errorString = "XMLRPC format error: Fault struct should contain "
+                            "either fault code or fault description";
             return false;
         }
     } else {
-        m_errorString = QString("Unexpected tag: %1").arg(resNode.tagName());
+        m_errorString = QString("XMLRPC format error: tag should be either %1 "
+                                "or %2, received %3")
+                                .arg(tagParams)
+                                .arg(tagFault)
+                                .arg(tagName);
         return false;
     }
 
@@ -105,6 +135,11 @@ bool Response::parse(const QByteArray &response)
     }
 
     return true;
+}
+
+QString Response::error() const
+{
+    return m_errorString;
 }
 
 } // namespace xmlrpc

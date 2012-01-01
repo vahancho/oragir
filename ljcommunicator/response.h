@@ -33,13 +33,18 @@ class Response
 public:
     Response(const QByteArray &response);
 
-    QVariant data() const;
-    bool isValid() const;
-
-private:
     /// Parses the given response and check for its correctness.
     bool parse(const QByteArray &response);
 
+    /// Returns parsing result as a data.
+    /*!
+        Result usually is a structured data that can have sub structures.
+    */
+    QVariant data() const;
+    bool isValid() const;
+    QString error() const;
+
+private:
     QVariant m_data;
     QString m_errorString;
     bool m_isValid;

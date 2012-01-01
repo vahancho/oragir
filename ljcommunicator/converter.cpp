@@ -141,8 +141,7 @@ QVariant Converter::fromDomElement(const QDomElement &node)
                 QByteArray ba = QByteArray::fromBase64(tagText.toAscii());
                 return QString::fromUtf8(ba.data());
             } else if (tagName == tagBool) {
-                bool val = tagText.toInt() == 1;
-                return val;
+                return bool(tagText.toInt() == 1);
             } else if (tagName == tagDateTime) {
                 return fromDateTime(tagText);
             } else if (tagName == tagStruct) {
@@ -182,11 +181,14 @@ QVariant Converter::fromStruct(const QDomElement &node)
         QVariant value;
         QDomElement child = member.firstChild().toElement();
         while (!child.isNull()) {
-            if (child.tagName() == tagName) {
+            QString tag = child.tagName();
+            if (tag == tagName) {
                 name = child.text();
-            }
-            if (child.tagName() == tagValue) {
+            } else if (tag == tagValue) {
                 value = fromDomElement( child );
+            } else {
+                // Unexpected tag name.
+                return QVariant::Invalid;
             }
 
             child = child.nextSibling().toElement();
@@ -212,9 +214,10 @@ QVariant Converter::fromArray(const QDomElement& node)
     while (!data.isNull()) {
         if (data.tagName() == tagValue) {
             res.append(fromDomElement(data));
+        } else {
+            // Unexpected tag name.
+            return QVariant::Invalid;
         }
-
-        Q_ASSERT(data.tagName() == tagValue);
         data = data.nextSibling().toElement();
     }
 
