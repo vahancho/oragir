@@ -23,6 +23,7 @@
 #include "databaseView.h"
 #include "dlgFilters.h"
 #include "dlgOptions.h"
+#include "dlgExport.h"
 #include "generalOptionsPage.h"
 #include "connectOptionsPage.h"
 #include "advancedOptionsPage.h"
@@ -319,6 +320,13 @@ void MainWindow::createMenus()
     streamToolBar->addAction(m_stopAction);
 
     //////////////////////////////////////////////////////////////////////////
+    // Blog menu
+    //
+    QMenu *blogMenu = new QMenu("&Blog", this);
+    QAction *exportAction = blogMenu->addAction("&Export...");
+    connect(exportAction, SIGNAL(triggered()), this, SLOT(onBlogExport()));
+
+    //////////////////////////////////////////////////////////////////////////
     // Tools menu
     //
     QMenu *toolsMenu = new QMenu(str::MenuTools, this);
@@ -390,6 +398,7 @@ void MainWindow::createMenus()
     menuBar()->addMenu(fileMenu);
     menuBar()->addMenu(viewMenu);
     menuBar()->addMenu(streamMenu);
+    menuBar()->addMenu(blogMenu);
     menuBar()->addMenu(toolsMenu);
     menuBar()->addMenu(m_windowMenu);
     menuBar()->addSeparator();
@@ -826,6 +835,12 @@ void MainWindow::onVersionChecked()
             vm->download();
         }
     }
+}
+
+void MainWindow::onBlogExport()
+{
+    ExportDialog dlg(this);
+    dlg.exec();
 }
 
 } // namespace gui

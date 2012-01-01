@@ -136,6 +136,8 @@ private slots:
     /// Called when opening a table view action triggered.
     void onTableViewOpen();
 
+    void onBlogExport();
+
 private:
 
     /// Defines the column numbers in the folders view.
