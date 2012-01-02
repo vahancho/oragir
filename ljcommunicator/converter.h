@@ -32,9 +32,7 @@ namespace xmlrpc
 class Converter
 {
 public:
-    static QDomElement toDomElement(const QVariant &val, QDomDocument &doc);
 
-    static QString toDateTime(const QDateTime &date);
 };
 
 }

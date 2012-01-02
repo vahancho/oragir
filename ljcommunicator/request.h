@@ -21,7 +21,7 @@
 #ifndef __REQUEST_H__
 #define __REQUEST_H__
 
-#include <QVariant>
+#include <QDomElement>
 
 namespace xmlrpc
 {
@@ -45,6 +45,11 @@ public:
     */
     QByteArray compose(const QString &methodName,
                        const QVariantList &parameters) const;
+
+private:
+    QDomElement toDomElement(const QVariant &val, QDomDocument &doc) const;
+
+    QString toDateTime(const QDateTime &date) const;
 };
 
 } // namespace xmlrpc

@@ -25,30 +25,132 @@
 namespace xmlrpc
 {
 
+// xmlrpc scalar types. Refer to the spec (http://xmlrpc.scripting.com/spec.html)
+const char tagInt[] = "int";
+const char tagBool[] = "boolean";              // 0 (false) or 1 (true)
+const char tagString[] = "string";
+const char tagDouble[] = "double";             // Double-precision signed floating point number
+const char tagDateTime[] = "dateTime.iso8601"; // date/time 19980717T14:08:55
+const char tagBase64[] = "base64";             // base64-encoded binary
+
+// Other tags
+const char tagValue[] = "value";
+const char tagArray[] = "array";
+const char tagStruct[] = "struct";
+const char tagData[] = "data";
+const char tagMember[] = "member";
+const char tagName[] = "name";
+const char tagMethodCall[] = "methodCall";
+const char tagMethodName[] = "methodName";
+const char tagParams[] = "params";
+const char tagParam[] = "param";
+
 Request::Request()
 {}
 
 QByteArray Request::compose(const QString &methodName,
                             const QVariantList &parameters) const
 {
-    QDomDocument doc;
-    QDomElement methodCall = doc.createElement("methodCall");
-    doc.appendChild( methodCall );
+    QDomDocument document;
+    QDomElement methodCall = document.createElement(tagMethodCall);
+    document.appendChild( methodCall );
 
-    QDomElement methodNameNode = doc.createElement("methodName");
-    methodNameNode.appendChild( doc.createTextNode( methodName ) );
-    methodCall.appendChild( methodNameNode );
+    QDomElement methodNameNode = document.createElement(tagMethodName);
+    methodNameNode.appendChild(document.createTextNode(methodName));
+    methodCall.appendChild(methodNameNode);
 
-    QDomElement paramsNode = doc.createElement("params");
-    methodCall.appendChild( paramsNode );
+    QDomElement paramsNode = document.createElement(tagParams);
+    methodCall.appendChild(paramsNode);
 
     foreach (const QVariant &parameter, parameters) {
-        QDomElement paramNode = doc.createElement("param");
-        paramNode.appendChild( Converter::toDomElement(parameter, doc) );
-        paramsNode.appendChild( paramNode );
+        QDomElement paramNode = document.createElement(tagParam);
+        paramNode.appendChild(toDomElement(parameter, document));
+        paramsNode.appendChild(paramNode);
     }
 
-    return doc.toByteArray(2);
+    return document.toByteArray();
+}
+
+QDomElement Request::toDomElement(const QVariant &val, QDomDocument &doc) const
+{
+    QDomElement valueElement = doc.createElement(tagValue);
+    QDomElement data;
+
+    switch (val.type()) {
+    case QVariant::Int:
+    case QVariant::UInt:
+        data = doc.createElement(tagInt);
+        data.appendChild(doc.createTextNode(val.toString()));
+        break;
+    case QVariant::String:
+        data = doc.createElement(tagString);
+        data.appendChild(doc.createTextNode(val.toString()));
+        break;
+    case QVariant::Double:
+        data = doc.createElement(tagDouble);
+        data.appendChild(doc.createTextNode(val.toString()));
+        break;
+    case QVariant::DateTime:
+        data = doc.createElement(tagDateTime);
+        data.appendChild(doc.createTextNode(toDateTime(val.toDateTime())));
+        break;
+    case QVariant::Bool:
+        data = doc.createElement(tagBool);
+        data.appendChild(doc.createTextNode(val.toBool() ? "1" : "0"));
+        break;
+    case QVariant::ByteArray:
+        data = doc.createElement(tagBase64);
+        data.appendChild(doc.createTextNode(val.toByteArray().toBase64()));
+        break;
+    case QVariant::List:
+    case QVariant::StringList:
+        {
+            data = doc.createElement(tagArray);
+            QDomElement arrayData = doc.createElement(tagData);
+            data.appendChild( arrayData );
+            QList<QVariant> list = val.toList();
+            QList<QVariant>::iterator it;
+            for (it = list.begin(); it!=list.end(); ++it) {
+                // Recursion
+                arrayData.appendChild(toDomElement((*it), doc));
+            }
+            break;
+        }
+    case QVariant::Map:
+        {
+            data = doc.createElement(tagStruct);
+            QMap<QString, QVariant> map = val.toMap();
+            QMap<QString, QVariant>::ConstIterator it;
+            for (it = map.constBegin(); it != map.constEnd(); ++it) {
+                QDomElement member = doc.createElement(tagMember);
+                data.appendChild(member);
+
+                QDomElement nameElement = doc.createElement(tagName);
+                nameElement.appendChild(doc.createTextNode(it.key()));
+                // Recursion
+                QDomElement valueElement = toDomElement(it.value(), doc);
+
+                member.appendChild(nameElement);
+                member.appendChild(valueElement);
+            }
+            break;
+        }
+    default:
+        {
+            // unsupported type
+        }
+    };
+
+    if (!data.isNull()) {
+        valueElement.appendChild(data);
+    }
+
+    return valueElement;
+}
+
+QString Request::toDateTime(const QDateTime &date) const
+{
+    return date.toString("yyyyMMddThh:mm:ss");
 }
 
 } // namespace xmlrpc
