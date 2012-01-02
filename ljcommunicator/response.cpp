@@ -20,7 +20,6 @@
 
 #include <QtXml>
 #include "response.h"
-#include "converter.h"
 
 namespace xmlrpc
 {
