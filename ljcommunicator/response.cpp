@@ -147,14 +147,6 @@ QString Response::error() const
 
 QVariant Response::value(const QDomElement &node)
 {
-    if (node.nodeName() != tagValue) {
-        m_errorString = QString("XMLRPC format error: unexpected node name "
-                                "for value. Expected %1, found %2")
-                                .arg(tagValue)
-                                .arg(node.nodeName());
-        return QVariant::Invalid;
-    }
-
     if (node.nodeName() == tagValue) {
         QDomElement data = node.firstChild().toElement();
         if (data.isNull()) {
@@ -185,6 +177,12 @@ QVariant Response::value(const QDomElement &node)
                 return QVariant::Invalid;
             }
         }
+    } else {
+        m_errorString = QString("XMLRPC format error: unexpected node name "
+                                "for value. Expected %1, found %2")
+                                .arg(tagValue)
+                                .arg(node.nodeName());
+        return QVariant::Invalid;
     }
 }
 
