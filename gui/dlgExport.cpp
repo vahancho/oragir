@@ -49,10 +49,10 @@ ExportDialog::ExportDialog(QWidget *parent, Qt::WindowFlags f)
 
     // Posts
     m_recordsTree = new QTreeWidget(this);
-    m_recordsTree->setColumnCount(2);
+    m_recordsTree->setColumnCount(4);
     m_recordsTree->setRootIsDecorated(false);
     QStringList headerLabels;
-    headerLabels << "Selected" << "Subject" << "Date";
+    headerLabels << "Selected" << "Subject" << "Date" << "Comments";
     m_recordsTree->setHeaderLabels(headerLabels);
     m_recordsTree->header()->setStretchLastSection(false);
 
@@ -103,6 +103,7 @@ void ExportDialog::onGetRecords()
 
             node->setText(1, event["event"].toString());
             node->setText(2, event["eventtime"].toString());
+            node->setText(3, event["reply_count"].toString());
             m_recordsTree->addTopLevelItem(node);
         }
     }
