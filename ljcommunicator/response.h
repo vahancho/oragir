@@ -31,21 +31,55 @@ class Response
 {
 
 public:
-    Response(const QByteArray &response);
+    Response();
 
     /// Parses the given response and check for its correctness.
-    bool parse(const QByteArray &response);
+    QVariant parse(const QByteArray &response);
 
-    /// Returns parsing result as a data.
-    /*!
-        Result usually is a structured data that can have sub structures.
-    */
-    QVariant data() const;
     bool isValid() const;
     QString error() const;
 
 private:
-    QVariant m_data;
+    QVariant value(const QDomElement &node);
+
+    QDateTime fromDateTime(const QString &datetime);
+
+    /// Parses <struct> element and returns result.
+    /*!
+        <struct>s can be recursive, any <value> may contain a <struct> or
+        any other type, including an <array>.
+        Struct elements structure looks like:
+        <struct>
+            <member>
+                <name>someName</name>
+                <value><i4>18</i4></value>
+            </member>
+            <member>
+                <name>anotherName</name>
+                <value><i4>139</i4></value>
+            </member>
+       </struct>
+    */
+    QVariant fromStruct(const QDomElement &node);
+
+    /// Parses <array> elements and return result - QVariantList.
+    /*!
+        <array> elements do not have names.
+        Example:
+        <array>
+            <data>
+                <value><i4>12</i4></value>
+                <value><string>Egypt</string></value>
+                <value><boolean>0</boolean></value>
+                <value><i4>-31</i4></value>
+            </data>
+       </array>
+
+       <arrays>s can be recursive, any value may contain an <array> or
+       any other type, including a <struct>.
+    */
+    QVariant fromArray(const QDomElement& node);
+
     QString m_errorString;
     bool m_isValid;
 };

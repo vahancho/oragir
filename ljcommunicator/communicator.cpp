@@ -90,11 +90,11 @@ QByteArray Communicator::getChallenge()
     std::auto_ptr<QBuffer> buffer(m_responses.take(m_currentRequestId));
     QByteArray buf = buffer->buffer();
 
-    xmlrpc::Response response(buf);
+    xmlrpc::Response response;
+    QVariant responceData = response.parse(buf);
     QByteArray challenge;
 
     if (response.isValid()) {
-        QVariant responceData = response.data();
         QMap<QString, QVariant> map = responceData.toMap();
         challenge = map.value("challenge").toByteArray();
         int serverTime = map.value("server_time").toInt();
@@ -143,10 +143,10 @@ QMap<QString, QVariant> Communicator::login()
     std::auto_ptr<QBuffer> buffer(m_responses.take(m_currentRequestId));
     QByteArray buf = buffer->buffer();
 
-    xmlrpc::Response response(buf);
+    xmlrpc::Response response;
+    QVariant responceData = response.parse(buf);
 
     if (response.isValid()) {
-        QVariant responceData = response.data();
         result = responceData.toMap();
     }
 
@@ -166,10 +166,10 @@ QMap<QString, QVariant> Communicator::getUserTags()
     QByteArray buf = buffer->buffer();
     qDebug() << buf;
 
-    xmlrpc::Response response(buf);
+    xmlrpc::Response response;
+    QVariant responceData = response.parse(buf);
 
     if (response.isValid()) {
-        QVariant responceData = response.data();
         result = responceData.toMap();
     }
 
@@ -194,10 +194,10 @@ QMap<QString, QVariant> Communicator::getComments(int postid)
     QByteArray buf = buffer->buffer();
     qDebug() << buf;
 
-    xmlrpc::Response response(buf);
+    xmlrpc::Response response;
+    QVariant responceData = response.parse(buf);
 
     if (response.isValid()) {
-        QVariant responceData = response.data();
         result = responceData.toMap();
     }
 
@@ -217,10 +217,10 @@ QMap<QString, QVariant> Communicator::syncitems()
     QByteArray buf = buffer->buffer();
     qDebug() << buf;
 
-    xmlrpc::Response response(buf);
+    xmlrpc::Response response;
+    QVariant responceData = response.parse(buf);
 
     if (response.isValid()) {
-        QVariant responceData = response.data();
         result = responceData.toMap();
     }
 
@@ -250,10 +250,10 @@ QMap<QString, QVariant> Communicator::getEvents(bool subjectsOnly)
     QByteArray buf = buffer->buffer();
     qDebug() << buf;
 
-    xmlrpc::Response response(buf);
+    xmlrpc::Response response;
+    QVariant responceData = response.parse(buf);
 
     if (response.isValid()) {
-        QVariant responceData = response.data();
         result = responceData.toMap();
     }
 

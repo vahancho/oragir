@@ -34,47 +34,7 @@ class Converter
 public:
     static QDomElement toDomElement(const QVariant &val, QDomDocument &doc);
 
-    static QVariant fromDomElement(const QDomElement &node);
-
     static QString toDateTime(const QDateTime &date);
-
-    static QDateTime fromDateTime(const QString &sdate);
-
-    /// Parses <struct> element and returns result.
-    /*!
-        <struct>s can be recursive, any <value> may contain a <struct> or
-        any other type, including an <array>.
-        Struct elements structure looks like:
-        <struct>
-            <member>
-                <name>someName</name>
-                <value><i4>18</i4></value>
-            </member>
-            <member>
-                <name>anotherName</name>
-                <value><i4>139</i4></value>
-            </member>
-       </struct>
-    */
-    static QVariant fromStruct(const QDomElement &node);
-
-    /// Parses <array> elements and return result - QVariantList.
-    /*!
-        <array> elements do not have names.
-        Example:
-        <array>
-            <data>
-                <value><i4>12</i4></value>
-                <value><string>Egypt</string></value>
-                <value><boolean>0</boolean></value>
-                <value><i4>-31</i4></value>
-            </data>
-       </array>
-
-       <arrays>s can be recursive, any value may contain an <array> or
-       any other type, including a <struct>.
-    */
-    static QVariant fromArray(const QDomElement& node);
 };
 
 }
