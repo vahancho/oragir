@@ -186,8 +186,6 @@ QVariant Response::value(const QDomElement &node)
                 return QVariant::Invalid;
             }
         }
-    } else {
-        return QVariant::Invalid;
     }
 }
 
