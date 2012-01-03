@@ -57,7 +57,7 @@ bool Response::isValid() const
 
 QVariant Response::parse(const QByteArray &response)
 {
-    QVariant res;
+    QVariant result;
     QDomDocument doc;
     int domErrorLine;
     int domErrorColumn;
@@ -88,45 +88,46 @@ QVariant Response::parse(const QByteArray &response)
         // <params> contains a single <param> which contains a single <value>.
         QDomElement paramElement = subNode.firstChild().toElement();
         tagName = paramElement.tagName();
-        if (tagName != tagParam) {
+        if (tagName == tagParam) {
+            QDomElement valueElement = paramElement.firstChild().toElement();
+            tagName = valueElement.tagName();
+            if (tagName == tagValue) {
+                // Read param data.
+                result = value(valueElement);
+                m_isValid = result.isValid();
+            } else {
+                m_errorString = QString("XMLRPC format error: expected %1, found %2")
+                                        .arg(tagValue)
+                                        .arg(tagName);
+                m_isValid = false;
+            }
+        } else {
             m_errorString = QString("XMLRPC format error: expected %1, found %2")
                                     .arg(tagParam)
                                     .arg(tagName);
-            m_isValid = false;
-        }
-
-        QDomElement valueElement = paramElement.firstChild().toElement();
-        tagName = valueElement.tagName();
-        if (tagName != tagValue) {
-            m_errorString = QString("XMLRPC format error: expected %1, found %2")
-                                    .arg(tagValue)
-                                    .arg(tagName);
-            m_isValid = false;
-        }
-
-        // Read param data.
-        res = value(valueElement);
-
-        if (!res.isValid()) {
             m_isValid = false;
         }
     } else if (tagName == tagFault ) {
         QDomElement paramValue = subNode.firstChildElement();
 
         // Should be QMap
-        QVariant res = value(paramValue);
-        if (res.type() != QVariant::Map) {
-            m_errorString = QString("XMLRPC format error: responce fault "
+        result = value(paramValue);
+        if (result.type() == QVariant::Map) {
+            QMap<QString, QVariant> map = result.toMap();
+            if (!map.contains(tagFaultCode) || !map.contains(tagFaultString)) {
+                m_errorString = "XMLRPC format error: Failure struct should contain "
+                                "either fault code or fault description";
+            } else {
+                m_errorString = QString("XMLRPC error %1: %2")
+                                       .arg(map[tagFaultCode].toString())
+                                       .arg(map[tagFaultString].toString());
+            }
+        } else {
+            m_errorString = QString("XMLRPC format error: response failure "
                                     "value is not a struct");
-            m_isValid = false;
         }
 
-        QMap<QString, QVariant> map = res.toMap();
-        if (!map.contains(tagFaultCode) || !map.contains(tagFaultString)) {
-            m_errorString = "XMLRPC format error: Fault struct should contain "
-                            "either fault code or fault description";
-            m_isValid = false;
-        }
+        m_isValid = false;
     } else {
         m_errorString = QString("XMLRPC format error: tag should be either %1 "
                                 "or %2, received %3")
@@ -136,8 +137,7 @@ QVariant Response::parse(const QByteArray &response)
         m_isValid = false;
     }
 
-    m_isValid = true;
-    return res;
+    return result;
 }
 
 QString Response::error() const
