@@ -23,11 +23,12 @@
 
 #include <QVariant>
 #include <QDomElement>
+#include "export.h"
 
 namespace xmlrpc
 {
 
-class Response
+class LJCOMMUNICATOR_EXPORT Response
 {
 
 public:

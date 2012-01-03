@@ -21,15 +21,17 @@
 #ifndef __LJEVENT_H__
 #define __LJEVENT_H__
 
+#include "export.h"
 #include "response.h"
 
 namespace lj
 {
 
 /// Implements the wrapper class around responce for the events request.
-class Events : public xmlrpc::Response
+class LJCOMMUNICATOR_EXPORT Events : public xmlrpc::Response
 {
 public:
+    Events();
     Events(const QByteArray &data);
 
     typedef QMap<QString, QVariant> Event;

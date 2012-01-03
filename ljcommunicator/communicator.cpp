@@ -227,12 +227,11 @@ QMap<QString, QVariant> Communicator::syncitems()
     return result;
 }
 
-QMap<QString, QVariant> Communicator::getEvents(bool subjectsOnly)
+Events Communicator::getEvents(bool subjectsOnly)
 {
-    QMap<QString, QVariant> result;
     QVariantList params = authParams();
     if (params.size() == 0)
-        return result;
+        return Events();
 
     // Modify params by adding the item id.
     QMap<QString, QVariant> param = params.takeAt(0).toMap();
@@ -250,14 +249,8 @@ QMap<QString, QVariant> Communicator::getEvents(bool subjectsOnly)
     QByteArray buf = buffer->buffer();
     qDebug() << buf;
 
-    xmlrpc::Response response;
-    QVariant responceData = response.parse(buf);
-
-    if (response.isValid()) {
-        result = responceData.toMap();
-    }
-
-    return result;
+    Events events(buf);
+    return events;
 }
 
 void Communicator::request(QString methodName, const QVariantList &params)

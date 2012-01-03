@@ -25,6 +25,7 @@
 #include <QHeaderView>
 #include "dlgExport.h"
 #include "../ljcommunicator/communicator.h"
+#include "../ljcommunicator/ljevents.h"
 
 namespace gui
 {
@@ -89,21 +90,18 @@ void ExportDialog::onGetRecords()
 {
     lj::Communicator com;
     com.setUser(m_leUser->text(), m_lePassword->text());
-    QMap<QString, QVariant> result = com.getEvents(true);
-    if (result.size() > 0) {
-        QVariantList events = result["events"].toList();
-        foreach (const QVariant &var, events) {
-            QMap<QString, QVariant> event = var.toMap();
-
+    lj::Events events = com.getEvents(true);
+    if (events.isValid()) {
+        for (int i = 0; i < events.count(); ++i) {
             QTreeWidgetItem *node = new QTreeWidgetItem;
             node->setFlags(Qt::ItemIsSelectable |
                            Qt::ItemIsUserCheckable |
                            Qt::ItemIsEnabled);
             node->setCheckState(0, Qt::Unchecked);
 
-            node->setText(1, event["event"].toString());
-            node->setText(2, event["eventtime"].toString());
-            node->setText(3, event["reply_count"].toString());
+            node->setText(1, events.text(i));
+            node->setText(2, events.time(i));
+            node->setText(3, QString::number(events.commentCount(i)));
             m_recordsTree->addTopLevelItem(node);
         }
     }

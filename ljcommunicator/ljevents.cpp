@@ -23,6 +23,9 @@
 namespace lj
 {
 
+Events::Events()
+{}
+
 Events::Events(const QByteArray &data)
 {
     // Parse response data and extract events list from
@@ -30,7 +33,7 @@ Events::Events(const QByteArray &data)
     QVariant response = parse(data);
     if (isValid()) {
         QMap<QString, QVariant> responseMap = response.toMap();
-        m_events = responseMap["event"].toList();
+        m_events = responseMap["events"].toList();
     }
 }
 

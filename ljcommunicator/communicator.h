@@ -25,6 +25,7 @@
 #include <QHttp>
 #include <QEventLoop>
 #include "export.h"
+#include "ljevents.h"
 
 class QBuffer;
 
@@ -52,7 +53,7 @@ public:
     QMap<QString, QVariant> login();
     QMap<QString, QVariant> getComments(int postid);
     QMap<QString, QVariant> syncitems();
-    QMap<QString, QVariant> getEvents(bool subjectsOnly = false);
+    Events getEvents(bool subjectsOnly = false);
 
 protected slots:
     void requestFinished(int id, bool error);
