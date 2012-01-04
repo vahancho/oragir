@@ -28,6 +28,7 @@
 
 class QSignalMapper;
 class QTreeWidget;
+class QTreeWidgetItem;
 class QLabel;
 
 namespace gui
@@ -217,6 +218,10 @@ private:
 
     /// Stores the list of opened databases.
     QTreeWidget *m_folderTree;
+
+    QTreeWidgetItem *m_filterFolder;
+
+    QTreeWidgetItem *m_blogFolder;
 
     /// The number of processed streaming items.
     int m_processedItemCount;

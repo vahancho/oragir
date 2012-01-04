@@ -129,7 +129,6 @@ void MainWindow::createFolderTree()
 
     m_folderTree = new QTreeWidget(this);
     m_folderTree->setColumnCount(1);
-    m_folderTree->setRootIsDecorated(false);
     QStringList headerLabels;
     headerLabels << QString();
     m_folderTree->setHeaderLabels(headerLabels);
@@ -138,6 +137,19 @@ void MainWindow::createFolderTree()
             this, SLOT(onFolderContextMenu(const QPoint &)));
     connect(m_folderTree, SIGNAL(doubleClicked(const QModelIndex &)),
             this, SLOT(onFolderDblClicked(const QModelIndex &)));
+
+    // Create default folders.
+    m_filterFolder = new QTreeWidgetItem;
+    m_filterFolder->setIcon(Name, QIcon(":/icons/folder"));
+    m_filterFolder->setText(Name, "Filtered");
+    m_filterFolder->setToolTip(Name, "Filtered");
+    m_folderTree->addTopLevelItem(m_filterFolder);
+
+    m_blogFolder = new QTreeWidgetItem;
+    m_blogFolder->setIcon(Name, QIcon(":/icons/folder"));
+    m_blogFolder->setText(Name, "Blog");
+    m_blogFolder->setToolTip(Name, "Blog");
+    m_folderTree->addTopLevelItem(m_blogFolder);
 
     dock->setWidget(m_folderTree);
     addDockWidget(Qt::LeftDockWidgetArea, dock);
@@ -150,14 +162,21 @@ void MainWindow::createFolderView(const QString &table)
     if (!db.isValid())
         return;
 
-    // Duplicate nodes disallowed in database list view, so search
+    // Duplicate nodes disallowed for filter folders, so search
     // among existing nodes and if a node with the given name exists
     // do not add another one.
-    QList<QTreeWidgetItem *> nodes =
-                m_folderTree->findItems(table, Qt::MatchFixedString, Name);
-    if (nodes.size() == 0) {
+    bool folderExist = false;
+    for (int i = 0; i < m_filterFolder->childCount(); ++i) {
+        QTreeWidgetItem *node = m_filterFolder->child(i);
+        if (node->text(Name) == table) {
+            folderExist = true;
+            break;
+        }
+    }
+
+    if (!folderExist) {
         // Add tree node for the given database.
-        QTreeWidgetItem *node = new QTreeWidgetItem;
+        QTreeWidgetItem *node = new QTreeWidgetItem(m_filterFolder);
         node->setIcon(Name, QIcon(":/icons/folder"));
         node->setText(Name, table);
         node->setToolTip(Name, table);
@@ -740,13 +759,15 @@ void MainWindow::onOptions()
 
 void MainWindow::onFolderContextMenu(const QPoint &pos)
 {
-    if(m_folderTree->itemAt(pos) != 0) {
-        QMenu menu;
-        QAction *act = menu.addAction("&Open", this, SLOT(onTableViewOpen()));
-        menu.setDefaultAction(act);
-        menu.addAction(m_folderDeleteAction);
+    if(QTreeWidgetItem *node = m_folderTree->itemAt(pos)) {
+        if (node->parent() == m_filterFolder) {
+            QMenu menu;
+            QAction *act = menu.addAction("&Open", this, SLOT(onTableViewOpen()));
+            menu.setDefaultAction(act);
+            menu.addAction(m_folderDeleteAction);
 
-        menu.exec(m_folderTree->mapToGlobal(QPoint(pos.x(), pos.y() + 20)));
+            menu.exec(m_folderTree->mapToGlobal(QPoint(pos.x(), pos.y() + 20)));
+        }
     }
 }
 
@@ -775,10 +796,10 @@ void MainWindow::onFolderDelete()
 
     // Remove all nodes for the given database.
     // Start from bottom to top to prevent shifting the indexes.
-    for(int i = m_folderTree->topLevelItemCount() - 1; i >= 0 ; --i) {
-        QTreeWidgetItem *item = m_folderTree->topLevelItem(i);
+    for(int i = m_filterFolder->childCount() - 1; i >= 0 ; --i) {
+        QTreeWidgetItem *item = m_filterFolder->child(i);
         if (item->data(Name, Qt::UserRole) == folderName)
-            m_folderTree->takeTopLevelItem(i);
+            m_filterFolder->takeChild(i);
     }
 
     // Finally remove table from the database.
@@ -795,7 +816,7 @@ void MainWindow::onParserStateChanged(int /*state*/)
 void MainWindow::onFolderDblClicked(const QModelIndex &index)
 {
     if (index.isValid()) {
-        QTreeWidgetItem *item = m_folderTree->topLevelItem(index.row());
+        QTreeWidgetItem *item = m_filterFolder->child(index.row());
         QString tableName = item->data(Name, Qt::UserRole).toString();
         openTableView(tableName);
     }
