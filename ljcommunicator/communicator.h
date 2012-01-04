@@ -27,6 +27,7 @@
 #include "export.h"
 #include "ljevents.h"
 #include "ljuserinfo.h"
+#include "ljusertags.h"
 
 class QBuffer;
 
@@ -50,7 +51,7 @@ public:
 
     /// Implements LJ getchellange command.
     QByteArray getChallenge();
-    QMap<QString, QVariant> getUserTags();
+    UserTags getUserTags();
     UserInfo login();
     QMap<QString, QVariant> getComments(int postid);
     QMap<QString, QVariant> syncitems();

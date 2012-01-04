@@ -146,12 +146,11 @@ UserInfo Communicator::login()
     return userInfo;
 }
 
-QMap<QString, QVariant> Communicator::getUserTags()
+UserTags Communicator::getUserTags()
 {
-    QMap<QString, QVariant> result;
     QVariantList params = authParams();
     if (params.size() == 0)
-        return result;
+        return UserTags();
 
     request("LJ.XMLRPC.getusertags", params);
 
@@ -159,14 +158,8 @@ QMap<QString, QVariant> Communicator::getUserTags()
     QByteArray buf = buffer->buffer();
     qDebug() << buf;
 
-    xmlrpc::Response response;
-    QVariant responceData = response.parse(buf);
-
-    if (response.isValid()) {
-        result = responceData.toMap();
-    }
-
-    return result;
+    UserTags tags(buf);
+    return tags;
 }
 
 QMap<QString, QVariant> Communicator::getComments(int postid)
