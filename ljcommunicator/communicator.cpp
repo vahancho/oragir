@@ -213,7 +213,7 @@ SyncItems Communicator::syncitems(const QString &lastsync)
     return items;
 }
 
-Events Communicator::getEvents(bool subjectsOnly)
+Events Communicator::getEvents(bool subjectsOnly, const QString &lastsync)
 {
     QVariantList params = authParams();
     if (params.size() == 0)
@@ -227,6 +227,10 @@ Events Communicator::getEvents(bool subjectsOnly)
     //param["selecttype"] = "lastn";
     //param["howmany"] = 8;
     param["selecttype"] = "syncitems";
+
+    if (!lastsync.isEmpty()) {
+        param["lastsync"] = lastsync;
+    }
     params.push_back(param);
 
     request("LJ.XMLRPC.getevents", params);

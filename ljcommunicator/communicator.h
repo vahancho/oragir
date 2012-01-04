@@ -71,7 +71,9 @@ public:
                         of the newest item you have saved on disk.
     */
     SyncItems syncitems(const QString &lastsync = QString());
-    Events getEvents(bool subjectsOnly = false);
+
+    Events getEvents(bool subjectsOnly = false,
+                     const QString &lastsync = QString());
 
 protected slots:
     void requestFinished(int id, bool error);
