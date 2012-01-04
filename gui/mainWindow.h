@@ -146,6 +146,9 @@ private:
         Name = 0
     };
 
+    /// Creates and sets up the folders tree view.
+    void createFolderTree();
+
     /// Returns the active MDI sub window.
     /*!
         Returns the active MDI sub window if any, otherwise returns 0.
@@ -213,7 +216,7 @@ private:
     QMdiArea m_mdiArea;
 
     /// Stores the list of opened databases.
-    QTreeWidget *m_foldersList;
+    QTreeWidget *m_folderTree;
 
     /// The number of processed streaming items.
     int m_processedItemCount;

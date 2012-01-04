@@ -89,23 +89,7 @@ MainWindow::MainWindow(QWidget *parent, Qt::WFlags flags)
             SIGNAL(checked()), this,
             SLOT(onVersionChecked()));
 
-    QDockWidget *dock = new QDockWidget(str::FoldersTitle, this);
-    dock->setObjectName(str::FoldersTitle);
-
-    m_foldersList = new QTreeWidget(this);
-    m_foldersList->setColumnCount(1);
-    m_foldersList->setRootIsDecorated(false);
-    QStringList headerLabels;
-    headerLabels << QString();
-    m_foldersList->setHeaderLabels(headerLabels);
-    m_foldersList->setContextMenuPolicy(Qt::CustomContextMenu);
-    connect(m_foldersList, SIGNAL(customContextMenuRequested(const QPoint &)),
-            this, SLOT(onFolderContextMenu(const QPoint &)));
-    connect(m_foldersList, SIGNAL(doubleClicked(const QModelIndex &)),
-            this, SLOT(onFolderDblClicked(const QModelIndex &)));
-
-    dock->setWidget(m_foldersList);
-    addDockWidget(Qt::LeftDockWidgetArea, dock);
+    createFolderTree();
 
     QLabel *statusLabel = new QLabel(this);
     statusLabel->setMinimumWidth(24);
@@ -138,6 +122,27 @@ MainWindow::MainWindow(QWidget *parent, Qt::WFlags flags)
 MainWindow::~MainWindow()
 {}
 
+void MainWindow::createFolderTree()
+{
+    QDockWidget *dock = new QDockWidget(str::FoldersTitle, this);
+    dock->setObjectName(str::FoldersTitle);
+
+    m_folderTree = new QTreeWidget(this);
+    m_folderTree->setColumnCount(1);
+    m_folderTree->setRootIsDecorated(false);
+    QStringList headerLabels;
+    headerLabels << QString();
+    m_folderTree->setHeaderLabels(headerLabels);
+    m_folderTree->setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(m_folderTree, SIGNAL(customContextMenuRequested(const QPoint &)),
+            this, SLOT(onFolderContextMenu(const QPoint &)));
+    connect(m_folderTree, SIGNAL(doubleClicked(const QModelIndex &)),
+            this, SLOT(onFolderDblClicked(const QModelIndex &)));
+
+    dock->setWidget(m_folderTree);
+    addDockWidget(Qt::LeftDockWidgetArea, dock);
+}
+
 void MainWindow::createFolderView(const QString &table)
 {
     core::Database *dbObj = core::Application::theApp()->database();
@@ -149,7 +154,7 @@ void MainWindow::createFolderView(const QString &table)
     // among existing nodes and if a node with the given name exists
     // do not add another one.
     QList<QTreeWidgetItem *> nodes =
-                m_foldersList->findItems(table, Qt::MatchFixedString, Name);
+                m_folderTree->findItems(table, Qt::MatchFixedString, Name);
     if (nodes.size() == 0) {
         // Add tree node for the given database.
         QTreeWidgetItem *node = new QTreeWidgetItem;
@@ -157,8 +162,8 @@ void MainWindow::createFolderView(const QString &table)
         node->setText(Name, table);
         node->setToolTip(Name, table);
         node->setData(Name, Qt::UserRole, table);
-        m_foldersList->addTopLevelItem(node);
-        m_foldersList->setCurrentItem(node);
+        m_folderTree->addTopLevelItem(node);
+        m_folderTree->setCurrentItem(node);
     }
 
     // Create and show database view.
@@ -568,8 +573,8 @@ void MainWindow::updateStatusLabels(const QString &table)
 
     // Update the corresponding folder (table) name with the number
     // of unread items.
-    for(int i = 0; i < m_foldersList->topLevelItemCount(); ++i) {
-        QTreeWidgetItem *item = m_foldersList->topLevelItem(i);
+    for(int i = 0; i < m_folderTree->topLevelItemCount(); ++i) {
+        QTreeWidgetItem *item = m_folderTree->topLevelItem(i);
         QString name = item->data(Name, Qt::UserRole).toString();
         if (name == table) {
             QFont f;
@@ -735,26 +740,26 @@ void MainWindow::onOptions()
 
 void MainWindow::onFolderContextMenu(const QPoint &pos)
 {
-    if(m_foldersList->itemAt(pos) != 0) {
+    if(m_folderTree->itemAt(pos) != 0) {
         QMenu menu;
         QAction *act = menu.addAction("&Open", this, SLOT(onTableViewOpen()));
         menu.setDefaultAction(act);
         menu.addAction(m_folderDeleteAction);
 
-        menu.exec(m_foldersList->mapToGlobal(QPoint(pos.x(), pos.y() + 20)));
+        menu.exec(m_folderTree->mapToGlobal(QPoint(pos.x(), pos.y() + 20)));
     }
 }
 
 void MainWindow::onTableViewOpen()
 {
     QString folderName =
-        m_foldersList->currentItem()->data(Name, Qt::UserRole).toString();
+        m_folderTree->currentItem()->data(Name, Qt::UserRole).toString();
     openTableView(folderName);
 }
 
 void MainWindow::onFolderDelete()
 {
-    QString folderName = m_foldersList->currentItem()->data(Name, Qt::UserRole).toString();
+    QString folderName = m_folderTree->currentItem()->data(Name, Qt::UserRole).toString();
 
     // Find database view(s) that has to be closed.
     QList<QMdiSubWindow *> mdiWindows = m_mdiArea.subWindowList();
@@ -770,10 +775,10 @@ void MainWindow::onFolderDelete()
 
     // Remove all nodes for the given database.
     // Start from bottom to top to prevent shifting the indexes.
-    for(int i = m_foldersList->topLevelItemCount() - 1; i >= 0 ; --i) {
-        QTreeWidgetItem *item = m_foldersList->topLevelItem(i);
+    for(int i = m_folderTree->topLevelItemCount() - 1; i >= 0 ; --i) {
+        QTreeWidgetItem *item = m_folderTree->topLevelItem(i);
         if (item->data(Name, Qt::UserRole) == folderName)
-            m_foldersList->takeTopLevelItem(i);
+            m_folderTree->takeTopLevelItem(i);
     }
 
     // Finally remove table from the database.
@@ -790,7 +795,7 @@ void MainWindow::onParserStateChanged(int /*state*/)
 void MainWindow::onFolderDblClicked(const QModelIndex &index)
 {
     if (index.isValid()) {
-        QTreeWidgetItem *item = m_foldersList->topLevelItem(index.row());
+        QTreeWidgetItem *item = m_folderTree->topLevelItem(index.row());
         QString tableName = item->data(Name, Qt::UserRole).toString();
         openTableView(tableName);
     }
