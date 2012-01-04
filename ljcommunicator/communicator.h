@@ -55,7 +55,22 @@ public:
     UserTags getUserTags();
     UserInfo login();
     QMap<QString, QVariant> getComments(int postid);
-    SyncItems syncitems();
+
+    /// Returns a list (or part of a list) of all the items.
+    /*!
+        Returns a list (or part of a list) of all the items (journal entries,
+        to-do items, comments) that have been created or updated on LiveJournal
+        since you last downloaded them. Note that the items themselves are not
+        returned --- only the item type and the item number. After you get this
+        you have to go fetch the items using another protocol mode. For journal
+        entries (type "L"), use the getevents mode with a selecttype of "syncitems".
+
+        @param lastsync The date you last downloaded synced, in "yyyy-mm-dd hh:mm:ss"
+                        format. Note: do not make this date up from the client's 
+                        local computer... send the date from this mode's response 
+                        of the newest item you have saved on disk.
+    */
+    SyncItems syncitems(const QString &lastsync = QString());
     Events getEvents(bool subjectsOnly = false);
 
 protected slots:

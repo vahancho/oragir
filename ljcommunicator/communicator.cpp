@@ -190,11 +190,18 @@ QMap<QString, QVariant> Communicator::getComments(int postid)
     return result;
 }
 
-SyncItems Communicator::syncitems()
+SyncItems Communicator::syncitems(const QString &lastsync)
 {
     QVariantList params = authParams();
     if (params.size() == 0)
         return SyncItems();
+
+    if (!lastsync.isEmpty()) {
+        // Modify params by adding the lastsync time.
+        QMap<QString, QVariant> param = params.takeAt(0).toMap();
+        param["lastsync"] = lastsync;
+        params.push_back(param);
+    }
 
     request("LJ.XMLRPC.syncitems", params);
 
