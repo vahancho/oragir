@@ -130,12 +130,11 @@ QVariantList Communicator::authParams()
     return params;
 }
 
-QMap<QString, QVariant> Communicator::login()
+UserInfo Communicator::login()
 {
-    QMap<QString, QVariant> result;
     QVariantList params = authParams();
     if (params.size() == 0)
-        return result;
+        return UserInfo();
 
     // Send request to login.
     request("LJ.XMLRPC.login", params);
@@ -143,14 +142,8 @@ QMap<QString, QVariant> Communicator::login()
     std::auto_ptr<QBuffer> buffer(m_responses.take(m_currentRequestId));
     QByteArray buf = buffer->buffer();
 
-    xmlrpc::Response response;
-    QVariant responceData = response.parse(buf);
-
-    if (response.isValid()) {
-        result = responceData.toMap();
-    }
-
-    return result;
+    UserInfo userInfo(buf);
+    return userInfo;
 }
 
 QMap<QString, QVariant> Communicator::getUserTags()

@@ -26,6 +26,7 @@
 #include "dlgExport.h"
 #include "../ljcommunicator/communicator.h"
 #include "../ljcommunicator/ljevents.h"
+#include "../ljcommunicator/ljuserinfo.h"
 
 namespace gui
 {
@@ -78,10 +79,10 @@ void ExportDialog::onUserVerify()
 {
     lj::Communicator com;
     com.setUser(m_leUser->text(), m_lePassword->text());
-    QMap<QString, QVariant> loginResult = com.login();
-    if (loginResult.size() > 0) {
+    lj::UserInfo userInfo = com.login();
+    if (userInfo.isValid()) {
         QString s = QString("Verified: %1")
-                .arg(loginResult.value("fullname").toString());
+                            .arg(userInfo.fullName());
         setWindowTitle(s);
     }
 }

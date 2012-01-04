@@ -26,6 +26,7 @@
 #include <QEventLoop>
 #include "export.h"
 #include "ljevents.h"
+#include "ljuserinfo.h"
 
 class QBuffer;
 
@@ -50,7 +51,7 @@ public:
     /// Implements LJ getchellange command.
     QByteArray getChallenge();
     QMap<QString, QVariant> getUserTags();
-    QMap<QString, QVariant> login();
+    UserInfo login();
     QMap<QString, QVariant> getComments(int postid);
     QMap<QString, QVariant> syncitems();
     Events getEvents(bool subjectsOnly = false);
