@@ -28,6 +28,7 @@
 #include "ljevents.h"
 #include "ljuserinfo.h"
 #include "ljusertags.h"
+#include "ljsyncitems.h"
 
 class QBuffer;
 
@@ -54,7 +55,7 @@ public:
     UserTags getUserTags();
     UserInfo login();
     QMap<QString, QVariant> getComments(int postid);
-    QMap<QString, QVariant> syncitems();
+    SyncItems syncitems();
     Events getEvents(bool subjectsOnly = false);
 
 protected slots:

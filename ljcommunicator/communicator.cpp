@@ -190,12 +190,11 @@ QMap<QString, QVariant> Communicator::getComments(int postid)
     return result;
 }
 
-QMap<QString, QVariant> Communicator::syncitems()
+SyncItems Communicator::syncitems()
 {
-    QMap<QString, QVariant> result;
     QVariantList params = authParams();
     if (params.size() == 0)
-        return result;
+        return SyncItems();
 
     request("LJ.XMLRPC.syncitems", params);
 
@@ -203,14 +202,8 @@ QMap<QString, QVariant> Communicator::syncitems()
     QByteArray buf = buffer->buffer();
     qDebug() << buf;
 
-    xmlrpc::Response response;
-    QVariant responceData = response.parse(buf);
-
-    if (response.isValid()) {
-        result = responceData.toMap();
-    }
-
-    return result;
+    SyncItems items(buf);
+    return items;
 }
 
 Events Communicator::getEvents(bool subjectsOnly)
