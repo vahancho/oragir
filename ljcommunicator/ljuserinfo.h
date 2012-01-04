@@ -43,6 +43,8 @@ public:
     /// List of shared/news/community journals that the user has permission to post in.
     QStringList journals() const;
 
+    QStringList pictureUrls() const;
+
 private:
     QMap<QString, QVariant> m_info;
 };

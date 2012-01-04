@@ -136,6 +136,11 @@ UserInfo Communicator::login()
     if (params.size() == 0)
         return UserInfo();
 
+    QMap<QString, QVariant> param = params.takeAt(0).toMap();
+    param["getpickwurls"] = "1";
+    param["getpickws"] = "1";
+    params.push_back(param);
+
     // Send request to login.
     request("LJ.XMLRPC.login", params);
 

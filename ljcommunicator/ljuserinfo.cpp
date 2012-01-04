@@ -58,4 +58,15 @@ QStringList UserInfo::journals() const
     return result;
 }
 
+QStringList UserInfo::pictureUrls() const
+{
+    QVariantList vl = m_info["pickwurls"].toList();
+    QStringList result;
+    foreach (const QVariant &v, vl) {
+        result.push_back(v.toString());
+    }
+
+    return result;
+}
+
 }
