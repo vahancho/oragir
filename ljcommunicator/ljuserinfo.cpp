@@ -18,6 +18,7 @@
 *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
 ***************************************************************************/
 
+#include <QStringList>
 #include "ljuserinfo.h"
 
 namespace lj
@@ -44,6 +45,17 @@ QString UserInfo::fullName() const
 QString UserInfo::message() const
 {
     return m_info["message"].toString();
+}
+
+QStringList UserInfo::journals() const
+{
+    QVariantList vl = m_info["usejournals"].toList();
+    QStringList result;
+    foreach (const QVariant &v, vl) {
+        result.push_back(v.toString());
+    }
+
+    return result;
 }
 
 }

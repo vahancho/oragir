@@ -40,6 +40,9 @@ public:
     /// Returns LJ message to the user.
     QString message() const;
 
+    /// List of shared/news/community journals that the user has permission to post in.
+    QStringList journals() const;
+
 private:
     QMap<QString, QVariant> m_info;
 };
