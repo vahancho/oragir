@@ -50,9 +50,9 @@ HtmlEditor::HtmlEditor(QWidget *parent)
 void HtmlEditor::onTabChanged(int tab)
 {
     if (tab == Html) {
-		QString content = m_webView->page()->mainFrame()->toHtml();
-		m_htmlView->setPlainText(content);
-		} else if (tab == Preview) {
+        QString content = m_webView->page()->mainFrame()->toHtml();
+        m_htmlView->setPlainText(content);
+    } else if (tab == Preview) {
         QString html = m_htmlView->toPlainText();
         m_webView->setContent(html.toUtf8(), "text/html;charset=utf-8");
     }
