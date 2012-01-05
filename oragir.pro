@@ -3,7 +3,7 @@ message("You are running qmake on oragir.pro file.")
 TEMPLATE = app
 TARGET = oragir
 DESTDIR = ./release
-QT += network xml sql
+QT += network xml sql webkit
 
 CONFIG += release
 win32:CONFIG += embed_manifest_exe
