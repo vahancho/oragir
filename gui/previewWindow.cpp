@@ -18,7 +18,7 @@
 *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
 ***************************************************************************/
 
-#include <QTextEdit>
+#include <QWebView>
 #include <QLayout>
 #include <QFormLayout>
 #include <QLabel>
@@ -40,8 +40,7 @@ PreviewWindow::PreviewWindow(QWidget *parent, Qt::WindowFlags f)
     formLayout->addRow(tr("&URL:"), m_url);
     formLayout->addRow("&Title:", m_title);
 
-    m_preview = new QTextEdit(this);
-    m_preview->setReadOnly(true);
+    m_preview = new QWebView(this);
     
     QVBoxLayout *mainLayout = new QVBoxLayout;
     mainLayout->setContentsMargins(0, 0, 0, 0);
@@ -56,7 +55,7 @@ PreviewWindow::~PreviewWindow()
 
 void PreviewWindow::setText(const QString &text)
 {
-    m_preview->setText(text);
+    m_preview->setHtml(text);
 }
 
 void PreviewWindow::setAuthor(const QString &author)
@@ -78,7 +77,7 @@ void PreviewWindow::setTitle(const QString &title)
 
 void PreviewWindow::clear()
 {
-    m_preview->clear();
+    m_preview->setHtml("");
     m_author->clear();
     m_url->clear();
     m_title->clear();

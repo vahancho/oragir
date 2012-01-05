@@ -23,7 +23,7 @@
 
 #include <QWidget>
 
-class QTextEdit;
+class QWebView;
 class QLabel;
 
 namespace gui
@@ -47,7 +47,7 @@ public:
     void clear();
 
 private:
-    QTextEdit *m_preview;
+    QWebView *m_preview;
     QLabel *m_author;
     QLabel *m_url;
     QLabel *m_title;
