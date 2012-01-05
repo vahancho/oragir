@@ -2,15 +2,16 @@ message("You are running qmake on ljcommunicator.pro file.")
 
 TEMPLATE = lib
 TARGET = ljcommunicator
-DESTDIR = ./release
-QT += network xml
 
+# Will build the final executable in the release directory.
+DESTDIR = ../release
+
+QT += network xml
 CONFIG += release
 win32:CONFIG += embed_manifest_exe
 
-INCLUDEPATH += ./GeneratedFiles \
-               ./GeneratedFiles/release \
-			   $(ProjectDir)/. \
+INCLUDEPATH += GeneratedFiles \
+               GeneratedFiles/release \
                .
 win32:LIBS += -lqtmain -lQtCore4 -lQtNetwork4
 unix:LIBS += -lQtCore-lQtNetwork

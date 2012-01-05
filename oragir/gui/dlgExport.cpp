@@ -24,9 +24,9 @@
 #include <QTreeWidget>
 #include <QHeaderView>
 #include "dlgExport.h"
-#include "../ljcommunicator/communicator.h"
-#include "../ljcommunicator/ljevents.h"
-#include "../ljcommunicator/ljuserinfo.h"
+#include "../../ljcommunicator/communicator.h"
+#include "../../ljcommunicator/ljevents.h"
+#include "../../ljcommunicator/ljuserinfo.h"
 
 namespace gui
 {

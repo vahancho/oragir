@@ -2,27 +2,30 @@ message("You are running qmake on oragir.pro file.")
 
 TEMPLATE = app
 TARGET = oragir
-DESTDIR = ./release
-QT += network xml sql webkit
 
+# Will build the final executable in the release directory.
+DESTDIR = ../release
+
+QT += network xml sql webkit
 CONFIG += release
 win32:CONFIG += embed_manifest_exe
 
-INCLUDEPATH += ./GeneratedFiles \
-               ./GeneratedFiles/release \
-			   $(ProjectDir)/. \
+INCLUDEPATH += GeneratedFiles \
+               GeneratedFiles/release \
                .
-win32:LIBS += -lqtmain -lQtCore4 -lQtGui4 -lQtNetwork4 -lQtSql
-unix:LIBS += -lQtCore -lQtGui -lQtNetwork -lQtSql
+win32:LIBS += -lqtmain -lQtCore4 -lQtGui4 -lQtNetwork4 -lQtSql -l../release/ljcommunicator
+unix:LIBS += -lQtCore -lQtGui -lQtNetwork -lQtSql -l../release/ljcommunicator
 
 DEPENDPATH += .
-MOC_DIR += ./GeneratedFiles/release
+MOC_DIR += GeneratedFiles/release
+UI_DIR += GeneratedFiles
+RCC_DIR += GeneratedFiles
 OBJECTS_DIR += release
-UI_DIR += ./GeneratedFiles
-RCC_DIR += ./GeneratedFiles
 
 # Adds icon to the executable file on Windows.
 win32:RC_FILE = application.rc
 
 #Include file(s)
-include(oragir.pri)
+! include( oragir.pri ) {
+    error( Couldn't find the oragir.pri file! )
+}

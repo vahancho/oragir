@@ -15,6 +15,7 @@ HEADERS += ./core/propertyTable.h \
            ./gui/advancedOptionsPage.h \
            ./gui/connectOptionsPage.h \
            ./gui/dlgOptions.h \
+           ./gui/dlgExport.h \
            ./parser/atomParser.h \
            ./parser/blog.h \
            ./parser/post.h \
@@ -40,6 +41,7 @@ SOURCES += ./main.cpp \
            ./gui/advancedOptionsPage.cpp \
            ./gui/connectOptionsPage.cpp \
            ./gui/dlgOptions.cpp \
+           ./gui/dlgExport.cpp \
            ./parser/blog.cpp \
            ./parser/post.cpp \
            ./database/database.cpp \
