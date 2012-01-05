@@ -24,6 +24,7 @@
 #include "../parser/filter.h"
 #include "../database/database.h"
 #include "../gui/mainWindow.h"
+#include "../ljcommunicator/communicator.h"
 
 using namespace core;
 
@@ -33,7 +34,6 @@ int main(int argc, char *argv[])
     a.setWindowIcon(QIcon(":/icons/app"));
 
     Application::create();
-
     int ret = a.exec();
 
     core::Application::destroy();
