@@ -21,10 +21,6 @@
 #include <QtGui/QApplication>
 #include <QIcon>
 #include "../core/application.h"
-#include "../parser/filter.h"
-#include "../database/database.h"
-#include "../gui/mainWindow.h"
-#include "../ljcommunicator/communicator.h"
 
 using namespace core;
 
