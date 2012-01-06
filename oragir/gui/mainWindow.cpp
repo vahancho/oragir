@@ -896,7 +896,7 @@ void MainWindow::onBlogAccountSetup()
             // Now get events (posts) subjects only.
             lj::Events events = com.getEvents(true);
             if (events.isValid()) {
-                for (int i = 0; i < events.count(); ++i) {
+                for (int i = events.count() - 1; i >= 0; --i) {
                     QTreeWidgetItem *node = new QTreeWidgetItem(m_blogFolder);
                     node->setIcon(Name, QIcon(":/icons/folder"));
 
