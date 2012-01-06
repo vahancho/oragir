@@ -147,8 +147,8 @@ void MainWindow::createFolderTree()
 
     m_blogFolder = new QTreeWidgetItem;
     m_blogFolder->setIcon(Name, QIcon(":/icons/folder"));
-    m_blogFolder->setText(Name, "Blog");
-    m_blogFolder->setToolTip(Name, "Blog");
+    m_blogFolder->setText(Name, "My Blog (unknown)");
+    m_blogFolder->setToolTip(Name, "My Blog (unknown)");
     m_folderTree->addTopLevelItem(m_blogFolder);
 
     dock->setWidget(m_folderTree);
