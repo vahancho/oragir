@@ -48,6 +48,27 @@ public:
     /// Returns html content.
     QString content() const;
 
+public slots:
+    void setParagraph();
+    void setHeading1();
+    void setHeading2();
+    void setHeading3();
+    void setHeading4();
+    void setHeading5();
+    void setHeading6();
+    void setPreformatted();
+    void setAddress();
+    void setAlignLeft();
+    void setAlignCenter();
+    void setAlignRight();
+    void setAlignJustify();
+    void setIncreaseIndent();
+    void setDecreaseIndent();
+    void setNumberedList();
+    void setBulletedList();
+    void insertImage();
+    void createLink();
+
 private slots:
     void onTabChanged(int tab);
     void onLinkClicked(const QUrl &url);
@@ -58,6 +79,9 @@ private:
         Preview = 0,
         Html
     };
+
+    void invokeCommand(const QString&);
+    void invokeCommand(const QString &cmd, const QString &arg);
 
     QWebView *m_webView;
     QPlainTextEdit *m_htmlView;

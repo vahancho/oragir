@@ -22,6 +22,7 @@
 #include <QWebFrame>
 #include <QPlainTextEdit>
 #include <QDesktopServices>
+#include <QInputDialog>
 #include "htmlEditor.h"
 
 namespace gui
@@ -45,6 +46,7 @@ HtmlEditor::HtmlEditor(QWidget *parent)
     addTab(m_htmlView, "Html");
 
     connect(this, SIGNAL(currentChanged(int)), SLOT(onTabChanged(int)));
+    m_webView->setFocus();
 }
 
 void HtmlEditor::onTabChanged(int tab)
@@ -72,6 +74,129 @@ void HtmlEditor::onLinkClicked(const QUrl &url)
 QString HtmlEditor::content() const
 {
     return m_webView->page()->mainFrame()->toHtml();
+}
+
+void HtmlEditor::invokeCommand(const QString &cmd, const QString &arg)
+{
+    QWebFrame *webFrame = m_webView->page()->mainFrame();
+    QString script = QString("document.execCommand(\"%1\", false, \"%2\")")
+                            .arg(cmd).arg(arg);
+    webFrame->evaluateJavaScript(script);
+}
+
+void HtmlEditor::invokeCommand(const QString &cmd)
+{
+    QWebFrame *webFrame = m_webView->page()->mainFrame();
+    QString script = QString("document.execCommand(\"%1\", false, null)")
+	.arg(cmd);
+    webFrame->evaluateJavaScript(script);
+}
+
+void HtmlEditor::setParagraph()
+{
+    invokeCommand("formatBlock", "p");
+}
+
+void HtmlEditor::setHeading1()
+{
+    invokeCommand("formatBlock", "h1");
+}
+
+void HtmlEditor::setHeading2()
+{
+    invokeCommand("formatBlock", "h2");
+}
+
+void HtmlEditor::setHeading3()
+{
+    invokeCommand("formatBlock", "h3");
+	}
+
+void HtmlEditor::setHeading4()
+{
+    invokeCommand("formatBlock", "h4");
+}
+
+void HtmlEditor::setHeading5()
+{
+    invokeCommand("formatBlock", "h5");
+}
+
+void HtmlEditor::setHeading6()
+{
+    invokeCommand("formatBlock", "h6");
+}
+
+void HtmlEditor::setPreformatted()
+{
+    invokeCommand("formatBlock", "pre");
+}
+
+void HtmlEditor::setAddress()
+{
+    invokeCommand("formatBlock", "address");
+}
+
+void HtmlEditor::setAlignLeft()
+{
+    invokeCommand("justifyLeft");
+}
+
+void HtmlEditor::setAlignCenter()
+{
+    invokeCommand("justifyCenter");
+}
+
+void HtmlEditor::setAlignRight()
+{
+    invokeCommand("justifyRight");
+}
+
+void HtmlEditor::setAlignJustify()
+{
+    invokeCommand("justifyFull");
+}
+
+void HtmlEditor::setIncreaseIndent()
+{
+    invokeCommand("indent");
+}
+
+void HtmlEditor::setDecreaseIndent()
+{
+    invokeCommand("outdent");
+}
+
+void HtmlEditor::setNumberedList()
+{
+    invokeCommand("insertOrderedList");
+}
+
+void HtmlEditor::setBulletedList()
+{
+    invokeCommand("insertUnorderedList");
+}
+
+void HtmlEditor::insertImage()
+{
+    QString link = QInputDialog::getText(this, tr("Insert Image"),
+                                         "Enter URL");
+    if (!link.isEmpty()) {
+        QUrl url = QUrl(link, QUrl::TolerantMode);
+        if (url.isValid())
+            invokeCommand("insertImage", url.toString());
+    }
+}
+
+void HtmlEditor::createLink()
+{
+    QString link = QInputDialog::getText(this, tr("Create link"),
+                                        "Enter URL");
+    if (!link.isEmpty()) {
+        QUrl url = QUrl(link, QUrl::TolerantMode);
+        if (url.isValid())
+            invokeCommand("createLink", url.toString());
+    }
 }
 
 } // namespace gui
