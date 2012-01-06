@@ -32,6 +32,9 @@ const char strUserAgent[] = "Oragir v0.2; "
                             "http://sourceforge.net/projects/oragir; "
                             "vahancho@gmail.com";
 
+// Timeout between two requests to the server.
+const int timeout = 5000;
+
 Communicator::Communicator(QObject *parent)
     :
         QObject(parent)
@@ -276,6 +279,13 @@ void Communicator::requestFinished(int id, bool error)
     if (id != m_currentRequestId)
         return;
 
+    // Exit event loop after a timeout. This will prevent sending
+    // requests to the server too often.
+    QTimer::singleShot(timeout, this, SLOT(exitEventLoop()));
+}
+
+void Communicator::exitEventLoop()
+{
     m_eventLoop.exit();
 }
 

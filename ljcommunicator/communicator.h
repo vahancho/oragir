@@ -75,8 +75,9 @@ public:
     Events getEvents(bool subjectsOnly = false,
                      const QString &lastsync = QString());
 
-protected slots:
+private slots:
     void requestFinished(int id, bool error);
+    void exitEventLoop();
 
 private:
     void init();
