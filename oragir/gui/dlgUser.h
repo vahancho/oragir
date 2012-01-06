@@ -24,26 +24,20 @@
 #include <QDialog>
 
 class QLineEdit;
-class QTreeWidget;
 
 namespace gui
 {
 
-class ExportDialog : public QDialog
+class UserAccount : public QDialog
 {
     Q_OBJECT
 
 public:
-    ExportDialog(QWidget *parent = 0, Qt::WindowFlags f = 0);
-
-private slots:
-    void onUserVerify();
-    void onGetRecords();
+    UserAccount(QWidget *parent = 0, Qt::WindowFlags f = 0);
 
 private:
     QLineEdit *m_leUser;
     QLineEdit *m_lePassword;
-    QTreeWidget *m_recordsTree;
 };
 
 } // namespace gui

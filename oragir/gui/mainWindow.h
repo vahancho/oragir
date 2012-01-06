@@ -137,7 +137,7 @@ private slots:
     /// Called when opening a table view action triggered.
     void onTableViewOpen();
 
-    void onBlogExport();
+    void onBlogAccountSetup();
 
 private:
 

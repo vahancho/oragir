@@ -23,7 +23,7 @@
 #include "databaseView.h"
 #include "dlgFilters.h"
 #include "dlgOptions.h"
-#include "dlgExport.h"
+#include "dlgUser.h"
 #include "generalOptionsPage.h"
 #include "connectOptionsPage.h"
 #include "advancedOptionsPage.h"
@@ -347,8 +347,8 @@ void MainWindow::createMenus()
     // Blog menu
     //
     QMenu *blogMenu = new QMenu("&Blog", this);
-    QAction *exportAction = blogMenu->addAction("&Export...");
-    connect(exportAction, SIGNAL(triggered()), this, SLOT(onBlogExport()));
+    QAction *setupAction = blogMenu->addAction("&Setup Account...");
+    connect(setupAction, SIGNAL(triggered()), this, SLOT(onBlogAccountSetup()));
 
     //////////////////////////////////////////////////////////////////////////
     // Tools menu
@@ -863,9 +863,9 @@ void MainWindow::onVersionChecked()
     }
 }
 
-void MainWindow::onBlogExport()
+void MainWindow::onBlogAccountSetup()
 {
-    ExportDialog dlg(this);
+    UserAccount dlg(this);
     dlg.exec();
 }
 
