@@ -30,10 +30,12 @@
 #include "../core/application.h"
 #include "../core/defaultManager.h"
 #include "../core/versionManager.h"
+#include "../core/credentials.h"
 #include "../parser/atomParser.h"
 #include "../database/database.h"
 #include "../strings/strings.h"
 #include "../strings/guiStrings.h"
+#include "../../ljcommunicator/communicator.h"
 
 namespace gui
 {
@@ -865,8 +867,29 @@ void MainWindow::onVersionChecked()
 
 void MainWindow::onBlogAccountSetup()
 {
+    core::Credentials *cr = core::Application::theApp()->credentials();
+
     UserAccount dlg(this);
-    dlg.exec();
+    dlg.setUser(cr->user());
+    dlg.setPassword(cr->password());
+
+    if (dlg.exec() == QDialog::Accepted) {
+        QString user = dlg.user();
+        QString password = dlg.password();
+
+        lj::Communicator com;
+        com.setUser(user, password);
+
+        // Verify user name and password
+        lj::UserInfo userInfo = com.login();
+        if (userInfo.isValid()) {
+            cr->setUser(user);
+            cr->setPassword(password);
+        } else {
+            QMessageBox::critical(this, "User Account Error",
+                                  userInfo.error());
+        }
+    }
 }
 
 } // namespace gui
