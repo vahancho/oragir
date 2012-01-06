@@ -58,4 +58,24 @@ UserAccount::UserAccount(QWidget *parent, Qt::WindowFlags f)
     setWindowTitle("User Account");
 }
 
+void UserAccount::setUser(const QString &user)
+{
+    m_leUser->setText(user);
+}
+
+void UserAccount::setPassword(const QString &password)
+{
+    m_lePassword->setText(password);
+}
+
+QString UserAccount::user() const
+{
+    return m_leUser->text();
+}
+
+QString UserAccount::password() const
+{
+    return m_lePassword->text();
+}
+
 } // namespace gui

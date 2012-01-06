@@ -35,6 +35,11 @@ class UserAccount : public QDialog
 public:
     UserAccount(QWidget *parent = 0, Qt::WindowFlags f = 0);
 
+    void setUser(const QString &user);
+    void setPassword(const QString &password);
+    QString user() const;
+    QString password() const;
+
 private:
     QLineEdit *m_leUser;
     QLineEdit *m_lePassword;
