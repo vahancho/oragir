@@ -883,8 +883,28 @@ void MainWindow::onBlogAccountSetup()
         // Verify user name and password
         lj::UserInfo userInfo = com.login();
         if (userInfo.isValid()) {
+            // Password is correct, so store it.
             cr->setUser(user);
             cr->setPassword(password);
+
+            // Setup the blog node.
+            QString newName = QString("My Blog (%1.livejournal.com)")
+                                      .arg(user);
+            m_blogFolder->setText(Name, newName);
+            m_blogFolder->setToolTip(Name, newName);
+
+            // Now get events (posts) subjects only.
+            lj::Events events = com.getEvents(true);
+            if (events.isValid()) {
+                for (int i = 0; i < events.count(); ++i) {
+                    QTreeWidgetItem *node = new QTreeWidgetItem(m_blogFolder);
+                    node->setIcon(Name, QIcon(":/icons/folder"));
+
+                    QString subject = events.text(i);
+                    node->setText(Name, subject);
+                    node->setToolTip(Name, subject);
+                }
+            }
         } else {
             QMessageBox::critical(this, "User Account Error",
                                   userInfo.error());
