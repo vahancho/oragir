@@ -135,6 +135,9 @@ void Application::init()
     if (m_defaultManager->value(str::CheckUpdates).toBool() == true) {
         m_versionManager->checkForUpdates();
     }
+
+    // Restore user credentials.
+    m_credentials->fromEncoded(m_defaultManager->value("User/Credentials").toString());
 }
 
 gui::MainWindow *Application::mainWindow() const
