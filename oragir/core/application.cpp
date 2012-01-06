@@ -23,6 +23,7 @@
 #include "application.h"
 #include "defaultManager.h"
 #include "versionManager.h"
+#include "credentials.h"
 #include "../parser/atomParser.h"
 #include "../database/database.h"
 #include "../gui/mainWindow.h"
@@ -67,6 +68,9 @@ Application::~Application()
 
     delete m_versionManager;
 
+    m_defaultManager->setValue("User/Credentials", m_credentials->encode());
+    delete m_credentials;
+
     // Save defaults
     m_defaultManager->saveDefaults();
     delete m_defaultManager;
@@ -99,6 +103,9 @@ void Application::init()
 
     // Create all application components
     m_defaultManager = new DefaultManager;
+
+    m_credentials = new Credentials;
+    m_defaultManager->addProperty("User/Credentials", QString(), QString());
 
     m_versionManager = new VersionManager;
     m_defaultManager->addProperty(str::CheckUpdates, bool(true), bool(true));
@@ -153,6 +160,11 @@ AtomParser *Application::streamParser() const
 VersionManager *Application::versionManager() const
 {
     return m_versionManager;
+}
+
+Credentials *Application::credentials() const
+{
+    return m_credentials;
 }
 
 void Application::registerDatabaseDefaults() const

@@ -34,6 +34,7 @@ class DefaultManager;
 class AtomParser;
 class Database;
 class VersionManager;
+class Credentials;
 
 /// Application class implements the core of the program.
 /*!
@@ -78,6 +79,8 @@ public:
 
     /// Returns the version manager.
     VersionManager *versionManager() const;
+
+    Credentials *credentials() const;
 
 private:
     /// Default constructor.
@@ -142,6 +145,9 @@ private:
 
     /// The version manager.
     VersionManager *m_versionManager;
+
+    /// Store credentials.
+    Credentials *m_credentials;
 };
 
 } // namespace core
