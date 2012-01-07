@@ -73,6 +73,16 @@ int Events::publicId(int index) const
     return e["itemid"].toInt() * 256 + e["anum"].toInt();
 }
 
+QString Events::security(int index) const
+{
+    Event e = eventObj(index);
+    if (!e.contains("security")) {
+        return "public";
+    } else {
+        return e["security"].toString();
+    }
+}
+
 Events::Event Events::eventObj(int index) const
 {
     if (index >= 0 && index < count())

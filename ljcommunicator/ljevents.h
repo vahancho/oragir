@@ -61,6 +61,9 @@ public:
     */
     int publicId(int index) const;
 
+    /// Returns the event's security.
+    QString security(int index) const;
+
 private:
     Event eventObj(int index) const;
 
