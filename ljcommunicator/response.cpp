@@ -118,7 +118,7 @@ QVariant Response::parse(const QByteArray &response)
                 m_errorString = "XMLRPC format error: Failure struct should contain "
                                 "either fault code or fault description";
             } else {
-                m_errorString = QString("XMLRPC error %1: %2")
+                m_errorString = QString("Error %1: %2")
                                        .arg(map[tagFaultCode].toString())
                                        .arg(map[tagFaultString].toString());
             }
