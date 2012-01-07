@@ -32,7 +32,7 @@ namespace core
 
 class DefaultManager;
 class AtomParser;
-class Database;
+class StreamDatabase;
 class VersionManager;
 class Credentials;
 
@@ -72,7 +72,7 @@ public:
     DefaultManager *defaultManager() const;
 
     /// Returns the database manager.
-    Database *database() const;
+    StreamDatabase *database() const;
 
     /// Returns the Sream parser.
     AtomParser *streamParser() const;
@@ -138,7 +138,7 @@ private:
     gui::MainWindow *m_mainWindow;
 
     /// The database.
-    Database *m_dataBase;
+    StreamDatabase *m_dataBase;
 
     /// The atom parser.
     AtomParser *m_atomParser;

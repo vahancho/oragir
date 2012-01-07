@@ -25,7 +25,7 @@
 #include "versionManager.h"
 #include "credentials.h"
 #include "../parser/atomParser.h"
-#include "../database/database.h"
+#include "../database/streamdatabase.h"
 #include "../gui/mainWindow.h"
 #include "../strings/strings.h"
 
@@ -110,7 +110,7 @@ void Application::init()
     m_versionManager = new VersionManager;
     m_defaultManager->addProperty(str::CheckUpdates, bool(true), bool(true));
 
-    m_dataBase = new Database;
+    m_dataBase = new StreamDatabase;
     registerDatabaseDefaults();
 
     m_atomParser = new AtomParser;
@@ -150,7 +150,7 @@ DefaultManager *Application::defaultManager() const
     return m_defaultManager;
 }
 
-Database *Application::database() const
+StreamDatabase *Application::database() const
 {
     return m_dataBase;
 }

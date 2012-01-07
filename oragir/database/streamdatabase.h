@@ -30,13 +30,13 @@
 namespace core
 {
 
-class Database : public QObject
+class StreamDatabase : public QObject
 {
     Q_OBJECT
 public:
-    Database();
+    StreamDatabase();
 
-    ~Database();
+    ~StreamDatabase();
 
     /// Creates database and returns result of creation.
     /*!

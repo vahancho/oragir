@@ -22,7 +22,7 @@
 #define __DLGFILTERS_H__
 
 #include <QDialog>
-#include "../database/database.h"
+#include "../database/streamdatabase.h"
 
 class QTreeWidget;
 class QTreeWidgetItem;
@@ -38,10 +38,10 @@ public:
     FiltersDialog(QWidget *parent = 0, Qt::WindowFlags f = 0);
 
     /// Adds new filter item to dialog.
-    void setFilters(const core::Database::Filters &filters);
+    void setFilters(const core::StreamDatabase::Filters &filters);
 
     /// Returns the temporary stored list of filters.
-    core::Database::Filters filters() const;
+    core::StreamDatabase::Filters filters() const;
 
 private slots:
     void onFilterEdit();

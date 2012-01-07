@@ -77,9 +77,9 @@ FiltersDialog::FiltersDialog(QWidget *parent, Qt::WindowFlags f)
     resize(400, 300);
 }
 
-void FiltersDialog::setFilters(const core::Database::Filters &filters)
+void FiltersDialog::setFilters(const core::StreamDatabase::Filters &filters)
 {
-    core::Database::Filters::const_iterator it = filters.begin();
+    core::StreamDatabase::Filters::const_iterator it = filters.begin();
     while (it != filters.end()) {
         const core::Filter<core::Post> &filter = *it;
         addFilterNode(filter);
@@ -113,9 +113,9 @@ void FiltersDialog::onNewFilter()
     addFilterNode(filter, true);
 }
 
-core::Database::Filters FiltersDialog::filters() const
+core::StreamDatabase::Filters FiltersDialog::filters() const
 {
-    core::Database::Filters filters;
+    core::StreamDatabase::Filters filters;
     std::map<QTreeWidgetItem *, core::Filter<core::Post> >::const_iterator it =
                                             m_filters.begin();
     while(it != m_filters.end()) {

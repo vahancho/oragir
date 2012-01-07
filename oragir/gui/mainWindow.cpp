@@ -32,7 +32,7 @@
 #include "../core/versionManager.h"
 #include "../core/credentials.h"
 #include "../parser/atomParser.h"
-#include "../database/database.h"
+#include "../database/streamdatabase.h"
 #include "../strings/strings.h"
 #include "../strings/guiStrings.h"
 #include "../../ljcommunicator/communicator.h"
@@ -159,7 +159,7 @@ void MainWindow::createFolderTree()
 
 void MainWindow::createFolderView(const QString &table)
 {
-    core::Database *dbObj = core::Application::theApp()->database();
+    core::StreamDatabase *dbObj = core::Application::theApp()->database();
     QSqlDatabase db = dbObj->database();
     if (!db.isValid())
         return;
@@ -575,7 +575,7 @@ void MainWindow::onSubWindowActivated(QMdiSubWindow *subWindow)
 
 void MainWindow::updateStatusLabels(const QString &table)
 {
-    core::Database *db = core::Application::theApp()->database();
+    core::StreamDatabase *db = core::Application::theApp()->database();
     int unreadCount = db->unreadCount(table);
 
     // Update status labels only for the active table view.
@@ -583,7 +583,7 @@ void MainWindow::updateStatusLabels(const QString &table)
         if(DatabaseView *dbView =
            qobject_cast<DatabaseView *>(mdiWindow->widget())) {
             if (dbView->table() == table) {
-                core::Database *db = core::Application::theApp()->database();
+                core::StreamDatabase *db = core::Application::theApp()->database();
                 m_unreadItems->setText(QString("  Unread: %1  ")
                                        .arg(unreadCount));
                 m_totalItems->setText(QString("  Total: %1  ")
@@ -664,7 +664,7 @@ void MainWindow::onNewFolder()
                                           tr("Folder name:"), QLineEdit::Normal,
                                           QDir::home().dirName(), &ok);
     if (ok && !table.isEmpty()) {
-        core::Database *db = core::Application::theApp()->database();
+        core::StreamDatabase *db = core::Application::theApp()->database();
         if (db->addTable(table)) {
             createFolderView(table);
         } else {
@@ -695,14 +695,14 @@ void MainWindow::onDataReadProgress(int done, int /*total*/)
 
 void MainWindow::onFilters()
 {
-    core::Database *db = core::Application::theApp()->database();
+    core::StreamDatabase *db = core::Application::theApp()->database();
     FiltersDialog dlg;
-    const core::Database::Filters &filters = db->filters();
+    const core::StreamDatabase::Filters &filters = db->filters();
     dlg.setFilters(filters);
     if (dlg.exec() == QDialog::Accepted) {
         // Read the filters from dialog and update database.
-        const core::Database::Filters &tmpFilters = dlg.filters();
-        core::Database::Filters::const_iterator it = tmpFilters.begin();
+        const core::StreamDatabase::Filters &tmpFilters = dlg.filters();
+        core::StreamDatabase::Filters::const_iterator it = tmpFilters.begin();
         // Clear old filters before adding new ones.
         db->clearFilters();
         while (it != tmpFilters.end()) {
@@ -720,7 +720,7 @@ void MainWindow::onFiltersExport()
                                      ".",
                                      str::FilterDialogFilter);
     if(!fileName.isEmpty()) {
-        core::Database *db = core::Application::theApp()->database();
+        core::StreamDatabase *db = core::Application::theApp()->database();
         db->saveFilters(fileName);
     }
 }
@@ -732,9 +732,9 @@ void MainWindow::onFiltersImport()
                                      ".",
                                      str::FilterDialogFilter);
     if(!fileName.isEmpty()) {
-        core::Database *db = core::Application::theApp()->database();
+        core::StreamDatabase *db = core::Application::theApp()->database();
         // Backup the filters in case of the loading errors.
-        core::Database::Filters filters = db->filters();
+        core::StreamDatabase::Filters filters = db->filters();
         if (!db->openFilters(fileName)) {
             QMessageBox::critical(this, str::DatabaseError,
                                   db->errorMessage());
@@ -805,7 +805,7 @@ void MainWindow::onFolderDelete()
     }
 
     // Finally remove table from the database.
-    core::Database *db = core::Application::theApp()->database();
+    core::StreamDatabase *db = core::Application::theApp()->database();
     db->removeTable(folderName);
 }
 

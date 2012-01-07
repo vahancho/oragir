@@ -31,7 +31,7 @@
 #include "dlgFilterEditor.h"
 #include "../strings/guiStrings.h"
 #include "../core/application.h"
-#include "../database/database.h"
+#include "../database/streamdatabase.h"
 
 using namespace core;
 
@@ -124,7 +124,7 @@ void FilterEditor::setFilter(const Filter<Post> &filter)
 
     // Set the target folders (tables) combo box and select
     // the target folder name for the given filter.
-    Database *db = Application::theApp()->database();
+    StreamDatabase *db = Application::theApp()->database();
     QStringList tables = db->tables();
     m_tableCombo->addItems(tables);
     int tblIndex = tables.indexOf(filter.table());

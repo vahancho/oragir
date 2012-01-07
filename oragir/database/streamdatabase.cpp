@@ -20,20 +20,20 @@
 
 #include <set>
 #include "../strings/strings.h"
-#include "database.h"
+#include "streamdatabase.h"
 
 namespace core
 {
 
-Database::Database()
+StreamDatabase::StreamDatabase()
 {}
 
-Database::~Database()
+StreamDatabase::~StreamDatabase()
 {
     remove();
 }
 
-bool Database::create(const QString &fileName)
+bool StreamDatabase::create(const QString &fileName)
 {
     if (QSqlDatabase::contains(fileName)) {
         // Such connection already exists, so just do nothing.
@@ -72,7 +72,7 @@ bool Database::create(const QString &fileName)
     return true;
 }
 
-void Database::remove()
+void StreamDatabase::remove()
 {
     {
         QSqlDatabase db = QSqlDatabase::database(m_connection);
@@ -87,7 +87,7 @@ void Database::remove()
     m_connection.clear();
 }
 
-void Database::onFetched(const Post &post, const Blog &blog)
+void StreamDatabase::onFetched(const Post &post, const Blog &blog)
 {
     Filters::iterator it = m_filters.begin();
     while (it != m_filters.end()) {
@@ -100,7 +100,7 @@ void Database::onFetched(const Post &post, const Blog &blog)
     }
 }
 
-void Database::addFilter(const Filter<Post> &filter)
+void StreamDatabase::addFilter(const Filter<Post> &filter)
 {
     // If this filter already exists, delete it from container
     // and replace with a new one. This will guarantee that
@@ -113,7 +113,7 @@ void Database::addFilter(const Filter<Post> &filter)
     m_filters.insert(filter);
 }
 
-void Database::addRecord(const Post &post, const Blog &/*blog*/,
+void StreamDatabase::addRecord(const Post &post, const Blog &/*blog*/,
                          const QString &table)
 {
     QSqlDatabase db = database();
@@ -158,7 +158,7 @@ void Database::addRecord(const Post &post, const Blog &/*blog*/,
     }
 }
 
-bool Database::saveFilters(const QString &fileName)
+bool StreamDatabase::saveFilters(const QString &fileName)
 {
     QFile file(fileName);
 
@@ -187,7 +187,7 @@ bool Database::saveFilters(const QString &fileName)
     return false;
 }
 
-bool Database::openFilters(const QString &fileName)
+bool StreamDatabase::openFilters(const QString &fileName)
 {
     QFile file(fileName);
 
@@ -226,32 +226,32 @@ bool Database::openFilters(const QString &fileName)
     return false;
 }
 
-QString Database::errorMessage() const
+QString StreamDatabase::errorMessage() const
 {
     return m_error;
 }
 
-const Database::Filters &Database::filters() const
+const StreamDatabase::Filters &StreamDatabase::filters() const
 {
     return m_filters;
 }
 
-void Database::clearFilters()
+void StreamDatabase::clearFilters()
 {
     m_filters.clear();
 }
 
-QString Database::databaseName() const
+QString StreamDatabase::databaseName() const
 {
     return m_connection;
 }
 
-QSqlDatabase Database::database() const
+QSqlDatabase StreamDatabase::database() const
 {
     return QSqlDatabase::database(m_connection);
 }
 
-bool Database::addTable(const QString &table)
+bool StreamDatabase::addTable(const QString &table)
 {
     QSqlDatabase db = database();
     QSqlQuery query(db);
@@ -265,7 +265,7 @@ bool Database::addTable(const QString &table)
     }
 }
 
-void Database::removeTable(const QString &table)
+void StreamDatabase::removeTable(const QString &table)
 {
     QSqlDatabase db = database();
     QSqlQuery query(db);
@@ -274,7 +274,7 @@ void Database::removeTable(const QString &table)
     query.exec(queryStr);
 }
 
-QStringList Database::tables() const
+QStringList StreamDatabase::tables() const
 {
     QSqlDatabase db = database();
     QStringList tables = db.tables(QSql::Tables);
@@ -283,7 +283,7 @@ QStringList Database::tables() const
     return tables;
 }
 
-bool Database::renameTable(const QString &oldName, const QString &newName)
+bool StreamDatabase::renameTable(const QString &oldName, const QString &newName)
 {
     QSqlDatabase db = database();
     QSqlQuery query(db);
@@ -297,7 +297,7 @@ bool Database::renameTable(const QString &oldName, const QString &newName)
     }
 }
 
-int Database::unreadCount(const QString &table) const
+int StreamDatabase::unreadCount(const QString &table) const
 {
     QSqlDatabase db = database();
     QSqlQuery query(db);
@@ -307,7 +307,7 @@ int Database::unreadCount(const QString &table) const
     return query.value(0).toInt();
 }
 
-int Database::totalCount(const QString &table) const
+int StreamDatabase::totalCount(const QString &table) const
 {
     QSqlDatabase db = database();
     QSqlQuery query(db);
