@@ -874,6 +874,8 @@ void MainWindow::onBlogAccountSetup()
     dlg.setPassword(cr->password());
 
     if (dlg.exec() == QDialog::Accepted) {
+        m_progress->start();
+
         QString user = dlg.user();
         QString password = dlg.password();
 
@@ -909,6 +911,8 @@ void MainWindow::onBlogAccountSetup()
             QMessageBox::critical(this, "User Account Error",
                                   userInfo.error());
         }
+
+        m_progress->stop();
     }
 }
 
