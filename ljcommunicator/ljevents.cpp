@@ -33,7 +33,27 @@ Events::Events(const QByteArray &data)
     QVariant response = parse(data);
     if (isValid()) {
         QMap<QString, QVariant> responseMap = response.toMap();
-        m_events = responseMap["events"].toList();
+        QVariantList events = responseMap["events"].toList();
+        foreach (const QVariant &v, events) {
+            QMap<QString, QVariant> eventMap = v.toMap();
+
+            Event event;
+            event.m_itemId = eventMap["itemid"].toInt();
+            event.m_publicId = eventMap["itemid"].toInt() * 256 + eventMap["anum"].toInt();
+            event.m_commentCount = eventMap["reply_count"].toInt();
+            event.m_subject = eventMap["subject"].toString();
+            event.m_event = eventMap["event"].toString();
+            event.m_time = eventMap["eventtime"].toString();
+            event.m_tags = eventMap["taglist"].toStringList();
+
+            if (!eventMap.contains("security")) {
+                event.m_security = "public";
+            } else {
+                event.m_security = eventMap["security"].toString();
+            }
+
+            m_events.push_back(event);
+        }
     }
 }
 
@@ -42,51 +62,10 @@ int Events::count() const
     return m_events.count();
 }
 
-QString Events::subject(int index) const
-{
-    return eventObj(index)["subject"].toString();
-}
-
-QString Events::event(int index) const
-{
-    return eventObj(index)["event"].toString();
-}
-
-QString Events::time(int index) const
-{
-    return eventObj(index)["eventtime"].toString();
-}
-
-int Events::commentCount(int index) const
-{
-    return eventObj(index)["reply_count"].toInt();
-}
-
-int Events::itemId(int index) const
-{
-    return eventObj(index)["itemid"].toInt();
-}
-
-int Events::publicId(int index) const
-{
-    Event e = eventObj(index);
-    return e["itemid"].toInt() * 256 + e["anum"].toInt();
-}
-
-QString Events::security(int index) const
-{
-    Event e = eventObj(index);
-    if (!e.contains("security")) {
-        return "public";
-    } else {
-        return e["security"].toString();
-    }
-}
-
-Events::Event Events::eventObj(int index) const
+Event Events::event(int index)
 {
     if (index >= 0 && index < count())
-        return m_events.at(index).toMap();
+        return m_events.at(index);
     else
         return Event();
 }

@@ -21,11 +21,31 @@
 #ifndef __LJEVENT_H__
 #define __LJEVENT_H__
 
+#include <QStringList>
 #include "export.h"
 #include "response.h"
 
 namespace lj
 {
+
+struct Event
+{
+    Event()
+        :
+            m_itemId(0),
+            m_publicId(0),
+            m_commentCount(0)
+    {}
+
+    int m_itemId;
+    int m_publicId;
+    int m_commentCount;
+    QString m_subject;
+    QString m_event;
+    QString m_time;
+    QStringList m_tags;
+    QString m_security;
+};
 
 /// Implements the wrapper class around responce for the events request.
 class LJCOMMUNICATOR_EXPORT Events : public xmlrpc::Response
@@ -34,40 +54,14 @@ public:
     Events();
     Events(const QByteArray &data);
 
-    typedef QMap<QString, QVariant> Event;
-
     /// Returns the number of events.
     int count() const;
 
-    /// Returns event's (post) text.
-    QString subject(int index) const;
-
-    /// Returns event's (post) text.
-    QString event(int index) const;
-
-    /// Returs event's time.
-    QString time(int index) const;
-
-    /// Returns the number of event's comments.
-    int commentCount(int index) const;
-
-    /// Returns event id.
-    int itemId(int index) const;
-
-    /// Returns event's public id.
-    /*!
-        This parameter calculated by the following formula:
-        publicId = itemId * 256 + anum
-    */
-    int publicId(int index) const;
-
-    /// Returns the event's security.
-    QString security(int index) const;
+    /// Returns the event structure.
+    Event event(int index);
 
 private:
-    Event eventObj(int index) const;
-
-    QVariantList m_events;
+    QList<Event> m_events;
 };
 
 } // namespace lj

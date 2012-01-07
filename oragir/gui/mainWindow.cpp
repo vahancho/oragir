@@ -594,8 +594,8 @@ void MainWindow::updateStatusLabels(const QString &table)
 
     // Update the corresponding folder (table) name with the number
     // of unread items.
-    for(int i = 0; i < m_folderTree->topLevelItemCount(); ++i) {
-        QTreeWidgetItem *item = m_folderTree->topLevelItem(i);
+    for(int i = 0; i < m_filterFolder->childCount(); ++i) {
+        QTreeWidgetItem *item = m_filterFolder->child(i);
         QString name = item->data(Name, Qt::UserRole).toString();
         if (name == table) {
             QFont f;
@@ -902,7 +902,7 @@ void MainWindow::onBlogAccountSetup()
                     QTreeWidgetItem *node = new QTreeWidgetItem(m_blogFolder);
                     node->setIcon(Name, QIcon(":/icons/folder"));
 
-                    QString subject = events.event(i);
+                    QString subject = events.event(i).m_event;
                     node->setText(Name, subject);
                     node->setToolTip(Name, subject);
                 }
