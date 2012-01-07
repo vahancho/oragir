@@ -42,22 +42,38 @@ int Events::count() const
     return m_events.count();
 }
 
-QString Events::text(int index) const
+QString Events::subject(int index) const
 {
-    return event(index)["event"].toString();
+    return eventObj(index)["subject"].toString();
+}
+
+QString Events::event(int index) const
+{
+    return eventObj(index)["event"].toString();
 }
 
 QString Events::time(int index) const
 {
-    return event(index)["eventtime"].toString();
+    return eventObj(index)["eventtime"].toString();
 }
 
 int Events::commentCount(int index) const
 {
-    return event(index)["reply_count"].toInt();
+    return eventObj(index)["reply_count"].toInt();
 }
 
-Events::Event Events::event(int index) const
+int Events::itemId(int index) const
+{
+    return eventObj(index)["itemid"].toInt();
+}
+
+int Events::publicId(int index) const
+{
+    Event e = eventObj(index);
+    return e["itemid"].toInt() * 256 + e["anum"].toInt();
+}
+
+Events::Event Events::eventObj(int index) const
 {
     if (index >= 0 && index < count())
         return m_events.at(index).toMap();

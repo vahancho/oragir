@@ -40,7 +40,10 @@ public:
     int count() const;
 
     /// Returns event's (post) text.
-    QString text(int index) const;
+    QString subject(int index) const;
+
+    /// Returns event's (post) text.
+    QString event(int index) const;
 
     /// Returs event's time.
     QString time(int index) const;
@@ -48,8 +51,18 @@ public:
     /// Returns the number of event's comments.
     int commentCount(int index) const;
 
+    /// Returns event id.
+    int itemId(int index) const;
+
+    /// Returns event's public id.
+    /*!
+        This parameter calculated by the following formula:
+        publicId = itemId * 256 + anum
+    */
+    int publicId(int index) const;
+
 private:
-    Event event(int index) const;
+    Event eventObj(int index) const;
 
     QVariantList m_events;
 };

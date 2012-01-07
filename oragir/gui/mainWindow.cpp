@@ -902,7 +902,7 @@ void MainWindow::onBlogAccountSetup()
                     QTreeWidgetItem *node = new QTreeWidgetItem(m_blogFolder);
                     node->setIcon(Name, QIcon(":/icons/folder"));
 
-                    QString subject = events.text(i);
+                    QString subject = events.event(i);
                     node->setText(Name, subject);
                     node->setToolTip(Name, subject);
                 }
