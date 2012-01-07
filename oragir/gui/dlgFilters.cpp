@@ -47,7 +47,7 @@ FiltersDialog::FiltersDialog(QWidget *parent, Qt::WindowFlags f)
     m_filtersTree->setColumnCount(2);
     m_filtersTree->setRootIsDecorated(false);
     QStringList headerLabels;
-    headerLabels << "Enable" << "Filter";
+    headerLabels << "Filter" << "Enable";
     m_filtersTree->setHeaderLabels(headerLabels);
     m_filtersTree->header()->resizeSection(Name, 250);
     m_filtersTree->header()->setResizeMode(Enable, QHeaderView::Fixed);
