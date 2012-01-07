@@ -76,6 +76,7 @@ namespace str
     const char *FilterVersion = "1.0";
 
     const char *BlogTableName = "ad0ccb7f0813d3363f66b3fbc6b64eb66f680d8c";
+    const char *MyBlogTableName = "a7a49a0485e8863dd34fbde8776e31cf9c9e3b63";
 
     // SQL Queries.
     const char *SqlCreateBlogTable = "CREATE TABLE IF NOT EXISTS %1 ("
@@ -98,8 +99,23 @@ namespace str
                                      "userpic  NVARCHAR,"
                                      "category NVARCHAR)";
 
+    const char *SqlCreateMyBlogTable = "CREATE TABLE IF NOT EXISTS %1 ("
+                                       "itemid       INTEGER       NOT NULL,"
+                                       "publicid     INTEGER       NOT NULL,"
+                                       "commentcount INTEGER       NOT NULL,"
+                                       "time         DATATIME      NOT NULL,"
+                                       "subject      NVARCHAR(256),"
+                                       "event        NVARCHAR,"
+                                       "url          NVARCHAR,"
+                                       "tags         NVARCHAR,"
+                                       "security     NVARCHAR(128),"
+                                       "flag         INTEGER)";
+
     const char *SqlInsertPostToTable = "INSERT INTO %1 (flag, title, read, name, updated, posterid, link, content, userpic, category) "
                                        "VALUES (:flag, :title, :read, :name, :updated, :posterid, :link, :content, :userpic, :category)";
+
+    const char *SqlInsertMyEntry = "INSERT INTO %1 (itemid, publicid, commentcount, time, subject, event, url, tags, security, flag) "
+                                   "VALUES (:itemid, :publicid, :commentcount, :time, :subject, :event, :url, :tags, :security, :flag)";
 
     const char *SqlInsertBlogToTable = "INSERT INTO %1 (journalid, link, name, journal, title, flag) "
                                        "VALUES (:journalid, :link, :name, :journal, :title, :flag)";

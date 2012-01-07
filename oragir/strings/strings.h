@@ -82,6 +82,9 @@ namespace str
     /// The name of blogs table. This should be unique.
     extern const char *BlogTableName;
 
+    // The name of user's blog table.
+    extern const char *MyBlogTableName;
+
     // SQL Queries
 
     /// SQL query to create table blogs.
@@ -90,11 +93,17 @@ namespace str
     /// SQL query to create table posts.
     extern const char *SqlCreatePostTable;
 
+    /// SQL query to create my blog table for my posts.
+    extern const char *SqlCreateMyBlogTable;
+
     /// SQL query to add post record to the table.
     extern const char *SqlInsertPostToTable;
 
     /// SQL query to insert blog record to the table.
     extern const char *SqlInsertBlogToTable;
+
+    /// SQL query to insert an event into user's blog.
+    extern const char *SqlInsertMyEntry;
 
 } // namespace str
 

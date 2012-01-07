@@ -49,10 +49,12 @@ bool Database::create(const QString &fileName)
     }
 
     QSqlQuery query(db);
-    // Temporary do not add blogs table.
-    QString queryStr = QString(str::SqlCreateBlogTable)
-                              .arg(str::BlogTableName);
-    if (!query.exec(queryStr)) {
+    QString blogTableQuery = QString(str::SqlCreateBlogTable)
+                                    .arg(str::BlogTableName);
+    QString myBlogTableQuery = QString(str::SqlCreateMyBlogTable)
+                                      .arg(str::MyBlogTableName);
+    if (!query.exec(blogTableQuery) ||
+        !query.exec(myBlogTableQuery)) {
         m_error = query.lastError().text();
         remove();
         return false;
@@ -111,12 +113,13 @@ void Database::addFilter(const Filter<Post> &filter)
     m_filters.insert(filter);
 }
 
-void Database::addRecord(const Post &post, const Blog &blog,
+void Database::addRecord(const Post &post, const Blog &/*blog*/,
                          const QString &table)
 {
     QSqlDatabase db = database();
     QSqlQuery query(db);
 
+    /* There is no usage for this table, so do nothing yet.
     // Insert blog record into blogs table.
     QString queryStr = QString(str::SqlInsertBlogToTable).arg(str::BlogTableName);
     query.prepare(queryStr);
@@ -129,9 +132,10 @@ void Database::addRecord(const Post &post, const Blog &blog,
     bool inserted = query.exec();
     if (!inserted)
         m_error = query.lastError().text();
+    */
 
     // Insert post record into the target table.
-    queryStr = QString(str::SqlInsertPostToTable).arg(table);
+    QString queryStr = QString(str::SqlInsertPostToTable).arg(table);
     query.prepare(queryStr);
     query.bindValue(":flag", 0);
     query.bindValue(":title", post.value(str::TagTitle).toString());
@@ -144,7 +148,7 @@ void Database::addRecord(const Post &post, const Blog &blog,
     query.bindValue(":userpic", post.value(str::TagUserPic).toString());
     query.bindValue(":category", post.value(str::TagCategory).toStringList().join(",")); 
 
-    inserted = query.exec();
+    bool inserted = query.exec();
 
     // If record inserted inform the world.
     if (inserted) {
@@ -275,6 +279,7 @@ QStringList Database::tables() const
     QSqlDatabase db = database();
     QStringList tables = db.tables(QSql::Tables);
     tables.removeAll(str::BlogTableName);
+    tables.removeAll(str::MyBlogTableName);
     return tables;
 }
 
