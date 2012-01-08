@@ -18,7 +18,6 @@
 *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
 ***************************************************************************/
 
-#include <set>
 #include "../strings/strings.h"
 #include "streamdatabase.h"
 
@@ -27,65 +26,6 @@ namespace core
 
 StreamDatabase::StreamDatabase()
 {}
-
-StreamDatabase::~StreamDatabase()
-{
-    remove();
-}
-
-bool StreamDatabase::create(const QString &fileName)
-{
-    if (QSqlDatabase::contains(fileName)) {
-        // Such connection already exists, so just do nothing.
-        return true;
-    }
-
-    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE", fileName.toLatin1());
-    db.setDatabaseName(fileName);
-    if (!db.open()) {
-        m_error = QString("Cannot open database. "
-                          "Unable to establish a database connection.");
-        return false;
-    }
-
-    QSqlQuery query(db);
-    QString blogTableQuery = QString(str::SqlCreateBlogTable)
-                                    .arg(str::BlogTableName);
-    QString myBlogTableQuery = QString(str::SqlCreateMyBlogTable)
-                                      .arg(str::MyBlogTableName);
-    if (!query.exec(blogTableQuery) ||
-        !query.exec(myBlogTableQuery)) {
-        m_error = query.lastError().text();
-        remove();
-        return false;
-    }
-
-    query.exec("PRAGMA page_size = 4096");
-    query.exec("PRAGMA cache_size = 16384");
-    query.exec("PRAGMA temp_store = MEMORY");
-    query.exec("PRAGMA journal_mode = OFF");
-    query.exec("PRAGMA locking_mode = EXCLUSIVE");
-    query.exec("PRAGMA synchronous = OFF");
-
-    m_connection = fileName;
-
-    return true;
-}
-
-void StreamDatabase::remove()
-{
-    {
-        QSqlDatabase db = QSqlDatabase::database(m_connection);
-        if (!db.isValid())
-            return;
-
-        if(db.isOpen())
-            db.close();
-    }
-
-    QSqlDatabase::removeDatabase(m_connection);
-    m_connection.clear();
-}
 
 void StreamDatabase::onFetched(const Post &post, const Blog &blog)
 {
@@ -226,11 +166,6 @@ bool StreamDatabase::openFilters(const QString &fileName)
     return false;
 }
 
-QString StreamDatabase::errorMessage() const
-{
-    return m_error;
-}
-
 const StreamDatabase::Filters &StreamDatabase::filters() const
 {
     return m_filters;
@@ -241,60 +176,10 @@ void StreamDatabase::clearFilters()
     m_filters.clear();
 }
 
-QString StreamDatabase::databaseName() const
+bool StreamDatabase::addStreamTable(const QString &table)
 {
-    return m_connection;
-}
-
-QSqlDatabase StreamDatabase::database() const
-{
-    return QSqlDatabase::database(m_connection);
-}
-
-bool StreamDatabase::addTable(const QString &table)
-{
-    QSqlDatabase db = database();
-    QSqlQuery query(db);
-
     QString queryStr = QString(str::SqlCreatePostTable).arg(table);
-    if (query.exec(queryStr)) {
-        return true;
-    } else {
-        m_error = query.lastError().text();
-        return false;
-    }
-}
-
-void StreamDatabase::removeTable(const QString &table)
-{
-    QSqlDatabase db = database();
-    QSqlQuery query(db);
-
-    QString queryStr = QString("DROP TABLE %1").arg(table);
-    query.exec(queryStr);
-}
-
-QStringList StreamDatabase::tables() const
-{
-    QSqlDatabase db = database();
-    QStringList tables = db.tables(QSql::Tables);
-    tables.removeAll(str::BlogTableName);
-    tables.removeAll(str::MyBlogTableName);
-    return tables;
-}
-
-bool StreamDatabase::renameTable(const QString &oldName, const QString &newName)
-{
-    QSqlDatabase db = database();
-    QSqlQuery query(db);
-    QString queryStr = QString("ALTER TABLE %1 RENAME TO %2")
-                               .arg(oldName).arg(newName);
-    if (query.exec(queryStr)) {
-        return true;
-    } else {
-        m_error = query.lastError().text();
-        return false;
-    }
+    return addTable(queryStr);
 }
 
 int StreamDatabase::unreadCount(const QString &table) const

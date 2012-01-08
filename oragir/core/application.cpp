@@ -200,7 +200,7 @@ void Application::restoreDatabase() const
     if (m_dataBase->create(database)) {
         QStringList tables = m_dataBase->tables();
         foreach(const QString &table, tables) {
-            m_dataBase->addTable(table);
+            m_dataBase->addStreamTable(table);
             m_mainWindow->createFolderView(table);
         }
     }

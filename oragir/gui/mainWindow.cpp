@@ -665,7 +665,7 @@ void MainWindow::onNewFolder()
                                           QDir::home().dirName(), &ok);
     if (ok && !table.isEmpty()) {
         core::StreamDatabase *db = core::Application::theApp()->database();
-        if (db->addTable(table)) {
+        if (db->addStreamTable(table)) {
             createFolderView(table);
         } else {
             QMessageBox::critical(this, str::DatabaseError,

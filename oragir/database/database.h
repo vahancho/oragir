@@ -18,67 +18,56 @@
 *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
 ***************************************************************************/
 
-#ifndef __STREAMDATABASE_H__
-#define __STREAMDATABASE_H__
+#ifndef __DATABASE_H__
+#define __DATABASE_H__
 
-#include <set>
-#include "database.h"
-#include "../parser/blog.h"
-#include "../parser/post.h"
-#include "../parser/filter.h"
+#include <QtSql>
 
 namespace core
 {
 
-class StreamDatabase : public QObject, public Database
+class Database
 {
-    Q_OBJECT
+
 public:
-    StreamDatabase();
+    Database();
 
-    bool addStreamTable(const QString &table);
+    ~Database();
 
-    /// Adds or update a filter to the list of filters.
+    /// Creates database and returns result of creation.
     /*!
-        This function either adds a new filter to container
-        or replace existing one (with the same name).
+        If there is no active connection, the new connection
+        become the active one, otherwise new connection does
+        not replace existing active connection.
     */
-    void addFilter(const Filter<Post> &filter);
+    bool create(const QString &fileName);
 
-    bool saveFilters(const QString &fileName);
+    bool addTable(const QString &queryStr);
 
-    /// Loades new filters files.
-    /*!
-        Callee should take care of backing up existing filters and restore
-        them in case of errors in loading new file.
-    */
-    bool openFilters(const QString &fileName);
+    void removeTable(const QString &table);
 
-    void clearFilters();
+    /// Renames table oldName with the newName and returns renaming result.
+    bool renameTable(const QString &oldName, const QString &newName);
 
-    typedef std::set<Filter<Post> > Filters;
+    QStringList tables() const;
 
-    /// Returns the filters list.
-    const Filters &filters() const;
+    /// Reports the last error if any.
+    QString errorMessage() const;
 
-    int unreadCount(const QString &table) const;
-    int totalCount(const QString &table) const;
+    QSqlDatabase database() const;
 
-signals:
-    void recordInserted(const QString &table);
+    QString databaseName() const;
 
-public slots:
-    void onFetched(const Post &post, const Blog &blog);
+protected:
+     /// Stores the error message.
+    QString m_error;
 
 private:
-    /// Adds new recors to the given table.
-    void addRecord(const Post &post, const Blog &blog,
-                   const QString &table);
+    void remove();
 
-    /// Stores the list of filters.
-    Filters m_filters;
+    QString m_connection;
 };
 
 } // namespace core
 
-#endif // __STREAMDATABASE_H__
+#endif // __DATABASE_H__
