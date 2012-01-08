@@ -33,6 +33,7 @@
 #include "../core/credentials.h"
 #include "../parser/atomParser.h"
 #include "../database/streamdatabase.h"
+#include "../database/blogdatabase.h"
 #include "../strings/strings.h"
 #include "../strings/guiStrings.h"
 #include "../../ljcommunicator/communicator.h"
@@ -893,6 +894,15 @@ void MainWindow::onBlogAccountSetup()
                                       .arg(user);
             m_blogFolder->setText(Name, newName);
             m_blogFolder->setToolTip(Name, newName);
+
+            // Create my blog table.
+            core::BlogDatabase *db = core::Application::theApp()->blogDatabase();
+            QStringList tables = db->tables();
+            if (!tables.contains(str::MyBlogTableName)) {
+                QString query = QString(str::SqlCreateMyBlogTable)
+                                        .arg(str::MyBlogTableName);
+                db->addTable(query);
+            }
 
             // Now get events (posts) subjects only.
             lj::Events events = com.getEvents(true);
