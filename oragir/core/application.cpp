@@ -26,6 +26,7 @@
 #include "credentials.h"
 #include "../parser/atomParser.h"
 #include "../database/streamdatabase.h"
+#include "../database/blogdatabase.h"
 #include "../gui/mainWindow.h"
 #include "../strings/strings.h"
 
@@ -111,6 +112,7 @@ void Application::init()
     m_defaultManager->addProperty(str::CheckUpdates, bool(true), bool(true));
 
     m_streamDatabase = new StreamDatabase;
+    m_blogDatabase = new BlogDatabase;
     registerDatabaseDefaults();
 
     m_atomParser = new AtomParser;
@@ -191,6 +193,9 @@ void Application::registerDatabaseDefaults() const
     QString appDataFile = QString(location + "oragir.data");
     m_defaultManager->addProperty(str::Database, appDataFile, appDataFile);
 
+    QString blogDataFile = QString(location + "blog.data");
+    m_defaultManager->addProperty("Blog/Database", blogDataFile, blogDataFile);
+
     QString filterFile = QString(location + "filters.flt");
     m_defaultManager->addProperty(str::Filters, filterFile, filterFile);
 }
@@ -201,6 +206,7 @@ void Application::restoreDatabase() const
     Q_ASSERT(m_streamDatabase);
     Q_ASSERT(m_mainWindow);
 
+    // Stream database
     QString database = m_defaultManager->value(str::Database).toString();
     if (m_streamDatabase->create(database)) {
         QStringList tables = m_streamDatabase->tables();
@@ -213,6 +219,10 @@ void Application::restoreDatabase() const
 
     QString filtersFile = m_defaultManager->value(str::Filters).toString();
     m_streamDatabase->openFilters(filtersFile);
+
+    // Blog database
+    database = m_defaultManager->value("Blog/Database").toString();
+    m_blogDatabase->create(database);
 }
 
 void Application::saveDatabaseDefaults() const
@@ -224,6 +234,8 @@ void Application::saveDatabaseDefaults() const
     QString filtersFile = m_defaultManager->value(str::Filters).toString();
     if (!filtersFile.isEmpty())
         m_streamDatabase->saveFilters(filtersFile);
+
+    m_defaultManager->setValue("Blog/Database", m_blogDatabase->databaseName());
 }
 
 void Application::registerMainWindowDefaults() const
