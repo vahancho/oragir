@@ -100,10 +100,10 @@ namespace str
                                      "category NVARCHAR)";
 
     const char *SqlCreateMyBlogTable = "CREATE TABLE IF NOT EXISTS %1 ("
-                                       "itemid       INTEGER       NOT NULL,"
-                                       "publicid     INTEGER       NOT NULL,"
-                                       "commentcount INTEGER       NOT NULL,"
-                                       "time         DATATIME      NOT NULL,"
+                                       "itemid       INTEGER PRIMARY KEY NOT NULL,"
+                                       "publicid     INTEGER             NOT NULL,"
+                                       "commentcount INTEGER             NOT NULL,"
+                                       "time         DATATIME            NOT NULL,"
                                        "subject      NVARCHAR(256),"
                                        "event        NVARCHAR,"
                                        "url          NVARCHAR,"
