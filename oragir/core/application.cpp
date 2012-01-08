@@ -155,6 +155,11 @@ StreamDatabase *Application::streamDatabase() const
     return m_streamDatabase;
 }
 
+BlogDatabase *Application::blogDatabase() const
+{
+    return m_blogDatabase;
+}
+
 AtomParser *Application::streamParser() const
 {
     return m_atomParser;
