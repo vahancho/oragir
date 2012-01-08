@@ -19,6 +19,7 @@
 ***************************************************************************/
 
 #include "../strings/strings.h"
+#include "../../ljcommunicator/ljevents.h"
 #include "blogdatabase.h"
 
 namespace core
@@ -26,5 +27,26 @@ namespace core
 
 BlogDatabase::BlogDatabase()
 {}
+
+void BlogDatabase::addEvent(const lj::Event &event)
+{
+    QSqlDatabase db = database();
+    QSqlQuery query(db);
+
+    QString queryStr = QString(str::SqlInsertMyEntry).arg(str::MyBlogTableName);
+    query.prepare(queryStr);
+    query.bindValue(":itemid", event.m_itemId);
+    query.bindValue(":publicid", event.m_publicId);
+    query.bindValue(":commentcount", event.m_commentCount);
+    query.bindValue(":time", event.m_time);
+    query.bindValue(":subject", event.m_time);
+    query.bindValue(":event", event.m_event);
+    query.bindValue(":url", event.m_url);
+    query.bindValue(":tags", event.m_tags.join(","));
+    query.bindValue(":security", event.m_security);
+    query.bindValue(":flag", 0);
+
+    query.exec();
+}
 
 } // namespace core

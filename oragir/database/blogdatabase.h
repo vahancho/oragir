@@ -23,6 +23,11 @@
 
 #include "database.h"
 
+namespace lj
+{
+    struct Event;
+}
+
 namespace core
 {
 
@@ -31,6 +36,8 @@ class BlogDatabase : public Database
 
 public:
     BlogDatabase();
+
+    void addEvent(const lj::Event &event);
 };
 
 } // namespace core

@@ -907,13 +907,16 @@ void MainWindow::onBlogAccountSetup()
             // Now get events (posts) subjects only.
             lj::Events events = com.getEvents(true);
             if (events.isValid()) {
-                for (int i = events.count() - 1; i >= 0; --i) {
+                for (int i = 0; i < events.count(); ++i) {
                     QTreeWidgetItem *node = new QTreeWidgetItem(m_blogFolder);
                     node->setIcon(Name, QIcon(":/icons/folder"));
 
-                    QString subject = events.event(i).m_event;
+                    lj::Event event = events.event(i);
+                    QString subject = event.m_event;
                     node->setText(Name, subject);
                     node->setToolTip(Name, subject);
+
+                    db->addEvent(event);
                 }
             }
         } else {
