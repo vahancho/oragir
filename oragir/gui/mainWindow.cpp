@@ -159,7 +159,7 @@ void MainWindow::createFolderTree()
 
 void MainWindow::createFolderView(const QString &table)
 {
-    core::StreamDatabase *dbObj = core::Application::theApp()->database();
+    core::StreamDatabase *dbObj = core::Application::theApp()->streamDatabase();
     QSqlDatabase db = dbObj->database();
     if (!db.isValid())
         return;
@@ -575,7 +575,7 @@ void MainWindow::onSubWindowActivated(QMdiSubWindow *subWindow)
 
 void MainWindow::updateStatusLabels(const QString &table)
 {
-    core::StreamDatabase *db = core::Application::theApp()->database();
+    core::StreamDatabase *db = core::Application::theApp()->streamDatabase();
     int unreadCount = db->unreadCount(table);
 
     // Update status labels only for the active table view.
@@ -583,7 +583,6 @@ void MainWindow::updateStatusLabels(const QString &table)
         if(DatabaseView *dbView =
            qobject_cast<DatabaseView *>(mdiWindow->widget())) {
             if (dbView->table() == table) {
-                core::StreamDatabase *db = core::Application::theApp()->database();
                 m_unreadItems->setText(QString("  Unread: %1  ")
                                        .arg(unreadCount));
                 m_totalItems->setText(QString("  Total: %1  ")
@@ -664,7 +663,7 @@ void MainWindow::onNewFolder()
                                           tr("Folder name:"), QLineEdit::Normal,
                                           QDir::home().dirName(), &ok);
     if (ok && !table.isEmpty()) {
-        core::StreamDatabase *db = core::Application::theApp()->database();
+        core::StreamDatabase *db = core::Application::theApp()->streamDatabase();
         if (db->addStreamTable(table)) {
             createFolderView(table);
         } else {
@@ -695,7 +694,7 @@ void MainWindow::onDataReadProgress(int done, int /*total*/)
 
 void MainWindow::onFilters()
 {
-    core::StreamDatabase *db = core::Application::theApp()->database();
+    core::StreamDatabase *db = core::Application::theApp()->streamDatabase();
     FiltersDialog dlg;
     const core::StreamDatabase::Filters &filters = db->filters();
     dlg.setFilters(filters);
@@ -720,7 +719,7 @@ void MainWindow::onFiltersExport()
                                      ".",
                                      str::FilterDialogFilter);
     if(!fileName.isEmpty()) {
-        core::StreamDatabase *db = core::Application::theApp()->database();
+        core::StreamDatabase *db = core::Application::theApp()->streamDatabase();
         db->saveFilters(fileName);
     }
 }
@@ -732,7 +731,7 @@ void MainWindow::onFiltersImport()
                                      ".",
                                      str::FilterDialogFilter);
     if(!fileName.isEmpty()) {
-        core::StreamDatabase *db = core::Application::theApp()->database();
+        core::StreamDatabase *db = core::Application::theApp()->streamDatabase();
         // Backup the filters in case of the loading errors.
         core::StreamDatabase::Filters filters = db->filters();
         if (!db->openFilters(fileName)) {
@@ -805,7 +804,7 @@ void MainWindow::onFolderDelete()
     }
 
     // Finally remove table from the database.
-    core::StreamDatabase *db = core::Application::theApp()->database();
+    core::StreamDatabase *db = core::Application::theApp()->streamDatabase();
     db->removeTable(folderName);
 }
 

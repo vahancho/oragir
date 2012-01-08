@@ -64,11 +64,11 @@ Application::~Application()
     delete m_atomParser;
 
     saveDatabaseDefaults();
-    delete m_dataBase;
+    delete m_streamDatabase;
 
     delete m_versionManager;
 
-    m_defaultManager->setValue("User/Credentials", m_credentials->encode());
+    m_defaultManager->setValue("Blog/Credentials", m_credentials->encode());
     delete m_credentials;
 
     // Save defaults
@@ -105,23 +105,23 @@ void Application::init()
     m_defaultManager = new DefaultManager;
 
     m_credentials = new Credentials;
-    m_defaultManager->addProperty("User/Credentials", QString(), QString());
+    m_defaultManager->addProperty("Blog/Credentials", QString(), QString());
 
     m_versionManager = new VersionManager;
     m_defaultManager->addProperty(str::CheckUpdates, bool(true), bool(true));
 
-    m_dataBase = new StreamDatabase;
+    m_streamDatabase = new StreamDatabase;
     registerDatabaseDefaults();
 
     m_atomParser = new AtomParser;
     m_defaultManager->addProperty(str::Reconnect, bool(true), bool(true));
     m_defaultManager->addProperty(str::ReconnectCount, int(20), int(20));
     QObject::connect(m_atomParser, SIGNAL(fetched(const Post &, const Blog &)),
-                     m_dataBase, SLOT(onFetched(const Post &, const Blog &)));
+                     m_streamDatabase, SLOT(onFetched(const Post &, const Blog &)));
 
     m_mainWindow = new gui::MainWindow;
     registerMainWindowDefaults();
-    QObject::connect(m_dataBase, SIGNAL(recordInserted(const QString &)),
+    QObject::connect(m_streamDatabase, SIGNAL(recordInserted(const QString &)),
                      m_mainWindow, SLOT(onRecordInserted(const QString &)));
 
     // Read and set all defaults.
@@ -137,7 +137,7 @@ void Application::init()
     }
 
     // Restore user credentials.
-    m_credentials->fromEncoded(m_defaultManager->value("User/Credentials").toString());
+    m_credentials->fromEncoded(m_defaultManager->value("Blog/Credentials").toString());
 }
 
 gui::MainWindow *Application::mainWindow() const
@@ -150,9 +150,9 @@ DefaultManager *Application::defaultManager() const
     return m_defaultManager;
 }
 
-StreamDatabase *Application::database() const
+StreamDatabase *Application::streamDatabase() const
 {
-    return m_dataBase;
+    return m_streamDatabase;
 }
 
 AtomParser *Application::streamParser() const
@@ -173,7 +173,7 @@ Credentials *Application::credentials() const
 void Application::registerDatabaseDefaults() const
 {
     Q_ASSERT(m_defaultManager);
-    Q_ASSERT(m_dataBase);
+    Q_ASSERT(m_streamDatabase);
 
     // Get settings directory and create it if it does not exist.
     QString location =
@@ -193,31 +193,32 @@ void Application::registerDatabaseDefaults() const
 void Application::restoreDatabase() const
 {
     Q_ASSERT(m_defaultManager);
-    Q_ASSERT(m_dataBase);
+    Q_ASSERT(m_streamDatabase);
     Q_ASSERT(m_mainWindow);
 
     QString database = m_defaultManager->value(str::Database).toString();
-    if (m_dataBase->create(database)) {
-        QStringList tables = m_dataBase->tables();
+    if (m_streamDatabase->create(database)) {
+        QStringList tables = m_streamDatabase->tables();
+        tables.removeAll(str::BlogTableName);
         foreach(const QString &table, tables) {
-            m_dataBase->addStreamTable(table);
+            m_streamDatabase->addStreamTable(table);
             m_mainWindow->createFolderView(table);
         }
     }
 
     QString filtersFile = m_defaultManager->value(str::Filters).toString();
-    m_dataBase->openFilters(filtersFile);
+    m_streamDatabase->openFilters(filtersFile);
 }
 
 void Application::saveDatabaseDefaults() const
 {
     Q_ASSERT(m_defaultManager);
-    Q_ASSERT(m_dataBase);
+    Q_ASSERT(m_streamDatabase);
 
-    m_defaultManager->setValue(str::Database, m_dataBase->databaseName());
+    m_defaultManager->setValue(str::Database, m_streamDatabase->databaseName());
     QString filtersFile = m_defaultManager->value(str::Filters).toString();
     if (!filtersFile.isEmpty())
-        m_dataBase->saveFilters(filtersFile);
+        m_streamDatabase->saveFilters(filtersFile);
 }
 
 void Application::registerMainWindowDefaults() const

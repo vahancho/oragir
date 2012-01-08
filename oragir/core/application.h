@@ -72,7 +72,7 @@ public:
     DefaultManager *defaultManager() const;
 
     /// Returns the database manager.
-    StreamDatabase *database() const;
+    StreamDatabase *streamDatabase() const;
 
     /// Returns the Sream parser.
     AtomParser *streamParser() const;
@@ -138,7 +138,7 @@ private:
     gui::MainWindow *m_mainWindow;
 
     /// The database.
-    StreamDatabase *m_dataBase;
+    StreamDatabase *m_streamDatabase;
 
     /// The atom parser.
     AtomParser *m_atomParser;

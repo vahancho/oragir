@@ -124,7 +124,7 @@ void FilterEditor::setFilter(const Filter<Post> &filter)
 
     // Set the target folders (tables) combo box and select
     // the target folder name for the given filter.
-    StreamDatabase *db = Application::theApp()->database();
+    StreamDatabase *db = Application::theApp()->streamDatabase();
     QStringList tables = db->tables();
     m_tableCombo->addItems(tables);
     int tblIndex = tables.indexOf(filter.table());
