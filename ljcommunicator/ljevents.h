@@ -42,6 +42,7 @@ struct Event
     int m_commentCount;
     QString m_subject;
     QString m_event;
+    QString m_url;
     QString m_time;
     QStringList m_tags;
     QString m_security;
