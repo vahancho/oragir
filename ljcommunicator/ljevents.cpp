@@ -43,14 +43,17 @@ Events::Events(const QByteArray &data)
             event.m_commentCount = eventMap["reply_count"].toInt();
             event.m_subject = eventMap["subject"].toString();
             event.m_event = eventMap["event"].toString();
+            event.m_url = eventMap["url"].toString();
             event.m_time = eventMap["eventtime"].toString();
-            event.m_tags = eventMap["taglist"].toStringList();
 
             if (!eventMap.contains("security")) {
                 event.m_security = "public";
             } else {
                 event.m_security = eventMap["security"].toString();
             }
+
+            QMap<QString, QVariant> properties = eventMap["props"].toMap();
+            event.m_tags = properties["taglist"].toStringList();
 
             m_events.push_back(event);
         }
