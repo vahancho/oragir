@@ -114,7 +114,7 @@ namespace str
     const char *SqlInsertPostToTable = "INSERT INTO %1 (flag, title, read, name, updated, posterid, link, content, userpic, category) "
                                        "VALUES (:flag, :title, :read, :name, :updated, :posterid, :link, :content, :userpic, :category)";
 
-    const char *SqlInsertMyEntry = "INSERT INTO %1 (itemid, publicid, commentcount, time, subject, event, url, tags, security, flag) "
+    const char *SqlInsertMyEntry = "INSERT OR REPLACE INTO %1 (itemid, publicid, commentcount, time, subject, event, url, tags, security, flag) "
                                    "VALUES (:itemid, :publicid, :commentcount, :time, :subject, :event, :url, :tags, :security, :flag)";
 
     const char *SqlInsertBlogToTable = "INSERT INTO %1 (journalid, link, name, journal, title, flag) "
