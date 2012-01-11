@@ -61,6 +61,16 @@ EventProperties::EventProperties()
 EventProperties::EventProperties(const QMap<QString, QVariant> &other)
 {}
 
+QVariant &EventProperties::operator[](const QString &key)
+{
+    return QMap<QString, QVariant>::operator [](key);
+}
+
+const QVariant EventProperties::operator[](const QString &key) const
+{
+    return QMap<QString, QVariant>::operator [](key);
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 Events::Events()
 {}
