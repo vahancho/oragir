@@ -23,6 +23,45 @@
 namespace lj
 {
 
+EventProperties::EventProperties()
+{
+    insert("admin_content_flag", QVariant());
+    insert("adult_content", QVariant());
+    insert("commentalter", QVariant());
+    insert("current_coords", QVariant());
+    insert("current_location", QVariant());
+    insert("current_mood", QVariant());
+    insert("current_moodid", QVariant());
+    insert("current_music", QVariant());
+    insert("hasscreened", QVariant());
+    insert("opt_backdated", QVariant());
+    insert("opt_nocomments", QVariant());
+    insert("opt_noemail", QVariant());
+    insert("opt_preformatted", QVariant());
+    insert("opt_screening", QVariant());
+    insert("personifi_lang", QVariant());
+    insert("personifi_tags", QVariant());
+    insert("personifi_word_count", QVariant());
+    insert("picture_keyword", QVariant());
+    insert("qotdid", QVariant());
+    insert("revnum", QVariant());
+    insert("revtime", QVariant());
+    insert("sms_msgid", QVariant());
+    insert("statusvis", QVariant());
+    insert("syn_id", QVariant());
+    insert("syn_link", QVariant());
+    insert("taglist", QVariant());
+    insert("unknown8bit", QVariant());
+    insert("unsuspend_supportid", QVariant());
+    insert("used_rte", QVariant());
+    insert("useragent", QVariant());
+    insert("verticals_list", QVariant());
+}
+
+EventProperties::EventProperties(const QMap<QString, QVariant> &other)
+{}
+
+///////////////////////////////////////////////////////////////////////////////
 Events::Events()
 {}
 
@@ -52,7 +91,7 @@ Events::Events(const QByteArray &data)
                 event.m_security = eventMap["security"].toString();
             }
 
-            QMap<QString, QVariant> properties = eventMap["props"].toMap();
+            EventProperties properties = eventMap["props"].toMap();
             event.m_tags = properties["taglist"].toStringList();
 
             m_events.push_back(event);

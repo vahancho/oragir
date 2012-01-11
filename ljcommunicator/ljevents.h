@@ -28,6 +28,17 @@
 namespace lj
 {
 
+/// Implements event properties list.
+/*!
+    Refer the LJ docs: http://www.livejournal.com/doc/server/ljp.csp.proplist.html
+*/
+class EventProperties : public QMap<QString, QVariant>
+{
+public:
+    EventProperties();
+    EventProperties(const QMap<QString, QVariant> &other);
+};
+
 struct Event
 {
     Event()
