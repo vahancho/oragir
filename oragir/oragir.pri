@@ -1,6 +1,7 @@
 #Header files
 HEADERS += ./core/propertyTable.h \
            ./core/application.h \
+           ./core/credentials.h \
            ./core/defaultManager.h \
            ./core/versionManager.h \
            ./core/version.h \
@@ -15,13 +16,15 @@ HEADERS += ./core/propertyTable.h \
            ./gui/advancedOptionsPage.h \
            ./gui/connectOptionsPage.h \
            ./gui/dlgOptions.h \
-           ./gui/dlgExport.h \
+           ./gui/dlgUser.h \
            ./gui/htmlEditor.h \
            ./parser/atomParser.h \
            ./parser/blog.h \
            ./parser/post.h \
            ./parser/filter.h \
            ./database/database.h \
+           ./database/blogdatabase.h \
+           ./database/streamdatabase.h \
            ./strings/strings.h \
            ./strings/guiStrings.h
 
@@ -29,6 +32,7 @@ HEADERS += ./core/propertyTable.h \
 SOURCES += ./main.cpp \
            ./core/propertyTable.cpp \
            ./core/application.cpp \
+           ./core/credentials.cpp \
            ./core/defaultManager.cpp \
            ./core/versionManager.cpp \
            ./core/version.cpp \
@@ -42,11 +46,13 @@ SOURCES += ./main.cpp \
            ./gui/advancedOptionsPage.cpp \
            ./gui/connectOptionsPage.cpp \
            ./gui/dlgOptions.cpp \
-           ./gui/dlgExport.cpp \
+           ./gui/dlgUser.cpp \
            ./gui/htmlEditor.cpp \
            ./parser/blog.cpp \
            ./parser/post.cpp \
            ./database/database.cpp \
+           ./database/blogdatabase.cpp \
+           ./database/streamdatabase.cpp \
            ./parser/atomParser.cpp \
            ./strings/strings.cpp \
            ./strings/guiStrings.cpp
