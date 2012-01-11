@@ -59,7 +59,13 @@ EventProperties::EventProperties()
 }
 
 EventProperties::EventProperties(const QMap<QString, QVariant> &other)
-{}
+{
+    QMapIterator<QString, QVariant> it(other);
+    while (it.hasNext()) {
+        it.next();
+        insert(it.key(), it.value());
+    }
+}
 
 QVariant &EventProperties::operator[](const QString &key)
 {
