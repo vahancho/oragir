@@ -255,6 +255,8 @@ void Application::restoreMainWindow() const
     Q_ASSERT(m_defaultManager);
     Q_ASSERT(m_mainWindow);
 
+    m_mainWindow->createBlogView();
+
     // Set maximized state
     bool max = m_defaultManager->value(str::MainWindowMax).toBool();
     if(max)
@@ -275,7 +277,6 @@ void Application::restoreMainWindow() const
     // Restore status bar state
     bool showStatus = m_defaultManager->value(str::ShowStatusBar).toBool();
     m_mainWindow->setStatusBarVisible(showStatus);
-    m_mainWindow->createBlogView();
 }
 
 void Application::saveMainWindowDefaults() const
