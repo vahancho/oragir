@@ -35,6 +35,8 @@ class QLabel;
 namespace gui
 {
 
+class BlogTableModel;
+
 /// Implements the Application's Main Window class.
 class MainWindow : public QMainWindow
 {
@@ -227,6 +229,8 @@ private:
 
     /// Stores the blog view.
     QTableView *m_blogView;
+
+    BlogTableModel *m_blogModel;
 
     /// The number of processed streaming items.
     int m_processedItemCount;

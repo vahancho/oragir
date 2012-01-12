@@ -27,6 +27,7 @@
 #include "generalOptionsPage.h"
 #include "connectOptionsPage.h"
 #include "advancedOptionsPage.h"
+#include "blogTableModel.h"
 #include "../core/application.h"
 #include "../core/defaultManager.h"
 #include "../core/versionManager.h"
@@ -140,12 +141,19 @@ void MainWindow::createBlogView()
     core::BlogDatabase *db = core::Application::theApp()->blogDatabase();
     QSqlDatabase d = db->database();
     if (d.isValid()) {
-        QSqlTableModel *model = new QSqlTableModel(0, db->database());
-        model->setTable(str::MyBlogTableName);
-        model->setEditStrategy(QSqlTableModel::OnManualSubmit);
-        model->select();
+        m_blogModel = new BlogTableModel(0, db->database());
+        m_blogModel->setTable(str::MyBlogTableName);
+        m_blogModel->setEditStrategy(QSqlTableModel::OnManualSubmit);
+        m_blogModel->select();
 
-        m_blogView->setModel(model);
+        m_blogView->setModel(m_blogModel);
+
+        for (int i = 0; i < m_blogModel->columnCount(); ++i) {
+            if (i != BlogTableModel::Subject &&
+                i != BlogTableModel::Time) {
+                m_blogView->hideColumn(i);
+            }
+        }
     }
 
     QDockWidget *dock = new QDockWidget("My Blog", this);
