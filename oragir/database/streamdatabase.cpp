@@ -179,7 +179,11 @@ void StreamDatabase::clearFilters()
 bool StreamDatabase::addStreamTable(const QString &table)
 {
     QString queryStr = QString(str::SqlCreatePostTable).arg(table);
-    return addTable(queryStr);
+    bool added = addTable(queryStr);
+    if (added)
+        emit tableAdded(table);
+
+    return added;
 }
 
 int StreamDatabase::unreadCount(const QString &table) const

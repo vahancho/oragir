@@ -66,6 +66,7 @@ public:
 
 signals:
     void recordInserted(const QString &table);
+    void tableAdded(const QString &table);
 
 public slots:
     void onFetched(const Post &post, const Blog &blog);
