@@ -35,11 +35,11 @@ public:
     enum ColumnNumber
     {
         ItemId = 0,
+        Subject,
+        Event,
         PublicId,
         CommentCount,
         Time,
-        Subject,
-        Event,
         Url,
         Tags,
         Security,
