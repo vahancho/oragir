@@ -125,6 +125,8 @@ void Application::init()
     registerMainWindowDefaults();
     QObject::connect(m_streamDatabase, SIGNAL(recordInserted(const QString &)),
                      m_mainWindow, SLOT(onRecordInserted(const QString &)));
+    QObject::connect(m_streamDatabase, SIGNAL(tableAdded(const QString &)),
+                     m_mainWindow, SLOT(createFolderView(const QString &)));
 
     // Read and set all defaults.
     m_defaultManager->readDefaults();
@@ -204,7 +206,6 @@ void Application::restoreDatabase() const
 {
     Q_ASSERT(m_defaultManager);
     Q_ASSERT(m_streamDatabase);
-    Q_ASSERT(m_mainWindow);
 
     // Stream database
     QString database = m_defaultManager->value(str::Database).toString();
@@ -213,7 +214,6 @@ void Application::restoreDatabase() const
         tables.removeAll(str::BlogTableName);
         foreach(const QString &table, tables) {
             m_streamDatabase->addStreamTable(table);
-            m_mainWindow->createFolderView(table);
         }
     }
 
@@ -275,6 +275,7 @@ void Application::restoreMainWindow() const
     // Restore status bar state
     bool showStatus = m_defaultManager->value(str::ShowStatusBar).toBool();
     m_mainWindow->setStatusBarVisible(showStatus);
+    m_mainWindow->createBlogView();
 }
 
 void Application::saveMainWindowDefaults() const
