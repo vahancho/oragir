@@ -29,6 +29,7 @@
 class QSignalMapper;
 class QTreeWidget;
 class QTreeWidgetItem;
+class QTableView;
 class QLabel;
 
 namespace gui
@@ -46,17 +47,20 @@ public:
     /// Destructor.
     ~MainWindow();
 
-    /// Set up the table mdi child view for the given database table.
-    void createFolderView(const QString &table);
-
     /// Returns visibility state of the status bar.
     bool statusBarVisible() const;
+
+    /// Creates the blog view.
+    void createBlogView();
 
 public slots:
     void onRecordInserted(const QString &table);
 
     /// This slot is called when Status bar action is triggered.
     void setStatusBarVisible(bool visible = true);
+
+    /// Set up the table mdi child view for the given database table.
+    void createFolderView(const QString &table);
 
 protected:
     /// Handles the window's close event.
@@ -221,7 +225,8 @@ private:
 
     QTreeWidgetItem *m_filterFolder;
 
-    QTreeWidgetItem *m_blogFolder;
+    /// Stores the blog view.
+    QTableView *m_blogView;
 
     /// The number of processed streaming items.
     int m_processedItemCount;

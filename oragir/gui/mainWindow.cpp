@@ -125,11 +125,37 @@ MainWindow::MainWindow(QWidget *parent, Qt::WFlags flags)
 MainWindow::~MainWindow()
 {}
 
+void MainWindow::createBlogView()
+{
+    m_blogView = new QTableView;
+    m_blogView->setShowGrid(false);
+    m_blogView->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    m_blogView->setSelectionBehavior(QAbstractItemView::SelectRows);
+    m_blogView->verticalHeader()->setVisible(false);
+    m_blogView->setSortingEnabled(true);
+    // The uniformed rows height.
+    QFontMetrics fm = fontMetrics();
+    m_blogView->verticalHeader()->setDefaultSectionSize(fm.height() + 6);
+
+    core::BlogDatabase *db = core::Application::theApp()->blogDatabase();
+    QSqlDatabase d = db->database();
+    if (d.isValid()) {
+        QSqlTableModel *model = new QSqlTableModel(0, db->database());
+        model->setTable(str::MyBlogTableName);
+        model->setEditStrategy(QSqlTableModel::OnManualSubmit);
+        model->select();
+
+        m_blogView->setModel(model);
+    }
+
+    QDockWidget *dock = new QDockWidget("My Blog", this);
+    dock->setObjectName("My Blog");
+    dock->setWidget(m_blogView);
+    addDockWidget(Qt::LeftDockWidgetArea, dock);
+}
+
 void MainWindow::createFolderTree()
 {
-    QDockWidget *dock = new QDockWidget(str::FoldersTitle, this);
-    dock->setObjectName(str::FoldersTitle);
-
     m_folderTree = new QTreeWidget(this);
     m_folderTree->setColumnCount(1);
     QStringList headerLabels;
@@ -148,12 +174,8 @@ void MainWindow::createFolderTree()
     m_filterFolder->setToolTip(Name, "Filtered");
     m_folderTree->addTopLevelItem(m_filterFolder);
 
-    m_blogFolder = new QTreeWidgetItem;
-    m_blogFolder->setIcon(Name, QIcon(":/icons/folder"));
-    m_blogFolder->setText(Name, "My Blog (unknown)");
-    m_blogFolder->setToolTip(Name, "My Blog (unknown)");
-    m_folderTree->addTopLevelItem(m_blogFolder);
-
+    QDockWidget *dock = new QDockWidget(str::FoldersTitle, this);
+    dock->setObjectName(str::FoldersTitle);
     dock->setWidget(m_folderTree);
     addDockWidget(Qt::LeftDockWidgetArea, dock);
 }
@@ -892,8 +914,6 @@ void MainWindow::onBlogAccountSetup()
             // Setup the blog node.
             QString newName = QString("My Blog (%1.livejournal.com)")
                                       .arg(user);
-            m_blogFolder->setText(Name, newName);
-            m_blogFolder->setToolTip(Name, newName);
 
             // Create my blog table.
             core::BlogDatabase *db = core::Application::theApp()->blogDatabase();
@@ -905,17 +925,10 @@ void MainWindow::onBlogAccountSetup()
             }
 
             // Now get events (posts) subjects only.
-            lj::Events events = com.getEvents(true);
+            lj::Events events = com.getEvents(false);
             if (events.isValid()) {
                 for (int i = 0; i < events.count(); ++i) {
-                    QTreeWidgetItem *node = new QTreeWidgetItem(m_blogFolder);
-                    node->setIcon(Name, QIcon(":/icons/folder"));
-
                     lj::Event event = events.event(i);
-                    QString subject = event.m_event;
-                    node->setText(Name, subject);
-                    node->setToolTip(Name, subject);
-
                     db->addEvent(event);
                 }
             }
