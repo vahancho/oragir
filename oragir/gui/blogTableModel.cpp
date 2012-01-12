@@ -34,6 +34,8 @@ BlogTableModel::BlogTableModel(QObject *parent, QSqlDatabase db)
     // Initialize visible columns title names.
     m_columnName[Subject] = QString("Subject");
     m_columnName[Time] = QString("Date");
+
+    m_iconBlog = QIcon(":/icons/ball_green");
 }
 
 QVariant BlogTableModel::headerData(int section, Qt::Orientation orientation,
@@ -65,6 +67,9 @@ QVariant BlogTableModel::data(const QModelIndex &index, int role) const
         }
         break;
     case Qt::DecorationRole:
+        if (index.column() == Subject) {
+            return m_iconBlog;
+        }
         break;
     case Qt::FontRole:
         {

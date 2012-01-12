@@ -53,6 +53,7 @@ public:
 
 private:
     QMap<ColumnNumber, QString> m_columnName;
+    QIcon m_iconBlog;
 };
 
 } // namespace gui
