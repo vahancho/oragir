@@ -33,7 +33,7 @@ const char strUserAgent[] = "Oragir v0.2; "
                             "vahancho@gmail.com";
 
 // Timeout between two requests to the server.
-const int timeout = 5000;
+const int timeout = 7000;
 
 Communicator::Communicator(QObject *parent)
     :
@@ -249,6 +249,37 @@ Events Communicator::getEvents(bool subjectsOnly, const QString &lastsync)
 
     Events events(buf);
     return events;
+}
+
+int Communicator::postEvent(const QString &subject, const QString &event,
+                            const QString &security, const QDateTime &dt,
+                            const lj::EventProperties &props)
+{
+    QVariantList params = authParams();
+    if (params.size() == 0)
+        return 0;
+
+    // Modify params by adding the item id.
+    QMap<QString, QVariant> param = params.takeAt(0).toMap();
+    // Make sure we use utf-8 encoded strings in response.
+    param["ver"] = 1;
+    param["subject"] = subject;
+    param["event"] = event;
+    param["security"] = security;
+    param["year"] = dt.date().year();
+    param["mon"] = dt.date().month();
+    param["day"] = dt.date().day();
+    param["hour"] = dt.time().hour();
+    param["min"] = dt.time().minute();
+    param["props"] = props;
+    params.push_back(param);
+
+    request("LJ.XMLRPC.postevent", params);
+    std::auto_ptr<QBuffer> buffer(m_responses.take(m_currentRequestId));
+    QByteArray buf = buffer->buffer();
+    qDebug() << buf;
+
+    return 0;
 }
 
 void Communicator::request(QString methodName, const QVariantList &params)

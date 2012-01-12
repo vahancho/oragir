@@ -75,6 +75,10 @@ public:
     Events getEvents(bool subjectsOnly = false,
                      const QString &lastsync = QString());
 
+    int postEvent(const QString &subject, const QString &event,
+                  const QString &security, const QDateTime &dt,
+                  const lj::EventProperties &props);
+
 private slots:
     void requestFinished(int id, bool error);
     void exitEventLoop();
