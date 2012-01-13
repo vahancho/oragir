@@ -18,6 +18,7 @@ HEADERS += ./core/propertyTable.h \
            ./gui/dlgOptions.h \
            ./gui/dlgUser.h \
            ./gui/htmlEditor.h \
+           ./gui/blogTableMode.h \
            ./parser/atomParser.h \
            ./parser/blog.h \
            ./parser/post.h \
@@ -48,6 +49,7 @@ SOURCES += ./main.cpp \
            ./gui/dlgOptions.cpp \
            ./gui/dlgUser.cpp \
            ./gui/htmlEditor.cpp \
+           ./gui/blogTableModel.cpp \
            ./parser/blog.cpp \
            ./parser/post.cpp \
            ./database/database.cpp \
