@@ -33,7 +33,7 @@ const char strUserAgent[] = "Oragir v0.2; "
                             "vahancho@gmail.com";
 
 // Timeout between two requests to the server.
-const int timeout = 7000;
+const int timeout = 3000;
 
 Communicator::Communicator(QObject *parent)
     :
