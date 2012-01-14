@@ -198,6 +198,34 @@ QMap<QString, QVariant> Communicator::getComments(int postid)
     return result;
 }
 
+QVariantList Communicator::getDayCount()
+{
+    QVariantList result;
+    QVariantList params = authParams();
+    if (params.size() == 0)
+        return result;
+
+    QMap<QString, QVariant> param = params.takeAt(0).toMap();
+    param["ver"] = 1;
+    params.push_back(param);
+
+    request("LJ.XMLRPC.getdaycounts", params);
+
+    std::auto_ptr<QBuffer> buffer(m_responses.take(m_currentRequestId));
+    QByteArray buf = buffer->buffer();
+    qDebug() << buf;
+
+    xmlrpc::Response response;
+    QVariant responceData = response.parse(buf);
+
+    if (response.isValid()) {
+        QMap<QString, QVariant> data = responceData.toMap();
+        result = data["daycounts"].toList();
+    }
+
+    return result;
+}
+
 SyncItems Communicator::syncitems(const QString &lastsync)
 {
     QVariantList params = authParams();
@@ -271,7 +299,7 @@ int Communicator::postEvent(const QString &subject, const QString &event,
     param["day"] = dt.date().day();
     param["hour"] = dt.time().hour();
     param["min"] = dt.time().minute();
-    param["props"] = props;
+    param["props"] = props.data();
     params.push_back(param);
 
     request("LJ.XMLRPC.postevent", params);

@@ -56,6 +56,9 @@ public:
     UserInfo login();
     QMap<QString, QVariant> getComments(int postid);
 
+    /// Returns the list of date-count pairs.
+    QVariantList getDayCount();
+
     /// Returns a list (or part of a list) of all the items.
     /*!
         Returns a list (or part of a list) of all the items (journal entries,
