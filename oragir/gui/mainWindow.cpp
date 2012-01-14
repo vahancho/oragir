@@ -933,7 +933,7 @@ void MainWindow::onBlogAccountSetup()
             }
 
             // Now get events (posts) subjects only.
-            lj::Events events = com.getEvents(false);
+            lj::Events events = com.getEvents();
             if (events.isValid()) {
                 for (int i = 0; i < events.count(); ++i) {
                     lj::Event event = events.event(i);

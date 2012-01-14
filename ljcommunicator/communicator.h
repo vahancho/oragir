@@ -75,8 +75,7 @@ public:
     */
     SyncItems syncitems(const QString &lastsync = QString());
 
-    Events getEvents(bool subjectsOnly = false,
-                     const QString &lastsync = QString());
+    Events getEvents(const QString &lastsync = QString());
 
     int postEvent(const QString &subject, const QString &event,
                   const QString &security, const QDateTime &dt,

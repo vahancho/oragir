@@ -249,7 +249,7 @@ SyncItems Communicator::syncitems(const QString &lastsync)
     return items;
 }
 
-Events Communicator::getEvents(bool subjectsOnly, const QString &lastsync)
+Events Communicator::getEvents(const QString &lastsync)
 {
     QVariantList params = authParams();
     if (params.size() == 0)
@@ -259,7 +259,7 @@ Events Communicator::getEvents(bool subjectsOnly, const QString &lastsync)
     QMap<QString, QVariant> param = params.takeAt(0).toMap();
     // Make sure we use utf-8 encoded strings in response.
     param["ver"] = 1;
-    param["prefersubject"] = subjectsOnly ? 1 : 0;
+    param["prefersubject"] = 0;
     //param["selecttype"] = "lastn";
     //param["howmany"] = 8;
     param["selecttype"] = "syncitems";
