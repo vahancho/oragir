@@ -196,14 +196,4 @@ int StreamDatabase::unreadCount(const QString &table) const
     return query.value(0).toInt();
 }
 
-int StreamDatabase::totalCount(const QString &table) const
-{
-    QSqlDatabase db = database();
-    QSqlQuery query(db);
-    QString str = QString("SELECT COUNT(*) FROM %1").arg(table);
-    query.exec(str);
-    query.next();
-    return query.value(0).toInt();
-}
-
 } // namespace core

@@ -62,7 +62,6 @@ public:
     const Filters &filters() const;
 
     int unreadCount(const QString &table) const;
-    int totalCount(const QString &table) const;
 
 signals:
     void recordInserted(const QString &table);

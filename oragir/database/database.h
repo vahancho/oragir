@@ -58,6 +58,9 @@ public:
 
     QString databaseName() const;
 
+    /// Returns the total number of records in the given table.
+    int totalCount(const QString &table) const;
+
 protected:
      /// Stores the error message.
     QString m_error;
