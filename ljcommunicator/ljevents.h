@@ -32,14 +32,20 @@ namespace lj
 /*!
     Refer the LJ docs: http://www.livejournal.com/doc/server/ljp.csp.proplist.html
 */
-class LJCOMMUNICATOR_EXPORT EventProperties : public QMap<QString, QVariant>
+class EventProperties
 {
 public:
     EventProperties();
     EventProperties(const QMap<QString, QVariant> &other);
 
+    QMap<QString, QVariant> data() const;
+
     QVariant &operator[](const QString &key);
     const QVariant operator[](const QString &key) const;
+
+private:
+    void insert(const QString &key, const QVariant &value);
+    QMap<QString, QVariant> m_data;
 };
 
 struct Event

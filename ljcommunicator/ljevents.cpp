@@ -67,14 +67,24 @@ EventProperties::EventProperties(const QMap<QString, QVariant> &other)
     }
 }
 
+QMap<QString, QVariant> EventProperties::data() const
+{
+    return m_data;
+}
+
+void EventProperties::insert(const QString &key, const QVariant &value)
+{
+    m_data.insert(key, value);
+}
+
 QVariant &EventProperties::operator[](const QString &key)
 {
-    return QMap<QString, QVariant>::operator [](key);
+    return m_data[key];
 }
 
 const QVariant EventProperties::operator[](const QString &key) const
 {
-    return QMap<QString, QVariant>::operator [](key);
+    return m_data[key];
 }
 
 ///////////////////////////////////////////////////////////////////////////////
