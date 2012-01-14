@@ -75,7 +75,21 @@ public:
     */
     SyncItems syncitems(const QString &lastsync = QString());
 
+    /// Returns the all events after the last synced time.
+    /*!
+        The date (in "yyyy-mm-dd hh:mm:ss" format) that you
+        want to get updates since.
+    */
     Events getEvents(const QString &lastsync = QString());
+
+    /// Returns the last events limited by the number.
+    /*!
+        According to the LJ docs, the max number of events
+        that can be returned is limited to 50.
+        Use datebefore to restrict all entries returned to be before
+        the date you specify, which must be of the form yyyy-mm-dd hh:mm:ss.
+    */
+    Events getEvents(int howmany, const QString &beforedate = QString());
 
     int postEvent(const QString &subject, const QString &event,
                   const QString &security, const QDateTime &dt,
