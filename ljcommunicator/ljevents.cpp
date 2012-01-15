@@ -138,4 +138,17 @@ Event Events::event(int index)
         return Event();
 }
 
+Events Events::operator+(const Events &other) const
+{
+    Events tmp = *this;
+    tmp.m_events += other.m_events;
+    return tmp;
+}
+
+Events &Events::operator+=(const Events &other)
+{
+    m_events += other.m_events;
+    return *this;
+}
+
 }

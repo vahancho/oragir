@@ -81,6 +81,9 @@ public:
     /// Returns the event structure.
     Event event(int index);
 
+    Events operator+(const Events &other) const;
+    Events &operator+=(const Events &other);
+
 private:
     QList<Event> m_events;
 };
