@@ -308,6 +308,38 @@ Events Communicator::getEvents(int howmany, const QString &beforedate)
     return events;
 }
 
+Events Communicator::getDayEvents(const QString &dateStr)
+{
+    QVariantList params = authParams();
+    if (params.size() == 0)
+        return Events();
+
+    QDate date = QDate::fromString(dateStr, "yyyy-MM-dd");
+    if (!date.isValid())
+        return Events();
+
+    // Modify params by adding the item id.
+    QMap<QString, QVariant> param = params.takeAt(0).toMap();
+    // Make sure we use utf-8 encoded strings in response.
+    param["ver"] = 1;
+    param["prefersubject"] = 0;
+    param["selecttype"] = "day";
+    param["year"] = date.year();
+    param["month"] = date.month();
+    param["day"] = date.day();
+
+    params.push_back(param);
+
+    request("LJ.XMLRPC.getevents", params);
+
+    std::auto_ptr<QBuffer> buffer(m_responses.take(m_currentRequestId));
+    QByteArray buf = buffer->buffer();
+    qDebug() << buf;
+
+    Events events(buf);
+    return events;
+}
+
 int Communicator::postEvent(const QString &subject, const QString &event,
                             const QString &security, const QDateTime &dt,
                             const lj::EventProperties &props)

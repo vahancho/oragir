@@ -91,6 +91,9 @@ public:
     */
     Events getEvents(int howmany, const QString &beforedate = QString());
 
+    /// Returns events for the given day.
+    Events getDayEvents(const QString &dateStr);
+
     int postEvent(const QString &subject, const QString &event,
                   const QString &security, const QDateTime &dt,
                   const lj::EventProperties &props);
