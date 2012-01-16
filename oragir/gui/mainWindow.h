@@ -145,6 +145,9 @@ private slots:
 
     void onBlogAccountSetup();
 
+    /// Called when an item in blog view clicked.
+    void onEventClicked(const QModelIndex &index);
+
 private:
 
     /// Defines the column numbers in the folders view.

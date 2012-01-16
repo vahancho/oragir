@@ -28,6 +28,7 @@
 #include "connectOptionsPage.h"
 #include "advancedOptionsPage.h"
 #include "blogTableModel.h"
+#include "htmlEditor.h"
 #include "../core/application.h"
 #include "../core/defaultManager.h"
 #include "../core/versionManager.h"
@@ -137,6 +138,9 @@ void MainWindow::createBlogView()
     // The uniformed rows height.
     QFontMetrics fm = fontMetrics();
     m_blogView->verticalHeader()->setDefaultSectionSize(fm.height() + 6);
+
+    connect(m_blogView, SIGNAL(doubleClicked(const QModelIndex &)),
+            this, SLOT(onEventClicked(const QModelIndex &)));
 
     core::BlogDatabase *db = core::Application::theApp()->blogDatabase();
     QSqlDatabase d = db->database();
@@ -987,6 +991,22 @@ void MainWindow::onBlogAccountSetup()
 
         m_progress->stop();
     }
+}
+
+void MainWindow::onEventClicked(const QModelIndex &index)
+{
+    // Create and show database view.
+    HtmlEditor *editor = new HtmlEditor;
+    QSqlRecord record = m_blogModel->record(index.row());
+    editor->setContent(record.value(BlogTableModel::Event).toString());
+
+    QMdiSubWindow *editorView = new QMdiSubWindow;
+    editorView->setWidget(editor);
+    editorView->setAttribute(Qt::WA_DeleteOnClose);
+    editorView->resize(200, 200);
+    editorView->setWindowTitle(record.value(BlogTableModel::Subject).toString());
+    m_mdiArea.addSubWindow(editorView);
+    editorView->showMaximized();
 }
 
 } // namespace gui
