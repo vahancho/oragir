@@ -32,7 +32,7 @@ namespace lj
 /*!
     Refer the LJ docs: http://www.livejournal.com/doc/server/ljp.csp.proplist.html
 */
-class EventProperties
+class LJCOMMUNICATOR_EXPORT EventProperties
 {
 public:
     EventProperties();

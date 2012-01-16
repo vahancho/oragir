@@ -919,26 +919,66 @@ void MainWindow::onBlogAccountSetup()
             cr->setUser(user);
             cr->setPassword(password);
 
-            // Setup the blog node.
-            QString newName = QString("My Blog (%1.livejournal.com)")
-                                      .arg(user);
-
-            // Create my blog table.
             core::BlogDatabase *db = core::Application::theApp()->blogDatabase();
             QStringList tables = db->tables();
-            if (!tables.contains(str::MyBlogTableName)) {
+            if (tables.contains(str::MyBlogTableName)) {
+                // Clear the old table.
+                m_blogModel->removeRows(0, m_blogModel->rowCount());
+                m_blogModel->submitAll();
+            } else {
+                // Create new table for the blog events.
                 QString query = QString(str::SqlCreateMyBlogTable)
                                         .arg(str::MyBlogTableName);
                 db->addTable(query);
             }
 
-            // Now get events (posts) subjects only.
-            lj::Events events = com.getEvents();
-            if (events.isValid()) {
-                for (int i = 0; i < events.count(); ++i) {
-                    lj::Event event = events.event(i);
-                    db->addEvent(event);
+            // Get the total number of events in the blog.
+            int total = 0;
+            QVariantList postPerDay = com.getDayCount();
+            foreach (const QVariant &v, postPerDay) {
+                QMap<QString, QVariant> data = v.toMap();
+                total += data["count"].toInt();
+            }
+
+            // Resulting events.
+            lj::Events events;
+            int canFetch = 0;
+            foreach (const QVariant &v, postPerDay) {
+                // No need to fetch the same events twice.
+                if (events.count() >= total)
+                    break;
+
+                QMap<QString, QVariant> data = v.toMap();
+                int count = data["count"].toInt();
+                canFetch += count;
+                if (canFetch >= 50) {
+                    QString dateStr = data["date"].toString();
+
+                    lj::Events e = com.getDayEvents(dateStr);
+                    if (e.isValid()) {
+                        canFetch -= e.count();
+                        events += e;
+                    }
+
+                    dateStr += " 00:00:00";
+                    e = com.getEvents(canFetch, dateStr);
+                    if (e.isValid()) {
+                        canFetch -= e.count();
+                        events += e;
+                    }
                 }
+            }
+
+            // Get the last n events.
+            lj::Events e = com.getEvents(total - events.count());
+            if (e.isValid()) {
+                events += e;
+            }
+
+            // Finally add all events to the database.
+            for (int i = 0; i < events.count(); ++i) {
+                lj::Event event = events.event(i);
+                db->addEvent(event);
             }
         } else {
             QMessageBox::critical(this, "User Account Error",
