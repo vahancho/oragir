@@ -40,6 +40,27 @@ public:
     void setHtmlContent(const QString &content);
     void setSubject(const QString &subject);
 
+public slots:
+    void setParagraph();
+    void setHeading1();
+    void setHeading2();
+    void setHeading3();
+    void setHeading4();
+    void setHeading5();
+    void setHeading6();
+    void setPreformatted();
+    void setAddress();
+    void setAlignLeft();
+    void setAlignCenter();
+    void setAlignRight();
+    void setAlignJustify();
+    void setIncreaseIndent();
+    void setDecreaseIndent();
+    void setNumberedList();
+    void setBulletedList();
+    void insertImage();
+    void createLink();
+
 private:
     QLineEdit *m_editSubject;
     HtmlEditor *m_htmlEditor;

@@ -50,4 +50,99 @@ void BlogEventView::setSubject(const QString &subject)
     m_editSubject->setText(subject);
 }
 
+void BlogEventView::setParagraph()
+{
+    m_htmlEditor->setParagraph();
+}
+
+void BlogEventView::setHeading1()
+{
+    m_htmlEditor->setHeading1();
+}
+
+void BlogEventView::setHeading2()
+{
+    m_htmlEditor->setHeading2();
+}
+
+void BlogEventView::setHeading3()
+{
+    m_htmlEditor->setHeading3();
+}
+
+void BlogEventView::setHeading4()
+{
+    m_htmlEditor->setHeading4();
+}
+
+void BlogEventView::setHeading5()
+{
+    m_htmlEditor->setHeading5();
+}
+
+void BlogEventView::setHeading6()
+{
+    m_htmlEditor->setHeading6();
+}
+
+void BlogEventView::setPreformatted()
+{
+    m_htmlEditor->setPreformatted();
+}
+
+void BlogEventView::setAddress()
+{
+    m_htmlEditor->setAddress();
+}
+
+void BlogEventView::setAlignLeft()
+{
+    m_htmlEditor->setAlignLeft();
+}
+
+void BlogEventView::setAlignCenter()
+{
+    m_htmlEditor->setAlignCenter();
+}
+
+void BlogEventView::setAlignRight()
+{
+    m_htmlEditor->setAlignRight();
+}
+
+void BlogEventView::setAlignJustify()
+{
+    m_htmlEditor->setAlignJustify();
+}
+
+void BlogEventView::setIncreaseIndent()
+{
+    m_htmlEditor->setIncreaseIndent();
+}
+
+void BlogEventView::setDecreaseIndent()
+{
+    m_htmlEditor->setDecreaseIndent();
+}
+
+void BlogEventView::setNumberedList()
+{
+    m_htmlEditor->setNumberedList();
+}
+
+void BlogEventView::setBulletedList()
+{
+    m_htmlEditor->setBulletedList();
+}
+
+void BlogEventView::insertImage()
+{
+    m_htmlEditor->insertImage();
+}
+
+void BlogEventView::createLink()
+{
+    m_htmlEditor->createLink();
+}
+
 } // namespace gui
