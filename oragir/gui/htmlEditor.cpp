@@ -39,6 +39,7 @@ HtmlEditor::HtmlEditor(QWidget *parent)
     m_webView->page()->setContentEditable(true);
     m_webView->page()->setLinkDelegationPolicy(QWebPage::DelegateAllLinks);
     m_webView->settings()->setFontFamily(QWebSettings::StandardFont, "Arial");
+    m_webView->settings()->setFontSize(QWebSettings::DefaultFontSize, 14);
     m_webView->setHtml("<p></p>");
     connect(m_webView, SIGNAL(linkClicked(QUrl)), SLOT(onLinkClicked(QUrl)));
     addTab(m_webView, "Preview");
