@@ -28,7 +28,7 @@
 #include "connectOptionsPage.h"
 #include "advancedOptionsPage.h"
 #include "blogTableModel.h"
-#include "htmlEditor.h"
+#include "blogEventView.h"
 #include "../core/application.h"
 #include "../core/defaultManager.h"
 #include "../core/versionManager.h"
@@ -996,15 +996,17 @@ void MainWindow::onBlogAccountSetup()
 void MainWindow::onEventClicked(const QModelIndex &index)
 {
     // Create and show database view.
-    HtmlEditor *editor = new HtmlEditor;
+    BlogEventView *view = new BlogEventView;
     QSqlRecord record = m_blogModel->record(index.row());
-    editor->setContent(record.value(BlogTableModel::Event).toString());
+    QString subject = record.value(BlogTableModel::Subject).toString();
+    view->setSubject(subject);
+    view->setHtmlContent(record.value(BlogTableModel::Event).toString());
 
     QMdiSubWindow *editorView = new QMdiSubWindow;
-    editorView->setWidget(editor);
+    editorView->setWidget(view);
     editorView->setAttribute(Qt::WA_DeleteOnClose);
     editorView->resize(200, 200);
-    editorView->setWindowTitle(record.value(BlogTableModel::Subject).toString());
+    editorView->setWindowTitle(subject);
     m_mdiArea.addSubWindow(editorView);
     editorView->showMaximized();
 }
