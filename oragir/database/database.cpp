@@ -109,7 +109,8 @@ void Database::removeTable(const QString &table)
     QSqlQuery query(db);
 
     QString queryStr = QString("DROP TABLE %1").arg(table);
-    query.exec(queryStr);
+    if (!query.exec(queryStr))
+        m_error = query.lastError().text();
 }
 
 QStringList Database::tables() const
