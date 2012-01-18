@@ -57,15 +57,25 @@ void BlogEventView::setupActions(const HtmlActions &actions)
     while (it != actions.end()) {
         switch (it.key()) {
         case Undo:
+            break;
         case Redo:
+            break;
         case Cut:
+            break;
         case Copy:
+            break;
         case Paste:
+            break;
         case SelectAll:
+            break;
         case Bold:
+            break;
         case Italic:
+            break;
         case Underline:
+            break;
         case Srikethrough:
+            break;
         case Paragraph:
             connect(it.value(), SIGNAL(triggered()), m_htmlEditor, SLOT(setParagraph()));
             break;
@@ -91,9 +101,13 @@ void BlogEventView::setupActions(const HtmlActions &actions)
             connect(it.value(), SIGNAL(triggered()), m_htmlEditor, SLOT(setAddress()));
             break;
         case FontName:
+            break;
         case FontSize:
+            break;
         case TextColor:
+            break;
         case BgColor:
+            break;
         case AlignLeft:
             connect(it.value(), SIGNAL(triggered()), m_htmlEditor, SLOT(setAlignLeft()));
             break;

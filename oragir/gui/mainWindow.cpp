@@ -688,8 +688,20 @@ void MainWindow::onSubWindowActivated(QMdiSubWindow *subWindow)
     if (!subWindow)
         return;
 
-    if (DatabaseView *dbView = qobject_cast<DatabaseView *>(subWindow->widget())) {
+    QWidget *widget = subWindow->widget();
+
+    if (DatabaseView *dbView = qobject_cast<DatabaseView *>(widget)) {
         updateStatusLabels(dbView->table());
+    } else if (BlogEventView *eventView = qobject_cast<BlogEventView *>(widget)) {
+        // Handle the html actions' connection.
+        BlogEventView::HtmlActions::iterator it = m_htmlActions.begin();
+        while (it != m_htmlActions.end()) {
+            QAction *action = it.value();
+            action->disconnect();
+            ++it;
+        }
+
+        eventView->setupActions(m_htmlActions);
     }
 }
 
