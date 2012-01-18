@@ -40,6 +40,40 @@ public:
     void setHtmlContent(const QString &content);
     void setSubject(const QString &subject);
 
+    /// Defines the index of html editor related actions.
+    enum HtmlAction
+    {
+        Undo = 0,
+        Redo,
+        Cut,
+        Copy,
+        Paste,
+        SelectAll,
+        ToggleBold,
+        ToggleItalic,
+        ToggleUnderline,
+        Paragraph,
+        Heading1,
+        Heading2,
+        Heading3,
+        Heading4,
+        Heading5,
+        Heading6,
+        Address,
+        FontName,
+        FontSize,
+        TextColor,
+        BgColor,
+        AlignLeft,
+        AlignRight,
+        AlignCenter,
+        AlignJustify,
+        DecreaseIndent,
+        IncreaseIndent,
+        NumberedList,
+        BulletedList
+    };
+
 public slots:
     void setParagraph();
     void setHeading1();
