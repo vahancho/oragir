@@ -211,7 +211,7 @@ private:
 
     QAction *m_folderDeleteAction;
 
-    QMap<QAction *, BlogEventView::HtmlAction> m_htmlActions;
+    BlogEventView::HtmlActions m_htmlActions;
 
     /// Store the Window menu.
     QMenu *m_windowMenu;

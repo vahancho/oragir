@@ -345,19 +345,19 @@ void MainWindow::createMenus()
     QMenu *editMenu = new QMenu("&Edit", this);
 
     QAction *action = editMenu->addAction("Undo");
-    m_htmlActions[action] = BlogEventView::Undo;
+    m_htmlActions[BlogEventView::Undo] = action;
     action = editMenu->addAction("Redo");
-    m_htmlActions[action] = BlogEventView::Redo;
+    m_htmlActions[BlogEventView::Redo] = action;
     editMenu->addSeparator();
     action = editMenu->addAction("Cu&t");
-    m_htmlActions[action] = BlogEventView::Cut;
+    m_htmlActions[BlogEventView::Cut] = action;
     action = editMenu->addAction("&Copy");
-    m_htmlActions[action] = BlogEventView::Copy;
+    m_htmlActions[BlogEventView::Copy] = action;
     action = editMenu->addAction("&Paste");
-    m_htmlActions[action] = BlogEventView::Paste;
+    m_htmlActions[BlogEventView::Paste] = action;
     editMenu->addSeparator();
     action = editMenu->addAction("Select All");
-    m_htmlActions[action] = BlogEventView::SelectAll;
+    m_htmlActions[BlogEventView::SelectAll] = action;
 
     ///////////////////////////////////////////////////////////////////////////
     // Format menu
@@ -366,61 +366,61 @@ void MainWindow::createMenus()
 
     QMenu *styleMenu = formatMenu->addMenu("Style");
     action = styleMenu->addAction("Paragraph");
-    m_htmlActions[action] = BlogEventView::Paragraph;
+    m_htmlActions[BlogEventView::Paragraph] = action;
     action = styleMenu->addAction("Heading 1");
-    m_htmlActions[action] = BlogEventView::Heading1;
+    m_htmlActions[BlogEventView::Heading1] = action;
     action = styleMenu->addAction("Heading 2");
-    m_htmlActions[action] = BlogEventView::Heading2;
+    m_htmlActions[BlogEventView::Heading2] = action;
     action = styleMenu->addAction("Heading 3");
-    m_htmlActions[action] = BlogEventView::Heading3;
+    m_htmlActions[BlogEventView::Heading3] = action;
     action = styleMenu->addAction("Heading 4");
-    m_htmlActions[action] = BlogEventView::Heading4;
+    m_htmlActions[BlogEventView::Heading4] = action;
     action = styleMenu->addAction("Heading 5");
-    m_htmlActions[action] = BlogEventView::Heading5;
+    m_htmlActions[BlogEventView::Heading5] = action;
     action = styleMenu->addAction("Heading 6");
-    m_htmlActions[action] = BlogEventView::Heading6;
+    m_htmlActions[BlogEventView::Heading6] = action;
     action = styleMenu->addAction("Address");
-    m_htmlActions[action] = BlogEventView::Address;
+    m_htmlActions[BlogEventView::Address] = action;
 
     QMenu *alignMenu = formatMenu->addMenu("Align");
     action = alignMenu->addAction("Align Left");
-    m_htmlActions[action] = BlogEventView::AlignLeft;
+    m_htmlActions[BlogEventView::AlignLeft] = action;
     action = alignMenu->addAction("Align Center");
-    m_htmlActions[action] = BlogEventView::AlignCenter;
+    m_htmlActions[BlogEventView::AlignCenter] = action;
     action = alignMenu->addAction("Align Right");
-    m_htmlActions[action] = BlogEventView::AlignRight;
+    m_htmlActions[BlogEventView::AlignRight] = action;
     action = alignMenu->addAction("Align Justify");
-    m_htmlActions[action] = BlogEventView::AlignJustify;
+    m_htmlActions[BlogEventView::AlignJustify] = action;
 
     formatMenu->addSeparator();
     action = formatMenu->addAction("Bold");
-    m_htmlActions[action] = BlogEventView::Bold;
+    m_htmlActions[BlogEventView::Bold] = action;
     action = formatMenu->addAction("Italic");
-    m_htmlActions[action] = BlogEventView::Italic;
+    m_htmlActions[BlogEventView::Italic] = action;
     action = formatMenu->addAction("Underline");
-    m_htmlActions[action] = BlogEventView::Underline;
+    m_htmlActions[BlogEventView::Underline] = action;
     action = formatMenu->addAction("Srikethrough");
-    m_htmlActions[action] = BlogEventView::Srikethrough;
+    m_htmlActions[BlogEventView::Srikethrough] = action;
     formatMenu->addSeparator();
     action = formatMenu->addAction("Increase Indent");
-    m_htmlActions[action] = BlogEventView::IncreaseIndent;
+    m_htmlActions[BlogEventView::IncreaseIndent] = action;
     action = formatMenu->addAction("Decrease Indent");
-    m_htmlActions[action] = BlogEventView::IncreaseIndent;
+    m_htmlActions[BlogEventView::IncreaseIndent] = action;
     formatMenu->addSeparator();
     action = formatMenu->addAction("Numbered List");
-    m_htmlActions[action] = BlogEventView::NumberedList;
+    m_htmlActions[BlogEventView::NumberedList] = action;
     action = formatMenu->addAction("Bulleted List");
-    m_htmlActions[action] = BlogEventView::BulletedList;
+    m_htmlActions[BlogEventView::BulletedList] = action;
     formatMenu->addSeparator();
     action = formatMenu->addAction("Font Name...");
-    m_htmlActions[action] = BlogEventView::FontName;
+    m_htmlActions[BlogEventView::FontName] = action;
     action = formatMenu->addAction("Font Size...");
-    m_htmlActions[action] = BlogEventView::FontSize;
+    m_htmlActions[BlogEventView::FontSize] = action;
     formatMenu->addSeparator();
     action = formatMenu->addAction("Text Color...");
-    m_htmlActions[action] = BlogEventView::TextColor;
+    m_htmlActions[BlogEventView::TextColor] = action;
     action = formatMenu->addAction("Background Color...");
-    m_htmlActions[action] = BlogEventView::BgColor;
+    m_htmlActions[BlogEventView::BgColor] = action;
 
     //////////////////////////////////////////////////////////////////////////
     // View menu
