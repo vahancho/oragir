@@ -75,26 +75,11 @@ public:
         BulletedList
     };
 
-public slots:
-    void setParagraph();
-    void setHeading1();
-    void setHeading2();
-    void setHeading3();
-    void setHeading4();
-    void setHeading5();
-    void setHeading6();
-    void setPreformatted();
-    void setAddress();
-    void setAlignLeft();
-    void setAlignCenter();
-    void setAlignRight();
-    void setAlignJustify();
-    void setIncreaseIndent();
-    void setDecreaseIndent();
-    void setNumberedList();
-    void setBulletedList();
-    void insertImage();
-    void createLink();
+    /// Defines the new type of mapping between index and action.
+    typedef QMap<BlogEventView::HtmlAction, QAction *> HtmlActions;
+
+    /// Set up the actions connections to appropriate slots.
+    void setupActions(const HtmlActions &actions);
 
 private:
     QLineEdit *m_editSubject;

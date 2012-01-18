@@ -20,6 +20,7 @@
 
 #include <QLineEdit>
 #include <QLayout>
+#include <QAction>
 #include "blogEventView.h"
 #include "htmlEditor.h"
 
@@ -50,99 +51,79 @@ void BlogEventView::setSubject(const QString &subject)
     m_editSubject->setText(subject);
 }
 
-void BlogEventView::setParagraph()
+void BlogEventView::setupActions(const HtmlActions &actions)
 {
-    m_htmlEditor->setParagraph();
-}
+    HtmlActions::iterator it = actions.begin();
+    while (it != actions.end()) {
+        switch (it.key()) {
+        case Undo:
+        case Redo:
+        case Cut:
+        case Copy:
+        case Paste:
+        case SelectAll:
+        case Bold:
+        case Italic:
+        case Underline:
+        case Srikethrough:
+        case Paragraph:
+            connect(it.value(), SIGNAL(triggered()), m_htmlEditor, SLOT(setParagraph()));
+            break;
+        case Heading1:
+            connect(it.value(), SIGNAL(triggered()), m_htmlEditor, SLOT(setHeading1()));
+            break;
+        case Heading2:
+            connect(it.value(), SIGNAL(triggered()), m_htmlEditor, SLOT(setHeading2()));
+            break;
+        case Heading3:
+            connect(it.value(), SIGNAL(triggered()), m_htmlEditor, SLOT(setHeading3()));
+            break;
+        case Heading4:
+            connect(it.value(), SIGNAL(triggered()), m_htmlEditor, SLOT(setHeading4()));
+            break;
+        case Heading5:
+            connect(it.value(), SIGNAL(triggered()), m_htmlEditor, SLOT(setHeading5()));
+            break;
+        case Heading6:
+            connect(it.value(), SIGNAL(triggered()), m_htmlEditor, SLOT(setHeading6()));
+            break;
+        case Address:
+            connect(it.value(), SIGNAL(triggered()), m_htmlEditor, SLOT(setAddress()));
+            break;
+        case FontName:
+        case FontSize:
+        case TextColor:
+        case BgColor:
+        case AlignLeft:
+            connect(it.value(), SIGNAL(triggered()), m_htmlEditor, SLOT(setAlignLeft()));
+            break;
+        case AlignRight:
+            connect(it.value(), SIGNAL(triggered()), m_htmlEditor, SLOT(setAlignRight()));
+            break;
+        case AlignCenter:
+            connect(it.value(), SIGNAL(triggered()), m_htmlEditor, SLOT(setAlignCenter()));
+            break;
+        case AlignJustify:
+            connect(it.value(), SIGNAL(triggered()), m_htmlEditor, SLOT(setAlignJustify()));
+            break;
+        case DecreaseIndent:
+            connect(it.value(), SIGNAL(triggered()), m_htmlEditor, SLOT(setDecreaseIndent()));
+            break;
+        case IncreaseIndent:
+            connect(it.value(), SIGNAL(triggered()), m_htmlEditor, SLOT(setIncreaseIndent()));
+            break;
+        case NumberedList:
+            connect(it.value(), SIGNAL(triggered()), m_htmlEditor, SLOT(setNumberedList()));
+            break;
+        case BulletedList:
+            connect(it.value(), SIGNAL(triggered()), m_htmlEditor, SLOT(setBulletedList()));
+            break;
+        default:
+            ;
+        }
 
-void BlogEventView::setHeading1()
-{
-    m_htmlEditor->setHeading1();
-}
-
-void BlogEventView::setHeading2()
-{
-    m_htmlEditor->setHeading2();
-}
-
-void BlogEventView::setHeading3()
-{
-    m_htmlEditor->setHeading3();
-}
-
-void BlogEventView::setHeading4()
-{
-    m_htmlEditor->setHeading4();
-}
-
-void BlogEventView::setHeading5()
-{
-    m_htmlEditor->setHeading5();
-}
-
-void BlogEventView::setHeading6()
-{
-    m_htmlEditor->setHeading6();
-}
-
-void BlogEventView::setPreformatted()
-{
-    m_htmlEditor->setPreformatted();
-}
-
-void BlogEventView::setAddress()
-{
-    m_htmlEditor->setAddress();
-}
-
-void BlogEventView::setAlignLeft()
-{
-    m_htmlEditor->setAlignLeft();
-}
-
-void BlogEventView::setAlignCenter()
-{
-    m_htmlEditor->setAlignCenter();
-}
-
-void BlogEventView::setAlignRight()
-{
-    m_htmlEditor->setAlignRight();
-}
-
-void BlogEventView::setAlignJustify()
-{
-    m_htmlEditor->setAlignJustify();
-}
-
-void BlogEventView::setIncreaseIndent()
-{
-    m_htmlEditor->setIncreaseIndent();
-}
-
-void BlogEventView::setDecreaseIndent()
-{
-    m_htmlEditor->setDecreaseIndent();
-}
-
-void BlogEventView::setNumberedList()
-{
-    m_htmlEditor->setNumberedList();
-}
-
-void BlogEventView::setBulletedList()
-{
-    m_htmlEditor->setBulletedList();
-}
-
-void BlogEventView::insertImage()
-{
-    m_htmlEditor->insertImage();
-}
-
-void BlogEventView::createLink()
-{
-    m_htmlEditor->createLink();
+        ++it;
+    }
 }
 
 } // namespace gui
