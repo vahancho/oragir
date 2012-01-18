@@ -28,7 +28,6 @@
 #include "connectOptionsPage.h"
 #include "advancedOptionsPage.h"
 #include "blogTableModel.h"
-#include "blogEventView.h"
 #include "../core/application.h"
 #include "../core/defaultManager.h"
 #include "../core/versionManager.h"
@@ -339,6 +338,90 @@ void MainWindow::createMenus()
     quitAction->setShortcut(QKeySequence(tr("Ctrl+Q")));
     quitAction->setIcon(QIcon(":icons/exit"));
     connect(quitAction, SIGNAL(triggered()), qApp, SLOT(quit()));
+
+    ///////////////////////////////////////////////////////////////////////////
+    // Edit menu
+    //
+    QMenu *editMenu = new QMenu("&Edit", this);
+
+    QAction *action = editMenu->addAction("Undo");
+    m_htmlActions[action] = BlogEventView::Undo;
+    action = editMenu->addAction("Redo");
+    m_htmlActions[action] = BlogEventView::Redo;
+    editMenu->addSeparator();
+    action = editMenu->addAction("Cu&t");
+    m_htmlActions[action] = BlogEventView::Cut;
+    action = editMenu->addAction("&Copy");
+    m_htmlActions[action] = BlogEventView::Copy;
+    action = editMenu->addAction("&Paste");
+    m_htmlActions[action] = BlogEventView::Paste;
+    editMenu->addSeparator();
+    action = editMenu->addAction("Select All");
+    m_htmlActions[action] = BlogEventView::SelectAll;
+
+    ///////////////////////////////////////////////////////////////////////////
+    // Format menu
+    //
+    QMenu *formatMenu = new QMenu("&Format", this);
+
+    QMenu *styleMenu = formatMenu->addMenu("Style");
+    action = styleMenu->addAction("Paragraph");
+    m_htmlActions[action] = BlogEventView::Paragraph;
+    action = styleMenu->addAction("Heading 1");
+    m_htmlActions[action] = BlogEventView::Heading1;
+    action = styleMenu->addAction("Heading 2");
+    m_htmlActions[action] = BlogEventView::Heading2;
+    action = styleMenu->addAction("Heading 3");
+    m_htmlActions[action] = BlogEventView::Heading3;
+    action = styleMenu->addAction("Heading 4");
+    m_htmlActions[action] = BlogEventView::Heading4;
+    action = styleMenu->addAction("Heading 5");
+    m_htmlActions[action] = BlogEventView::Heading5;
+    action = styleMenu->addAction("Heading 6");
+    m_htmlActions[action] = BlogEventView::Heading6;
+    action = styleMenu->addAction("Address");
+    m_htmlActions[action] = BlogEventView::Address;
+
+    QMenu *alignMenu = formatMenu->addMenu("Align");
+    action = alignMenu->addAction("Align Left");
+    m_htmlActions[action] = BlogEventView::AlignLeft;
+    action = alignMenu->addAction("Align Center");
+    m_htmlActions[action] = BlogEventView::AlignCenter;
+    action = alignMenu->addAction("Align Right");
+    m_htmlActions[action] = BlogEventView::AlignRight;
+    action = alignMenu->addAction("Align Justify");
+    m_htmlActions[action] = BlogEventView::AlignJustify;
+
+    formatMenu->addSeparator();
+    action = formatMenu->addAction("Bold");
+    m_htmlActions[action] = BlogEventView::Bold;
+    action = formatMenu->addAction("Italic");
+    m_htmlActions[action] = BlogEventView::Italic;
+    action = formatMenu->addAction("Underline");
+    m_htmlActions[action] = BlogEventView::Underline;
+    action = formatMenu->addAction("Srikethrough");
+    m_htmlActions[action] = BlogEventView::Srikethrough;
+    formatMenu->addSeparator();
+    action = formatMenu->addAction("Increase Indent");
+    m_htmlActions[action] = BlogEventView::IncreaseIndent;
+    action = formatMenu->addAction("Decrease Indent");
+    m_htmlActions[action] = BlogEventView::IncreaseIndent;
+    formatMenu->addSeparator();
+    action = formatMenu->addAction("Numbered List");
+    m_htmlActions[action] = BlogEventView::NumberedList;
+    action = formatMenu->addAction("Bulleted List");
+    m_htmlActions[action] = BlogEventView::BulletedList;
+    formatMenu->addSeparator();
+    action = formatMenu->addAction("Font Name...");
+    m_htmlActions[action] = BlogEventView::FontName;
+    action = formatMenu->addAction("Font Size...");
+    m_htmlActions[action] = BlogEventView::FontSize;
+    formatMenu->addSeparator();
+    action = formatMenu->addAction("Text Color...");
+    m_htmlActions[action] = BlogEventView::TextColor;
+    action = formatMenu->addAction("Background Color...");
+    m_htmlActions[action] = BlogEventView::BgColor;
+
     //////////////////////////////////////////////////////////////////////////
     // View menu
     //
@@ -457,7 +540,9 @@ void MainWindow::createMenus()
 
     // Add menus to menu bar
     menuBar()->addMenu(fileMenu);
+    menuBar()->addMenu(editMenu);
     menuBar()->addMenu(viewMenu);
+    menuBar()->addMenu(formatMenu);
     menuBar()->addMenu(streamMenu);
     menuBar()->addMenu(blogMenu);
     menuBar()->addMenu(toolsMenu);

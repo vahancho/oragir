@@ -25,6 +25,7 @@
 #include <QMdiArea>
 #include <QSystemTrayIcon>
 #include <QtSql>
+#include "blogEventView.h"
 
 class QSignalMapper;
 class QTreeWidget;
@@ -209,6 +210,8 @@ private:
     QAction *m_stopAction;
 
     QAction *m_folderDeleteAction;
+
+    QMap<QAction *, BlogEventView::HtmlAction> m_htmlActions;
 
     /// Store the Window menu.
     QMenu *m_windowMenu;
