@@ -227,4 +227,25 @@ void HtmlEditor::setFontName()
         invokeCommand("fontName", family);
 }
 
+void HtmlEditor::setFontSize()
+{
+    QStringList sizes;
+
+    // CSS absolute-size values
+    sizes << "xx-small";
+    sizes << "x-small";
+    sizes << "small";
+    sizes << "medium";
+    sizes << "large";
+    sizes << "x-large";
+    sizes << "xx-large";
+
+    bool ok = false;
+    QString size = QInputDialog::getItem(this, tr("Font Size"), tr("Select font size:"),
+                                        sizes, sizes.indexOf("medium"), false, &ok);
+
+    if (ok)
+        invokeCommand("fontSize", QString::number(sizes.indexOf(size)));
+}
+
 } // namespace gui

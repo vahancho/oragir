@@ -108,6 +108,7 @@ void BlogEventView::setupActions(const HtmlActions &actions)
             connect(action, SIGNAL(triggered()), m_htmlEditor, SLOT(setFontName()));
             break;
         case FontSize:
+            connect(action, SIGNAL(triggered()), m_htmlEditor, SLOT(setFontSize()));
             break;
         case TextColor:
             connect(action, SIGNAL(triggered()), m_htmlEditor, SLOT(setTextColor()));

@@ -71,6 +71,7 @@ public slots:
     void setTextColor();
     void setBackgroundColor();
     void setFontName();
+    void setFontSize();
 
 private slots:
     void onTabChanged(int tab);
