@@ -22,6 +22,7 @@
 #define __BLOGEVENTVIEW_H__
 
 #include <QWidget>
+#include <QWebPage>
 
 class QLineEdit;
 
@@ -82,6 +83,8 @@ public:
     void setupActions(const HtmlActions &actions);
 
 private:
+    void bindWebAction(QAction *guiAction, QWebPage::WebAction webAction);
+
     QLineEdit *m_editSubject;
     HtmlEditor *m_htmlEditor;
 };

@@ -61,25 +61,34 @@ void BlogEventView::setupActions(const HtmlActions &actions)
 
         switch (it.key()) {
         case Undo:
+            bindWebAction(action, QWebPage::Undo);
             break;
         case Redo:
+            bindWebAction(action, QWebPage::Redo);
             break;
         case Cut:
+            bindWebAction(action, QWebPage::Cut);
             break;
         case Copy:
+            bindWebAction(action, QWebPage::Copy);
             break;
         case Paste:
+            bindWebAction(action, QWebPage::Paste);
             break;
         case SelectAll:
+            bindWebAction(action, QWebPage::SelectAll);
             break;
         case Bold:
+            bindWebAction(action, QWebPage::ToggleBold);
             break;
         case Italic:
+            bindWebAction(action, QWebPage::ToggleItalic);
             break;
         case Underline:
+            bindWebAction(action, QWebPage::ToggleUnderline);
             break;
         case Srikethrough:
-            connect(action, SIGNAL(triggered()), m_htmlEditor, SLOT(setStrikeThrough()));
+            bindWebAction(action, QWebPage::ToggleStrikethrough);
             break;
         case Paragraph:
             connect(action, SIGNAL(triggered()), m_htmlEditor, SLOT(setParagraph()));
@@ -118,22 +127,22 @@ void BlogEventView::setupActions(const HtmlActions &actions)
             connect(action, SIGNAL(triggered()), m_htmlEditor, SLOT(setBackgroundColor()));
             break;
         case AlignLeft:
-            connect(action, SIGNAL(triggered()), m_htmlEditor, SLOT(setAlignLeft()));
+            bindWebAction(action, QWebPage::AlignLeft);
             break;
         case AlignRight:
-            connect(action, SIGNAL(triggered()), m_htmlEditor, SLOT(setAlignRight()));
+            bindWebAction(action, QWebPage::AlignRight);
             break;
         case AlignCenter:
-            connect(action, SIGNAL(triggered()), m_htmlEditor, SLOT(setAlignCenter()));
+            bindWebAction(action, QWebPage::AlignCenter);
             break;
         case AlignJustify:
-            connect(action, SIGNAL(triggered()), m_htmlEditor, SLOT(setAlignJustify()));
+            bindWebAction(action, QWebPage::AlignJustified);
             break;
         case DecreaseIndent:
-            connect(action, SIGNAL(triggered()), m_htmlEditor, SLOT(setDecreaseIndent()));
+            bindWebAction(action, QWebPage::Outdent);
             break;
         case IncreaseIndent:
-            connect(action, SIGNAL(triggered()), m_htmlEditor, SLOT(setIncreaseIndent()));
+            bindWebAction(action, QWebPage::Indent);
             break;
         case NumberedList:
             connect(action, SIGNAL(triggered()), m_htmlEditor, SLOT(setNumberedList()));
@@ -147,6 +156,14 @@ void BlogEventView::setupActions(const HtmlActions &actions)
 
         ++it;
     }
+}
+
+void BlogEventView::bindWebAction(QAction *guiAction,
+                                  QWebPage::WebAction webAction)
+{
+    connect(guiAction, SIGNAL(triggered()),
+	    m_htmlEditor->viewAction(webAction),
+	    SLOT(trigger()));
 }
 
 } // namespace gui
