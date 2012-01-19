@@ -343,87 +343,131 @@ void MainWindow::createMenus()
     // Edit menu
     //
     QMenu *editMenu = new QMenu("&Edit", this);
+    QToolBar *editToolBar = new QToolBar("&Edit", this);
+    editToolBar->setObjectName("&Edit");
+    editToolBar->setIconSize(QSize(iconSizeX, iconSizeY));
 
     QAction *action = editMenu->addAction("Undo");
     m_htmlActions[BlogEventView::Undo] = action;
+    editToolBar->addAction(action);
     action = editMenu->addAction("Redo");
     m_htmlActions[BlogEventView::Redo] = action;
+    editToolBar->addAction(action);
     editMenu->addSeparator();
     action = editMenu->addAction("Cu&t");
     m_htmlActions[BlogEventView::Cut] = action;
+    editToolBar->addAction(action);
     action = editMenu->addAction("&Copy");
     m_htmlActions[BlogEventView::Copy] = action;
+    editToolBar->addAction(action);
     action = editMenu->addAction("&Paste");
     m_htmlActions[BlogEventView::Paste] = action;
+    editToolBar->addAction(action);
     editMenu->addSeparator();
     action = editMenu->addAction("Select All");
     m_htmlActions[BlogEventView::SelectAll] = action;
+    editToolBar->addAction(action);
 
     ///////////////////////////////////////////////////////////////////////////
     // Format menu
     //
     QMenu *formatMenu = new QMenu("&Format", this);
+    QToolBar *formatToolBar = new QToolBar("&Format", this);
+    formatToolBar->setObjectName("&Format");
+    formatToolBar->setIconSize(QSize(iconSizeX, iconSizeY));
 
     QMenu *styleMenu = formatMenu->addMenu("Style");
+    QToolBar *styleToolBar = new QToolBar("Style", this);
+    styleToolBar->setObjectName("Style");
+    styleToolBar->setIconSize(QSize(iconSizeX, iconSizeY));
+
     action = styleMenu->addAction("Paragraph");
     m_htmlActions[BlogEventView::Paragraph] = action;
+    styleToolBar->addAction(action);
     action = styleMenu->addAction("Heading 1");
     m_htmlActions[BlogEventView::Heading1] = action;
+    styleToolBar->addAction(action);
     action = styleMenu->addAction("Heading 2");
     m_htmlActions[BlogEventView::Heading2] = action;
+    styleToolBar->addAction(action);
     action = styleMenu->addAction("Heading 3");
     m_htmlActions[BlogEventView::Heading3] = action;
+    styleToolBar->addAction(action);
     action = styleMenu->addAction("Heading 4");
     m_htmlActions[BlogEventView::Heading4] = action;
+    styleToolBar->addAction(action);
     action = styleMenu->addAction("Heading 5");
     m_htmlActions[BlogEventView::Heading5] = action;
+    styleToolBar->addAction(action);
     action = styleMenu->addAction("Heading 6");
     m_htmlActions[BlogEventView::Heading6] = action;
+    styleToolBar->addAction(action);
     action = styleMenu->addAction("Address");
     m_htmlActions[BlogEventView::Address] = action;
+    styleToolBar->addAction(action);
 
     QMenu *alignMenu = formatMenu->addMenu("Align");
+    QToolBar *alignToolBar = new QToolBar("Align", this);
+    alignToolBar->setObjectName("Align");
+    alignToolBar->setIconSize(QSize(iconSizeX, iconSizeY));
+
     action = alignMenu->addAction("Align Left");
     m_htmlActions[BlogEventView::AlignLeft] = action;
+    alignToolBar->addAction(action);
     action = alignMenu->addAction("Align Center");
     m_htmlActions[BlogEventView::AlignCenter] = action;
+    alignToolBar->addAction(action);
     action = alignMenu->addAction("Align Right");
     m_htmlActions[BlogEventView::AlignRight] = action;
+    alignToolBar->addAction(action);
     action = alignMenu->addAction("Align Justify");
     m_htmlActions[BlogEventView::AlignJustify] = action;
+    alignToolBar->addAction(action);
 
     formatMenu->addSeparator();
     action = formatMenu->addAction("Bold");
     m_htmlActions[BlogEventView::Bold] = action;
+    formatToolBar->addAction(action);
     action = formatMenu->addAction("Italic");
     m_htmlActions[BlogEventView::Italic] = action;
+    formatToolBar->addAction(action);
     action = formatMenu->addAction("Underline");
     m_htmlActions[BlogEventView::Underline] = action;
+    formatToolBar->addAction(action);
     action = formatMenu->addAction("Srikethrough");
     action->setCheckable(true);
     m_htmlActions[BlogEventView::Srikethrough] = action;
+    formatToolBar->addAction(action);
     formatMenu->addSeparator();
     action = formatMenu->addAction("Increase Indent");
     m_htmlActions[BlogEventView::IncreaseIndent] = action;
+    formatToolBar->addAction(action);
     action = formatMenu->addAction("Decrease Indent");
     m_htmlActions[BlogEventView::IncreaseIndent] = action;
+    formatToolBar->addAction(action);
     formatMenu->addSeparator();
     action = formatMenu->addAction("Numbered List");
     action->setCheckable(true);
     m_htmlActions[BlogEventView::NumberedList] = action;
+    formatToolBar->addAction(action);
     action = formatMenu->addAction("Bulleted List");
     action->setCheckable(true);
     m_htmlActions[BlogEventView::BulletedList] = action;
+    formatToolBar->addAction(action);
     formatMenu->addSeparator();
     action = formatMenu->addAction("Font Name...");
     m_htmlActions[BlogEventView::FontName] = action;
+    formatToolBar->addAction(action);
     action = formatMenu->addAction("Font Size...");
     m_htmlActions[BlogEventView::FontSize] = action;
+    formatToolBar->addAction(action);
     formatMenu->addSeparator();
     action = formatMenu->addAction("Text Color...");
     m_htmlActions[BlogEventView::TextColor] = action;
+    formatToolBar->addAction(action);
     action = formatMenu->addAction("Background Color...");
     m_htmlActions[BlogEventView::BgColor] = action;
+    formatToolBar->addAction(action);
 
     //////////////////////////////////////////////////////////////////////////
     // View menu
@@ -555,6 +599,10 @@ void MainWindow::createMenus()
 
     // Add tool bars
     addToolBar(fileToolBar);
+    addToolBar(editToolBar);
+    addToolBar(formatToolBar);
+    addToolBar(styleToolBar);
+    addToolBar(alignToolBar);
     addToolBar(streamToolBar);
     addToolBar(toolsToolBar);
 }
