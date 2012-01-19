@@ -400,6 +400,7 @@ void MainWindow::createMenus()
     action = formatMenu->addAction("Underline");
     m_htmlActions[BlogEventView::Underline] = action;
     action = formatMenu->addAction("Srikethrough");
+    action->setCheckable(true);
     m_htmlActions[BlogEventView::Srikethrough] = action;
     formatMenu->addSeparator();
     action = formatMenu->addAction("Increase Indent");
@@ -408,8 +409,10 @@ void MainWindow::createMenus()
     m_htmlActions[BlogEventView::IncreaseIndent] = action;
     formatMenu->addSeparator();
     action = formatMenu->addAction("Numbered List");
+    action->setCheckable(true);
     m_htmlActions[BlogEventView::NumberedList] = action;
     action = formatMenu->addAction("Bulleted List");
+    action->setCheckable(true);
     m_htmlActions[BlogEventView::BulletedList] = action;
     formatMenu->addSeparator();
     action = formatMenu->addAction("Font Name...");
