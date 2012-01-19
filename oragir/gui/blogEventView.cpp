@@ -109,8 +109,10 @@ void BlogEventView::setupActions(const HtmlActions &actions)
         case FontSize:
             break;
         case TextColor:
+            connect(action, SIGNAL(triggered()), m_htmlEditor, SLOT(setTextColor()));
             break;
         case BgColor:
+            connect(action, SIGNAL(triggered()), m_htmlEditor, SLOT(setBackgroundColor()));
             break;
         case AlignLeft:
             connect(action, SIGNAL(triggered()), m_htmlEditor, SLOT(setAlignLeft()));
