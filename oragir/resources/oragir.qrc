@@ -22,5 +22,34 @@
     <file alias="star_off" >icon_star_off.png</file>
     <file alias="star_empty" >icon_star_empty.png</file>
     <file alias="progress" >icon_progress.gif</file>
+    <file alias="align_just" >icon_align_just.png</file>
+    <file alias="align_center" >icon_align_center.png</file>
+    <file alias="align_right" >icon_align_right.png</file>
+    <file alias="align_left" >icon_align_left.png</file>
+    <file alias="h1" >icon_h1.png</file>
+    <file alias="h2" >icon_h2.png</file>
+    <file alias="h3" >icon_h3.png</file>
+    <file alias="h4" >icon_h4.png</file>
+    <file alias="h5" >icon_h5.png</file>
+    <file alias="h6" >icon_h6.png</file>
+    <file alias="paragraph" >icon_paragraph.png</file>
+    <file alias="bg_color" >icon_bg_color.png</file>
+    <file alias="text_color" >icon_text_color.png</file>
+    <file alias="font_size" >icon_font_size.png</file>
+    <file alias="font" >icon_font.png</file>
+    <file alias="numbered" >icon_numbered.png</file>
+    <file alias="bullet" >icon_bullet.png</file>
+    <file alias="indent" >icon_indent.png</file>
+    <file alias="outdent" >icon_outdent.png</file>
+    <file alias="strike" >icon_strike.png</file>
+    <file alias="underline" >icon_underline.png</file>
+    <file alias="italic" >icon_italic.png</file>
+    <file alias="bold" >icon_bold.png</file>
+    <file alias="select_all" >icon_select_all.png</file>
+    <file alias="paste" >icon_paste.png</file>
+    <file alias="copy" >icon_copy.png</file>
+    <file alias="cut" >icon_cut.png</file>
+    <file alias="redo" >icon_redo.png</file>
+    <file alias="undo" >icon_undo.png</file>
   </qresource>
 </RCC>
