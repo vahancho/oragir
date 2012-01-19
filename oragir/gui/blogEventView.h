@@ -23,6 +23,7 @@
 
 #include <QWidget>
 #include <QWebPage>
+#include <QMap>
 
 class QLineEdit;
 
@@ -38,7 +39,10 @@ class BlogEventView : public QWidget
 public:
     BlogEventView(QWidget *parent = 0, Qt::WindowFlags f = 0);
 
+    /// Sets the html view content.
     void setHtmlContent(const QString &content);
+
+    /// Sets the subject text.
     void setSubject(const QString &subject);
 
     /// Defines the index of html editor related actions.
@@ -82,11 +86,16 @@ public:
     /// Set up the actions connections to appropriate slots.
     void setupActions(const HtmlActions &actions);
 
+private slots:
+    /// Updates the gui actions state based on web page actions state.
+    void updateActionState();
+
 private:
     void bindWebAction(QAction *guiAction, QWebPage::WebAction webAction);
 
     QLineEdit *m_editSubject;
     HtmlEditor *m_htmlEditor;
+    HtmlActions m_htmlActions;
 };
 
 } // namespace gui

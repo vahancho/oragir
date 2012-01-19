@@ -145,10 +145,10 @@ void BlogEventView::setupActions(const HtmlActions &actions)
             bindWebAction(action, QWebPage::Indent);
             break;
         case NumberedList:
-            connect(action, SIGNAL(triggered()), m_htmlEditor, SLOT(setNumberedList()));
+            bindWebAction(action, QWebPage::InsertOrderedList);
             break;
         case BulletedList:
-            connect(action, SIGNAL(triggered()), m_htmlEditor, SLOT(setBulletedList()));
+            bindWebAction(action, QWebPage::InsertUnorderedList);
             break;
         default:
             ;
@@ -156,6 +156,9 @@ void BlogEventView::setupActions(const HtmlActions &actions)
 
         ++it;
     }
+
+    // Store the copy of actions map.
+    m_htmlActions = actions;
 }
 
 void BlogEventView::bindWebAction(QAction *guiAction,
@@ -164,6 +167,26 @@ void BlogEventView::bindWebAction(QAction *guiAction,
     connect(guiAction, SIGNAL(triggered()),
 	    m_htmlEditor->viewAction(webAction),
 	    SLOT(trigger()));
+    connect(m_htmlEditor->viewAction(webAction),
+            SIGNAL(changed()), SLOT(updateActionState()));
+}
+
+void BlogEventView::updateActionState()
+{
+    // Handle enabled state.
+    m_htmlActions[Undo]->setEnabled(m_htmlEditor->viewAction(QWebPage::Undo)->isEnabled());
+    m_htmlActions[Redo]->setEnabled(m_htmlEditor->viewAction(QWebPage::Redo)->isEnabled());
+    m_htmlActions[Cut]->setEnabled(m_htmlEditor->viewAction(QWebPage::Cut)->isEnabled());
+    m_htmlActions[Copy]->setEnabled(m_htmlEditor->viewAction(QWebPage::Copy)->isEnabled());
+    m_htmlActions[Paste]->setEnabled(m_htmlEditor->viewAction(QWebPage::Paste)->isEnabled());
+    m_htmlActions[Bold]->setEnabled(m_htmlEditor->viewAction(QWebPage::ToggleBold)->isEnabled());
+    m_htmlActions[Italic]->setEnabled(m_htmlEditor->viewAction(QWebPage::ToggleItalic)->isEnabled());
+    m_htmlActions[Underline]->setEnabled(m_htmlEditor->viewAction(QWebPage::ToggleUnderline)->isEnabled());
+
+    // Handle check state
+    m_htmlActions[Srikethrough]->setChecked(m_htmlEditor->viewAction(QWebPage::ToggleStrikethrough)->isChecked());
+    m_htmlActions[NumberedList]->setChecked(m_htmlEditor->viewAction(QWebPage::InsertOrderedList)->isChecked());
+    m_htmlActions[BulletedList]->setChecked(m_htmlEditor->viewAction(QWebPage::InsertUnorderedList)->isChecked());
 }
 
 } // namespace gui
