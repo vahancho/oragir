@@ -68,6 +68,8 @@ public slots:
     void setBulletedList();
     void insertImage();
     void createLink();
+    void setTextColor();
+    void setBackgroundColor();
 
 private slots:
     void onTabChanged(int tab);

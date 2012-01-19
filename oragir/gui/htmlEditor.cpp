@@ -23,6 +23,7 @@
 #include <QPlainTextEdit>
 #include <QDesktopServices>
 #include <QInputDialog>
+#include <QColorDialog>
 #include "htmlEditor.h"
 
 namespace gui
@@ -199,6 +200,20 @@ void HtmlEditor::createLink()
         if (url.isValid())
             invokeCommand("createLink", url.toString());
     }
+}
+
+void HtmlEditor::setTextColor()
+{
+    QColor color = QColorDialog::getColor(Qt::black, this);
+    if (color.isValid())
+        invokeCommand("foreColor", color.name());
+}
+
+void HtmlEditor::setBackgroundColor()
+{
+    QColor color = QColorDialog::getColor(Qt::white, this);
+    if (color.isValid())
+        invokeCommand("hiliteColor", color.name());
 }
 
 } // namespace gui
