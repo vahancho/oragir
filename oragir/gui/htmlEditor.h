@@ -70,6 +70,7 @@ public slots:
     void createLink();
     void setTextColor();
     void setBackgroundColor();
+    void setFontName();
 
 private slots:
     void onTabChanged(int tab);

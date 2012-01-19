@@ -216,4 +216,15 @@ void HtmlEditor::setBackgroundColor()
         invokeCommand("hiliteColor", color.name());
 }
 
+void HtmlEditor::setFontName()
+{
+    QStringList fontFamilies = QFontDatabase().families();
+    bool ok = false;
+    QString family = QInputDialog::getItem(this, tr("Font"), tr("Select font:"),
+                                           fontFamilies, 0, false, &ok);
+
+    if (ok)
+        invokeCommand("fontName", family);
+}
+
 } // namespace gui
