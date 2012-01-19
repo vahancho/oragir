@@ -248,4 +248,9 @@ void HtmlEditor::setFontSize()
         invokeCommand("fontSize", QString::number(sizes.indexOf(size)));
 }
 
+void HtmlEditor::setStrikeThrough()
+{
+    invokeCommand("strikeThrough");
+}
+
 } // namespace gui

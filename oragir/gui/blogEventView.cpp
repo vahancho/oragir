@@ -79,6 +79,7 @@ void BlogEventView::setupActions(const HtmlActions &actions)
         case Underline:
             break;
         case Srikethrough:
+            connect(action, SIGNAL(triggered()), m_htmlEditor, SLOT(setStrikeThrough()));
             break;
         case Paragraph:
             connect(action, SIGNAL(triggered()), m_htmlEditor, SLOT(setParagraph()));
