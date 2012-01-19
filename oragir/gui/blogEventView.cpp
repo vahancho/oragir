@@ -55,6 +55,10 @@ void BlogEventView::setupActions(const HtmlActions &actions)
 {
     HtmlActions::iterator it = actions.begin();
     while (it != actions.end()) {
+        // Handle the html actions' connection.
+        QAction *action = it.value();
+        action->disconnect();
+
         switch (it.key()) {
         case Undo:
             break;
@@ -77,28 +81,28 @@ void BlogEventView::setupActions(const HtmlActions &actions)
         case Srikethrough:
             break;
         case Paragraph:
-            connect(it.value(), SIGNAL(triggered()), m_htmlEditor, SLOT(setParagraph()));
+            connect(action, SIGNAL(triggered()), m_htmlEditor, SLOT(setParagraph()));
             break;
         case Heading1:
-            connect(it.value(), SIGNAL(triggered()), m_htmlEditor, SLOT(setHeading1()));
+            connect(action, SIGNAL(triggered()), m_htmlEditor, SLOT(setHeading1()));
             break;
         case Heading2:
-            connect(it.value(), SIGNAL(triggered()), m_htmlEditor, SLOT(setHeading2()));
+            connect(action, SIGNAL(triggered()), m_htmlEditor, SLOT(setHeading2()));
             break;
         case Heading3:
-            connect(it.value(), SIGNAL(triggered()), m_htmlEditor, SLOT(setHeading3()));
+            connect(action, SIGNAL(triggered()), m_htmlEditor, SLOT(setHeading3()));
             break;
         case Heading4:
-            connect(it.value(), SIGNAL(triggered()), m_htmlEditor, SLOT(setHeading4()));
+            connect(action, SIGNAL(triggered()), m_htmlEditor, SLOT(setHeading4()));
             break;
         case Heading5:
-            connect(it.value(), SIGNAL(triggered()), m_htmlEditor, SLOT(setHeading5()));
+            connect(action, SIGNAL(triggered()), m_htmlEditor, SLOT(setHeading5()));
             break;
         case Heading6:
-            connect(it.value(), SIGNAL(triggered()), m_htmlEditor, SLOT(setHeading6()));
+            connect(action, SIGNAL(triggered()), m_htmlEditor, SLOT(setHeading6()));
             break;
         case Address:
-            connect(it.value(), SIGNAL(triggered()), m_htmlEditor, SLOT(setAddress()));
+            connect(action, SIGNAL(triggered()), m_htmlEditor, SLOT(setAddress()));
             break;
         case FontName:
             break;
@@ -109,28 +113,28 @@ void BlogEventView::setupActions(const HtmlActions &actions)
         case BgColor:
             break;
         case AlignLeft:
-            connect(it.value(), SIGNAL(triggered()), m_htmlEditor, SLOT(setAlignLeft()));
+            connect(action, SIGNAL(triggered()), m_htmlEditor, SLOT(setAlignLeft()));
             break;
         case AlignRight:
-            connect(it.value(), SIGNAL(triggered()), m_htmlEditor, SLOT(setAlignRight()));
+            connect(action, SIGNAL(triggered()), m_htmlEditor, SLOT(setAlignRight()));
             break;
         case AlignCenter:
-            connect(it.value(), SIGNAL(triggered()), m_htmlEditor, SLOT(setAlignCenter()));
+            connect(action, SIGNAL(triggered()), m_htmlEditor, SLOT(setAlignCenter()));
             break;
         case AlignJustify:
-            connect(it.value(), SIGNAL(triggered()), m_htmlEditor, SLOT(setAlignJustify()));
+            connect(action, SIGNAL(triggered()), m_htmlEditor, SLOT(setAlignJustify()));
             break;
         case DecreaseIndent:
-            connect(it.value(), SIGNAL(triggered()), m_htmlEditor, SLOT(setDecreaseIndent()));
+            connect(action, SIGNAL(triggered()), m_htmlEditor, SLOT(setDecreaseIndent()));
             break;
         case IncreaseIndent:
-            connect(it.value(), SIGNAL(triggered()), m_htmlEditor, SLOT(setIncreaseIndent()));
+            connect(action, SIGNAL(triggered()), m_htmlEditor, SLOT(setIncreaseIndent()));
             break;
         case NumberedList:
-            connect(it.value(), SIGNAL(triggered()), m_htmlEditor, SLOT(setNumberedList()));
+            connect(action, SIGNAL(triggered()), m_htmlEditor, SLOT(setNumberedList()));
             break;
         case BulletedList:
-            connect(it.value(), SIGNAL(triggered()), m_htmlEditor, SLOT(setBulletedList()));
+            connect(action, SIGNAL(triggered()), m_htmlEditor, SLOT(setBulletedList()));
             break;
         default:
             ;
