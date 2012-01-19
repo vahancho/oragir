@@ -95,6 +95,11 @@ void HtmlEditor::invokeCommand(const QString &cmd)
     webFrame->evaluateJavaScript(script);
 }
 
+QAction *HtmlEditor::viewAction(QWebPage::WebAction action) const
+{
+    return m_webView->pageAction(action);
+}
+
 void HtmlEditor::setParagraph()
 {
     invokeCommand("formatBlock", "p");

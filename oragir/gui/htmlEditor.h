@@ -22,6 +22,7 @@
 #define __HTMLEDITOR_H__
 
 #include <QTabWidget>
+#include <QWebPage>
 
 class QWebView;
 class QPlainTextEdit;
@@ -47,6 +48,9 @@ public:
 
     /// Returns html content.
     QString content() const;
+
+    /// Returns an action that encapsulates the specified web action action.
+    QAction *viewAction(QWebPage::WebAction action) const;
 
 public slots:
     void setParagraph();
