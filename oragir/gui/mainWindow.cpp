@@ -539,6 +539,17 @@ void MainWindow::createMenus()
     m_stopAction->setIcon(QIcon(":icons/stop"));
     m_stopAction->setEnabled(false);
     streamToolBar->addAction(m_stopAction);
+    streamMenu->addSeparator();
+
+    QAction *filtersAction = streamMenu->addAction(str::ActionFilters);
+    connect(filtersAction, SIGNAL(triggered()), this, SLOT(onFilters()));
+    filtersAction->setIcon(QIcon(":icons/filter"));
+    streamToolBar->addAction(filtersAction);
+
+    QAction *fltExportAction = streamMenu->addAction(str::ActionFilterExport);
+    connect(fltExportAction, SIGNAL(triggered()), this, SLOT(onFiltersExport()));
+    QAction *fltImportAction = streamMenu->addAction(str::ActionFilterImport);
+    connect(fltImportAction, SIGNAL(triggered()), this, SLOT(onFiltersImport()));
 
     //////////////////////////////////////////////////////////////////////////
     // Blog menu
@@ -551,24 +562,10 @@ void MainWindow::createMenus()
     // Tools menu
     //
     QMenu *toolsMenu = new QMenu(str::MenuTools, this);
-    QToolBar *toolsToolBar = new QToolBar(str::MenuTools, this);
-    toolsToolBar->setObjectName(str::MenuTools);
-    toolsToolBar->setIconSize(QSize(iconSizeX, iconSizeY));
-
-    QAction *filtersAction = toolsMenu->addAction(str::ActionFilters);
-    connect(filtersAction, SIGNAL(triggered()), this, SLOT(onFilters()));
-    filtersAction->setIcon(QIcon(":icons/filter"));
-    toolsToolBar->addAction(filtersAction);
-
-    QAction *fltExportAction = toolsMenu->addAction(str::ActionFilterExport);
-    connect(fltExportAction, SIGNAL(triggered()), this, SLOT(onFiltersExport()));
-    QAction *fltImportAction = toolsMenu->addAction(str::ActionFilterImport);
-    connect(fltImportAction, SIGNAL(triggered()), this, SLOT(onFiltersImport()));
 
     QAction *optionsAction = toolsMenu->addAction(str::ActionOptions);
     connect(optionsAction, SIGNAL(triggered()), this, SLOT(onOptions()));
     optionsAction->setIcon(QIcon(":icons/options"));
-    toolsToolBar->addAction(optionsAction);
 
     //////////////////////////////////////////////////////////////////////////
     // Window menu
@@ -634,7 +631,6 @@ void MainWindow::createMenus()
     addToolBar(styleToolBar);
     addToolBar(alignToolBar);
     addToolBar(streamToolBar);
-    addToolBar(toolsToolBar);
 }
 
 void MainWindow::updateToolBarsMenu()
