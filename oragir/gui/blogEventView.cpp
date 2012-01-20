@@ -38,30 +38,31 @@ BlogEventView::BlogEventView(QWidget *parent, Qt::WindowFlags f)
 {
     m_editSubject = new QLineEdit(this);
     QLabel *lblTime = new QLabel("Time:", this);
-    QDateTimeEdit *dtEdit = new QDateTimeEdit(this);
-    dtEdit->setDisplayFormat("MMMM d, yyyy, h:mm AP");
-    QCheckBox *chkOutOrder = new QCheckBox("Date Out of Order", this);
-    QComboBox *cmbPostTo = new QComboBox(this);
-    QComboBox *cmbUserPic = new QComboBox(this);
-    QLabel *lblUserpic = new QLabel(this);
-    lblUserpic->setMinimumWidth(64);
+    m_dtEdit = new QDateTimeEdit(this);
+    m_dtEdit->setDisplayFormat("MMMM d, yyyy, h:mm AP");
+    m_dtEdit->setCalendarPopup(true);
+    m_chkOutOrder = new QCheckBox("Date Out of Order", this);
+    m_cmbPostTo = new QComboBox(this);
+    m_cmbUserPic = new QComboBox(this);
+    m_lblUserpic = new QLabel(this);
+    m_lblUserpic->setMinimumWidth(64);
 
     QHBoxLayout *timeLayout = new QHBoxLayout;
-    timeLayout->addWidget(dtEdit);
-    timeLayout->addWidget(chkOutOrder);
+    timeLayout->addWidget(m_dtEdit);
+    timeLayout->addWidget(m_chkOutOrder);
 
     QFormLayout *formLayout1 = new QFormLayout;
     formLayout1->addRow("Subject", m_editSubject);
     formLayout1->addRow(lblTime, timeLayout);
 
     QFormLayout *formLayout2 = new QFormLayout;
-    formLayout2->addRow("Post to:", cmbPostTo);
-    formLayout2->addRow("Userpic:", cmbUserPic);
+    formLayout2->addRow("Post to:", m_cmbPostTo);
+    formLayout2->addRow("Userpic:", m_cmbUserPic);
 
     QHBoxLayout *headerLayout = new QHBoxLayout;
     headerLayout->addLayout(formLayout1);
     headerLayout->addLayout(formLayout2);
-    headerLayout->addWidget(lblUserpic);
+    headerLayout->addWidget(m_lblUserpic);
 
     m_htmlEditor = new HtmlEditor(this);
 
@@ -80,6 +81,26 @@ void BlogEventView::setHtmlContent(const QString &content)
 void BlogEventView::setSubject(const QString &subject)
 {
     m_editSubject->setText(subject);
+}
+
+void BlogEventView::setDateTime(const QDateTime &dt)
+{
+    m_dtEdit->setDateTime(dt);
+}
+
+void BlogEventView::setDateOutOrder(bool outorder)
+{
+    m_chkOutOrder->setChecked(outorder);
+}
+
+void BlogEventView::setPostTo(const QStringList &postto)
+{
+    m_cmbPostTo->addItems(postto);
+}
+
+void BlogEventView::setUserPics(const QStringList &userpics)
+{
+    m_cmbUserPic->addItems(userpics);
 }
 
 void BlogEventView::setupActions(const HtmlActions &actions)

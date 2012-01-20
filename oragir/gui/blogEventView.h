@@ -23,9 +23,14 @@
 
 #include <QWidget>
 #include <QWebPage>
+#include <QDateTime>
 #include <QMap>
 
 class QLineEdit;
+class QCheckBox;
+class QLabel;
+class QComboBox;
+class QDateTimeEdit;
 
 namespace gui
 {
@@ -44,6 +49,14 @@ public:
 
     /// Sets the subject text.
     void setSubject(const QString &subject);
+
+    void setDateTime(const QDateTime &dt);
+
+    void setDateOutOrder(bool outorder);
+
+    void setPostTo(const QStringList &postto);
+
+    void setUserPics(const QStringList &userpics);
 
     /// Defines the index of html editor related actions.
     enum HtmlAction
@@ -96,6 +109,11 @@ private:
     QLineEdit *m_editSubject;
     HtmlEditor *m_htmlEditor;
     HtmlActions m_htmlActions;
+    QCheckBox *m_chkOutOrder;
+    QComboBox *m_cmbPostTo;
+    QComboBox *m_cmbUserPic;
+    QLabel *m_lblUserpic;
+    QDateTimeEdit *m_dtEdit;
 };
 
 } // namespace gui
