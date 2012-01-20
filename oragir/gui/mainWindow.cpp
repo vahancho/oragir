@@ -1167,6 +1167,7 @@ void MainWindow::onEventClicked(const QModelIndex &index)
     QString subject = record.value(BlogTableModel::Subject).toString();
     view->setSubject(subject);
     view->setHtmlContent(record.value(BlogTableModel::Event).toString());
+    view->setDateTime(QDateTime(record.value(BlogTableModel::Time).toDateTime()));
 
     QMdiSubWindow *editorView = new QMdiSubWindow;
     editorView->setWidget(view);
