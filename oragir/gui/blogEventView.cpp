@@ -21,6 +21,11 @@
 #include <QLineEdit>
 #include <QLayout>
 #include <QAction>
+#include <QLabel>
+#include <QDateTimeEdit>
+#include <QCheckBox>
+#include <QComboBox>
+#include <QFormLayout>
 #include "blogEventView.h"
 #include "htmlEditor.h"
 
@@ -32,10 +37,35 @@ BlogEventView::BlogEventView(QWidget *parent, Qt::WindowFlags f)
         QWidget(parent, f)
 {
     m_editSubject = new QLineEdit(this);
+    QLabel *lblTime = new QLabel("Time:", this);
+    QDateTimeEdit *dtEdit = new QDateTimeEdit(this);
+    QCheckBox *chkOutOrder = new QCheckBox("Date Out of Order", this);
+    QComboBox *cmbPostTo = new QComboBox(this);
+    QComboBox *cmbUserPic = new QComboBox(this);
+    QLabel *lblUserpic = new QLabel(this);
+    lblUserpic->setMinimumWidth(64);
+
+    QHBoxLayout *timeLayout = new QHBoxLayout;
+    timeLayout->addWidget(dtEdit);
+    timeLayout->addWidget(chkOutOrder);
+
+    QFormLayout *formLayout1 = new QFormLayout;
+    formLayout1->addRow("Subject", m_editSubject);
+    formLayout1->addRow(lblTime, timeLayout);
+
+    QFormLayout *formLayout2 = new QFormLayout;
+    formLayout2->addRow("Post to:", cmbPostTo);
+    formLayout2->addRow("Userpic:", cmbUserPic);
+
+    QHBoxLayout *headerLayout = new QHBoxLayout;
+    headerLayout->addLayout(formLayout1);
+    headerLayout->addLayout(formLayout2);
+    headerLayout->addWidget(lblUserpic);
+
     m_htmlEditor = new HtmlEditor(this);
 
     QVBoxLayout *mainLayout = new QVBoxLayout;
-    mainLayout->addWidget(m_editSubject);
+    mainLayout->addLayout(headerLayout);
     mainLayout->addWidget(m_htmlEditor);
 
     setLayout(mainLayout);
