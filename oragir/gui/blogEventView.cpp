@@ -39,6 +39,7 @@ BlogEventView::BlogEventView(QWidget *parent, Qt::WindowFlags f)
     m_editSubject = new QLineEdit(this);
     QLabel *lblTime = new QLabel("Time:", this);
     QDateTimeEdit *dtEdit = new QDateTimeEdit(this);
+    dtEdit->setDisplayFormat("MMMM d, yyyy, h:mm AP");
     QCheckBox *chkOutOrder = new QCheckBox("Date Out of Order", this);
     QComboBox *cmbPostTo = new QComboBox(this);
     QComboBox *cmbUserPic = new QComboBox(this);
