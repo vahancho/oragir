@@ -45,6 +45,14 @@ public:
 
     QStringList pictureUrls() const;
 
+    QStringList pictureKeys() const;
+
+    QStringList moods() const;
+
+    QString defaultPicUrl() const;
+
+    int id() const;
+
 private:
     QMap<QString, QVariant> m_info;
 };

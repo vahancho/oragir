@@ -47,6 +47,41 @@ QString UserInfo::message() const
     return m_info["message"].toString();
 }
 
+QStringList UserInfo::moods() const
+{
+    QVariantList vl = m_info["moods"].toList();
+    QStringList result;
+    foreach (const QVariant &v, vl) {
+        QMap<QString, QVariant> moodData;
+        result.push_back(moodData["id"].toString());
+        result.push_back(moodData["name"].toString());
+        result.push_back(moodData["parent"].toString());
+    }
+
+    return result;
+}
+
+QString UserInfo::defaultPicUrl() const
+{
+    return m_info["defaultpicurl"].toString();
+}
+
+int UserInfo::id() const
+{
+    return m_info["userid"].toInt();
+}
+
+QStringList UserInfo::pictureKeys() const
+{
+    QVariantList vl = m_info["pickws"].toList();
+    QStringList result;
+    foreach (const QVariant &v, vl) {
+        result.push_back(v.toString());
+    }
+
+    return result;
+}
+
 QStringList UserInfo::journals() const
 {
     QVariantList vl = m_info["usejournals"].toList();
