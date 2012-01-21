@@ -93,17 +93,23 @@ namespace str
     /// SQL query to create table posts.
     extern const char *SqlCreatePostTable;
 
-    /// SQL query to create my blog table for my posts.
-    extern const char *SqlCreateMyBlogTable;
-
     /// SQL query to add post record to the table.
     extern const char *SqlInsertPostToTable;
 
     /// SQL query to insert blog record to the table.
     extern const char *SqlInsertBlogToTable;
 
+    /// SQL query to create my blog table for my posts.
+    extern const char *SqlCreateMyBlogTable;
+
     /// SQL query to insert an event into user's blog.
     extern const char *SqlInsertMyEntry;
+
+    /// Creates table with user spacific information.
+    extern const char *SqlCreateMyBlogUserTable;
+
+    /// Inserts row in my blog user's data table.
+    extern const char *SqlInsertMyBlogUserData;
 
 } // namespace str
 

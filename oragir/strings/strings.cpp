@@ -111,6 +111,17 @@ namespace str
                                        "security     NVARCHAR(128),"
                                        "flag         INTEGER)";
 
+    extern const char *SqlCreateMyBlogUserTable = "CREATE TABLE IF NOT EXISTS user ("
+                                                  "userid        INTEGER PRIMARY KEY NOT NULL,"
+                                                  "fullname      NVARCHAR,"
+                                                  "defaultpicurl NVARCHAR,"
+                                                  "pickwurls     NVARCHAR,"
+                                                  "pickws        NVARCHAR,"
+                                                  "moods         NVARCHAR,"
+                                                  "friendgroups  NVARCHAR,"
+                                                  "message       NVARCHAR,"
+                                                  "flag         INTEGER)";
+
     const char *SqlInsertPostToTable = "INSERT INTO %1 (flag, title, read, name, updated, posterid, link, content, userpic, category) "
                                        "VALUES (:flag, :title, :read, :name, :updated, :posterid, :link, :content, :userpic, :category)";
 
@@ -119,5 +130,8 @@ namespace str
 
     const char *SqlInsertBlogToTable = "INSERT INTO %1 (journalid, link, name, journal, title, flag) "
                                        "VALUES (:journalid, :link, :name, :journal, :title, :flag)";
+
+    const char *SqlInsertMyBlogUserData = "INSERT INTO %1 (userid, fullname, defaultpicurl, pickwurls, pickws, moods, friendgroups, message, flag) "
+                                          "VALUES (:userid, :fullname, :defaultpicurl, :pickwurls, :pickws, :moods, :friendgroups, :message, :flag)";
 
 } // namespace str
