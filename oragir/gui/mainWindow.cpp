@@ -1195,6 +1195,21 @@ void MainWindow::onEventClicked(const QModelIndex &index)
     view->setHtmlContent(record.value(BlogTableModel::Event).toString());
     view->setDateTime(QDateTime(record.value(BlogTableModel::Time).toDateTime()));
 
+    // Get the user information from the user table.
+    core::BlogDatabase *db = core::Application::theApp()->blogDatabase();
+    QSqlTableModel userModel(0, db->database());
+    userModel.setTable("user");
+    userModel.select();
+    QSqlRecord userRecord = userModel.record(0);
+
+    QStringList journals = userRecord.value(3).toString().split(',');
+    journals.prepend(core::Application::theApp()->credentials()->user());
+    view->setPostTo(journals);
+
+    QStringList userPics = userRecord.value(6).toString().split(',');
+    userPics.prepend("default");
+    view->setUserPics(userPics);
+
     QMdiSubWindow *editorView = new QMdiSubWindow;
     editorView->setWidget(view);
     editorView->setAttribute(Qt::WA_DeleteOnClose);
