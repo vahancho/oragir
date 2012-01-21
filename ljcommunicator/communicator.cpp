@@ -142,6 +142,7 @@ UserInfo Communicator::login()
     QMap<QString, QVariant> param = params.takeAt(0).toMap();
     param["getpickwurls"] = "1";
     param["getpickws"] = "1";
+    param["getmoods"] = "1";
     params.push_back(param);
 
     // Send request to login.
