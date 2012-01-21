@@ -52,7 +52,7 @@ QStringList UserInfo::moods() const
     QVariantList vl = m_info["moods"].toList();
     QStringList result;
     foreach (const QVariant &v, vl) {
-        QMap<QString, QVariant> moodData;
+        QMap<QString, QVariant> moodData = v.toMap();
         result.push_back(moodData["id"].toString());
         result.push_back(moodData["name"].toString());
         result.push_back(moodData["parent"].toString());
