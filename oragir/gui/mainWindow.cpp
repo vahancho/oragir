@@ -1120,6 +1120,10 @@ void MainWindow::onBlogAccountSetup()
                                     .arg(str::MyBlogTableName);
             db->addTable(query);
 
+            // Create the user info table and add user data.
+            db->addTable(str::SqlCreateMyBlogUserTable);
+            db->setUserData(userInfo, cr->encode());
+
             // Get the total number of events in the blog.
             int total = 0;
             QVariantList postPerDay = com.getDayCount();
