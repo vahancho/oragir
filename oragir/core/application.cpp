@@ -185,18 +185,12 @@ void Application::registerDatabaseDefaults() const
     Q_ASSERT(m_streamDatabase);
 
     // Get settings directory and create it if it does not exist.
-    QString location =
-       QDesktopServices::storageLocation(QDesktopServices::DataLocation) + '/';
-    location = QDir::toNativeSeparators(location);
-    QDir dir(location);
-    if (!dir.exists())
-        dir.mkpath(location);
+    QString location = settingsDirectory();
 
     QString appDataFile = QString(location + "oragir.data");
     m_defaultManager->addProperty(str::Database, appDataFile, appDataFile);
 
-    QString blogDataFile = QString(location + "blog.data");
-    m_defaultManager->addProperty("Blog/Database", blogDataFile, blogDataFile);
+    m_defaultManager->addProperty("Blog/Database", QString(), QString());
 
     QString filterFile = QString(location + "filters.flt");
     m_defaultManager->addProperty(str::Filters, filterFile, filterFile);
@@ -290,6 +284,19 @@ void Application::saveMainWindowDefaults() const
     m_defaultManager->setValue(str::MainWindowMax, m_mainWindow->isMaximized());
     m_defaultManager->setValue(str::MainWindowState, m_mainWindow->saveState());
     m_defaultManager->setValue(str::ShowStatusBar, m_mainWindow->statusBarVisible());
+}
+
+QString Application::settingsDirectory() const
+{
+    // Get settings directory and create it if it does not exist.
+    QString settingsDir =
+       QDesktopServices::storageLocation(QDesktopServices::DataLocation) + '/';
+    settingsDir = QDir::toNativeSeparators(settingsDir);
+    QDir dir(settingsDir);
+    if (!dir.exists())
+        dir.mkpath(settingsDir);
+
+    return settingsDir;
 }
 
 } // namespace core

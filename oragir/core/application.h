@@ -86,6 +86,9 @@ public:
 
     Credentials *credentials() const;
 
+    /// Creates settings directory and returns its path.
+    QString settingsDirectory() const;
+
 private:
     /// Default constructor.
     /*!

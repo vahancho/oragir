@@ -1095,17 +1095,30 @@ void MainWindow::onBlogAccountSetup()
             cr->setPassword(password);
 
             core::BlogDatabase *db = core::Application::theApp()->blogDatabase();
-            QStringList tables = db->tables();
-            if (tables.contains(str::MyBlogTableName)) {
-                // Clear the old table.
-                m_blogModel->removeRows(0, m_blogModel->rowCount());
-                m_blogModel->submitAll();
+            if (!db->database().isOpen()) {
+                QString dbPath =
+                    core::Application::theApp()->settingsDirectory() +
+                    "users" + '/' + user + '/';
+                dbPath = QDir::toNativeSeparators(dbPath);
+                QDir dir(dbPath);
+                if (!dir.exists())
+                    dir.mkpath(dbPath);
+                dbPath += user + ".data";
+                db->create(dbPath);
             } else {
-                // Create new table for the blog events.
-                QString query = QString(str::SqlCreateMyBlogTable)
-                                        .arg(str::MyBlogTableName);
-                db->addTable(query);
+                QStringList tables = db->tables();
+                if (tables.contains(str::MyBlogTableName)) {
+                    // Clear the old table.
+                    m_blogModel->removeRows(0, m_blogModel->rowCount());
+                    m_blogModel->submitAll();
+                }
             }
+
+            // Create new table for the blog events if it does not exist.
+            // No problem if the table already exists.
+            QString query = QString(str::SqlCreateMyBlogTable)
+                                    .arg(str::MyBlogTableName);
+            db->addTable(query);
 
             // Get the total number of events in the blog.
             int total = 0;
