@@ -113,7 +113,9 @@ namespace str
 
     extern const char *SqlCreateMyBlogUserTable = "CREATE TABLE IF NOT EXISTS user ("
                                                   "userid        INTEGER PRIMARY KEY NOT NULL,"
+                                                  "password      NVARCHAR,"
                                                   "fullname      NVARCHAR,"
+                                                  "usejournals   NVARCHAR,"
                                                   "defaultpicurl NVARCHAR,"
                                                   "pickwurls     NVARCHAR,"
                                                   "pickws        NVARCHAR,"
@@ -131,7 +133,7 @@ namespace str
     const char *SqlInsertBlogToTable = "INSERT INTO %1 (journalid, link, name, journal, title, flag) "
                                        "VALUES (:journalid, :link, :name, :journal, :title, :flag)";
 
-    const char *SqlInsertMyBlogUserData = "INSERT INTO %1 (userid, fullname, defaultpicurl, pickwurls, pickws, moods, friendgroups, message, flag) "
-                                          "VALUES (:userid, :fullname, :defaultpicurl, :pickwurls, :pickws, :moods, :friendgroups, :message, :flag)";
+    const char *SqlInsertMyBlogUserData = "INSERT INTO %1 (userid, password, fullname, usejournals, defaultpicurl, pickwurls, pickws, moods, friendgroups, message, flag) "
+                                          "VALUES (:userid, :password, :fullname, :usejournals, :defaultpicurl, :pickwurls, :pickws, :moods, :friendgroups, :message, :flag)";
 
 } // namespace str

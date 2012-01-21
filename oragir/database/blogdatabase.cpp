@@ -20,6 +20,7 @@
 
 #include "../strings/strings.h"
 #include "../../ljcommunicator/ljevents.h"
+#include "../../ljcommunicator/ljuserinfo.h"
 #include "blogdatabase.h"
 
 namespace core
@@ -47,6 +48,28 @@ void BlogDatabase::addEvent(const lj::Event &event)
 
     lj::EventProperties properties = event.m_properties;
     query.bindValue(":tags", properties["taglist"].toStringList().join(","));
+
+    query.exec();
+}
+
+void BlogDatabase::setUserData(const lj::UserInfo &userInfo, const QString &password)
+{
+    QSqlDatabase db = database();
+    QSqlQuery query(db);
+
+    QString queryStr = QString(str::SqlInsertMyBlogUserData);
+    query.prepare(queryStr);
+    query.bindValue(":userid", userInfo.id());
+    query.bindValue(":password", password);
+    query.bindValue(":fullname", userInfo.fullName());
+    query.bindValue(":usejournals", userInfo.journals());
+    query.bindValue(":defaultpicurl", userInfo.defaultPicUrl());
+    query.bindValue(":pickwurls", userInfo.pictureUrls());
+    query.bindValue(":pickws", userInfo.pictureKeys());
+    query.bindValue(":moods", userInfo.moods());
+    query.bindValue(":friendgroups", QString());
+    query.bindValue(":message", userInfo.message());
+    query.bindValue(":flag", 0);
 
     query.exec();
 }

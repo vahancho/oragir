@@ -26,6 +26,7 @@
 namespace lj
 {
     struct Event;
+    class UserInfo;
 }
 
 namespace core
@@ -38,6 +39,14 @@ public:
     BlogDatabase();
 
     void addEvent(const lj::Event &event);
+
+    /// Sets the user data in the user table and password (encripted).
+    /*!
+        Before calling this function make sure that the user table already
+        exists. We do not check for the table existence due to performance
+        problems that can such check couse.
+    */
+    void setUserData(const lj::UserInfo &userInfo, const QString &password);
 };
 
 } // namespace core
