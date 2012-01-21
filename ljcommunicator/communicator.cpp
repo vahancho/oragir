@@ -28,7 +28,7 @@
 namespace  lj
 {
 
-const char strUserAgent[] = "Oragir v0.2; "
+const char strUserAgent[] = "Oragir LJ Communicator; "
                             "http://sourceforge.net/projects/oragir; "
                             "vahancho@gmail.com";
 
