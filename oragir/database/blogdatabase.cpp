@@ -62,11 +62,11 @@ void BlogDatabase::setUserData(const lj::UserInfo &userInfo, const QString &pass
     query.bindValue(":userid", userInfo.id());
     query.bindValue(":password", password);
     query.bindValue(":fullname", userInfo.fullName());
-    query.bindValue(":usejournals", userInfo.journals());
+    query.bindValue(":usejournals", userInfo.journals().join(","));
     query.bindValue(":defaultpicurl", userInfo.defaultPicUrl());
-    query.bindValue(":pickwurls", userInfo.pictureUrls());
-    query.bindValue(":pickws", userInfo.pictureKeys());
-    query.bindValue(":moods", userInfo.moods());
+    query.bindValue(":pickwurls", userInfo.pictureUrls().join(","));
+    query.bindValue(":pickws", userInfo.pictureKeys().join(","));
+    query.bindValue(":moods", userInfo.moods().join(","));
     query.bindValue(":friendgroups", QString());
     query.bindValue(":message", userInfo.message());
     query.bindValue(":flag", 0);
