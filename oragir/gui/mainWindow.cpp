@@ -1075,6 +1075,11 @@ void MainWindow::onBlogAccountSetup()
 
     if (dlg.exec() == QDialog::Accepted) {
         m_progress->start();
+        QProgressBar progressBar;
+        progressBar.setMaximumWidth(150);
+        progressBar.setMaximumHeight(16);
+        progressBar.setMinimum(0);
+        statusBar()->insertPermanentWidget(0, &progressBar);
 
         QString user = dlg.user();
         QString password = dlg.password();
@@ -1109,6 +1114,7 @@ void MainWindow::onBlogAccountSetup()
                 QMap<QString, QVariant> data = v.toMap();
                 total += data["count"].toInt();
             }
+            progressBar.setMaximum(total);
 
             // Resulting events.
             lj::Events events;
@@ -1136,6 +1142,7 @@ void MainWindow::onBlogAccountSetup()
                         canFetch -= e.count();
                         events += e;
                     }
+                    progressBar.setValue(events.count());
                 }
             }
 
@@ -1150,6 +1157,8 @@ void MainWindow::onBlogAccountSetup()
                 lj::Event event = events.event(i);
                 db->addEvent(event);
             }
+
+            progressBar.setValue(events.count());
         } else {
             QMessageBox::critical(this, "User Account Error",
                                   userInfo.error());
