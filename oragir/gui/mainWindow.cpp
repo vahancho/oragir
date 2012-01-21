@@ -124,7 +124,9 @@ MainWindow::MainWindow(QWidget *parent, Qt::WFlags flags)
 
 // Destructor
 MainWindow::~MainWindow()
-{}
+{
+    delete m_blogModel;
+}
 
 void MainWindow::createBlogView()
 {
