@@ -122,7 +122,7 @@ namespace str
                                                   "moods         NVARCHAR,"
                                                   "friendgroups  NVARCHAR,"
                                                   "message       NVARCHAR,"
-                                                  "flag         INTEGER)";
+                                                  "flag          INTEGER)";
 
     const char *SqlInsertPostToTable = "INSERT INTO %1 (flag, title, read, name, updated, posterid, link, content, userpic, category) "
                                        "VALUES (:flag, :title, :read, :name, :updated, :posterid, :link, :content, :userpic, :category)";
@@ -133,7 +133,7 @@ namespace str
     const char *SqlInsertBlogToTable = "INSERT INTO %1 (journalid, link, name, journal, title, flag) "
                                        "VALUES (:journalid, :link, :name, :journal, :title, :flag)";
 
-    const char *SqlInsertMyBlogUserData = "INSERT INTO %1 (userid, password, fullname, usejournals, defaultpicurl, pickwurls, pickws, moods, friendgroups, message, flag) "
+    const char *SqlInsertMyBlogUserData = "INSERT OR REPLACE INTO user (userid, password, fullname, usejournals, defaultpicurl, pickwurls, pickws, moods, friendgroups, message, flag) "
                                           "VALUES (:userid, :password, :fullname, :usejournals, :defaultpicurl, :pickwurls, :pickws, :moods, :friendgroups, :message, :flag)";
 
 } // namespace str
