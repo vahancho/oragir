@@ -117,8 +117,8 @@ Events::Events(const QByteArray &data)
                 event.m_security = eventMap["security"].toString();
             }
 
-            EventProperties properties = eventMap["props"].toMap();
-            event.m_tags = properties["taglist"].toStringList();
+            // Get event properties.
+            event.m_properties = eventMap["props"].toMap();
 
             m_events.push_back(event);
         }

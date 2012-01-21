@@ -42,9 +42,11 @@ void BlogDatabase::addEvent(const lj::Event &event)
     query.bindValue(":commentcount", event.m_commentCount);
     query.bindValue(":time", event.m_time);
     query.bindValue(":url", event.m_url);
-    query.bindValue(":tags", event.m_tags.join(","));
     query.bindValue(":security", event.m_security);
     query.bindValue(":flag", 0);
+
+    lj::EventProperties properties = event.m_properties;
+    query.bindValue(":tags", properties["taglist"].toStringList().join(","));
 
     query.exec();
 }

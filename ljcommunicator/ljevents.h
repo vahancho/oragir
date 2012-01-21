@@ -64,8 +64,8 @@ struct Event
     QString m_event;
     QString m_url;
     QString m_time;
-    QStringList m_tags;
     QString m_security;
+    EventProperties m_properties;
 };
 
 /// Implements the wrapper class around responce for the events request.
