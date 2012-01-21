@@ -66,6 +66,7 @@ Application::~Application()
 
     saveDatabaseDefaults();
     delete m_streamDatabase;
+    delete m_blogDatabase;
 
     delete m_versionManager;
 
