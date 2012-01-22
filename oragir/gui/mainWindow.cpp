@@ -1153,6 +1153,7 @@ void MainWindow::onBlogAccountSetup()
                     if (e.isValid()) {
                         canFetch -= e.count();
                         events += e;
+                        progressBar.setValue(events.count());
                     }
 
                     dateStr += " 00:00:00";
@@ -1160,8 +1161,8 @@ void MainWindow::onBlogAccountSetup()
                     if (e.isValid()) {
                         canFetch -= e.count();
                         events += e;
+                        progressBar.setValue(events.count());
                     }
-                    progressBar.setValue(events.count());
                 }
             }
 
