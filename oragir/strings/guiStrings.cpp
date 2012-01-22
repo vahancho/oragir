@@ -75,7 +75,7 @@ namespace str
                                           "<big><b>Oragir v%1</b></big>"
                                           "<BR>"
                                           "<BR>"
-                                          "Copyright © 2011 "
+                                          "Copyright © 2011-2012 "
                                           "<a href=\"mailto:vahancho@gmail.com\">Vahan Aghajanyan</a>."
                                           "<BR>"
                                           "All Rights Reserved."
