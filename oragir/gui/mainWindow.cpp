@@ -544,6 +544,10 @@ void MainWindow::createMenus()
     // Blog menu
     //
     QMenu *blogMenu = new QMenu("&Blog", this);
+
+    QAction *newPost = blogMenu->addAction("&New Post");
+    connect(newPost, SIGNAL(triggered()), this, SLOT(onNewPost()));
+
     QAction *setupAction = blogMenu->addAction("&Setup Account...");
     connect(setupAction, SIGNAL(triggered()), this, SLOT(onBlogAccountSetup()));
 
@@ -1191,29 +1195,13 @@ void MainWindow::onBlogAccountSetup()
 
 void MainWindow::onEventClicked(const QModelIndex &index)
 {
-    // Create and show database view.
-    BlogEventView *view = new BlogEventView;
+    BlogEventView *view = createBlogEventView();
     QSqlRecord record = m_blogModel->record(index.row());
     QString subject = record.value(BlogTableModel::Subject).toString();
     view->setSubject(subject);
     view->setHtmlContent(record.value(BlogTableModel::Event).toString());
     view->setDateTime(QDateTime(record.value(BlogTableModel::Time).toDateTime()));
     view->setDateOutOrder(record.value(BlogTableModel::Backdated).toBool());
-
-    // Get the user information from the user table.
-    core::BlogDatabase *db = core::Application::theApp()->blogDatabase();
-    QSqlTableModel userModel(0, db->database());
-    userModel.setTable("user");
-    userModel.select();
-    QSqlRecord userRecord = userModel.record(0);
-
-    QStringList journals = userRecord.value(3).toString().split(',');
-    journals.prepend(core::Application::theApp()->credentials()->user());
-    view->setPostTo(journals);
-
-    QStringList userPics = userRecord.value(6).toString().split(',');
-    userPics.prepend("default");
-    view->setUserPics(userPics);
 
     QMdiSubWindow *editorView = new QMdiSubWindow;
     editorView->setWidget(view);
@@ -1297,6 +1285,42 @@ void MainWindow::onNetManagerFinished(QNetworkReply *reply)
                            reply->url().path().section('/', -2).remove('/') + ".png";        
         pixmap.save(fileName);
     }
+}
+
+void MainWindow::onNewPost()
+{
+    BlogEventView *view = createBlogEventView();
+
+    QMdiSubWindow *editorView = new QMdiSubWindow;
+    editorView->setWidget(view);
+    editorView->setAttribute(Qt::WA_DeleteOnClose);
+    editorView->resize(200, 200);
+    editorView->setWindowTitle("New Post");
+    m_mdiArea.addSubWindow(editorView);
+    editorView->showMaximized();
+}
+
+BlogEventView *MainWindow::createBlogEventView()
+{
+    BlogEventView *view = new BlogEventView;
+    view->setDateTime(QDateTime::currentDateTime());
+
+    // Get the user information from the user table.
+    core::BlogDatabase *db = core::Application::theApp()->blogDatabase();
+    QSqlTableModel userModel(0, db->database());
+    userModel.setTable("user");
+    userModel.select();
+    QSqlRecord userRecord = userModel.record(0);
+
+    QStringList journals = userRecord.value(3).toString().split(',');
+    journals.prepend(core::Application::theApp()->credentials()->user());
+    view->setPostTo(journals);
+
+    QStringList userPics = userRecord.value(6).toString().split(',');
+    userPics.prepend("(default)");
+    view->setUserPics(userPics);
+
+    return view;
 }
 
 } // namespace gui

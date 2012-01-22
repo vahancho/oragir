@@ -157,6 +157,9 @@ private slots:
     /// Handle the user pics downloading request finished signal.
     void onNetManagerFinished(QNetworkReply *);
 
+    /// Called when the new blog post action tigerred.
+    void onNewPost();
+
 private:
 
     /// Defines the column numbers in the folders view.
@@ -193,6 +196,9 @@ private:
 
     /// Download the user's pictures by the given list of urls.
     void downloadUserPics(const QStringList &urls);
+
+    /// Creates the initial blog event view with default settings.
+    BlogEventView *createBlogEventView();
 
     /// The system tray icon.
     QSystemTrayIcon *m_trayIcon;
