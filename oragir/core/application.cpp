@@ -217,7 +217,8 @@ void Application::restoreDatabase() const
 
     // Blog database
     database = m_defaultManager->value("Blog/Database").toString();
-    m_blogDatabase->create(database);
+    if (!database.isEmpty())
+        m_blogDatabase->create(database);
 }
 
 void Application::saveDatabaseDefaults() const
@@ -250,7 +251,7 @@ void Application::restoreMainWindow() const
     Q_ASSERT(m_defaultManager);
     Q_ASSERT(m_mainWindow);
 
-    m_mainWindow->createBlogView();
+    m_mainWindow->setupBlogView();
 
     // Set maximized state
     bool max = m_defaultManager->value(str::MainWindowMax).toBool();

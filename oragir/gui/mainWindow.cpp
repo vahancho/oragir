@@ -53,7 +53,8 @@ MainWindow::MainWindow(QWidget *parent, Qt::WFlags flags)
         m_trayIcon(0),
         m_processedItemCount(0),
         m_recordedItemCount(0),
-        m_statusBarVisible(true)
+        m_statusBarVisible(true),
+        m_blogModel(0)
 {
     createMenus();
 
@@ -94,6 +95,7 @@ MainWindow::MainWindow(QWidget *parent, Qt::WFlags flags)
             SLOT(onVersionChecked()));
 
     createFolderTree();
+    createBlogView();
 
     QLabel *statusLabel = new QLabel(this);
     statusLabel->setMinimumWidth(24);
@@ -142,24 +144,6 @@ void MainWindow::createBlogView()
 
     connect(m_blogView, SIGNAL(doubleClicked(const QModelIndex &)),
             this, SLOT(onEventClicked(const QModelIndex &)));
-
-    core::BlogDatabase *db = core::Application::theApp()->blogDatabase();
-    QSqlDatabase d = db->database();
-    if (d.isValid()) {
-        m_blogModel = new BlogTableModel(0, db->database());
-        m_blogModel->setTable(str::MyBlogTableName);
-        m_blogModel->setEditStrategy(QSqlTableModel::OnManualSubmit);
-        m_blogModel->select();
-
-        m_blogView->setModel(m_blogModel);
-
-        for (int i = 0; i < m_blogModel->columnCount(); ++i) {
-            if (i != BlogTableModel::Subject &&
-                i != BlogTableModel::Time) {
-                m_blogView->hideColumn(i);
-            }
-        }
-    }
 
     QDockWidget *dock = new QDockWidget("My Blog", this);
     dock->setObjectName("My Blog");
@@ -1126,6 +1110,8 @@ void MainWindow::onBlogAccountSetup()
             db->addTable(str::SqlCreateMyBlogUserTable);
             db->setUserData(userInfo, cr->encode());
 
+            setupBlogView();
+
             // Get the total number of events in the blog.
             int total = 0;
             QVariantList postPerDay = com.getDayCount();
@@ -1179,6 +1165,7 @@ void MainWindow::onBlogAccountSetup()
             }
 
             progressBar.setValue(events.count());
+            updateBlogModel();
         } else {
             QMessageBox::critical(this, "User Account Error",
                                   userInfo.error());
@@ -1221,6 +1208,45 @@ void MainWindow::onEventClicked(const QModelIndex &index)
     editorView->setWindowTitle(subject);
     m_mdiArea.addSubWindow(editorView);
     editorView->showMaximized();
+}
+
+void MainWindow::updateBlogModel()
+{
+    if (!m_blogModel)
+        return;
+    // Update the model.
+    // It selects the first 256 records only. In case of having
+    // more records in the table table view will not update
+    // properly. Therefore we need to fetch more if more
+    // records available.
+    m_blogModel->select();
+    while (m_blogModel->canFetchMore()){
+        m_blogModel->fetchMore();
+    }
+}
+
+void MainWindow::setupBlogView()
+{
+    core::BlogDatabase *db = core::Application::theApp()->blogDatabase();
+    QSqlDatabase d = db->database();
+    if (d.isOpen()) {
+        if (m_blogModel)
+            delete m_blogModel;
+
+        m_blogModel = new BlogTableModel(0, db->database());
+        m_blogModel->setTable(str::MyBlogTableName);
+        m_blogModel->setEditStrategy(QSqlTableModel::OnManualSubmit);
+        m_blogModel->select();
+
+        m_blogView->setModel(m_blogModel);
+
+        for (int i = 0; i < m_blogModel->columnCount(); ++i) {
+            if (i != BlogTableModel::Subject &&
+                i != BlogTableModel::Time) {
+                m_blogView->hideColumn(i);
+            }
+        }
+    }
 }
 
 } // namespace gui

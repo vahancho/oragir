@@ -53,8 +53,13 @@ public:
     /// Returns visibility state of the status bar.
     bool statusBarVisible() const;
 
-    /// Creates the blog view.
-    void createBlogView();
+    /// Create new blog model and set it to the blog view.
+    /*!
+        If model already exists, this function deletes it
+        and creates a new one that will be set to the
+        blog view.
+    */
+    void setupBlogView();
 
 public slots:
     void onRecordInserted(const QString &table);
@@ -177,6 +182,11 @@ private:
     void createTrayIcon();
 
     void openTableView(const QString &tableName);
+
+    /// Creates the blog view.
+    void createBlogView();
+
+    void updateBlogModel();
 
     /// The system tray icon.
     QSystemTrayIcon *m_trayIcon;
