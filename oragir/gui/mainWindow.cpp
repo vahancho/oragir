@@ -1081,24 +1081,31 @@ void MainWindow::onBlogAccountSetup()
             cr->setPassword(password);
 
             core::BlogDatabase *db = core::Application::theApp()->blogDatabase();
-            if (!db->database().isOpen()) {
-                QString dbPath =
-                    core::Application::theApp()->settingsDirectory() +
-                    "users" + '/' + user + '/';
-                dbPath = QDir::toNativeSeparators(dbPath);
-                QDir dir(dbPath);
-                if (!dir.exists())
-                    dir.mkpath(dbPath);
-                dbPath += user + ".data";
-                db->create(dbPath);
-            } else {
-                QStringList tables = db->tables();
-                if (tables.contains(str::MyBlogTableName)) {
-                    // Clear the old table.
-                    m_blogModel->removeRows(0, m_blogModel->rowCount());
-                    m_blogModel->submitAll();
+            QString dbPath = core::Application::theApp()->settingsDirectory() +
+                             "users" + '/' + user + '/';
+            dbPath = QDir::toNativeSeparators(dbPath);
+            QDir dir(dbPath);
+            if (!dir.exists())
+                dir.mkpath(dbPath);
+            dbPath += user + ".data";
+            if (db->database().isOpen()) {
+                QString currentDbName = db->database().connectionName();
+                if (currentDbName == dbPath) {
+                    // If used the same user, just delete the old data
+                    // to fetch it again.
+                    QStringList tables = db->tables();
+                    if (tables.contains(str::MyBlogTableName)) {
+                        // Clear the old table.
+                        m_blogModel->removeRows(0, m_blogModel->rowCount());
+                        m_blogModel->submitAll();
+                    }
+                } else {
+                    // Database switched, so remove existing model.
+                    delete m_blogModel;
+                    m_blogModel = 0;
                 }
             }
+            db->create(dbPath);
 
             // Create new table for the blog events if it does not exist.
             // No problem if the table already exists.
@@ -1110,6 +1117,7 @@ void MainWindow::onBlogAccountSetup()
             db->addTable(str::SqlCreateMyBlogUserTable);
             db->setUserData(userInfo, cr->encode());
 
+            // Create and configure new model for the view.
             setupBlogView();
 
             // Get the total number of events in the blog.
