@@ -154,6 +154,9 @@ private slots:
     /// Called when an item in blog view clicked.
     void onEventClicked(const QModelIndex &index);
 
+    /// Handle the user pics downloading request finished signal.
+    void onNetManagerFinished(QNetworkReply *);
+
 private:
 
     /// Defines the column numbers in the folders view.
@@ -187,6 +190,9 @@ private:
     void createBlogView();
 
     void updateBlogModel();
+
+    /// Download the user's pictures by the given list of urls.
+    void downloadUserPics(const QStringList &urls);
 
     /// The system tray icon.
     QSystemTrayIcon *m_trayIcon;

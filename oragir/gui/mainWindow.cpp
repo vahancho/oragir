@@ -19,6 +19,9 @@
 ***************************************************************************/
 
 #include <QtGui>
+#include <QNetworkAccessManager>
+#include <QNetworkRequest>
+#include <QNetworkReply>
 #include "mainWindow.h"
 #include "databaseView.h"
 #include "dlgFilters.h"
@@ -1117,6 +1120,9 @@ void MainWindow::onBlogAccountSetup()
             db->addTable(str::SqlCreateMyBlogUserTable);
             db->setUserData(userInfo, cr->encode());
 
+            QStringList urls = userInfo.pictureUrls();
+            downloadUserPics(urls);
+
             // Create and configure new model for the view.
             setupBlogView();
 
@@ -1254,6 +1260,42 @@ void MainWindow::setupBlogView()
                 m_blogView->hideColumn(i);
             }
         }
+    }
+}
+
+void MainWindow::downloadUserPics(const QStringList &urls)
+{
+    foreach(const QString &urlStr, urls) {
+        QNetworkAccessManager *netManager = new QNetworkAccessManager(this);
+        connect(netManager, SIGNAL(finished(QNetworkReply*)),
+                this, SLOT(onNetManagerFinished(QNetworkReply*)));
+
+        QUrl url(urlStr);
+        QNetworkRequest request(url);
+        netManager->get(request);
+    }
+}
+
+void MainWindow::onNetManagerFinished(QNetworkReply *reply)
+{
+    if (reply->error() != QNetworkReply::NoError) {
+        return;
+    }
+
+    QByteArray data = reply->readAll();
+    QPixmap pixmap;
+    pixmap.loadFromData(data);
+    if (!pixmap.isNull()) {
+        core::Credentials *cr = core::Application::theApp()->credentials();
+        QString imageDir = core::Application::theApp()->settingsDirectory() +
+                           "users" + '/' + cr->user() + '/' + "avatars" + '/';
+        imageDir = QDir::toNativeSeparators(imageDir);
+        QDir dir(imageDir);
+        if (!dir.exists())
+            dir.mkpath(imageDir);
+        QString fileName = imageDir +
+                           reply->url().path().section('/', -2).remove('/') + ".png";        
+        pixmap.save(fileName);
     }
 }
 
