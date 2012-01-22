@@ -41,8 +41,9 @@ public:
         CommentCount,
         Time,
         Url,
-        Tags,
         Security,
+        Tags,
+        Backdated,
         Flag
     };
 

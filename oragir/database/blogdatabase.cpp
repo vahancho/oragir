@@ -48,6 +48,7 @@ void BlogDatabase::addEvent(const lj::Event &event)
 
     lj::EventProperties properties = event.m_properties;
     query.bindValue(":tags", properties["taglist"].toStringList().join(","));
+    query.bindValue(":backdated", properties["opt_backdated"].toBool());
 
     query.exec();
 }

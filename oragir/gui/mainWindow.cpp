@@ -1196,6 +1196,7 @@ void MainWindow::onEventClicked(const QModelIndex &index)
     view->setSubject(subject);
     view->setHtmlContent(record.value(BlogTableModel::Event).toString());
     view->setDateTime(QDateTime(record.value(BlogTableModel::Time).toDateTime()));
+    view->setDateOutOrder(record.value(BlogTableModel::Backdated).toBool());
 
     // Get the user information from the user table.
     core::BlogDatabase *db = core::Application::theApp()->blogDatabase();
