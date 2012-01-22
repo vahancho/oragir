@@ -1288,7 +1288,7 @@ void MainWindow::onNetManagerFinished(QNetworkReply *reply)
     if (!pixmap.isNull()) {
         core::Credentials *cr = core::Application::theApp()->credentials();
         QString imageDir = core::Application::theApp()->settingsDirectory() +
-                           "users" + '/' + cr->user() + '/' + "avatars" + '/';
+                           "users" + '/' + cr->user() + '/' + "userpics" + '/';
         imageDir = QDir::toNativeSeparators(imageDir);
         QDir dir(imageDir);
         if (!dir.exists())
