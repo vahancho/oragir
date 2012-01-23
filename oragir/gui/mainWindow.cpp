@@ -550,6 +550,9 @@ void MainWindow::createMenus()
     //
     QMenu *blogMenu = new QMenu("&Blog", this);
 
+    QAction *commitAction = blogMenu->addAction("&Commit Changes");
+    connect(commitAction, SIGNAL(triggered()), this, SLOT(onCommitChanges()));
+
     QAction *setupAction = blogMenu->addAction("&Setup Account...");
     connect(setupAction, SIGNAL(triggered()), this, SLOT(onBlogAccountSetup()));
 
@@ -1323,6 +1326,15 @@ BlogEventView *MainWindow::createBlogEventView()
     view->setUserPics(userPics);
 
     return view;
+}
+
+void MainWindow::onCommitChanges()
+{
+    if (QMdiSubWindow *mdiWindow = m_mdiArea.activeSubWindow()) {
+        if(BlogEventView *blogView =
+           qobject_cast<BlogEventView *>(mdiWindow->widget())) {
+        }
+    }
 }
 
 } // namespace gui

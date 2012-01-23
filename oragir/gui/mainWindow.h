@@ -160,6 +160,8 @@ private slots:
     /// Called when the new blog post action tigerred.
     void onNewPost();
 
+    void onCommitChanges();
+
 private:
 
     /// Defines the column numbers in the folders view.
