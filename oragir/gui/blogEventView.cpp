@@ -52,7 +52,7 @@ BlogEventView::BlogEventView(QWidget *parent, Qt::WindowFlags f)
     timeLayout->addWidget(m_chkOutOrder);
 
     QFormLayout *formLayout1 = new QFormLayout;
-    formLayout1->addRow("Subject", m_editSubject);
+    formLayout1->addRow("Subject:", m_editSubject);
     formLayout1->addRow(lblTime, timeLayout);
 
     QFormLayout *formLayout2 = new QFormLayout;
