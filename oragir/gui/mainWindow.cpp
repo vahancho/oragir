@@ -1333,6 +1333,20 @@ void MainWindow::onCommitChanges()
     if (QMdiSubWindow *mdiWindow = m_mdiArea.activeSubWindow()) {
         if(BlogEventView *blogView =
            qobject_cast<BlogEventView *>(mdiWindow->widget())) {
+
+            QDateTime dt = blogView->dateTime();
+            QString subject = blogView->subject();
+            QString body = blogView->htmlContent() +
+                           QString("\n\n<span style=\"font-size: x-small; \">"
+                           "Posted via <a href=\"http://oragir.sourceforge.net\">"
+                           "Oragir v%1</a></span>").arg(str::Version);
+
+            lj::Communicator com;
+            core::Credentials *cr = core::Application::theApp()->credentials();
+            com.setUser(cr->user(), cr->password());
+            lj::EventProperties props;
+            props["picture_keyword"] = blogView->userPic();
+            com.postEvent(subject, body, "private", dt, props, blogView->postTo());
         }
     }
 }
