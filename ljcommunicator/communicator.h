@@ -96,7 +96,8 @@ public:
 
     int postEvent(const QString &subject, const QString &event,
                   const QString &security, const QDateTime &dt,
-                  const lj::EventProperties &props);
+                  const lj::EventProperties &props,
+                  const QString &journal);
 
 private slots:
     void requestFinished(int id, bool error);

@@ -343,7 +343,8 @@ Events Communicator::getDayEvents(const QString &dateStr)
 
 int Communicator::postEvent(const QString &subject, const QString &event,
                             const QString &security, const QDateTime &dt,
-                            const lj::EventProperties &props)
+                            const lj::EventProperties &props,
+                            const QString &journal)
 {
     QVariantList params = authParams();
     if (params.size() == 0)
@@ -361,6 +362,7 @@ int Communicator::postEvent(const QString &subject, const QString &event,
     param["day"] = dt.date().day();
     param["hour"] = dt.time().hour();
     param["min"] = dt.time().minute();
+    param["usejournal"] = journal;
     param["props"] = props.data();
     params.push_back(param);
 
