@@ -310,6 +310,11 @@ void MainWindow::createMenus()
 
     QMenu *newMenu = fileMenu->addMenu(str::MenuNew);
 
+    QAction *newPost = newMenu->addAction("&New Blog Entry");
+    connect(newPost, SIGNAL(triggered()), this, SLOT(onNewPost()));
+    fileToolBar->addAction(newPost);
+    fileToolBar->addSeparator();
+
     QAction *newFolderAction = newMenu->addAction(str::ActionNewFolder);
     newFolderAction->setShortcut(QKeySequence(tr("Ctrl+N")));
     newFolderAction->setIcon(QIcon(":icons/table"));
@@ -544,9 +549,6 @@ void MainWindow::createMenus()
     // Blog menu
     //
     QMenu *blogMenu = new QMenu("&Blog", this);
-
-    QAction *newPost = blogMenu->addAction("&New Post");
-    connect(newPost, SIGNAL(triggered()), this, SLOT(onNewPost()));
 
     QAction *setupAction = blogMenu->addAction("&Setup Account...");
     connect(setupAction, SIGNAL(triggered()), this, SLOT(onBlogAccountSetup()));
