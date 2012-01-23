@@ -25,6 +25,7 @@
 #include <QWebPage>
 #include <QDateTime>
 #include <QMap>
+#include <QTimer>
 
 class QLineEdit;
 class QCheckBox;
@@ -109,6 +110,8 @@ private slots:
     /// Updates the gui actions state based on web page actions state.
     void updateActionState();
 
+    void onTimer();
+
 private:
     void bindWebAction(QAction *guiAction, QWebPage::WebAction webAction);
 
@@ -120,6 +123,8 @@ private:
     QComboBox *m_cmbUserPic;
     QLabel *m_lblUserpic;
     QDateTimeEdit *m_dtEdit;
+
+    QTimer m_timer;
 };
 
 } // namespace gui

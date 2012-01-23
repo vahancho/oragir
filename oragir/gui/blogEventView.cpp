@@ -71,6 +71,10 @@ BlogEventView::BlogEventView(QWidget *parent, Qt::WindowFlags f)
     mainLayout->addWidget(m_htmlEditor);
 
     setLayout(mainLayout);
+
+    m_timer.setInterval(10000);
+    connect(&m_timer, SIGNAL(timeout()), this, SLOT(onTimer()));
+    m_timer.start();
 }
 
 void BlogEventView::setHtmlContent(const QString &content)
@@ -269,6 +273,12 @@ void BlogEventView::updateActionState()
     m_htmlActions[Srikethrough]->setChecked(m_htmlEditor->viewAction(QWebPage::ToggleStrikethrough)->isChecked());
     m_htmlActions[NumberedList]->setChecked(m_htmlEditor->viewAction(QWebPage::InsertOrderedList)->isChecked());
     m_htmlActions[BulletedList]->setChecked(m_htmlEditor->viewAction(QWebPage::InsertUnorderedList)->isChecked());
+}
+
+void BlogEventView::onTimer()
+{
+    if (!m_chkOutOrder->isChecked())
+        m_dtEdit->setDateTime(QDateTime::currentDateTime());
 }
 
 } // namespace gui
