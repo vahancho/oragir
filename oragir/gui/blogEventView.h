@@ -46,17 +46,23 @@ public:
 
     /// Sets the html view content.
     void setHtmlContent(const QString &content);
+    QString htmlContent() const;
 
     /// Sets the subject text.
     void setSubject(const QString &subject);
+    QString subject() const;
 
     void setDateTime(const QDateTime &dt);
+    QDateTime dateTime() const;
 
     void setDateOutOrder(bool outorder);
+    bool dateOutOrder() const;
 
     void setPostTo(const QStringList &postto);
+    QString postTo() const;
 
     void setUserPics(const QStringList &userpics);
+    QString userPic() const;
 
     /// Defines the index of html editor related actions.
     enum HtmlAction

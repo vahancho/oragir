@@ -103,6 +103,36 @@ void BlogEventView::setUserPics(const QStringList &userpics)
     m_cmbUserPic->addItems(userpics);
 }
 
+QString BlogEventView::htmlContent() const
+{
+    return m_htmlEditor->content();
+}
+
+QString BlogEventView::subject() const
+{
+    return m_editSubject->text();
+}
+
+QDateTime BlogEventView::dateTime() const
+{
+    return m_dtEdit->dateTime();
+}
+
+bool BlogEventView::dateOutOrder() const
+{
+    return m_chkOutOrder->isChecked();
+}
+
+QString BlogEventView::postTo() const
+{
+    return m_cmbPostTo->currentText();
+}
+
+QString BlogEventView::userPic() const
+{
+    return m_cmbUserPic->currentText();
+}
+
 void BlogEventView::setupActions(const HtmlActions &actions)
 {
     HtmlActions::const_iterator it = actions.constBegin();
