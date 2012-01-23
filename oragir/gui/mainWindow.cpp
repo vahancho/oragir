@@ -612,8 +612,8 @@ void MainWindow::createMenus()
     menuBar()->addMenu(editMenu);
     menuBar()->addMenu(viewMenu);
     menuBar()->addMenu(formatMenu);
-    menuBar()->addMenu(streamMenu);
     menuBar()->addMenu(blogMenu);
+    menuBar()->addMenu(streamMenu);
     menuBar()->addMenu(toolsMenu);
     menuBar()->addMenu(m_windowMenu);
     menuBar()->addSeparator();
