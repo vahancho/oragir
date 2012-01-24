@@ -100,6 +100,12 @@ public:
                         const lj::EventProperties &props,
                         const QString &journal);
 
+    /// Edits existing event given by id. If event is empty string it deleted.
+    EventData editEvent(int id, const QString &subject, const QString &event,
+                        const QString &security, const QDateTime &dt,
+                        const lj::EventProperties &props,
+                        const QString &journal);
+
 private slots:
     void requestFinished(int id, bool error);
     void exitEventLoop();

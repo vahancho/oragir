@@ -244,7 +244,6 @@ SyncItems Communicator::syncitems(const QString &lastsync)
 
     std::auto_ptr<QBuffer> buffer(m_responses.take(m_currentRequestId));
     QByteArray buf = buffer->buffer();
-    qDebug() << buf;
 
     SyncItems items(buf);
     return items;
@@ -274,7 +273,6 @@ Events Communicator::getEvents(const QString &lastsync)
 
     std::auto_ptr<QBuffer> buffer(m_responses.take(m_currentRequestId));
     QByteArray buf = buffer->buffer();
-    qDebug() << buf;
 
     Events events(buf);
     return events;
@@ -303,7 +301,6 @@ Events Communicator::getEvents(int howmany, const QString &beforedate)
 
     std::auto_ptr<QBuffer> buffer(m_responses.take(m_currentRequestId));
     QByteArray buf = buffer->buffer();
-    qDebug() << buf;
 
     Events events(buf);
     return events;
@@ -335,7 +332,6 @@ Events Communicator::getDayEvents(const QString &dateStr)
 
     std::auto_ptr<QBuffer> buffer(m_responses.take(m_currentRequestId));
     QByteArray buf = buffer->buffer();
-    qDebug() << buf;
 
     Events events(buf);
     return events;
@@ -369,7 +365,39 @@ EventData Communicator::postEvent(const QString &subject, const QString &event,
     request("LJ.XMLRPC.postevent", params);
     std::auto_ptr<QBuffer> buffer(m_responses.take(m_currentRequestId));
     QByteArray buf = buffer->buffer();
-    qDebug() << buf;
+    return EventData(buf);
+}
+
+EventData Communicator::editEvent(int id, const QString &subject,
+                                  const QString &event, const QString &security,
+                                  const QDateTime &dt,
+                                  const lj::EventProperties &props,
+                                  const QString &journal)
+{
+    QVariantList params = authParams();
+    if (params.size() == 0)
+        return 0;
+
+    // Modify params by adding the item id.
+    QMap<QString, QVariant> param = params.takeAt(0).toMap();
+    // Make sure we use utf-8 encoded strings in response.
+    param["ver"] = 1;
+    param["itemid"] = id;
+    param["subject"] = subject;
+    param["event"] = event;
+    param["security"] = security;
+    param["year"] = dt.date().year();
+    param["mon"] = dt.date().month();
+    param["day"] = dt.date().day();
+    param["hour"] = dt.time().hour();
+    param["min"] = dt.time().minute();
+    param["usejournal"] = journal;
+    param["props"] = props.data();
+    params.push_back(param);
+
+    request("LJ.XMLRPC.editevent", params);
+    std::auto_ptr<QBuffer> buffer(m_responses.take(m_currentRequestId));
+    QByteArray buf = buffer->buffer();
     return EventData(buf);
 }
 
