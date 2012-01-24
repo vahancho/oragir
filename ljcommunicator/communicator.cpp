@@ -341,10 +341,10 @@ Events Communicator::getDayEvents(const QString &dateStr)
     return events;
 }
 
-int Communicator::postEvent(const QString &subject, const QString &event,
-                            const QString &security, const QDateTime &dt,
-                            const lj::EventProperties &props,
-                            const QString &journal)
+EventData Communicator::postEvent(const QString &subject, const QString &event,
+                                  const QString &security, const QDateTime &dt,
+                                  const lj::EventProperties &props,
+                                  const QString &journal)
 {
     QVariantList params = authParams();
     if (params.size() == 0)
@@ -370,8 +370,7 @@ int Communicator::postEvent(const QString &subject, const QString &event,
     std::auto_ptr<QBuffer> buffer(m_responses.take(m_currentRequestId));
     QByteArray buf = buffer->buffer();
     qDebug() << buf;
-
-    return 0;
+    return EventData(buf);
 }
 
 void Communicator::request(QString methodName, const QVariantList &params)

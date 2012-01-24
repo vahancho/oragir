@@ -29,6 +29,7 @@
 #include "ljuserinfo.h"
 #include "ljusertags.h"
 #include "ljsyncitems.h"
+#include "ljeventdata.h"
 
 class QBuffer;
 
@@ -94,10 +95,10 @@ public:
     /// Returns events for the given day.
     Events getDayEvents(const QString &dateStr);
 
-    int postEvent(const QString &subject, const QString &event,
-                  const QString &security, const QDateTime &dt,
-                  const lj::EventProperties &props,
-                  const QString &journal);
+    EventData postEvent(const QString &subject, const QString &event,
+                        const QString &security, const QDateTime &dt,
+                        const lj::EventProperties &props,
+                        const QString &journal);
 
 private slots:
     void requestFinished(int id, bool error);

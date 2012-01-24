@@ -1347,7 +1347,12 @@ void MainWindow::onCommitChanges()
             com.setUser(cr->user(), cr->password());
             lj::EventProperties props;
             props["picture_keyword"] = blogView->userPic();
-            com.postEvent(subject, body, "private", dt, props, blogView->postTo());
+            lj::EventData data = com.postEvent(subject, body,
+                                               "private", dt, props,
+                                               blogView->postTo());
+            if (data.isValid()) {
+                blogView->setEventId(data.id());
+            }
         }
     }
 }
