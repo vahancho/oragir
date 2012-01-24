@@ -1352,6 +1352,9 @@ void MainWindow::onCommitChanges()
                                                blogView->postTo());
             if (data.isValid()) {
                 blogView->setEventId(data.id());
+            } else {
+                QMessageBox::critical(this, "Blog Post Failure",
+                                      data.error());
             }
         }
     }
