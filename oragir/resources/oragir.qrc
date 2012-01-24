@@ -51,5 +51,7 @@
     <file alias="cut" >icon_cut.png</file>
     <file alias="redo" >icon_redo.png</file>
     <file alias="undo" >icon_undo.png</file>
+    <file alias="user" >icon_user.png</file>
+    <file alias="new_event" >icon_new_event.png</file>
   </qresource>
 </RCC>

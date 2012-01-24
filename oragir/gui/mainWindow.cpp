@@ -311,6 +311,7 @@ void MainWindow::createMenus()
     QMenu *newMenu = fileMenu->addMenu(str::MenuNew);
 
     QAction *newPost = newMenu->addAction("&New Blog Entry");
+    newPost->setIcon(QIcon(":icons/new_event"));
     connect(newPost, SIGNAL(triggered()), this, SLOT(onNewPost()));
     fileToolBar->addAction(newPost);
     fileToolBar->addSeparator();
@@ -554,6 +555,7 @@ void MainWindow::createMenus()
     connect(commitAction, SIGNAL(triggered()), this, SLOT(onCommitChanges()));
 
     QAction *setupAction = blogMenu->addAction("&Setup Account...");
+    setupAction->setIcon(QIcon(":icons/user"));
     connect(setupAction, SIGNAL(triggered()), this, SLOT(onBlogAccountSetup()));
 
     //////////////////////////////////////////////////////////////////////////
