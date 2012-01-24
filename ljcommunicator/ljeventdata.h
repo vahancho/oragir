@@ -31,6 +31,7 @@ namespace lj
 class LJCOMMUNICATOR_EXPORT EventData : public xmlrpc::Response
 {
 public:
+    EventData();
     EventData(const QByteArray &data);
 
     int id() const;

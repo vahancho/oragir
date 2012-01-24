@@ -23,6 +23,9 @@
 namespace lj
 {
 
+EventData::EventData()
+{}
+
 EventData::EventData(const QByteArray &data)
 {
     QVariant response = parse(data);
