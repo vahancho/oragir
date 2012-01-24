@@ -34,7 +34,8 @@ namespace gui
 
 BlogEventView::BlogEventView(QWidget *parent, Qt::WindowFlags f)
     :
-        QWidget(parent, f)
+        QWidget(parent, f),
+        m_eventId(-1)
 {
     m_editSubject = new QLineEdit(this);
     QLabel *lblTime = new QLabel("Time:", this);
@@ -135,6 +136,16 @@ QString BlogEventView::postTo() const
 QString BlogEventView::userPic() const
 {
     return m_cmbUserPic->currentText();
+}
+
+void BlogEventView::setEventId(int eventId)
+{
+    m_eventId = eventId;
+}
+
+int BlogEventView::eventId() const
+{
+    return m_eventId;
 }
 
 void BlogEventView::setupActions(const HtmlActions &actions)

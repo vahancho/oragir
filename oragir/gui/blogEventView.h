@@ -65,6 +65,9 @@ public:
     void setUserPics(const QStringList &userpics);
     QString userPic() const;
 
+    void setEventId(int eventId);
+    int eventId() const;
+
     /// Defines the index of html editor related actions.
     enum HtmlAction
     {
@@ -125,6 +128,9 @@ private:
     QDateTimeEdit *m_dtEdit;
 
     QTimer m_timer;
+
+    /// Stores the event id. For new event id is -1.
+    int m_eventId;
 };
 
 } // namespace gui
