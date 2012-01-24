@@ -32,8 +32,11 @@ const char strUserAgent[] = "Oragir LJ Communicator; "
                             "http://sourceforge.net/projects/oragir; "
                             "vahancho@gmail.com";
 
+const char strLJHost[] = "www.livejournal.com";
+const char strInterfacePath[] = "/interface/xmlrpc";
+
 // Timeout between two requests to the server.
-const int timeout = 3000;
+const int timeout = 2000;
 
 Communicator::Communicator(QObject *parent)
     :
@@ -52,8 +55,8 @@ void Communicator::init()
 {
     m_http = new QHttp(this);
     m_userAgent = strUserAgent; // Lib version
-    setHost("www.livejournal.com", 80);
-    setPath("/interface/xmlrpc");
+    setHost(strLJHost, 80);
+    setPath(strInterfacePath);
     connect(m_http, SIGNAL(requestFinished(int, bool)), SLOT(requestFinished(int, bool)));
 }
 
