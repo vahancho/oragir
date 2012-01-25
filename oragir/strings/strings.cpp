@@ -75,6 +75,8 @@ namespace str
     const char *VersionUrl = "http://oragir.sourceforge.net/version";
     const char *FilterVersion = "1.0";
 
+    const char *TimeFormat = "yyyy-MM-dd hh:mm:ss";
+
     const char *BlogTableName = "ad0ccb7f0813d3363f66b3fbc6b64eb66f680d8c";
     const char *MyBlogTableName = "a7a49a0485e8863dd34fbde8776e31cf9c9e3b63";
 

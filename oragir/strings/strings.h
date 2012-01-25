@@ -79,6 +79,8 @@ namespace str
     extern const char *VersionUrl;
     extern const char *FilterVersion;
 
+    extern const char *TimeFormat;
+
     /// The name of blogs table. This should be unique.
     extern const char *BlogTableName;
 
