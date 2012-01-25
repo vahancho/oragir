@@ -72,7 +72,7 @@ void BlogDatabase::setUserData(const lj::UserInfo &userInfo,
     query.bindValue(":moods", userInfo.moods().join(","));
     query.bindValue(":friendgroups", QString());
     query.bindValue(":message", userInfo.message());
-    query.bindValue(":lastsynced", lastsynced.toString());
+    query.bindValue(":lastsynced", lastsynced.toString(str::TimeFormat));
     query.bindValue(":flag", 0);
 
     query.exec();
