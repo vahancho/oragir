@@ -53,5 +53,7 @@
     <file alias="undo" >icon_undo.png</file>
     <file alias="user" >icon_user.png</file>
     <file alias="new_event" >icon_new_event.png</file>
+    <file alias="commit" >icon_commit.png</file>
+    <file alias="sync" >icon_sync.png</file>
   </qresource>
 </RCC>
