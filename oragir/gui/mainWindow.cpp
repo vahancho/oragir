@@ -867,9 +867,7 @@ void MainWindow::onNewFolder()
                                           QDir::home().dirName(), &ok);
     if (ok && !table.isEmpty()) {
         core::StreamDatabase *db = core::Application::theApp()->streamDatabase();
-        if (db->addStreamTable(table)) {
-            createFolderView(table);
-        } else {
+        if (!db->addStreamTable(table)) {
             QMessageBox::critical(this, str::DatabaseError,
                                   db->errorMessage());
         }
@@ -1131,7 +1129,8 @@ void MainWindow::onBlogAccountSetup()
 
             // Create the user info table and add user data.
             db->addTable(str::SqlCreateMyBlogUserTable);
-            db->setUserData(userInfo, cr->encode());
+            db->setUserData(userInfo, cr->encode(),
+                            QDateTime::fromString("0000-00-00 00:00:00"));
 
             QStringList urls = userInfo.pictureUrls();
             downloadUserPics(urls);

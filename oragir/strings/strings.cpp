@@ -92,7 +92,7 @@ namespace str
                                      "title    NVARCHAR(256),"
                                      "read     BOOLEAN,"
                                      "name     NVARCHAR(128)   NOT NULL,"
-                                     "updated  DATATIME        NOT NULL,"
+                                     "updated  DATETIME        NOT NULL,"
                                      "posterid INTEGER         NOT NULL,"
                                      "link     VARCHAR(256)    NOT NULL,"
                                      "content  NVARCHAR,"
@@ -105,7 +105,7 @@ namespace str
                                        "event        NVARCHAR,"
                                        "publicid     INTEGER             NOT NULL,"
                                        "commentcount INTEGER             NOT NULL,"
-                                       "time         DATATIME            NOT NULL,"                                       
+                                       "time         DATETIME            NOT NULL,"                                       
                                        "url          NVARCHAR,"
                                        "security     NVARCHAR(128),"
                                        "tags         NVARCHAR,"
@@ -123,6 +123,7 @@ namespace str
                                                   "moods         NVARCHAR,"
                                                   "friendgroups  NVARCHAR,"
                                                   "message       NVARCHAR,"
+                                                  "lastsynced    DATETIME,"
                                                   "flag          INTEGER)";
 
     const char *SqlInsertPostToTable = "INSERT INTO %1 (flag, title, read, name, updated, posterid, link, content, userpic, category) "
@@ -134,7 +135,7 @@ namespace str
     const char *SqlInsertBlogToTable = "INSERT INTO %1 (journalid, link, name, journal, title, flag) "
                                        "VALUES (:journalid, :link, :name, :journal, :title, :flag)";
 
-    const char *SqlInsertMyBlogUserData = "INSERT OR REPLACE INTO user (userid, password, fullname, usejournals, defaultpicurl, pickwurls, pickws, moods, friendgroups, message, flag) "
-                                          "VALUES (:userid, :password, :fullname, :usejournals, :defaultpicurl, :pickwurls, :pickws, :moods, :friendgroups, :message, :flag)";
+    const char *SqlInsertMyBlogUserData = "INSERT OR REPLACE INTO user (userid, password, fullname, usejournals, defaultpicurl, pickwurls, pickws, moods, friendgroups, message, lastsynced, flag) "
+                                          "VALUES (:userid, :password, :fullname, :usejournals, :defaultpicurl, :pickwurls, :pickws, :moods, :friendgroups, :message, :lastsynced, :flag)";
 
 } // namespace str

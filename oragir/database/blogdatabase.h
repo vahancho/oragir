@@ -46,7 +46,8 @@ public:
         exists. We do not check for the table existence due to performance
         problems that can such check couse.
     */
-    void setUserData(const lj::UserInfo &userInfo, const QString &password);
+    void setUserData(const lj::UserInfo &userInfo, const QString &password,
+                     const QDateTime &lastsynced);
 };
 
 } // namespace core

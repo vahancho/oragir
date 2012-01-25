@@ -53,7 +53,9 @@ void BlogDatabase::addEvent(const lj::Event &event)
     query.exec();
 }
 
-void BlogDatabase::setUserData(const lj::UserInfo &userInfo, const QString &password)
+void BlogDatabase::setUserData(const lj::UserInfo &userInfo,
+                               const QString &password,
+                               const QDateTime &lastsynced)
 {
     QSqlDatabase db = database();
     QSqlQuery query(db);
@@ -70,6 +72,7 @@ void BlogDatabase::setUserData(const lj::UserInfo &userInfo, const QString &pass
     query.bindValue(":moods", userInfo.moods().join(","));
     query.bindValue(":friendgroups", QString());
     query.bindValue(":message", userInfo.message());
+    query.bindValue(":lastsynced", lastsynced.toString());
     query.bindValue(":flag", 0);
 
     query.exec();
