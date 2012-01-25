@@ -1130,7 +1130,8 @@ void MainWindow::onBlogAccountSetup()
             // Create the user info table and add user data.
             db->addTable(str::SqlCreateMyBlogUserTable);
             db->setUserData(userInfo, cr->encode(),
-                            QDateTime::fromString("0000-00-00 00:00:00"));
+                            QDateTime::fromString("1900-01-01 00:00:00",
+                                                  str::TimeFormat));
 
             QStringList urls = userInfo.pictureUrls();
             downloadUserPics(urls);
@@ -1378,18 +1379,37 @@ void MainWindow::onCommitChanges()
 
 void MainWindow::onSynchronize()
 {
+    // Get the last synced time from the user database.
+    core::BlogDatabase *db = core::Application::theApp()->blogDatabase();
+    QSqlTableModel userModel(0, db->database());
+    userModel.setTable("user");
+    userModel.select();
+    QSqlRecord userRecord = userModel.record(0); // should be only one record.
+    QString lastsynced = userRecord.value(10).toString();
+
     lj::Communicator com;
     core::Credentials *cr = core::Application::theApp()->credentials();
     com.setUser(cr->user(), cr->password());
-    lj::SyncItems items = com.syncitems("2012-01-20 23:43:40");
+    lj::SyncItems items = com.syncitems(lastsynced);
     if (items.isValid()) {
         int c = items.count();
         int t = items.total();
-        for (int i = 0; i < c; ++i) {
+        QDateTime lastDt = QDateTime::fromString(lastsynced, str::TimeFormat);
+        for (int i = 0; i < t; ++i) {
             qDebug() << items.itemText(i);
             qDebug() << items.time(i);
             qDebug() << items.action(i);
+
+            // Calculate the most recent item's date and time.
+            QDateTime dt = QDateTime::fromString(items.time(i), str::TimeFormat);
+            if (dt > lastDt)
+                lastDt = dt;
         }
+
+        // Update the last sync time.
+        userRecord.setValue(10, lastDt.toString(str::TimeFormat));
+        userModel.setRecord(0, userRecord);
+        userModel.submitAll();
     }
 }
 
