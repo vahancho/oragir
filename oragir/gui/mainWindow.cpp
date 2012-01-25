@@ -553,7 +553,9 @@ void MainWindow::createMenus()
 
     QAction *commitAction = blogMenu->addAction("&Commit Changes");
     connect(commitAction, SIGNAL(triggered()), this, SLOT(onCommitChanges()));
-
+    QAction *syncAction = blogMenu->addAction("S&ynchronize");
+    connect(syncAction, SIGNAL(triggered()), this, SLOT(onSynchronize()));
+    blogMenu->addSeparator();
     QAction *setupAction = blogMenu->addAction("&Setup Account...");
     setupAction->setIcon(QIcon(":icons/user"));
     connect(setupAction, SIGNAL(triggered()), this, SLOT(onBlogAccountSetup()));
@@ -1371,6 +1373,23 @@ void MainWindow::onCommitChanges()
                 QMessageBox::critical(this, "Blog Post Failure",
                                       data.error());
             }
+        }
+    }
+}
+
+void MainWindow::onSynchronize()
+{
+    lj::Communicator com;
+    core::Credentials *cr = core::Application::theApp()->credentials();
+    com.setUser(cr->user(), cr->password());
+    lj::SyncItems items = com.syncitems("2012-01-20 23:43:40");
+    if (items.isValid()) {
+        int c = items.count();
+        int t = items.total();
+        for (int i = 0; i < c; ++i) {
+            qDebug() << items.itemText(i);
+            qDebug() << items.time(i);
+            qDebug() << items.action(i);
         }
     }
 }

@@ -162,6 +162,8 @@ private slots:
 
     void onCommitChanges();
 
+    void onSynchronize();
+
 private:
 
     /// Defines the column numbers in the folders view.
