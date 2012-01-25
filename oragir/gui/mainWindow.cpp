@@ -314,6 +314,16 @@ void MainWindow::createMenus()
     newPost->setIcon(QIcon(":icons/new_event"));
     connect(newPost, SIGNAL(triggered()), this, SLOT(onNewPost()));
     fileToolBar->addAction(newPost);
+
+    QAction *commitAction = fileMenu->addAction("&Commit");
+    commitAction->setIcon(QIcon(":icons/commit"));
+    connect(commitAction, SIGNAL(triggered()), this, SLOT(onCommitChanges()));
+    fileToolBar->addAction(commitAction);
+    QAction *syncAction = fileMenu->addAction("S&ynchronize");
+    syncAction->setIcon(QIcon(":icons/sync"));
+    connect(syncAction, SIGNAL(triggered()), this, SLOT(onSynchronize()));
+    fileToolBar->addAction(syncAction);
+
     fileToolBar->addSeparator();
 
     QAction *newFolderAction = newMenu->addAction(str::ActionNewFolder);
@@ -544,26 +554,16 @@ void MainWindow::createMenus()
     QAction *fltExportAction = streamMenu->addAction(str::ActionFilterExport);
     connect(fltExportAction, SIGNAL(triggered()), this, SLOT(onFiltersExport()));
     QAction *fltImportAction = streamMenu->addAction(str::ActionFilterImport);
-    connect(fltImportAction, SIGNAL(triggered()), this, SLOT(onFiltersImport()));
-
-    //////////////////////////////////////////////////////////////////////////
-    // Blog menu
-    //
-    QMenu *blogMenu = new QMenu("&Blog", this);
-
-    QAction *commitAction = blogMenu->addAction("&Commit Changes");
-    connect(commitAction, SIGNAL(triggered()), this, SLOT(onCommitChanges()));
-    QAction *syncAction = blogMenu->addAction("S&ynchronize");
-    connect(syncAction, SIGNAL(triggered()), this, SLOT(onSynchronize()));
-    blogMenu->addSeparator();
-    QAction *setupAction = blogMenu->addAction("&Setup Account...");
-    setupAction->setIcon(QIcon(":icons/user"));
-    connect(setupAction, SIGNAL(triggered()), this, SLOT(onBlogAccountSetup()));
+    connect(fltImportAction, SIGNAL(triggered()), this, SLOT(onFiltersImport()));   
 
     //////////////////////////////////////////////////////////////////////////
     // Tools menu
     //
     QMenu *toolsMenu = new QMenu(str::MenuTools, this);
+
+    QAction *setupAction = toolsMenu->addAction("&Account Settings...");
+    setupAction->setIcon(QIcon(":icons/user"));
+    connect(setupAction, SIGNAL(triggered()), this, SLOT(onBlogAccountSetup()));
 
     QAction *optionsAction = toolsMenu->addAction(str::ActionOptions);
     connect(optionsAction, SIGNAL(triggered()), this, SLOT(onOptions()));
@@ -619,7 +619,6 @@ void MainWindow::createMenus()
     menuBar()->addMenu(editMenu);
     menuBar()->addMenu(viewMenu);
     menuBar()->addMenu(formatMenu);
-    menuBar()->addMenu(blogMenu);
     menuBar()->addMenu(streamMenu);
     menuBar()->addMenu(toolsMenu);
     menuBar()->addMenu(m_windowMenu);
