@@ -1128,9 +1128,6 @@ void MainWindow::onBlogAccountSetup()
 
             // Create the user info table and add user data.
             db->addTable(str::SqlCreateMyBlogUserTable);
-            db->setUserData(userInfo, cr->encode(),
-                            QDateTime::fromString("1900-01-01 00:00:00",
-                                                  str::TimeFormat));
 
             QStringList urls = userInfo.pictureUrls();
             downloadUserPics(urls);
@@ -1184,14 +1181,23 @@ void MainWindow::onBlogAccountSetup()
                 events += e;
             }
 
-            // Finally add all events to the database.
+            // Add all events to the database and calculate lastsync time.
+            QDateTime lastDt = QDateTime::fromString("1900-01-01 00:00:00",
+                                                     str::TimeFormat);
             for (int i = 0; i < events.count(); ++i) {
                 lj::Event event = events.event(i);
                 db->addEvent(event);
+
+                QDateTime dt = QDateTime::fromString(event.m_time,
+                                                     str::TimeFormat);
+                if (dt > lastDt)
+                    lastDt = dt;
             }
 
-            progressBar.setValue(events.count());
+            // Set the user table now.
+            db->setUserData(userInfo, cr->encode(), lastDt);
             updateBlogModel();
+            progressBar.setValue(events.count());
         } else {
             QMessageBox::critical(this, "User Account Error",
                                   userInfo.error());
@@ -1395,7 +1401,7 @@ void MainWindow::onSynchronize()
         int t = items.total();
         QDateTime lastDt = QDateTime::fromString(lastsynced, str::TimeFormat);
         lj::Events events;
-        for (int i = 0; i < t; ++i) {
+        for (int i = 0; i < c; ++i) {
             qDebug() << items.itemText(i);
             qDebug() << items.time(i);
             qDebug() << items.action(i);
@@ -1426,6 +1432,11 @@ void MainWindow::onSynchronize()
         userRecord.setValue(10, lastDt.toString(str::TimeFormat));
         userModel.setRecord(0, userRecord);
         userModel.submitAll();
+
+        // Recursively call for the rest of events while fetch all of them.
+        if (c < t) {
+            onSynchronize();
+        }
     }
 }
 
