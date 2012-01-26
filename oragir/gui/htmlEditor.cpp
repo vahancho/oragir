@@ -67,6 +67,7 @@ void HtmlEditor::onTabChanged(int tab)
 void HtmlEditor::setContent(const QString &html)
 {
     QByteArray data = html.toUtf8();
+    data.replace("\n", "<BR>");
     m_webView->setContent(data, "text/html;charset=utf-8");
 }
 
@@ -77,7 +78,9 @@ void HtmlEditor::onLinkClicked(const QUrl &url)
 
 QString HtmlEditor::content() const
 {
-    return m_webView->page()->mainFrame()->toHtml();
+    QString html = m_webView->page()->mainFrame()->toHtml();
+    html.replace("<BR>", "\n", Qt::CaseInsensitive);
+    return html;
 }
 
 void HtmlEditor::invokeCommand(const QString &cmd, const QString &arg)
