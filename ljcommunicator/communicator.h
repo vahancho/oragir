@@ -76,6 +76,9 @@ public:
     */
     SyncItems syncitems(const QString &lastsync = QString());
 
+    /// Returns the item by the given unique item id.
+    Events getEvent(int itemId);
+
     /// Returns the all events after the last synced time.
     /*!
         The date (in "yyyy-mm-dd hh:mm:ss" format) that you
