@@ -1394,16 +1394,33 @@ void MainWindow::onSynchronize()
         int c = items.count();
         int t = items.total();
         QDateTime lastDt = QDateTime::fromString(lastsynced, str::TimeFormat);
+        lj::Events events;
         for (int i = 0; i < t; ++i) {
             qDebug() << items.itemText(i);
             qDebug() << items.time(i);
             qDebug() << items.action(i);
+
+            QString text = items.itemText(i);
+            // Get the post. Ignore comments ('C') for now.
+            if (text.startsWith("L-")) {
+                int itemId = text.remove(0, 2).toInt();
+                lj::Events e = com.getEvent(itemId);
+                if (e.isValid())
+                    events += e;
+            }
 
             // Calculate the most recent item's date and time.
             QDateTime dt = QDateTime::fromString(items.time(i), str::TimeFormat);
             if (dt > lastDt)
                 lastDt = dt;
         }
+
+        // Finally add all events to the database.
+        for (int i = 0; i < events.count(); ++i) {
+            lj::Event event = events.event(i);
+            db->addEvent(event);
+        }
+        updateBlogModel();
 
         // Update the last sync time.
         userRecord.setValue(10, lastDt.toString(str::TimeFormat));
