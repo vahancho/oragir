@@ -99,9 +99,16 @@ QString BlogDatabase::lastSynced() const
     QSqlQuery q = query();
     q.prepare("SELECT lastsynced FROM user");
     if (q.exec() && q.next())
-        return q.value( 0 ).toString();
+        return q.value(0).toString();
     else
         return "1900-01-01 00:00:00";
+}
+
+void BlogDatabase::setLastSynced(const QString &lastSynced)
+{
+    QSqlQuery q = query();
+    q.prepare(QString("UPDATE user SET lastsynced = '%1'").arg(lastSynced));
+    q.exec();
 }
 
 } // namespace core

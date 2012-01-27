@@ -55,6 +55,9 @@ public:
 
     /// Returns the last synced time as a string.
     QString lastSynced() const;
+
+    /// Sets the last synced time.
+    void setLastSynced(const QString &lastSynced);
 };
 
 } // namespace core
