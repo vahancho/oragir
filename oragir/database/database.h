@@ -62,7 +62,10 @@ public:
     int totalCount(const QString &table) const;
 
 protected:
-     /// Stores the error message.
+    /// Returns query object for this database.
+    QSqlQuery query() const;
+
+    /// Stores the error message.
     QString m_error;
 
 private:

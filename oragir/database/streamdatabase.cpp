@@ -56,45 +56,44 @@ void StreamDatabase::addFilter(const Filter<Post> &filter)
 void StreamDatabase::addRecord(const Post &post, const Blog &/*blog*/,
                          const QString &table)
 {
-    QSqlDatabase db = database();
-    QSqlQuery query(db);
+    QSqlQuery q = query();
 
     /* There is no usage for this table, so do nothing yet.
     // Insert blog record into blogs table.
     QString queryStr = QString(str::SqlInsertBlogToTable).arg(str::BlogTableName);
-    query.prepare(queryStr);
-    query.bindValue(":journalid", blog.value(str::TagJournalId).toInt());
-    query.bindValue(":link", blog.value(str::TagLink).toString());
-    query.bindValue(":name", blog.value(str::TagName).toString());
-    query.bindValue(":journal", blog.value(str::TagJournal).toString());
-    query.bindValue(":title", blog.value(str::TagTitle).toString());
-    query.bindValue(":flag", 0);
+    q.prepare(queryStr);
+    q.bindValue(":journalid", blog.value(str::TagJournalId).toInt());
+    q.bindValue(":link", blog.value(str::TagLink).toString());
+    q.bindValue(":name", blog.value(str::TagName).toString());
+    q.bindValue(":journal", blog.value(str::TagJournal).toString());
+    q.bindValue(":title", blog.value(str::TagTitle).toString());
+    q.bindValue(":flag", 0);
     bool inserted = query.exec();
     if (!inserted)
-        m_error = query.lastError().text();
+        m_error = q.lastError().text();
     */
 
     // Insert post record into the target table.
     QString queryStr = QString(str::SqlInsertPostToTable).arg(table);
-    query.prepare(queryStr);
-    query.bindValue(":flag", 0);
-    query.bindValue(":title", post.value(str::TagTitle).toString());
-    query.bindValue(":read", false);
-    query.bindValue(":name", post.value(str::TagName).toString());
-    query.bindValue(":updated", post.value(str::TagUpdated).toString());
-    query.bindValue(":posterid", post.value(str::TagPosterId).toInt());
-    query.bindValue(":link", post.value(str::TagLink).toString());
-    query.bindValue(":content", post.value(str::TagContent).toString());
-    query.bindValue(":userpic", post.value(str::TagUserPic).toString());
-    query.bindValue(":category", post.value(str::TagCategory).toStringList().join(",")); 
+    q.prepare(queryStr);
+    q.bindValue(":flag", 0);
+    q.bindValue(":title", post.value(str::TagTitle).toString());
+    q.bindValue(":read", false);
+    q.bindValue(":name", post.value(str::TagName).toString());
+    q.bindValue(":updated", post.value(str::TagUpdated).toString());
+    q.bindValue(":posterid", post.value(str::TagPosterId).toInt());
+    q.bindValue(":link", post.value(str::TagLink).toString());
+    q.bindValue(":content", post.value(str::TagContent).toString());
+    q.bindValue(":userpic", post.value(str::TagUserPic).toString());
+    q.bindValue(":category", post.value(str::TagCategory).toStringList().join(",")); 
 
-    bool inserted = query.exec();
+    bool inserted = q.exec();
 
     // If record inserted inform the world.
     if (inserted) {
         emit recordInserted(table);
     } else {
-        m_error = query.lastError().text();
+        m_error = q.lastError().text();
     }
 }
 
@@ -188,12 +187,12 @@ bool StreamDatabase::addStreamTable(const QString &table)
 
 int StreamDatabase::unreadCount(const QString &table) const
 {
-    QSqlDatabase db = database();
-    QSqlQuery query(db);
+    QSqlQuery q = query();
     QString str = QString("SELECT COUNT(*) FROM %1 WHERE read='false'").arg(table);
-    query.exec(str);
-    query.next();
-    return query.value(0).toInt();
+    if (q.exec(str) && q.next())
+        return q.value(0).toInt();
+    else
+        return -1;
 }
 
 } // namespace core

@@ -92,25 +92,21 @@ QSqlDatabase Database::database() const
 
 bool Database::addTable(const QString &queryStr)
 {
-    QSqlDatabase db = database();
-    QSqlQuery query(db);
-
-    if (query.exec(queryStr)) {
+    QSqlQuery q = query();
+    if (q.exec(queryStr)) {
         return true;
     } else {
-        m_error = query.lastError().text();
+        m_error = q.lastError().text();
         return false;
     }
 }
 
 void Database::removeTable(const QString &table)
 {
-    QSqlDatabase db = database();
-    QSqlQuery query(db);
-
     QString queryStr = QString("DROP TABLE %1").arg(table);
-    if (!query.exec(queryStr))
-        m_error = query.lastError().text();
+    QSqlQuery q = query();
+    if (!q.exec(queryStr))
+        m_error = q.lastError().text();
 }
 
 QStringList Database::tables() const
@@ -122,26 +118,32 @@ QStringList Database::tables() const
 
 bool Database::renameTable(const QString &oldName, const QString &newName)
 {
-    QSqlDatabase db = database();
-    QSqlQuery query(db);
     QString queryStr = QString("ALTER TABLE %1 RENAME TO %2")
                                .arg(oldName).arg(newName);
-    if (query.exec(queryStr)) {
+    QSqlQuery q = query();
+    if (q.exec(queryStr)) {
         return true;
     } else {
-        m_error = query.lastError().text();
+        m_error = q.lastError().text();
         return false;
     }
 }
 
 int Database::totalCount(const QString &table) const
 {
+    QString str = QString("SELECT COUNT(*) FROM %1").arg(table);
+    QSqlQuery q = query();
+    if (q.exec(str) && q.next())
+        return q.value(0).toInt();
+    else
+        return -1;
+}
+
+QSqlQuery Database::query() const
+{
     QSqlDatabase db = database();
     QSqlQuery query(db);
-    QString str = QString("SELECT COUNT(*) FROM %1").arg(table);
-    query.exec(str);
-    query.next();
-    return query.value(0).toInt();
+    return query;
 }
 
 } // namespace core

@@ -49,60 +49,57 @@ bool BlogDatabase::create(const QString &fileName)
 
 void BlogDatabase::addEvent(const lj::Event &event)
 {
-    QSqlDatabase db = database();
-    QSqlQuery query(db);
+    QSqlQuery q = query();
 
     QString queryStr = QString(str::SqlInsertMyEntry).arg(str::MyBlogTableName);
-    query.prepare(queryStr);
-    query.bindValue(":itemid", event.m_itemId);
-    query.bindValue(":subject", event.m_subject);
-    query.bindValue(":event", event.m_event);
-    query.bindValue(":publicid", event.m_publicId);
-    query.bindValue(":commentcount", event.m_commentCount);
-    query.bindValue(":time", event.m_time);
-    query.bindValue(":url", event.m_url);
-    query.bindValue(":security", event.m_security);
-    query.bindValue(":flag", 0);
+    q.prepare(queryStr);
+    q.bindValue(":itemid", event.m_itemId);
+    q.bindValue(":subject", event.m_subject);
+    q.bindValue(":event", event.m_event);
+    q.bindValue(":publicid", event.m_publicId);
+    q.bindValue(":commentcount", event.m_commentCount);
+    q.bindValue(":time", event.m_time);
+    q.bindValue(":url", event.m_url);
+    q.bindValue(":security", event.m_security);
+    q.bindValue(":flag", 0);
 
     lj::EventProperties properties = event.m_properties;
-    query.bindValue(":tags", properties["taglist"].toStringList().join(","));
-    query.bindValue(":backdated", properties["opt_backdated"].toBool());
+    q.bindValue(":tags", properties["taglist"].toStringList().join(","));
+    q.bindValue(":backdated", properties["opt_backdated"].toBool());
 
-    query.exec();
+    q.exec();
 }
 
 void BlogDatabase::setUserData(const lj::UserInfo &userInfo,
                                const QString &password,
                                const QDateTime &lastsynced)
 {
-    QSqlDatabase db = database();
-    QSqlQuery query(db);
+    QSqlQuery q = query();
 
     QString queryStr = QString(str::SqlInsertMyBlogUserData);
-    query.prepare(queryStr);
-    query.bindValue(":userid", userInfo.id());
-    query.bindValue(":password", password);
-    query.bindValue(":fullname", userInfo.fullName());
-    query.bindValue(":usejournals", userInfo.journals().join(","));
-    query.bindValue(":defaultpicurl", userInfo.defaultPicUrl());
-    query.bindValue(":pickwurls", userInfo.pictureUrls().join(","));
-    query.bindValue(":pickws", userInfo.pictureKeys().join(","));
-    query.bindValue(":moods", userInfo.moods().join(","));
-    query.bindValue(":friendgroups", QString());
-    query.bindValue(":message", userInfo.message());
-    query.bindValue(":lastsynced", lastsynced.toString(str::TimeFormat));
-    query.bindValue(":flag", 0);
+    q.prepare(queryStr);
+    q.bindValue(":userid", userInfo.id());
+    q.bindValue(":password", password);
+    q.bindValue(":fullname", userInfo.fullName());
+    q.bindValue(":usejournals", userInfo.journals().join(","));
+    q.bindValue(":defaultpicurl", userInfo.defaultPicUrl());
+    q.bindValue(":pickwurls", userInfo.pictureUrls().join(","));
+    q.bindValue(":pickws", userInfo.pictureKeys().join(","));
+    q.bindValue(":moods", userInfo.moods().join(","));
+    q.bindValue(":friendgroups", QString());
+    q.bindValue(":message", userInfo.message());
+    q.bindValue(":lastsynced", lastsynced.toString(str::TimeFormat));
+    q.bindValue(":flag", 0);
 
-    query.exec();
+    q.exec();
 }
 
 QString BlogDatabase::lastSynced() const
 {
-    QSqlDatabase db = database();
-    QSqlQuery query(db);
-    query.prepare("SELECT lastsynced FROM user");
-    if (query.exec() && query.next())
-        return query.value( 0 ).toString();
+    QSqlQuery q = query();
+    q.prepare("SELECT lastsynced FROM user");
+    if (q.exec() && q.next())
+        return q.value( 0 ).toString();
     else
         return "1900-01-01 00:00:00";
 }
