@@ -57,6 +57,10 @@ public:
     QString lastSynced() const;
 
     /// Sets the last synced time.
+    /*!
+        The date-time expected to be in the format:
+        yyyy-MM-dd hh:mm:ss.
+    */
     void setLastSynced(const QString &lastSynced);
 };
 

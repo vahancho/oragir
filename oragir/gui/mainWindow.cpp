@@ -1380,11 +1380,7 @@ void MainWindow::onSynchronize()
 {
     // Get the last synced time from the user database.
     core::BlogDatabase *db = core::Application::theApp()->blogDatabase();
-    QSqlTableModel userModel(0, db->database());
-    userModel.setTable("user");
-    userModel.select();
-    QSqlRecord userRecord = userModel.record(0); // should be only one record.
-    QString lastsynced = userRecord.value(10).toString();
+    QString lastsynced = db->lastSynced();
 
     lj::Communicator com;
     core::Credentials *cr = core::Application::theApp()->credentials();
@@ -1423,9 +1419,7 @@ void MainWindow::onSynchronize()
         updateBlogModel();
 
         // Update the last sync time.
-        userRecord.setValue(10, lastDt.toString(str::TimeFormat));
-        userModel.setRecord(0, userRecord);
-        userModel.submitAll();
+        db->setLastSynced(lastDt.toString(str::TimeFormat));
 
         // Recursively call for the rest of events while fetch all of them.
         if (c < t) {
