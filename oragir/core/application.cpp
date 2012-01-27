@@ -132,6 +132,9 @@ void Application::init()
     // Read and set all defaults.
     m_defaultManager->readDefaults();
 
+    // Restore user credentials.
+    m_credentials->fromEncoded(m_defaultManager->value("Blog/Credentials").toString());
+
     restoreDatabase();
     restoreMainWindow();
     m_mainWindow->show();
@@ -140,9 +143,6 @@ void Application::init()
     if (m_defaultManager->value(str::CheckUpdates).toBool() == true) {
         m_versionManager->checkForUpdates();
     }
-
-    // Restore user credentials.
-    m_credentials->fromEncoded(m_defaultManager->value("Blog/Credentials").toString());
 }
 
 gui::MainWindow *Application::mainWindow() const
