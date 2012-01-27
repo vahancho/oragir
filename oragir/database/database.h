@@ -40,7 +40,7 @@ public:
         become the active one, otherwise new connection does
         not replace existing active connection.
     */
-    bool create(const QString &fileName);
+    virtual bool create(const QString &fileName);
 
     bool addTable(const QString &queryStr);
 

@@ -38,6 +38,9 @@ class BlogDatabase : public Database
 public:
     BlogDatabase();
 
+    /// Create database and its defaul tables.
+    virtual bool create(const QString &fileName);
+
     void addEvent(const lj::Event &event);
 
     /// Sets the user data in the user table and password (encripted).

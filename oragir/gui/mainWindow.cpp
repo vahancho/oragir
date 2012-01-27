@@ -1120,20 +1120,14 @@ void MainWindow::onBlogAccountSetup()
             }
             db->create(dbPath);
 
-            // Create new table for the blog events if it does not exist.
-            // No problem if the table already exists.
-            QString query = QString(str::SqlCreateMyBlogTable)
-                                    .arg(str::MyBlogTableName);
-            db->addTable(query);
-
-            // Create the user info table and add user data.
-            db->addTable(str::SqlCreateMyBlogUserTable);
-
             QStringList urls = userInfo.pictureUrls();
             downloadUserPics(urls);
 
             // Create and configure new model for the view.
             setupBlogView();
+            setWindowTitle(QString("%1 - %2@livejournal.com")
+                                   .arg(str::AppName)
+                                   .arg(user));
 
             // Get the total number of events in the blog.
             int total = 0;

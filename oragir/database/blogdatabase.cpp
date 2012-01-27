@@ -29,6 +29,24 @@ namespace core
 BlogDatabase::BlogDatabase()
 {}
 
+bool BlogDatabase::create(const QString &fileName)
+{
+    if (Database::create(fileName)) {
+        // Create new table for the blog events if it does not exist.
+        // No problem if the table already exists.
+        QString query = QString(str::SqlCreateMyBlogTable)
+                                .arg(str::MyBlogTableName);
+        addTable(query);
+
+        // Create the user info table and add user data.
+        addTable(str::SqlCreateMyBlogUserTable);
+
+        return true;
+    } else {
+        return false;
+    }
+}
+
 void BlogDatabase::addEvent(const lj::Event &event)
 {
     QSqlDatabase db = database();
