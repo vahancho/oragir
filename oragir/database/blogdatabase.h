@@ -41,6 +41,7 @@ public:
     /// Create database and its defaul tables.
     virtual bool create(const QString &fileName);
 
+    /// Adds new blog event to the events table.
     void addEvent(const lj::Event &event);
 
     /// Sets the user data in the user table and password (encripted).
@@ -51,6 +52,9 @@ public:
     */
     void setUserData(const lj::UserInfo &userInfo, const QString &password,
                      const QDateTime &lastsynced);
+
+    /// Returns the last synced time as a string.
+    QString lastSynced() const;
 };
 
 } // namespace core

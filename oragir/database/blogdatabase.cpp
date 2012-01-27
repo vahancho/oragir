@@ -96,4 +96,16 @@ void BlogDatabase::setUserData(const lj::UserInfo &userInfo,
     query.exec();
 }
 
+QString BlogDatabase::lastSynced() const
+{
+    QSqlDatabase db = database();
+    QSqlQuery query(db);
+    query.prepare("SELECT lastsynced FROM user");
+    query.exec();
+    if (query.next())
+        return query.value( 0 ).toString();
+    else
+        return "1900-01-01 00:00:00";
+}
+
 } // namespace core
