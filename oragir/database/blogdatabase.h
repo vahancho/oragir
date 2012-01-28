@@ -64,6 +64,9 @@ public:
 
     /// Returns user's credentials.
     QString credentials() const;
+
+    /// Returns user's moods.
+    QString moods() const;
 };
 
 } // namespace core

@@ -122,4 +122,14 @@ QString BlogDatabase::credentials() const
         return QString();
 }
 
+QString BlogDatabase::moods() const
+{
+    QSqlQuery q = query();
+    q.prepare("SELECT moods FROM user");
+    if (q.exec() && q.next())
+        return q.value(0).toString();
+    else
+        return QString();
+}
+
 } // namespace core
