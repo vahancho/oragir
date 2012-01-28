@@ -212,15 +212,9 @@ void MainWindow::createFolderView(const QString &table)
 
     // Create and show database view.
     DatabaseView *dbView = new DatabaseView(db, table);
-    QMdiSubWindow *postTableView = new QMdiSubWindow;
-    postTableView->setWidget(dbView);
-    postTableView->setAttribute(Qt::WA_DeleteOnClose);
-    postTableView->resize(200, 200);
-    postTableView->setWindowTitle(table);
-    m_mdiArea.addSubWindow(postTableView);
-    postTableView->showMaximized();
     connect(dbView, SIGNAL(changed(const QString &)), this,
             SLOT(updateStatusLabels(const QString &)));
+    createSubWindow(dbView, table);
 }
 
 void MainWindow::createTrayIcon()
@@ -761,6 +755,22 @@ QMdiSubWindow *MainWindow::activeSubWindow() const
     return 0;
 }
 
+QMdiSubWindow *MainWindow::createSubWindow(QWidget *view,
+                                           const QString &title,
+                                           bool max)
+{
+    QMdiSubWindow *subWindow = new QMdiSubWindow;
+    subWindow->setWidget(view);
+    subWindow->setAttribute(Qt::WA_DeleteOnClose);
+    subWindow->resize(200, 200);
+    subWindow->setWindowTitle(title);
+    m_mdiArea.addSubWindow(subWindow);
+    if (max)
+        subWindow->showMaximized();
+
+    return subWindow;
+}
+
 void MainWindow::onSubWindowActivated(QMdiSubWindow *subWindow)
 {
     if (!subWindow)
@@ -1213,13 +1223,7 @@ void MainWindow::onEventClicked(const QModelIndex &index)
     view->setDateOutOrder(record.value(BlogTableModel::Backdated).toBool());
     view->setEventId(record.value(BlogTableModel::ItemId).toInt());
 
-    QMdiSubWindow *editorView = new QMdiSubWindow;
-    editorView->setWidget(view);
-    editorView->setAttribute(Qt::WA_DeleteOnClose);
-    editorView->resize(200, 200);
-    editorView->setWindowTitle(subject);
-    m_mdiArea.addSubWindow(editorView);
-    editorView->showMaximized();
+    createSubWindow(view, subject);
 }
 
 void MainWindow::updateBlogModel()
@@ -1307,14 +1311,7 @@ void MainWindow::onNetManagerFinished(QNetworkReply *reply)
 void MainWindow::onNewPost()
 {
     BlogEventView *view = createBlogEventView();
-
-    QMdiSubWindow *editorView = new QMdiSubWindow;
-    editorView->setWidget(view);
-    editorView->setAttribute(Qt::WA_DeleteOnClose);
-    editorView->resize(200, 200);
-    editorView->setWindowTitle("New Post");
-    m_mdiArea.addSubWindow(editorView);
-    editorView->showMaximized();
+    createSubWindow(view, "New Post");
 }
 
 BlogEventView *MainWindow::createBlogEventView()

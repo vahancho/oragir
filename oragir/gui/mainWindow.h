@@ -182,6 +182,11 @@ private:
     */
     QMdiSubWindow *activeSubWindow() const;
 
+    /// Create new mdi sub window with the given view and title.
+    QMdiSubWindow *createSubWindow(QWidget *view,
+                                   const QString &title,
+                                   bool max = true);
+
     /// Construct and add menus.
     void createMenus();
 
