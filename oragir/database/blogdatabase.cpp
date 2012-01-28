@@ -71,8 +71,7 @@ void BlogDatabase::addEvent(const lj::Event &event)
 }
 
 void BlogDatabase::setUserData(const lj::UserInfo &userInfo,
-                               const QString &password,
-                               const QDateTime &lastsynced)
+                               const QString &password)
 {
     QSqlQuery q = query();
 
@@ -88,7 +87,9 @@ void BlogDatabase::setUserData(const lj::UserInfo &userInfo,
     q.bindValue(":moods", userInfo.moods().join(","));
     q.bindValue(":friendgroups", QString());
     q.bindValue(":message", userInfo.message());
-    q.bindValue(":lastsynced", lastsynced.toString(str::TimeFormat));
+
+    // Use the dafault time that is earlier than even possible.
+    q.bindValue(":lastsynced", QString("1900-01-01 00:00:00"));
     q.bindValue(":flag", 0);
 
     q.exec();
@@ -109,6 +110,16 @@ void BlogDatabase::setLastSynced(const QString &lastSynced)
     QSqlQuery q = query();
     q.prepare(QString("UPDATE user SET lastsynced = '%1'").arg(lastSynced));
     q.exec();
+}
+
+QString BlogDatabase::credentials() const
+{
+    QSqlQuery q = query();
+    q.prepare("SELECT password FROM user");
+    if (q.exec() && q.next())
+        return q.value(0).toString();
+    else
+        return QString();
 }
 
 } // namespace core

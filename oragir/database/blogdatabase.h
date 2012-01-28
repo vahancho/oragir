@@ -50,8 +50,7 @@ public:
         exists. We do not check for the table existence due to performance
         problems that can such check couse.
     */
-    void setUserData(const lj::UserInfo &userInfo, const QString &password,
-                     const QDateTime &lastsynced);
+    void setUserData(const lj::UserInfo &userInfo, const QString &password);
 
     /// Returns the last synced time as a string.
     QString lastSynced() const;
@@ -62,6 +61,9 @@ public:
         yyyy-MM-dd hh:mm:ss.
     */
     void setLastSynced(const QString &lastSynced);
+
+    /// Returns user's credentials.
+    QString credentials() const;
 };
 
 } // namespace core

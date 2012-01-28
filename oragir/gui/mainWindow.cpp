@@ -1119,6 +1119,8 @@ void MainWindow::onBlogAccountSetup()
                 }
             }
             db->create(dbPath);
+            // Set the user table data now.
+            db->setUserData(userInfo, cr->encode());
 
             QStringList urls = userInfo.pictureUrls();
             downloadUserPics(urls);
@@ -1188,8 +1190,7 @@ void MainWindow::onBlogAccountSetup()
                     lastDt = dt;
             }
 
-            // Set the user table now.
-            db->setUserData(userInfo, cr->encode(), lastDt);
+            db->setLastSynced(lastDt.toString(str::TimeFormat));
             updateBlogModel();
             progressBar.setValue(events.count());
         } else {
@@ -1241,6 +1242,13 @@ void MainWindow::setupBlogView()
     core::BlogDatabase *db = core::Application::theApp()->blogDatabase();
     QSqlDatabase d = db->database();
     if (d.isOpen()) {
+        QString credStr = db->credentials();
+        core::Credentials cr;
+        cr.fromEncoded(credStr);
+        setWindowTitle(QString("%1 - %2@livejournal.com")
+                               .arg(str::AppName)
+                               .arg(cr.user()));
+
         if (m_blogModel)
             delete m_blogModel;
 
