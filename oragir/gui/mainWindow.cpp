@@ -1270,11 +1270,11 @@ void MainWindow::setupBlogView()
 
 void MainWindow::downloadUserPics(const QStringList &urls)
 {
-    foreach(const QString &urlStr, urls) {
-        QNetworkAccessManager *netManager = new QNetworkAccessManager(this);
-        connect(netManager, SIGNAL(finished(QNetworkReply*)),
-                this, SLOT(onNetManagerFinished(QNetworkReply*)));
+    QNetworkAccessManager *netManager = new QNetworkAccessManager(this);
+    connect(netManager, SIGNAL(finished(QNetworkReply*)),
+            this, SLOT(onNetManagerFinished(QNetworkReply*)));
 
+    foreach(const QString &urlStr, urls) {
         QUrl url(urlStr);
         QNetworkRequest request(url);
         netManager->get(request);
