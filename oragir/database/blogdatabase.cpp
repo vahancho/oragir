@@ -26,6 +26,8 @@
 namespace core
 {
 
+const QString propSeparator("<>");
+
 BlogDatabase::BlogDatabase()
 {}
 
@@ -63,9 +65,21 @@ void BlogDatabase::addEvent(const lj::Event &event)
     q.bindValue(":security", event.m_security);
     q.bindValue(":flag", 0);
 
+    // Concatinate the event's properties and their values into one
+    // string and store it into the database.
+    // All string items are separated by the given separator string.
     lj::EventProperties properties = event.m_properties;
-    q.bindValue(":tags", properties["taglist"].toStringList().join(","));
-    q.bindValue(":backdated", properties["opt_backdated"].toBool());
+    QMap<QString, QVariant> propData = properties.data();
+    QMap<QString, QVariant>::const_iterator it = propData.constBegin();
+    QString propStr;
+    while (it != propData.constEnd()) {
+        propStr.append(it.key());
+        propStr.append(propSeparator);
+        propStr.append(it.value().toString());
+        propStr.append(propSeparator);
+        ++it;
+    }
+    q.bindValue(":properties", propStr);
 
     q.exec();
 }
@@ -130,6 +144,33 @@ QString BlogDatabase::moods() const
         return q.value(0).toString();
     else
         return QString();
+}
+
+bool BlogDatabase::isBackdated(int row) const
+{
+    return eventProperties(row, "opt_backdated") == "1";
+}
+
+QString BlogDatabase::tags(int row) const
+{
+    return eventProperties(row, "taglist");
+}
+
+QString BlogDatabase::eventProperties(int row, const QString &name) const
+{
+    QSqlQuery q = query();
+    QString qStr = QString("SELECT properties FROM %1")
+                           .arg(str::MyBlogTableName);
+    q.prepare(qStr);
+    if (q.exec() && q.seek(row)) {
+        QStringList propList = q.value(0).toString().split(propSeparator);
+        for (int i = 0; i < propList.size(); i += 2) {
+            if (propList.at(i) == name) {
+                return propList.at(i + 1);
+            }
+        }
+    }
+    return QString();
 }
 
 } // namespace core

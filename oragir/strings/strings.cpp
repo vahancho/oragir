@@ -110,8 +110,7 @@ namespace str
                                        "time         DATETIME            NOT NULL,"                                       
                                        "url          NVARCHAR,"
                                        "security     NVARCHAR(128),"
-                                       "tags         NVARCHAR,"
-                                       "backdated    BOOLEAN,"
+                                       "properties   NVARCHAR,"
                                        "flag         INTEGER)";
 
     extern const char *SqlCreateMyBlogUserTable = "CREATE TABLE IF NOT EXISTS user ("
@@ -131,8 +130,8 @@ namespace str
     const char *SqlInsertPostToTable = "INSERT INTO %1 (flag, title, read, name, updated, posterid, link, content, userpic, category) "
                                        "VALUES (:flag, :title, :read, :name, :updated, :posterid, :link, :content, :userpic, :category)";
 
-    const char *SqlInsertMyEntry = "INSERT OR REPLACE INTO %1 (itemid, subject, event, publicid, commentcount, time, url, security, tags, backdated, flag) "
-                                   "VALUES (:itemid, :subject, :event, :publicid, :commentcount, :time, :url, :security, :tags, :backdated, :flag)";
+    const char *SqlInsertMyEntry = "INSERT OR REPLACE INTO %1 (itemid, subject, event, publicid, commentcount, time, url, security, properties, flag) "
+                                   "VALUES (:itemid, :subject, :event, :publicid, :commentcount, :time, :url, :security, :properties, :flag)";
 
     const char *SqlInsertBlogToTable = "INSERT INTO %1 (journalid, link, name, journal, title, flag) "
                                        "VALUES (:journalid, :link, :name, :journal, :title, :flag)";

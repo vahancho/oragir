@@ -67,6 +67,17 @@ public:
 
     /// Returns user's moods.
     QString moods() const;
+
+    /// Returns the backdated property value for the event at row.
+    bool isBackdated(int row) const;
+
+    /// Returns the event tags at row as a comma separated string.
+    QString tags(int row) const;
+
+private:
+
+    /// Returns the event's given property value string.
+    QString eventProperties(int row, const QString &name) const;
 };
 
 } // namespace core
