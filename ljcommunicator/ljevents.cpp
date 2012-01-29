@@ -25,6 +25,7 @@ namespace lj
 
 EventProperties::EventProperties()
 {
+    /*
     insert("admin_content_flag", QVariant());
     insert("adult_content", QVariant());
     insert("commentalter", QVariant());
@@ -56,6 +57,7 @@ EventProperties::EventProperties()
     insert("used_rte", QVariant());
     insert("useragent", QVariant());
     insert("verticals_list", QVariant());
+    */
 }
 
 EventProperties::EventProperties(const QMap<QString, QVariant> &other)
