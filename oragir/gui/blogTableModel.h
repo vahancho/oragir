@@ -42,8 +42,6 @@ public:
         Time,
         Url,
         Security,
-        Tags,
-        Backdated,
         Flag
     };
 
