@@ -66,7 +66,13 @@ public:
     QString credentials() const;
 
     /// Returns user's moods.
-    QString moods() const;
+    QStringList moods() const;
+
+    /// Returns journals user is member of.
+    QStringList journals() const;
+
+    /// Returns user's pics.
+    QStringList userPics() const;
 
     /// Returns the backdated property value for the event at row.
     bool isBackdated(int id) const;

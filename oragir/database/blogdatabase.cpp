@@ -136,14 +136,34 @@ QString BlogDatabase::credentials() const
         return QString();
 }
 
-QString BlogDatabase::moods() const
+QStringList BlogDatabase::moods() const
 {
     QSqlQuery q = query();
     q.prepare("SELECT moods FROM user");
     if (q.exec() && q.next())
-        return q.value(0).toString();
+        return q.value(0).toString().split(',');
     else
-        return QString();
+        return QStringList();
+}
+
+QStringList BlogDatabase::journals() const
+{
+    QSqlQuery q = query();
+    q.prepare("SELECT usejournals FROM user");
+    if (q.exec() && q.next())
+        return q.value(0).toString().split(',');
+    else
+        return QStringList();
+}
+
+QStringList BlogDatabase::userPics() const
+{
+    QSqlQuery q = query();
+    q.prepare("SELECT pickws FROM user");
+    if (q.exec() && q.next())
+        return q.value(0).toString().split(',');
+    else
+        return QStringList();
 }
 
 bool BlogDatabase::isBackdated(int id) const
