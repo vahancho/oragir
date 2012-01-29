@@ -69,10 +69,12 @@ public:
     QString moods() const;
 
     /// Returns the backdated property value for the event at row.
-    bool isBackdated(int row) const;
+    bool isBackdated(int id) const;
 
     /// Returns the event tags at row as a comma separated string.
-    QString tags(int row) const;
+    QString tags(int id) const;
+
+    QString userPic(int id) const;
 
 private:
 

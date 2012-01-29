@@ -146,23 +146,28 @@ QString BlogDatabase::moods() const
         return QString();
 }
 
-bool BlogDatabase::isBackdated(int row) const
+bool BlogDatabase::isBackdated(int id) const
 {
-    return eventProperties(row, "opt_backdated") == "1";
+    return eventProperties(id, "opt_backdated") == "1";
 }
 
-QString BlogDatabase::tags(int row) const
+QString BlogDatabase::tags(int id) const
 {
-    return eventProperties(row, "taglist");
+    return eventProperties(id, "taglist");
 }
 
-QString BlogDatabase::eventProperties(int row, const QString &name) const
+QString BlogDatabase::userPic(int id) const
+{
+    return eventProperties(id, "picture_keyword");
+}
+
+QString BlogDatabase::eventProperties(int id, const QString &name) const
 {
     QSqlQuery q = query();
-    QString qStr = QString("SELECT properties FROM %1")
-                           .arg(str::MyBlogTableName);
+    QString qStr = QString("SELECT properties FROM %1 WHERE itemid='%2'")
+                           .arg(str::MyBlogTableName).arg(id);
     q.prepare(qStr);
-    if (q.exec() && q.seek(row)) {
+    if (q.exec() && q.next()) {
         QStringList propList = q.value(0).toString().split(propSeparator);
         for (int i = 0; i < propList.size(); i += 2) {
             if (propList.at(i) == name) {
