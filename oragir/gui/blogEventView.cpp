@@ -45,8 +45,12 @@ BlogEventView::BlogEventView(QWidget *parent, Qt::WindowFlags f)
     m_chkOutOrder = new QCheckBox("Date Out of Order", this);
     m_cmbPostTo = new QComboBox(this);
     m_cmbUserPic = new QComboBox(this);
+    m_cmbTags = new QComboBox(this);
+    m_cmbTags->setEditable(true);
+    m_cmbMoods = new QComboBox(this);
+    m_cmbMoods->setEditable(true);
     m_lblUserpic = new QLabel(this);
-    m_lblUserpic->setMinimumWidth(64);
+    m_lblUserpic->setMinimumSize(QSize(100, 100));
 
     QHBoxLayout *timeLayout = new QHBoxLayout;
     timeLayout->addWidget(m_dtEdit);
@@ -55,10 +59,13 @@ BlogEventView::BlogEventView(QWidget *parent, Qt::WindowFlags f)
     QFormLayout *formLayout1 = new QFormLayout;
     formLayout1->addRow("Subject:", m_editSubject);
     formLayout1->addRow(lblTime, timeLayout);
+    formLayout1->addRow("Tags:", m_cmbTags);
+    formLayout1->addRow("Moods:", m_cmbMoods);
 
     QFormLayout *formLayout2 = new QFormLayout;
     formLayout2->addRow("Post to:", m_cmbPostTo);
     formLayout2->addRow("Userpic:", m_cmbUserPic);
+    formLayout2->addRow("Show this entry to:", new QComboBox(this));
 
     QHBoxLayout *headerLayout = new QHBoxLayout;
     headerLayout->addLayout(formLayout1);
@@ -105,7 +112,19 @@ void BlogEventView::setPostTo(const QStringList &postto)
 
 void BlogEventView::setUserPics(const QStringList &userpics)
 {
+    m_cmbUserPic->addItem("(default)");
     m_cmbUserPic->addItems(userpics);
+}
+
+void BlogEventView::setUserPic(const QString &userPic)
+{
+    for (int i = 0; i < m_cmbUserPic->count(); ++i) {
+        QString s = m_cmbUserPic->itemData(i, Qt::DisplayRole).toString();
+        if (s == userPic) {
+            m_cmbUserPic->setCurrentIndex(i);
+            break;
+        }
+    }
 }
 
 QString BlogEventView::htmlContent() const
@@ -135,7 +154,11 @@ QString BlogEventView::postTo() const
 
 QString BlogEventView::userPic() const
 {
-    return m_cmbUserPic->currentText();
+    QString pic = m_cmbUserPic->currentText();
+    if (pic == "(default)")
+        return QString();
+    else
+        return pic;
 }
 
 void BlogEventView::setEventId(int eventId)
@@ -146,6 +169,34 @@ void BlogEventView::setEventId(int eventId)
 int BlogEventView::eventId() const
 {
     return m_eventId;
+}
+
+void BlogEventView::setTags(const QString &tags)
+{
+    QStringList tagList = tags.split(',');
+    m_cmbTags->addItems(tagList);
+    m_cmbTags->setEditText(tags);
+}
+
+QString BlogEventView::tags() const
+{
+    return m_cmbTags->currentText();
+}
+
+void BlogEventView::setMoods(const QStringList &moods)
+{
+    // Verify that moods follow expected format.
+    if (moods.size() % 3 == 0) {
+        // Extract mood names only and ignor id and parent properties.
+        for (int i = 1; i < moods.size(); i += 3) {
+            m_cmbMoods->addItem(moods.at(i));
+        }
+    }
+}
+
+QString BlogEventView::moods() const
+{
+    return m_cmbMoods->currentText();
 }
 
 void BlogEventView::setupActions(const HtmlActions &actions)

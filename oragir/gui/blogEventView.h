@@ -63,10 +63,23 @@ public:
     QString postTo() const;
 
     void setUserPics(const QStringList &userpics);
+    void setUserPic(const QString &userPic);
     QString userPic() const;
 
     void setEventId(int eventId);
     int eventId() const;
+
+    /// Sets the tag list.
+    void setTags(const QString &tags);
+    QString tags() const;
+
+    /// Sets the list of user moods.
+    /*!
+        Moods expected as a string list that contains mood data:
+        id, name, parent.
+    */
+    void setMoods(const QStringList &moods);
+    QString moods() const;
 
     /// Defines the index of html editor related actions.
     enum HtmlAction
@@ -124,6 +137,8 @@ private:
     QCheckBox *m_chkOutOrder;
     QComboBox *m_cmbPostTo;
     QComboBox *m_cmbUserPic;
+    QComboBox *m_cmbTags;
+    QComboBox *m_cmbMoods;
     QLabel *m_lblUserpic;
     QDateTimeEdit *m_dtEdit;
 
