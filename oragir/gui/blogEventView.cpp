@@ -171,14 +171,17 @@ int BlogEventView::eventId() const
     return m_eventId;
 }
 
-void BlogEventView::setTags(const QString &tags)
+void BlogEventView::setEventTags(const QString &tags)
 {
-    QStringList tagList = tags.split(',');
-    m_cmbTags->addItems(tagList);
     m_cmbTags->setEditText(tags);
 }
 
-QString BlogEventView::tags() const
+void BlogEventView::setUserTags(const QStringList &tags)
+{
+    m_cmbTags->addItems(tags);
+}
+
+QString BlogEventView::eventTags() const
 {
     return m_cmbTags->currentText();
 }

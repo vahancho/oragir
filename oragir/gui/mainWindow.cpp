@@ -1129,11 +1129,23 @@ void MainWindow::onBlogAccountSetup()
                 }
             }
             db->create(dbPath);
+
             // Set the user table data now.
             db->setUserData(userInfo, cr->encode());
 
+            // Download all user pics.
             QStringList urls = userInfo.pictureUrls();
             downloadUserPics(urls);
+
+            // Get all available user tags.
+            lj::UserTags tags = com.getUserTags();
+            if (tags.isValid()) {
+                QStringList tagList;
+                for (int i = 0; i < tags.count(); ++i) {
+                    tagList.push_back(tags.tagName(i));
+                }
+                db->setUserTags(tagList);
+            }
 
             // Create and configure new model for the view.
             setupBlogView();
@@ -1224,7 +1236,7 @@ void MainWindow::onEventClicked(const QModelIndex &index)
     view->setDateTime(QDateTime(record.value(BlogTableModel::Time).toDateTime()));
     view->setEventId(itemId);
     view->setDateOutOrder(db->isBackdated(itemId));
-    view->setTags(db->tags(itemId));
+    view->setEventTags(db->eventTags(itemId));
     view->setUserPic(db->userPic(itemId));
 
     createSubWindow(view, subject);
@@ -1332,6 +1344,7 @@ BlogEventView *MainWindow::createBlogEventView()
 
     view->setUserPics(db->userPics());
     view->setMoods(db->moods());
+    view->setUserTags(db->userTags());
 
     return view;
 }
@@ -1355,7 +1368,7 @@ void MainWindow::onCommitChanges()
             lj::EventProperties props;
             props["picture_keyword"] = blogView->userPic();
             props["opt_backdated"] = blogView->dateOutOrder();
-            props["taglist"] = blogView->tags();
+            props["taglist"] = blogView->eventTags();
             props["picture_keyword"] = blogView->userPic();
 
             lj::EventData data;

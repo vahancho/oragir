@@ -70,8 +70,9 @@ public:
     int eventId() const;
 
     /// Sets the tag list.
-    void setTags(const QString &tags);
-    QString tags() const;
+    void setEventTags(const QString &tags);
+    void setUserTags(const QStringList &tags);
+    QString eventTags() const;
 
     /// Sets the list of user moods.
     /*!

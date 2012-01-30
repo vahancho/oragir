@@ -122,6 +122,7 @@ namespace str
                                                   "pickwurls     NVARCHAR,"
                                                   "pickws        NVARCHAR,"
                                                   "moods         NVARCHAR,"
+                                                  "tags          NVARCHAR,"
                                                   "friendgroups  NVARCHAR,"
                                                   "message       NVARCHAR,"
                                                   "lastsynced    DATETIME,"
@@ -136,7 +137,7 @@ namespace str
     const char *SqlInsertBlogToTable = "INSERT INTO %1 (journalid, link, name, journal, title, flag) "
                                        "VALUES (:journalid, :link, :name, :journal, :title, :flag)";
 
-    const char *SqlInsertMyBlogUserData = "INSERT OR REPLACE INTO user (userid, password, fullname, usejournals, defaultpicurl, pickwurls, pickws, moods, friendgroups, message, lastsynced, flag) "
-                                          "VALUES (:userid, :password, :fullname, :usejournals, :defaultpicurl, :pickwurls, :pickws, :moods, :friendgroups, :message, :lastsynced, :flag)";
+    const char *SqlInsertMyBlogUserData = "INSERT OR REPLACE INTO user (userid, password, fullname, usejournals, defaultpicurl, pickwurls, pickws, moods, tags, friendgroups, message, lastsynced, flag) "
+                                          "VALUES (:userid, :password, :fullname, :usejournals, :defaultpicurl, :pickwurls, :pickws, :moods, :tags, :friendgroups, :message, :lastsynced, :flag)";
 
 } // namespace str

@@ -78,7 +78,12 @@ public:
     bool isBackdated(int id) const;
 
     /// Returns the event tags at row as a comma separated string.
-    QString tags(int id) const;
+    QString eventTags(int id) const;
+
+    /// Returns the all available user tags as a comma separated string.
+    QStringList userTags() const;
+
+    void setUserTags(const QStringList &tags);
 
     QString userPic(int id) const;
 

@@ -99,6 +99,7 @@ void BlogDatabase::setUserData(const lj::UserInfo &userInfo,
     q.bindValue(":pickwurls", userInfo.pictureUrls().join(","));
     q.bindValue(":pickws", userInfo.pictureKeys().join(","));
     q.bindValue(":moods", userInfo.moods().join(","));
+    q.bindValue(":tags", QString());
     q.bindValue(":friendgroups", QString());
     q.bindValue(":message", userInfo.message());
 
@@ -171,9 +172,26 @@ bool BlogDatabase::isBackdated(int id) const
     return eventProperties(id, "opt_backdated") == "1";
 }
 
-QString BlogDatabase::tags(int id) const
+QString BlogDatabase::eventTags(int id) const
 {
     return eventProperties(id, "taglist");
+}
+
+QStringList BlogDatabase::userTags() const
+{
+    QSqlQuery q = query();
+    q.prepare("SELECT tags FROM user");
+    if (q.exec() && q.next())
+        return q.value(0).toString().split(',');
+    else
+        return QStringList();
+}
+
+void BlogDatabase::setUserTags(const QStringList &tags)
+{
+    QSqlQuery q = query();
+    q.prepare(QString("UPDATE user SET tags = '%1'").arg(tags.join(",")));
+    q.exec();
 }
 
 QString BlogDatabase::userPic(int id) const
