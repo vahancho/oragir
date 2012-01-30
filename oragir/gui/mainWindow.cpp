@@ -1214,14 +1214,18 @@ void MainWindow::onBlogAccountSetup()
 
 void MainWindow::onEventClicked(const QModelIndex &index)
 {
+    core::BlogDatabase *db = core::Application::theApp()->blogDatabase();
     BlogEventView *view = createBlogEventView();
     QSqlRecord record = m_blogModel->record(index.row());
+    int itemId = record.value(BlogTableModel::ItemId).toInt();
     QString subject = record.value(BlogTableModel::Subject).toString();
     view->setSubject(subject);
     view->setHtmlContent(record.value(BlogTableModel::Event).toString());
     view->setDateTime(QDateTime(record.value(BlogTableModel::Time).toDateTime()));
-    view->setDateOutOrder(record.value(BlogTableModel::Backdated).toBool());
-    view->setEventId(record.value(BlogTableModel::ItemId).toInt());
+    view->setEventId(itemId);
+    view->setDateOutOrder(db->isBackdated(itemId));
+    view->setTags(db->tags(itemId));
+    view->setUserPic(db->userPic(itemId));
 
     createSubWindow(view, subject);
 }
@@ -1321,18 +1325,13 @@ BlogEventView *MainWindow::createBlogEventView()
 
     // Get the user information from the user table.
     core::BlogDatabase *db = core::Application::theApp()->blogDatabase();
-    QSqlTableModel userModel(0, db->database());
-    userModel.setTable("user");
-    userModel.select();
-    QSqlRecord userRecord = userModel.record(0);
 
-    QStringList journals = userRecord.value(3).toString().split(',');
+    QStringList journals = db->journals();
     journals.prepend(core::Application::theApp()->credentials()->user());
     view->setPostTo(journals);
 
-    QStringList userPics = userRecord.value(6).toString().split(',');
-    userPics.prepend("(default)");
-    view->setUserPics(userPics);
+    view->setUserPics(db->userPics());
+    view->setMoods(db->moods());
 
     return view;
 }
@@ -1356,6 +1355,8 @@ void MainWindow::onCommitChanges()
             lj::EventProperties props;
             props["picture_keyword"] = blogView->userPic();
             props["opt_backdated"] = blogView->dateOutOrder();
+            props["taglist"] = blogView->tags();
+            props["picture_keyword"] = blogView->userPic();
 
             lj::EventData data;
             int id = blogView->eventId();
