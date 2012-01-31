@@ -1238,6 +1238,7 @@ void MainWindow::onEventClicked(const QModelIndex &index)
     view->setDateOutOrder(db->isBackdated(itemId));
     view->setEventTags(db->eventTags(itemId));
     view->setUserPic(db->userPic(itemId));
+    view->setSecurity(db->eventSecurity(itemId));
 
     createSubWindow(view, subject);
 }
@@ -1345,6 +1346,7 @@ BlogEventView *MainWindow::createBlogEventView()
     view->setUserPics(db->userPics());
     view->setMoods(db->moods());
     view->setUserTags(db->userTags());
+    view->setSecurityLevels(QStringList() << "public" << "private");
 
     return view;
 }
