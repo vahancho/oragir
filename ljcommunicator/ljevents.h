@@ -65,6 +65,7 @@ struct Event
     QString m_url;
     QString m_time;
     QString m_security;
+    quint32 m_allowmask;
     EventProperties m_properties;
 };
 

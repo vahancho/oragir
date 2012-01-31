@@ -119,6 +119,12 @@ Events::Events(const QByteArray &data)
                 event.m_security = eventMap["security"].toString();
             }
 
+            if (event.m_security == "usemask") {
+                event.m_allowmask = eventMap["allowmask"].toUInt();
+            } else {
+                event.m_allowmask = 0;
+            }
+
             // Get event properties.
             event.m_properties = eventMap["props"].toMap();
 
