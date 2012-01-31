@@ -63,6 +63,7 @@ void BlogDatabase::addEvent(const lj::Event &event)
     q.bindValue(":time", event.m_time);
     q.bindValue(":url", event.m_url);
     q.bindValue(":security", event.m_security);
+    q.bindValue(":allowmask", event.m_allowmask);
     q.bindValue(":flag", 0);
 
     // Concatinate the event's properties and their values into one
@@ -186,6 +187,19 @@ QString BlogDatabase::eventSecurity(int id) const
     if (q.exec() && q.next()) {
         return q.value(0).toString();
     }
+    return QString();
+}
+
+unsigned int BlogDatabase::eventMask(int id) const
+{
+    QSqlQuery q = query();
+    QString qStr = QString("SELECT allowmask FROM %1 WHERE itemid='%2'")
+                           .arg(str::MyBlogTableName).arg(id);
+    q.prepare(qStr);
+    if (q.exec() && q.next()) {
+        return q.value(0).toUInt();
+    }
+    return -1;
 }
 
 QStringList BlogDatabase::userTags() const

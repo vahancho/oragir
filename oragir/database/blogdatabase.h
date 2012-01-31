@@ -89,6 +89,8 @@ public:
 
     QString eventSecurity(int id) const;
 
+    unsigned int eventMask(int id) const;
+
 private:
 
     /// Returns the event's given property value string.
