@@ -177,6 +177,11 @@ QString BlogDatabase::eventTags(int id) const
     return eventProperties(id, "taglist");
 }
 
+QString BlogDatabase::eventSecurity(int id) const
+{
+    return eventProperties(id, "security");
+}
+
 QStringList BlogDatabase::userTags() const
 {
     QSqlQuery q = query();

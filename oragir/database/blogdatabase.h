@@ -87,6 +87,8 @@ public:
 
     QString userPic(int id) const;
 
+    QString eventSecurity(int id) const;
+
 private:
 
     /// Returns the event's given property value string.
