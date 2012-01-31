@@ -27,6 +27,8 @@ namespace lj
 {
     struct Event;
     class UserInfo;
+    class UserTags;
+    class FriendGroups;
 }
 
 namespace core
@@ -83,7 +85,9 @@ public:
     /// Returns the all available user tags as a comma separated string.
     QStringList userTags() const;
 
-    void setUserTags(const QStringList &tags);
+    void setUserTags(const lj::UserTags &tags);
+
+    void setFriendGroups(const lj::FriendGroups &fg);
 
     QString userPic(int id) const;
 

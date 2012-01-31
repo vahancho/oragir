@@ -21,6 +21,8 @@
 #include "../strings/strings.h"
 #include "../../ljcommunicator/ljevents.h"
 #include "../../ljcommunicator/ljuserinfo.h"
+#include "../../ljcommunicator/ljusertags.h"
+#include "../../ljcommunicator/ljfriendgroups.h"
 #include "blogdatabase.h"
 
 namespace core
@@ -212,10 +214,31 @@ QStringList BlogDatabase::userTags() const
         return QStringList();
 }
 
-void BlogDatabase::setUserTags(const QStringList &tags)
+void BlogDatabase::setUserTags(const lj::UserTags &tags)
 {
+    QStringList tagList;
+    if (tags.isValid()) {
+        for (int i = 0; i < tags.count(); ++i) {
+            tagList.push_back(tags.tagName(i));
+        }
+    }
     QSqlQuery q = query();
-    q.prepare(QString("UPDATE user SET tags = '%1'").arg(tags.join(",")));
+    q.prepare(QString("UPDATE user SET tags = '%1'").arg(tagList.join(",")));
+    q.exec();
+}
+
+void BlogDatabase::setFriendGroups(const lj::FriendGroups &fg)
+{
+    QStringList fgList;
+    if (fg.isValid()) {
+        for (int i = 0; i < fg.count(); ++i) {
+            fgList.push_back(QString::number(fg.groupId(i)));
+            fgList.push_back(fg.groupName(i));
+        }
+    }
+    QSqlQuery q = query();
+    q.prepare(QString("UPDATE user SET friendgroups = '%1'")
+              .arg(fgList.join(",")));
     q.exec();
 }
 
