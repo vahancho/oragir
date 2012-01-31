@@ -202,6 +202,22 @@ QMap<QString, QVariant> Communicator::getComments(int postid)
     return result;
 }
 
+FriendGroups Communicator::getFriendGroups()
+{
+    QVariantList params = authParams();
+    if (params.size() == 0)
+        return FriendGroups();
+
+    request("LJ.XMLRPC.getfriendgroups", params);
+
+    std::auto_ptr<QBuffer> buffer(m_responses.take(m_currentRequestId));
+    QByteArray buf = buffer->buffer();
+    qDebug() << buf;
+
+    FriendGroups groups(buf);
+    return groups;
+}
+
 QVariantList Communicator::getDayCount()
 {
     QVariantList result;

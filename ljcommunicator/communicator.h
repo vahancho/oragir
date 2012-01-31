@@ -30,6 +30,7 @@
 #include "ljusertags.h"
 #include "ljsyncitems.h"
 #include "ljeventdata.h"
+#include "ljfriendgroups.h"
 
 class QBuffer;
 
@@ -56,6 +57,8 @@ public:
     UserTags getUserTags();
     UserInfo login();
     QMap<QString, QVariant> getComments(int postid);
+
+    FriendGroups getFriendGroups();
 
     /// Returns the list of date-count pairs.
     QVariantList getDayCount();
