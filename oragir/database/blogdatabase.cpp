@@ -179,7 +179,13 @@ QString BlogDatabase::eventTags(int id) const
 
 QString BlogDatabase::eventSecurity(int id) const
 {
-    return eventProperties(id, "security");
+    QSqlQuery q = query();
+    QString qStr = QString("SELECT security FROM %1 WHERE itemid='%2'")
+                           .arg(str::MyBlogTableName).arg(id);
+    q.prepare(qStr);
+    if (q.exec() && q.next()) {
+        return q.value(0).toString();
+    }
 }
 
 QStringList BlogDatabase::userTags() const
