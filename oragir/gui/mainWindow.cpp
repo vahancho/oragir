@@ -1137,15 +1137,11 @@ void MainWindow::onBlogAccountSetup()
             QStringList urls = userInfo.pictureUrls();
             downloadUserPics(urls);
 
+            // Get user's friend groups
+            db->setFriendGroups(com.getFriendGroups());
+
             // Get all available user tags.
-            lj::UserTags tags = com.getUserTags();
-            if (tags.isValid()) {
-                QStringList tagList;
-                for (int i = 0; i < tags.count(); ++i) {
-                    tagList.push_back(tags.tagName(i));
-                }
-                db->setUserTags(tagList);
-            }
+            db->setUserTags(com.getUserTags());
 
             // Create and configure new model for the view.
             setupBlogView();
