@@ -49,6 +49,7 @@ BlogEventView::BlogEventView(QWidget *parent, Qt::WindowFlags f)
     m_cmbTags->setEditable(true);
     m_cmbMoods = new QComboBox(this);
     m_cmbMoods->setEditable(true);
+    m_cmbSecurity = new QComboBox(this);
     m_lblUserpic = new QLabel(this);
     m_lblUserpic->setMinimumSize(QSize(100, 100));
 
@@ -65,7 +66,7 @@ BlogEventView::BlogEventView(QWidget *parent, Qt::WindowFlags f)
     QFormLayout *formLayout2 = new QFormLayout;
     formLayout2->addRow("Post to:", m_cmbPostTo);
     formLayout2->addRow("Userpic:", m_cmbUserPic);
-    formLayout2->addRow("Show this entry to:", new QComboBox(this));
+    formLayout2->addRow("Access:", m_cmbSecurity);
 
     QHBoxLayout *headerLayout = new QHBoxLayout;
     headerLayout->addLayout(formLayout1);
@@ -200,6 +201,21 @@ void BlogEventView::setMoods(const QStringList &moods)
 QString BlogEventView::moods() const
 {
     return m_cmbMoods->currentText();
+}
+
+void BlogEventView::setSecurityLevels(const QStringList &security)
+{
+    m_cmbSecurity->addItems(security);
+}
+
+void BlogEventView::setSecurity(const QString &security)
+{
+    m_cmbSecurity->setCurrentIndex(0);
+}
+
+QString BlogEventView::security() const
+{
+    return m_cmbSecurity->currentText();
 }
 
 void BlogEventView::setupActions(const HtmlActions &actions)

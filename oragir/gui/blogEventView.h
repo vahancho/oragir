@@ -82,6 +82,10 @@ public:
     void setMoods(const QStringList &moods);
     QString moods() const;
 
+    void setSecurityLevels(const QStringList &security);
+    void setSecurity(const QString &security);
+    QString security() const;
+
     /// Defines the index of html editor related actions.
     enum HtmlAction
     {
@@ -140,6 +144,7 @@ private:
     QComboBox *m_cmbUserPic;
     QComboBox *m_cmbTags;
     QComboBox *m_cmbMoods;
+    QComboBox *m_cmbSecurity;
     QLabel *m_lblUserpic;
     QDateTimeEdit *m_dtEdit;
 
