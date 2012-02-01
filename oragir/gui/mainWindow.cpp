@@ -1342,7 +1342,7 @@ BlogEventView *MainWindow::createBlogEventView()
     view->setUserPics(db->userPics());
     view->setMoods(db->moods());
     view->setUserTags(db->userTags());
-    view->setSecurityLevels(QStringList() << "public" << "private");
+    view->setSecurityNames(db->securityNames());
 
     return view;
 }

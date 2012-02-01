@@ -82,7 +82,7 @@ public:
     void setMoods(const QStringList &moods);
     QString moods() const;
 
-    void setSecurityLevels(const QStringList &security);
+    void setSecurityNames(const QStringList &security);
     void setSecurity(const QString &security);
     QString security() const;
 

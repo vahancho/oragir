@@ -203,7 +203,7 @@ QString BlogEventView::moods() const
     return m_cmbMoods->currentText();
 }
 
-void BlogEventView::setSecurityLevels(const QStringList &security)
+void BlogEventView::setSecurityNames(const QStringList &security)
 {
     m_cmbSecurity->addItems(security);
 }
