@@ -89,6 +89,8 @@ public:
 
     void setFriendGroups(const lj::FriendGroups &fg);
 
+    QStringList securityNames() const;
+
     QString userPic(int id) const;
 
     QString eventSecurity(int id) const;

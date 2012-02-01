@@ -242,6 +242,20 @@ void BlogDatabase::setFriendGroups(const lj::FriendGroups &fg)
     q.exec();
 }
 
+QStringList BlogDatabase::securityNames() const
+{
+    QStringList ret = QStringList() << "Public" << "Private";
+    QSqlQuery q = query();
+    q.prepare("SELECT friendgroups FROM user");
+    if (q.exec() && q.next()) {
+        QStringList fgList = q.value(0).toString().split(',');
+        for (int i = 1; i < fgList.size(); i += 2) {
+            ret << fgList.at(i);
+        }
+    }
+    return ret;
+}
+
 QString BlogDatabase::userPic(int id) const
 {
     return eventProperties(id, "picture_keyword");
