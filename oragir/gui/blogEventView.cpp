@@ -198,7 +198,7 @@ void BlogEventView::setMoods(const QStringList &moods)
     }
 }
 
-QString BlogEventView::moods() const
+QString BlogEventView::mood() const
 {
     return m_cmbMoods->currentText();
 }

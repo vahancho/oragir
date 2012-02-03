@@ -80,7 +80,7 @@ public:
         id, name, parent.
     */
     void setMoods(const QStringList &moods);
-    QString moods() const;
+    QString mood() const;
 
     void setSecurityNames(const QStringList &security);
     void setSecurity(const QStringList &security);

@@ -1368,6 +1368,7 @@ void MainWindow::onCommitChanges()
             props["opt_backdated"] = blogView->dateOutOrder();
             props["taglist"] = blogView->eventTags();
             props["picture_keyword"] = blogView->userPic();
+            props["current_mood"] = blogView->mood();
 
             lj::EventData data;
             int id = blogView->eventId();
