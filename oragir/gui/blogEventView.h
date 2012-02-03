@@ -83,7 +83,7 @@ public:
     QString moods() const;
 
     void setSecurityNames(const QStringList &security);
-    void setSecurity(const QString &security);
+    void setSecurity(const QStringList &security);
     QString security() const;
 
     /// Defines the index of html editor related actions.

@@ -208,9 +208,16 @@ void BlogEventView::setSecurityNames(const QStringList &security)
     m_cmbSecurity->addItems(security);
 }
 
-void BlogEventView::setSecurity(const QString &security)
+void BlogEventView::setSecurity(const QStringList &security)
 {
-    m_cmbSecurity->setCurrentIndex(0);
+    /*
+    for (int i = 0; i < m_cmbSecurity->count(); ++i) {
+        if (m_cmbSecurity->itemText(i) == security) {
+            m_cmbSecurity->setCurrentIndex(i);
+            break;
+        }
+    }
+    */
 }
 
 QString BlogEventView::security() const

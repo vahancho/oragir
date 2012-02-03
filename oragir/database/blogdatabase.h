@@ -93,7 +93,7 @@ public:
 
     QString userPic(int id) const;
 
-    QString eventSecurity(int id) const;
+    QStringList eventSecurity(int id) const;
 
     unsigned int eventMask(int id) const;
 
