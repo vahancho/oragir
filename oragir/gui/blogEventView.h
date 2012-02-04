@@ -80,6 +80,11 @@ public:
         id, name, parent.
     */
     void setMoods(const QStringList &moods);
+
+    /// To set the current mood.
+    void setMood(const QString &mood);
+
+    /// Returns the current mood as a string.
     QString mood() const;
 
     void setSecurityNames(const QStringList &security);

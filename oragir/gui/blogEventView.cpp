@@ -189,11 +189,24 @@ QString BlogEventView::eventTags() const
 
 void BlogEventView::setMoods(const QStringList &moods)
 {
+    // The empty mood item.
+    m_cmbMoods->addItem("");
+
     // Verify that moods follow expected format.
     if (moods.size() % 3 == 0) {
         // Extract mood names only and ignor id and parent properties.
         for (int i = 1; i < moods.size(); i += 3) {
             m_cmbMoods->addItem(moods.at(i));
+        }
+    }
+}
+
+void BlogEventView::setMood(const QString &mood)
+{
+    for (int i = 0; i < m_cmbMoods->count(); ++i) {
+        if (m_cmbMoods->itemText(i) == mood) {
+            m_cmbMoods->setCurrentIndex(i);
+            break;
         }
     }
 }

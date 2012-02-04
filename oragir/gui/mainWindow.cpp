@@ -1235,6 +1235,7 @@ void MainWindow::onEventClicked(const QModelIndex &index)
     view->setEventTags(db->eventTags(itemId));
     view->setUserPic(db->userPic(itemId));
     view->setSecurity(db->eventSecurity(itemId));
+    view->setMood(db->currentMood(itemId));
 
     createSubWindow(view, subject);
 }
