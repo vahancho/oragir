@@ -67,7 +67,7 @@ public:
     /// Returns user's credentials.
     QString credentials() const;
 
-    /// Returns user's moods.
+    /// Returns user's moods as list of id, name and parent.
     QStringList moods() const;
 
     /// Returns journals user is member of.
@@ -91,7 +91,11 @@ public:
 
     QStringList securityNames() const;
 
+    /// Returns user pic as a picture keyword.
     QString userPic(int id) const;
+
+    /// Returns the event's current mood as a string.
+    QString currentMood(int id) const;
 
     QStringList eventSecurity(int id) const;
 

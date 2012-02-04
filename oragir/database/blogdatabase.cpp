@@ -297,6 +297,18 @@ QString BlogDatabase::userPic(int id) const
     return eventProperties(id, "picture_keyword");
 }
 
+QString BlogDatabase::currentMood(int id) const
+{
+    int moodId = eventProperties(id, "current_moodid").toInt();
+    QStringList moodsList = moods();
+    for (int i = 0; i < moodsList.count(); i += 3) {
+        if (moodsList.at(i).toInt() == moodId) {
+            return moodsList.at(i + 1);
+        }
+    }
+    return QString();
+}
+
 QString BlogDatabase::eventProperties(int id, const QString &name) const
 {
     QSqlQuery q = query();
