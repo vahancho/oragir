@@ -373,6 +373,7 @@ void MainWindow::createMenus()
     m_htmlActions[BlogEventView::SelectAll] = action;
     editToolBar->addAction(action);
     editMenu->addSeparator();
+    editToolBar->addSeparator();
     action = editMenu->addAction("Insert Image...");
     action->setIcon(QIcon(":icons/image"));
     m_htmlActions[BlogEventView::InsertImage] = action;
