@@ -154,6 +154,10 @@ private slots:
     /// Called when an item in blog view clicked.
     void onEventClicked(const QModelIndex &index);
 
+    void onEventOpen();
+
+    void onBlogViewContextMenu(const QPoint &);
+
     /// Handle the user pics downloading request finished signal.
     void onNetManagerFinished(QNetworkReply *);
 

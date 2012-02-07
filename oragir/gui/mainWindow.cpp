@@ -145,6 +145,9 @@ void MainWindow::createBlogView()
     QFontMetrics fm = fontMetrics();
     m_blogView->verticalHeader()->setDefaultSectionSize(fm.height() + 6);
 
+    m_blogView->setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(m_blogView, SIGNAL(customContextMenuRequested(const QPoint &)),
+            this, SLOT(onBlogViewContextMenu(const QPoint &)));
     connect(m_blogView, SIGNAL(doubleClicked(const QModelIndex &)),
             this, SLOT(onEventClicked(const QModelIndex &)));
 
@@ -1228,6 +1231,22 @@ void MainWindow::onBlogAccountSetup()
 
         m_progress->stop();
     }
+}
+
+void MainWindow::onBlogViewContextMenu(const QPoint &pos)
+{
+    QModelIndex index = m_blogView->currentIndex();
+    if (index.isValid()) {
+        QMenu menu;
+        QAction *act = menu.addAction("&Open", this, SLOT(onEventOpen()));
+        menu.setDefaultAction(act);
+        menu.exec(m_blogView->mapToGlobal(QPoint(pos.x(), pos.y() + 20)));
+    }
+}
+
+void MainWindow::onEventOpen()
+{
+    onEventClicked(m_blogView->currentIndex());
 }
 
 void MainWindow::onEventClicked(const QModelIndex &index)
