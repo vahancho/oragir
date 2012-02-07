@@ -497,6 +497,14 @@ void MainWindow::createMenus()
     action->setIcon(QIcon(":icons/bg_color"));
     m_htmlActions[BlogEventView::BgColor] = action;
     formatToolBar->addAction(action);
+    action = formatMenu->addAction("Insert Image...");
+    //action->setIcon(QIcon(":icons/image"));
+    m_htmlActions[BlogEventView::InsertImage] = action;
+    formatToolBar->addAction(action);
+    action = formatMenu->addAction("Create Link...");
+    //action->setIcon(QIcon(":icons/link"));
+    m_htmlActions[BlogEventView::CreateLink] = action;
+    formatToolBar->addAction(action);
 
     //////////////////////////////////////////////////////////////////////////
     // View menu

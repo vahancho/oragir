@@ -313,6 +313,12 @@ void BlogEventView::setupActions(const HtmlActions &actions)
         case BgColor:
             connect(action, SIGNAL(triggered()), m_htmlEditor, SLOT(setBackgroundColor()));
             break;
+        case InsertImage:
+            connect(action, SIGNAL(triggered()), m_htmlEditor, SLOT(insertImage()));
+            break;
+        case CreateLink:
+            connect(action, SIGNAL(triggered()), m_htmlEditor, SLOT(createLink()));
+            break;
         case AlignLeft:
             bindWebAction(action, QWebPage::AlignLeft);
             break;

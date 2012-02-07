@@ -123,7 +123,9 @@ public:
         DecreaseIndent,
         IncreaseIndent,
         NumberedList,
-        BulletedList
+        BulletedList,
+        InsertImage,
+        CreateLink
     };
 
     /// Defines the new type of mapping between index and action.
