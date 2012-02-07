@@ -1356,10 +1356,14 @@ void MainWindow::onCommitChanges()
 
             QDateTime dt = blogView->dateTime();
             QString subject = blogView->subject();
-            QString body = blogView->htmlContent() +
-                           QString("\n\n<span style=\"font-size: x-small; \">"
+            QString body = blogView->htmlContent();
+
+            const QString ad = QString("\n\n<span style=\"font-size: x-small; \">"
                            "Posted via <a href=\"http://oragir.sourceforge.net\">"
                            "Oragir v%1</a></span>").arg(str::Version);
+
+            if (!body.endsWith(ad))
+                body.append(ad);
 
             lj::Communicator com;
             core::Credentials *cr = core::Application::theApp()->credentials();
