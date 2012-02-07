@@ -46,6 +46,7 @@
     <file alias="italic" >icon_italic.png</file>
     <file alias="bold" >icon_bold.png</file>
     <file alias="select_all" >icon_select_all.png</file>
+    <file alias="address" >icon_address.png</file>
     <file alias="paste" >icon_paste.png</file>
     <file alias="copy" >icon_copy.png</file>
     <file alias="cut" >icon_cut.png</file>

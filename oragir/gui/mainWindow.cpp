@@ -390,6 +390,10 @@ void MainWindow::createMenus()
     action->setIcon(QIcon(":icons/paragraph"));
     m_htmlActions[BlogEventView::Paragraph] = action;
     styleToolBar->addAction(action);
+    action = styleMenu->addAction("Address");
+    action->setIcon(QIcon(":icons/address"));
+    m_htmlActions[BlogEventView::Address] = action;
+    styleToolBar->addAction(action);
     action = styleMenu->addAction("Heading 1");
     action->setIcon(QIcon(":icons/h1"));
     m_htmlActions[BlogEventView::Heading1] = action;
@@ -413,10 +417,6 @@ void MainWindow::createMenus()
     action = styleMenu->addAction("Heading 6");
     action->setIcon(QIcon(":icons/h6"));
     m_htmlActions[BlogEventView::Heading6] = action;
-    styleToolBar->addAction(action);
-    action = styleMenu->addAction("Address");
-    //action->setIcon(QIcon(":icons/address"));
-    m_htmlActions[BlogEventView::Address] = action;
     styleToolBar->addAction(action);
 
     QMenu *alignMenu = formatMenu->addMenu("Align");
