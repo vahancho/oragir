@@ -56,5 +56,7 @@
     <file alias="new_event" >icon_new_event.png</file>
     <file alias="commit" >icon_commit.png</file>
     <file alias="sync" >icon_sync.png</file>
+    <file alias="link" >icon_link.png</file>
+    <file alias="image" >icon_image.png</file>
   </qresource>
 </RCC>
