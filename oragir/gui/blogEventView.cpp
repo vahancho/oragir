@@ -381,6 +381,9 @@ void BlogEventView::updateActionState()
     m_htmlActions[Srikethrough]->setChecked(m_htmlEditor->viewAction(QWebPage::ToggleStrikethrough)->isChecked());
     m_htmlActions[NumberedList]->setChecked(m_htmlEditor->viewAction(QWebPage::InsertOrderedList)->isChecked());
     m_htmlActions[BulletedList]->setChecked(m_htmlEditor->viewAction(QWebPage::InsertUnorderedList)->isChecked());
+    m_htmlActions[Bold]->setChecked(m_htmlEditor->viewAction(QWebPage::ToggleBold)->isChecked());
+    m_htmlActions[Italic]->setChecked(m_htmlEditor->viewAction(QWebPage::ToggleItalic)->isChecked());
+    m_htmlActions[Underline]->setChecked(m_htmlEditor->viewAction(QWebPage::ToggleUnderline)->isChecked());
 }
 
 void BlogEventView::onTimer()

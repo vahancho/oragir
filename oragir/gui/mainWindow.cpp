@@ -457,14 +457,17 @@ void MainWindow::createMenus()
     formatMenu->addSeparator();
     action = formatMenu->addAction("Bold");
     action->setIcon(QIcon(":icons/bold"));
+    action->setCheckable(true);
     m_htmlActions[BlogEventView::Bold] = action;
     formatToolBar->addAction(action);
     action = formatMenu->addAction("Italic");
     action->setIcon(QIcon(":icons/italic"));
+    action->setCheckable(true);
     m_htmlActions[BlogEventView::Italic] = action;
     formatToolBar->addAction(action);
     action = formatMenu->addAction("Underline");
     action->setIcon(QIcon(":icons/underline"));
+    action->setCheckable(true);
     m_htmlActions[BlogEventView::Underline] = action;
     formatToolBar->addAction(action);
     action = formatMenu->addAction("Srikethrough");
