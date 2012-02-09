@@ -28,6 +28,7 @@
 #include <QFormLayout>
 #include "blogEventView.h"
 #include "htmlEditor.h"
+#include "comboBox.h"
 
 namespace gui
 {
@@ -45,7 +46,7 @@ BlogEventView::BlogEventView(QWidget *parent, Qt::WindowFlags f)
     m_chkOutOrder = new QCheckBox("Date Out of Order", this);
     m_cmbPostTo = new QComboBox(this);
     m_cmbUserPic = new QComboBox(this);
-    m_cmbTags = new QComboBox(this);
+    m_cmbTags = new ComboBox(this);
     m_cmbTags->setEditable(true);
     m_cmbMoods = new QComboBox(this);
     m_cmbMoods->setEditable(true);
