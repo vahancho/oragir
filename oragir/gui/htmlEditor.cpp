@@ -122,7 +122,7 @@ void HtmlEditor::setHeading2()
 void HtmlEditor::setHeading3()
 {
     invokeCommand("formatBlock", "h3");
-	}
+}
 
 void HtmlEditor::setHeading4()
 {
@@ -198,6 +198,25 @@ void HtmlEditor::insertImage()
         if (url.isValid())
             invokeCommand("insertImage", url.toString());
     }
+}
+
+void HtmlEditor::insertLjCut()
+{
+     QString command =
+        "var element = document.createElement(\"lj-cut\");"
+        "element.setAttribute('text', 'Read more...');"
+        "if (window.getSelection) {"
+            "var sel = window.getSelection();"
+            "if (sel.rangeCount) {"
+                "var range = sel.getRangeAt(0).cloneRange();"
+                "range.surroundContents(element);"
+                "sel.removeAllRanges();"
+                "sel.addRange(range);"
+            "}"
+        "}";
+
+    QWebFrame *webFrame = m_webView->page()->mainFrame();
+    webFrame->evaluateJavaScript(command);
 }
 
 void HtmlEditor::createLink()
