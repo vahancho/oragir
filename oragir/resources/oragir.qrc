@@ -58,5 +58,6 @@
     <file alias="sync" >icon_sync.png</file>
     <file alias="link" >icon_link.png</file>
     <file alias="image" >icon_image.png</file>
+    <file alias="ljcut" >icon_ljcut.png</file>
   </qresource>
 </RCC>

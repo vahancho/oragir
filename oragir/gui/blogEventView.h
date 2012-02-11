@@ -125,7 +125,8 @@ public:
         NumberedList,
         BulletedList,
         InsertImage,
-        CreateLink
+        CreateLink,
+        LJCut
     };
 
     /// Defines the new type of mapping between index and action.

@@ -385,6 +385,12 @@ void MainWindow::createMenus()
     action->setIcon(QIcon(":icons/link"));
     m_htmlActions[BlogEventView::CreateLink] = action;
     editToolBar->addAction(action);
+    editMenu->addSeparator();
+    editToolBar->addSeparator();
+    action = editMenu->addAction("Text Cut...");
+    action->setIcon(QIcon(":icons/ljcut"));
+    m_htmlActions[BlogEventView::LJCut] = action;
+    editToolBar->addAction(action);
 
     ///////////////////////////////////////////////////////////////////////////
     // Format menu

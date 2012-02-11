@@ -320,6 +320,9 @@ void BlogEventView::setupActions(const HtmlActions &actions)
         case CreateLink:
             connect(action, SIGNAL(triggered()), m_htmlEditor, SLOT(createLink()));
             break;
+        case LJCut:
+            connect(action, SIGNAL(triggered()), m_htmlEditor, SLOT(insertLjCut()));
+            break;
         case AlignLeft:
             bindWebAction(action, QWebPage::AlignLeft);
             break;
