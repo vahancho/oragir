@@ -202,9 +202,13 @@ void HtmlEditor::insertImage()
 
 void HtmlEditor::insertLjCut()
 {
-     QString command =
+    QString text = QInputDialog::getText(this, tr("Insert Text Cut"),
+                                         "Enter Text", QLineEdit::Normal,
+                                         "Read more...");
+    if (!text.isEmpty()) {
+        QString command = QString(
         "var element = document.createElement(\"lj-cut\");"
-        "element.setAttribute('text', 'Read more...');"
+        "element.setAttribute('text', '%1');"
         "if (window.getSelection) {"
             "var sel = window.getSelection();"
             "if (sel.rangeCount) {"
@@ -213,10 +217,12 @@ void HtmlEditor::insertLjCut()
                 "sel.removeAllRanges();"
                 "sel.addRange(range);"
             "}"
-        "}";
+        "}"
+        ).arg(text);
 
-    QWebFrame *webFrame = m_webView->page()->mainFrame();
-    webFrame->evaluateJavaScript(command);
+        QWebFrame *webFrame = m_webView->page()->mainFrame();
+        webFrame->evaluateJavaScript(command);
+    }
 }
 
 void HtmlEditor::createLink()
