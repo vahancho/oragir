@@ -1391,17 +1391,18 @@ void MainWindow::onCommitChanges()
     if (QMdiSubWindow *mdiWindow = m_mdiArea.activeSubWindow()) {
         if(BlogEventView *blogView =
            qobject_cast<BlogEventView *>(mdiWindow->widget())) {
+           m_progress->start();
 
             QDateTime dt = blogView->dateTime();
             QString subject = blogView->subject();
             QString body = blogView->htmlContent();
 
-            const QString ad = QString("\n\n<span style=\"font-size: x-small; \">"
+            const QString ad = QString("<span style=\"font-size: x-small; \">"
                            "Posted via <a href=\"http://oragir.sourceforge.net\">"
                            "Oragir v%1</a></span>").arg(str::Version);
 
-            if (!body.endsWith(ad))
-                body.append(ad);
+            if (!body.contains(ad))
+                body.append("\n" + ad);
 
             lj::Communicator com;
             core::Credentials *cr = core::Application::theApp()->credentials();
@@ -1418,7 +1419,7 @@ void MainWindow::onCommitChanges()
             if (id < 0) {
                 // Post new event.
                 data = com.postEvent(subject, body,
-                                     "private", dt, props,
+                                     "public", dt, props,
                                      blogView->postTo());
             } else {
                 // Edit existing event.
@@ -1433,12 +1434,14 @@ void MainWindow::onCommitChanges()
                 QMessageBox::critical(this, "Blog Post Failure",
                                       data.error());
             }
+            m_progress->stop();
         }
     }
 }
 
 void MainWindow::onSynchronize()
 {
+    m_progress->start();
     // Get the last synced time from the user database.
     core::BlogDatabase *db = core::Application::theApp()->blogDatabase();
     QString lastsynced = db->lastSynced();
@@ -1487,6 +1490,7 @@ void MainWindow::onSynchronize()
             onSynchronize();
         }
     }
+    m_progress->stop();
 }
 
 } // namespace gui
