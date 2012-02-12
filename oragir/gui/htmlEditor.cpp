@@ -79,6 +79,7 @@ void HtmlEditor::onLinkClicked(const QUrl &url)
 QString HtmlEditor::content() const
 {
     QString html = m_webView->page()->mainFrame()->toHtml();
+    html.remove("\n");
     html.replace("<BR>", "\n", Qt::CaseInsensitive);
     return html;
 }
