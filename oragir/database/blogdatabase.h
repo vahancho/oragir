@@ -101,8 +101,9 @@ public:
 
     unsigned int eventMask(int id) const;
 
-private:
+    QString location(int id) const;
 
+private:
     /// Returns the event's given property value string.
     QString eventProperties(int row, const QString &name) const;
 };

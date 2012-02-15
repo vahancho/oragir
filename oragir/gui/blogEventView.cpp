@@ -39,7 +39,7 @@ BlogEventView::BlogEventView(QWidget *parent, Qt::WindowFlags f)
         m_eventId(-1)
 {
     m_editSubject = new QLineEdit(this);
-    QLabel *lblTime = new QLabel("Time:", this);
+    m_editLocation = new QLineEdit(this);
     m_dtEdit = new QDateTimeEdit(this);
     m_dtEdit->setDisplayFormat("MMMM d, yyyy, h:mm AP");
     m_dtEdit->setCalendarPopup(true);
@@ -60,14 +60,15 @@ BlogEventView::BlogEventView(QWidget *parent, Qt::WindowFlags f)
 
     QFormLayout *formLayout1 = new QFormLayout;
     formLayout1->addRow("Subject:", m_editSubject);
-    formLayout1->addRow(lblTime, timeLayout);
+    formLayout1->addRow("Time:", timeLayout);
     formLayout1->addRow("Tags:", m_cmbTags);
-    formLayout1->addRow("Moods:", m_cmbMoods);
+    formLayout1->addRow("Location:", m_editLocation);
 
     QFormLayout *formLayout2 = new QFormLayout;
     formLayout2->addRow("Post to:", m_cmbPostTo);
     formLayout2->addRow("Userpic:", m_cmbUserPic);
     formLayout2->addRow("Access:", m_cmbSecurity);
+    formLayout2->addRow("Moods:", m_cmbMoods);
 
     QHBoxLayout *headerLayout = new QHBoxLayout;
     headerLayout->addLayout(formLayout1);
@@ -217,6 +218,16 @@ QString BlogEventView::mood() const
     return m_cmbMoods->currentText();
 }
 
+void BlogEventView::setLocation(const QString &location)
+{
+    m_editLocation->setText(location);
+}
+
+QString BlogEventView::location() const
+{
+    return m_editLocation->text();
+}
+
 void BlogEventView::setSecurityNames(const QStringList &security)
 {
     m_cmbSecurity->addItems(security);
@@ -322,6 +333,9 @@ void BlogEventView::setupActions(const HtmlActions &actions)
             break;
         case LJCut:
             connect(action, SIGNAL(triggered()), m_htmlEditor, SLOT(insertLjCut()));
+            break;
+        case InsertHtml:
+            connect(action, SIGNAL(triggered()), m_htmlEditor, SLOT(insertHtml()));
             break;
         case AlignLeft:
             bindWebAction(action, QWebPage::AlignLeft);

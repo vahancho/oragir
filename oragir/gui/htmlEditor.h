@@ -78,6 +78,7 @@ public slots:
     void setFontSize();
     void setStrikeThrough();
     void insertLjCut();
+    void insertHtml();
 
 private slots:
     void onTabChanged(int tab);

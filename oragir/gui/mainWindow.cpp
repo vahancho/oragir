@@ -391,6 +391,10 @@ void MainWindow::createMenus()
     action->setIcon(QIcon(":icons/ljcut"));
     m_htmlActions[BlogEventView::LJCut] = action;
     editToolBar->addAction(action);
+    action = editMenu->addAction("Insert HTML...");
+    action->setIcon(QIcon(":icons/html"));
+    m_htmlActions[BlogEventView::InsertHtml] = action;
+    editToolBar->addAction(action);
 
     ///////////////////////////////////////////////////////////////////////////
     // Format menu
@@ -1274,6 +1278,7 @@ void MainWindow::onEventClicked(const QModelIndex &index)
     view->setUserPic(db->userPic(itemId));
     view->setSecurity(db->eventSecurity(itemId));
     view->setMood(db->currentMood(itemId));
+    view->setLocation(db->location(itemId));
 
     createSubWindow(view, subject);
 }
@@ -1413,6 +1418,7 @@ void MainWindow::onCommitChanges()
             props["taglist"] = blogView->eventTags();
             props["picture_keyword"] = blogView->userPic();
             props["current_mood"] = blogView->mood();
+            props["current_location"] = blogView->location();
 
             lj::EventData data;
             int id = blogView->eventId();

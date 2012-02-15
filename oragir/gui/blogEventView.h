@@ -91,6 +91,10 @@ public:
     void setSecurity(const QStringList &security);
     QString security() const;
 
+    /// Handle location.
+    void setLocation(const QString &location);
+    QString location() const;
+
     /// Defines the index of html editor related actions.
     enum HtmlAction
     {
@@ -126,7 +130,8 @@ public:
         BulletedList,
         InsertImage,
         CreateLink,
-        LJCut
+        LJCut,
+        InsertHtml
     };
 
     /// Defines the new type of mapping between index and action.
@@ -145,6 +150,7 @@ private:
     void bindWebAction(QAction *guiAction, QWebPage::WebAction webAction);
 
     QLineEdit *m_editSubject;
+    QLineEdit *m_editLocation;
     HtmlEditor *m_htmlEditor;
     HtmlActions m_htmlActions;
     QCheckBox *m_chkOutOrder;

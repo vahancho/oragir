@@ -25,6 +25,9 @@
 #include <QInputDialog>
 #include <QColorDialog>
 #include <QFontDatabase>
+#include <QLabel>
+#include <QPushButton>
+#include <QLayout>
 #include "htmlEditor.h"
 
 namespace gui
@@ -223,6 +226,30 @@ void HtmlEditor::insertLjCut()
 
         QWebFrame *webFrame = m_webView->page()->mainFrame();
         webFrame->evaluateJavaScript(command);
+    }
+}
+
+void HtmlEditor::insertHtml()
+{
+    QDialog dialog;
+    QLabel *label = new QLabel("Html Code", &dialog);
+    QTextEdit *edit = new QTextEdit(&dialog);
+    QPushButton *btnOk = new QPushButton("OK", &dialog);
+    connect(btnOk, SIGNAL(clicked()), &dialog, SLOT(accept()));
+    QPushButton *btnCancel = new QPushButton("Cancel", &dialog);
+    connect(btnCancel, SIGNAL(clicked()), &dialog, SLOT(reject()));
+    QHBoxLayout *btnLayout = new QHBoxLayout;
+    btnLayout->addStretch(1);
+    btnLayout->addWidget(btnOk);
+    btnLayout->addWidget(btnCancel);
+    QVBoxLayout *mainLayout = new QVBoxLayout;
+    mainLayout->addWidget(label);
+    mainLayout->addWidget(edit);
+    mainLayout->addLayout(btnLayout);
+    dialog.setLayout(mainLayout);
+
+    if (dialog.exec() == QDialog::Accepted) {
+        invokeCommand("insertHTML", edit->toPlainText());
     }
 }
 

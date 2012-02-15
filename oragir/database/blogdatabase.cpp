@@ -171,6 +171,11 @@ QStringList BlogDatabase::userPics() const
         return QStringList();
 }
 
+QString BlogDatabase::location(int id) const
+{
+    return eventProperties(id, "current_location");
+}
+
 bool BlogDatabase::isBackdated(int id) const
 {
     return eventProperties(id, "opt_backdated") == "1";
