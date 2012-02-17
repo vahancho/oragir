@@ -24,6 +24,7 @@
 #include <QDialog>
 
 class QLineEdit;
+class QCheckBox;
 
 namespace gui
 {
@@ -39,10 +40,12 @@ public:
     void setPassword(const QString &password);
     QString user() const;
     QString password() const;
+    bool download() const;
 
 private:
     QLineEdit *m_leUser;
     QLineEdit *m_lePassword;
+    QCheckBox *m_chkDownload;
 };
 
 } // namespace gui

@@ -21,6 +21,8 @@
 #include <QLineEdit>
 #include <QFormLayout>
 #include <QPushButton>
+#include <QCheckBox>
+#include <QGroupBox>
 #include "dlgUser.h"
 #include "../strings/guiStrings.h"
 
@@ -36,8 +38,14 @@ UserAccount::UserAccount(QWidget *parent, Qt::WindowFlags f)
     m_lePassword->setEchoMode(QLineEdit::Password);
 
     QFormLayout *formLayout = new QFormLayout;
-    formLayout->addRow(tr("&User:"), m_leUser);
+    formLayout->addRow(tr("&User name:"), m_leUser);
     formLayout->addRow(tr("&Password:"), m_lePassword);
+
+    QGroupBox *groupBox = new QGroupBox("Account details", this);
+    groupBox->setLayout(formLayout);
+
+    m_chkDownload = new QCheckBox("Download all entries", this);
+    m_chkDownload->setChecked(true);
 
     QPushButton *btnOk = new QPushButton(str::Ok, this);
     connect(btnOk, SIGNAL(clicked()), this, SLOT(accept()));
@@ -51,8 +59,10 @@ UserAccount::UserAccount(QWidget *parent, Qt::WindowFlags f)
     btnLayout->addWidget(btnCancel);
 
     QVBoxLayout *mainLayout = new QVBoxLayout;
-    mainLayout->addLayout(formLayout);
+    mainLayout->addWidget(groupBox);
+    mainLayout->addWidget(m_chkDownload);
     mainLayout->addLayout(btnLayout);
+    mainLayout->addStretch(1);
 
     setLayout(mainLayout);
     setWindowTitle("User Account");
@@ -76,6 +86,11 @@ QString UserAccount::user() const
 QString UserAccount::password() const
 {
     return m_lePassword->text();
+}
+
+bool UserAccount::download() const
+{
+    return m_chkDownload->isChecked();
 }
 
 } // namespace gui
