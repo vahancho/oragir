@@ -109,19 +109,55 @@ void OptionsDialog::addPage(AbstractOptionsPage *page)
     QStringList names = path.split('/');
     QTreeWidgetItem *parent = 0;
     foreach (const QString &name, names) {
-        QTreeWidgetItem *item = 0;
         if (!parent) {
-            item = new QTreeWidgetItem(m_navigationTree);
+            // Top level item.
+            parent = itemExist(name, m_navigationTree);
+            if (!parent) {
+                parent = new QTreeWidgetItem(m_navigationTree);
+            } else {
+                continue;
+            }
         } else {
-            item = new QTreeWidgetItem(parent);
+            QTreeWidgetItem *item = itemExist(name, parent);
+            if (!item) {
+                parent = new QTreeWidgetItem(parent);
+            } else {
+                parent = item;
+                continue;
+            }
         }
-        parent = item;
-        item->setText(0, name);
+        parent->setText(0, name);
         m_navigationTree->resizeColumnToContents(0);
         int pageIndex = m_pages->addWidget(page);
         // Map the tree view item with the page index.
-        m_pageMapping[item] = pageIndex;
+        m_pageMapping[parent] = pageIndex;
     }
+}
+
+QTreeWidgetItem *OptionsDialog::itemExist(const QString &name,
+                                          QTreeWidgetItem *parent) const
+{
+    for (int i = 0; i < parent->childCount(); ++i) {
+        QTreeWidgetItem *item = parent->child(i);
+        if (item->text(0) == name) {
+            // Such item already exists.
+            return item;
+        }
+    }
+    return 0;
+}
+
+QTreeWidgetItem *OptionsDialog::itemExist(const QString &name,
+                                          QTreeWidget *parent) const
+{
+    for (int i = 0; i < parent->topLevelItemCount(); ++i) {
+        QTreeWidgetItem *item = parent->topLevelItem(i);
+        if (item->text(0) == name) {
+            // Such item already exists.
+            return item;
+        }
+    }
+    return 0;
 }
 
 void OptionsDialog::onChangePage(QTreeWidgetItem *current, QTreeWidgetItem *previous)

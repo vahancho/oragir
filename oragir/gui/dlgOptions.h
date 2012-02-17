@@ -59,6 +59,12 @@ private:
     /// Creates and sets up dialog's pages and corresponding nodes in navigation tree.
     void setupPages();
 
+    /// Returns top level item with the given name if found or null.
+    QTreeWidgetItem *itemExist(const QString &name, QTreeWidgetItem *parent) const;
+
+    /// Returns child item of the given parent with the given name or null.
+    QTreeWidgetItem *itemExist(const QString &name, QTreeWidget *parent) const;
+
     /// The dialog's navigation tree.
     QTreeWidget *m_navigationTree;
 
