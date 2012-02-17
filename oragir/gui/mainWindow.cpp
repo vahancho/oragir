@@ -1402,13 +1402,6 @@ void MainWindow::onCommitChanges()
             QString subject = blogView->subject();
             QString body = blogView->htmlContent();
 
-            const QString ad = QString("<span style=\"font-size: x-small; \">"
-                           "Posted via <a href=\"http://oragir.sourceforge.net\">"
-                           "Oragir v%1</a></span>").arg(str::Version);
-
-            if (!body.contains(ad))
-                body.append("\n" + ad);
-
             lj::Communicator com;
             core::Credentials *cr = core::Application::theApp()->credentials();
             com.setUser(cr->user(), cr->password());
@@ -1423,6 +1416,11 @@ void MainWindow::onCommitChanges()
             lj::EventData data;
             int id = blogView->eventId();
             if (id < 0) {
+                QString ad = QString("<span style=\"font-size: x-small; \">"
+                                     "Posted via <a href=\"http://oragir.sourceforge.net\">"
+                                     "Oragir v%1</a></span>").arg(str::Version);
+
+                body.append("\n\n" + ad);
                 // Post new event.
                 data = com.postEvent(subject, body,
                                      "public", dt, props,
