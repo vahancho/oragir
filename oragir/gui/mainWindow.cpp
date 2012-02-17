@@ -1436,6 +1436,7 @@ void MainWindow::onCommitChanges()
 
             if (data.isValid()) {
                 blogView->setEventId(data.id());
+                mdiWindow->setWindowTitle(subject);
             } else {
                 QMessageBox::critical(this, "Blog Post Failure",
                                       data.error());
