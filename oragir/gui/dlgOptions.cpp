@@ -89,9 +89,6 @@ void OptionsDialog::setupPages()
     m_navigationTree->setColumnCount(1);
     // Make header invisible
     m_navigationTree->header()->setVisible(false);
-    m_navigationTree->setMaximumWidth(75);
-    m_navigationTree->setMinimumWidth(75);
-    m_navigationTree->setRootIsDecorated(false);
 
     // Set connection
     connect(m_navigationTree,
@@ -108,15 +105,23 @@ void OptionsDialog::setupPages()
 
 void OptionsDialog::addPage(AbstractOptionsPage *page)
 {
-    int pageIndex = m_pages->addWidget(page);
-
-    QTreeWidgetItem *item = new QTreeWidgetItem;
-    item->setText(0, page->name());
-    m_navigationTree->addTopLevelItem(item);
-    m_navigationTree->resizeColumnToContents(0);
-
-    // Map the tree view item with the page index.
-    m_pageMapping[item] = pageIndex;
+    QString path = page->name();
+    QStringList names = path.split('/');
+    QTreeWidgetItem *parent = 0;
+    foreach (const QString &name, names) {
+        QTreeWidgetItem *item = 0;
+        if (!parent) {
+            item = new QTreeWidgetItem(m_navigationTree);
+        } else {
+            item = new QTreeWidgetItem(parent);
+        }
+        parent = item;
+        item->setText(0, name);
+        m_navigationTree->resizeColumnToContents(0);
+        int pageIndex = m_pages->addWidget(page);
+        // Map the tree view item with the page index.
+        m_pageMapping[item] = pageIndex;
+    }
 }
 
 void OptionsDialog::onChangePage(QTreeWidgetItem *current, QTreeWidgetItem *previous)
