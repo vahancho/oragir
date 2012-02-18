@@ -1165,7 +1165,9 @@ void MainWindow::onBlogAccountSetup()
                                    .arg(user));
 
             // Get the total number of events in the blog.
-            downloadAllEvents();
+            if (dlg.download()) {
+                downloadAllEvents();
+            }
         } else {
             QMessageBox::critical(this, "User Account Error",
                                   userInfo.error());
