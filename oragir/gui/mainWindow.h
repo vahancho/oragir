@@ -179,6 +179,8 @@ private:
     /// Returns the full path to the user blog's database file.
     QString blogDataFile(const QString &user) const;
 
+    void downloadAllEvents();
+
     /// Creates and sets up the folders tree view.
     void createFolderTree();
 

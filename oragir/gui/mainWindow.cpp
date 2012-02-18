@@ -1110,11 +1110,6 @@ void MainWindow::onBlogAccountSetup()
 
     if (dlg.exec() == QDialog::Accepted) {
         m_progress->start();
-        QProgressBar progressBar;
-        progressBar.setMaximumWidth(150);
-        progressBar.setMaximumHeight(16);
-        progressBar.setMinimum(0);
-        statusBar()->insertPermanentWidget(0, &progressBar);
 
         QString user = dlg.user();
         QString password = dlg.password();
@@ -1170,67 +1165,7 @@ void MainWindow::onBlogAccountSetup()
                                    .arg(user));
 
             // Get the total number of events in the blog.
-            int total = 0;
-            QVariantList postPerDay = com.getDayCount();
-            foreach (const QVariant &v, postPerDay) {
-                QMap<QString, QVariant> data = v.toMap();
-                total += data["count"].toInt();
-            }
-            progressBar.setMaximum(total);
-
-            // Resulting events.
-            lj::Events events;
-            int canFetch = 0;
-            foreach (const QVariant &v, postPerDay) {
-                // No need to fetch the same events twice.
-                if (events.count() >= total)
-                    break;
-
-                QMap<QString, QVariant> data = v.toMap();
-                int count = data["count"].toInt();
-                canFetch += count;
-                if (canFetch >= 50) {
-                    QString dateStr = data["date"].toString();
-
-                    lj::Events e = com.getDayEvents(dateStr);
-                    if (e.isValid()) {
-                        canFetch -= e.count();
-                        events += e;
-                        progressBar.setValue(events.count());
-                    }
-
-                    dateStr += " 00:00:00";
-                    e = com.getEvents(canFetch, dateStr);
-                    if (e.isValid()) {
-                        canFetch -= e.count();
-                        events += e;
-                        progressBar.setValue(events.count());
-                    }
-                }
-            }
-
-            // Get the last n events.
-            lj::Events e = com.getEvents(total - events.count());
-            if (e.isValid()) {
-                events += e;
-            }
-
-            // Add all events to the database and calculate lastsync time.
-            QDateTime lastDt = QDateTime::fromString("1900-01-01 00:00:00",
-                                                     str::TimeFormat);
-            for (int i = 0; i < events.count(); ++i) {
-                lj::Event event = events.event(i);
-                db->addEvent(event);
-
-                QDateTime dt = QDateTime::fromString(event.m_time,
-                                                     str::TimeFormat);
-                if (dt > lastDt)
-                    lastDt = dt;
-            }
-
-            db->setLastSynced(lastDt.toString(str::TimeFormat));
-            updateBlogModel();
-            progressBar.setValue(events.count());
+            downloadAllEvents();
         } else {
             QMessageBox::critical(this, "User Account Error",
                                   userInfo.error());
@@ -1251,6 +1186,90 @@ QString MainWindow::blogDataFile(const QString &user) const
     if (!dir.exists())
         dir.mkpath(userDir);
     return userDir + "blog.data";
+}
+
+void MainWindow::downloadAllEvents()
+{
+    QProgressBar progressBar;
+    progressBar.setMaximumWidth(150);
+    progressBar.setMaximumHeight(16);
+    progressBar.setMinimum(0);
+    statusBar()->insertPermanentWidget(0, &progressBar);
+
+    core::Credentials *cr = core::Application::theApp()->credentials();
+    core::BlogDatabase *db = core::Application::theApp()->blogDatabase();
+    core::Credentials dbCr;
+    dbCr.fromEncoded(db->credentials());
+    if (cr->user() != dbCr.user() || cr->password() != dbCr.password()) {
+        /// \todo Handle error, when database credentials does not
+        // correspond to the current user credentials.
+        return;
+    }
+
+    lj::Communicator com;
+    com.setUser(cr->user(), cr->password());
+    // Get the total number of events in the blog.
+    int total = 0;
+    QVariantList postPerDay = com.getDayCount();
+    foreach (const QVariant &v, postPerDay) {
+        QMap<QString, QVariant> data = v.toMap();
+        total += data["count"].toInt();
+    }
+    progressBar.setMaximum(total);
+
+    // Resulting events.
+    lj::Events events;
+    int canFetch = 0;
+    foreach (const QVariant &v, postPerDay) {
+        // No need to fetch the same events twice.
+        if (events.count() >= total)
+            break;
+
+        QMap<QString, QVariant> data = v.toMap();
+        int count = data["count"].toInt();
+        canFetch += count;
+        if (canFetch >= 50) {
+            QString dateStr = data["date"].toString();
+
+            lj::Events e = com.getDayEvents(dateStr);
+            if (e.isValid()) {
+                canFetch -= e.count();
+                events += e;
+                progressBar.setValue(events.count());
+            }
+
+            dateStr += " 00:00:00";
+            e = com.getEvents(canFetch, dateStr);
+            if (e.isValid()) {
+                canFetch -= e.count();
+                events += e;
+                progressBar.setValue(events.count());
+            }
+        }
+    }
+
+    // Get the last n events.
+    lj::Events e = com.getEvents(total - events.count());
+    if (e.isValid()) {
+        events += e;
+    }
+
+    // Add all events to the database and calculate lastsync time.
+    QDateTime lastDt = QDateTime::fromString("1900-01-01 00:00:00",
+                                             str::TimeFormat);
+    for (int i = 0; i < events.count(); ++i) {
+        lj::Event event = events.event(i);
+        db->addEvent(event);
+
+        QDateTime dt = QDateTime::fromString(event.m_time,
+                                             str::TimeFormat);
+        if (dt > lastDt)
+            lastDt = dt;
+    }
+
+    db->setLastSynced(lastDt.toString(str::TimeFormat));
+    updateBlogModel();
+    progressBar.setValue(events.count());
 }
 
 void MainWindow::onBlogViewContextMenu(const QPoint &pos)
