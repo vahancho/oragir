@@ -1130,16 +1130,10 @@ void MainWindow::onBlogAccountSetup()
             cr->setPassword(password);
 
             core::BlogDatabase *db = core::Application::theApp()->blogDatabase();
-            QString dbPath = core::Application::theApp()->settingsDirectory() +
-                             "users" + '/' + user + '/';
-            dbPath = QDir::toNativeSeparators(dbPath);
-            QDir dir(dbPath);
-            if (!dir.exists())
-                dir.mkpath(dbPath);
-            dbPath += user + ".data";
+            QString dataFile = blogDataFile(user);
             if (db->database().isOpen()) {
                 QString currentDbName = db->database().connectionName();
-                if (currentDbName == dbPath) {
+                if (currentDbName == dataFile) {
                     // If used the same user, just delete the old data
                     // to fetch it again.
                     QStringList tables = db->tables();
@@ -1154,7 +1148,7 @@ void MainWindow::onBlogAccountSetup()
                     m_blogModel = 0;
                 }
             }
-            db->create(dbPath);
+            db->create(dataFile);
 
             // Set the user table data now.
             db->setUserData(userInfo, cr->encode());
@@ -1244,6 +1238,19 @@ void MainWindow::onBlogAccountSetup()
 
         m_progress->stop();
     }
+}
+
+QString MainWindow::blogDataFile(const QString &user) const
+{
+    Q_ASSERT(!user.isEmpty());
+
+    QString userDir = core::Application::theApp()->settingsDirectory() +
+                      "users" + '/' + user + '/';
+    userDir = QDir::toNativeSeparators(userDir);
+    QDir dir(userDir);
+    if (!dir.exists())
+        dir.mkpath(userDir);
+    return userDir + "blog.data";
 }
 
 void MainWindow::onBlogViewContextMenu(const QPoint &pos)
