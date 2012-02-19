@@ -156,6 +156,8 @@ private slots:
 
     void onEventOpen();
 
+    void onEventDelete();
+
     void onBlogViewContextMenu(const QPoint &);
 
     /// Handle the user pics downloading request finished signal.

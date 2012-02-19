@@ -1281,6 +1281,7 @@ void MainWindow::onBlogViewContextMenu(const QPoint &pos)
         QMenu menu;
         QAction *act = menu.addAction("&Open", this, SLOT(onEventOpen()));
         menu.setDefaultAction(act);
+        menu.addAction("&Delete", this, SLOT(onEventDelete()));
         menu.exec(m_blogView->mapToGlobal(QPoint(pos.x(), pos.y() + 20)));
     }
 }
@@ -1288,6 +1289,24 @@ void MainWindow::onBlogViewContextMenu(const QPoint &pos)
 void MainWindow::onEventOpen()
 {
     onEventClicked(m_blogView->currentIndex());
+}
+
+void MainWindow::onEventDelete()
+{
+    QModelIndex index = m_blogView->currentIndex();
+    if (index.isValid()) {
+        lj::Communicator com;
+        core::Credentials *cr = core::Application::theApp()->credentials();
+        com.setUser(cr->user(), cr->password());
+        QSqlRecord record = m_blogModel->record(index.row());
+        int itemId = record.value(BlogTableModel::ItemId).toInt();
+        lj::EventData data = com.editEvent(itemId, "", "", "", QDateTime(),
+                                           lj::EventProperties(), "");
+        if (data.isValid()) {
+            m_blogModel->removeRows(index.row(), 1);
+            m_blogModel->submitAll();
+        }
+    }
 }
 
 void MainWindow::onEventClicked(const QModelIndex &index)
@@ -1424,7 +1443,7 @@ void MainWindow::onCommitChanges()
     if (QMdiSubWindow *mdiWindow = m_mdiArea.activeSubWindow()) {
         if(BlogEventView *blogView =
            qobject_cast<BlogEventView *>(mdiWindow->widget())) {
-           m_progress->start();
+            m_progress->start();
 
             QDateTime dt = blogView->dateTime();
             QString subject = blogView->subject();
