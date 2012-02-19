@@ -1146,9 +1146,11 @@ void MainWindow::onBlogAccountSetup()
             // Set the user table data now.
             db->setUserData(userInfo, cr->encode());
 
-            // Download all user pics.
+            // Download all user pics, including default one.
             QStringList urls = userInfo.pictureUrls();
+            urls.push_back(userInfo.defaultPicUrl());
             QStringList picKeys = userInfo.pictureKeys();
+            picKeys.push_back("default");
             downloadUserPics(urls, picKeys);
 
             // Get user's friend groups
