@@ -1150,7 +1150,7 @@ void MainWindow::onBlogAccountSetup()
             QStringList urls = userInfo.pictureUrls();
             urls.push_back(userInfo.defaultPicUrl());
             QStringList picKeys = userInfo.pictureKeys();
-            picKeys.push_back("default");
+            picKeys.push_back("(default)");
             downloadUserPics(urls, picKeys);
 
             // Get user's friend groups
@@ -1424,7 +1424,11 @@ BlogEventView *MainWindow::createBlogEventView()
     journals.prepend(core::Application::theApp()->credentials()->user());
     view->setPostTo(journals);
 
-    view->setUserPics(db->userPics());
+    core::Credentials *cr = core::Application::theApp()->credentials();
+    QString imageDir = core::Application::theApp()->settingsDirectory() +
+                       "users" + '/' + cr->user() + '/' + "userpics" + '/';
+
+    view->setUserPics(db->userPics(), imageDir);
     view->setMoods(db->moods());
     view->setUserTags(db->userTags());
     view->setSecurityNames(db->securityNames());
