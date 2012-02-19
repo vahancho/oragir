@@ -26,6 +26,7 @@
 #include <QCheckBox>
 #include <QComboBox>
 #include <QFormLayout>
+#include <QPixmap>
 #include "blogEventView.h"
 #include "htmlEditor.h"
 #include "comboBox.h"
@@ -46,13 +47,16 @@ BlogEventView::BlogEventView(QWidget *parent, Qt::WindowFlags f)
     m_chkOutOrder = new QCheckBox("Date Out of Order", this);
     m_cmbPostTo = new QComboBox(this);
     m_cmbUserPic = new QComboBox(this);
+    connect(m_cmbUserPic, SIGNAL(activated(const QString &)),
+            this, SLOT(onPicChanged(const QString &)));
     m_cmbTags = new ComboBox(this);
     m_cmbTags->setEditable(true);
     m_cmbMoods = new QComboBox(this);
     m_cmbMoods->setEditable(true);
     m_cmbSecurity = new QComboBox(this);
     m_lblUserpic = new QLabel(this);
-    m_lblUserpic->setMinimumSize(QSize(100, 100));
+    m_lblUserpic->setMinimumSize(QSize(64, 64));
+    m_lblUserpic->setAlignment(Qt::AlignTop);
 
     QHBoxLayout *timeLayout = new QHBoxLayout;
     timeLayout->addWidget(m_dtEdit);
@@ -113,10 +117,12 @@ void BlogEventView::setPostTo(const QStringList &postto)
     m_cmbPostTo->addItems(postto);
 }
 
-void BlogEventView::setUserPics(const QStringList &userpics)
+void BlogEventView::setUserPics(const QStringList &userpics,
+                                const QString &picLocation)
 {
     m_cmbUserPic->addItem("(default)");
     m_cmbUserPic->addItems(userpics);
+    m_picLocation = picLocation;
 }
 
 void BlogEventView::setUserPic(const QString &userPic)
@@ -128,6 +134,7 @@ void BlogEventView::setUserPic(const QString &userPic)
             break;
         }
     }
+    onPicChanged(m_cmbUserPic->currentText());
 }
 
 QString BlogEventView::htmlContent() const
@@ -407,6 +414,16 @@ void BlogEventView::onTimer()
 {
     if (!m_chkOutOrder->isChecked())
         m_dtEdit->setDateTime(QDateTime::currentDateTime());
+}
+
+void BlogEventView::onPicChanged(const QString &pic)
+{
+    QPixmap pix(m_picLocation + '/' + pic + ".png");
+    if (!pix.isNull()) {
+        m_lblUserpic->setPixmap(pix.scaled(m_lblUserpic->size(),
+                                           Qt::KeepAspectRatio));
+    }
+
 }
 
 } // namespace gui

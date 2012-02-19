@@ -62,7 +62,8 @@ public:
     void setPostTo(const QStringList &postto);
     QString postTo() const;
 
-    void setUserPics(const QStringList &userpics);
+    void setUserPics(const QStringList &userpics,
+                     const QString &picLocation);
     void setUserPic(const QString &userPic);
     QString userPic() const;
 
@@ -146,6 +147,8 @@ private slots:
 
     void onTimer();
 
+    void onPicChanged(const QString &pic);
+
 private:
     void bindWebAction(QAction *guiAction, QWebPage::WebAction webAction);
 
@@ -166,6 +169,9 @@ private:
 
     /// Stores the event id. For new event id is -1.
     int m_eventId;
+
+    /// Stores the location where user pics stored.
+    QString m_picLocation;
 };
 
 } // namespace gui
