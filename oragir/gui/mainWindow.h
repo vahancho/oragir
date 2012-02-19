@@ -175,6 +175,9 @@ private:
         Name = 0
     };
 
+    /// Returns the path to the directory where current user's pics are.
+    QString userPicsLocation() const;
+
     /// Returns the full path to the user blog's database file.
     QString blogDataFile(const QString &user) const;
 

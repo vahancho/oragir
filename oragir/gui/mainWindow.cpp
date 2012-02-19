@@ -1387,10 +1387,7 @@ void MainWindow::downloadUserPics(const QStringList &urls,
     }
 
     // Create target directory.
-    core::Credentials *cr = core::Application::theApp()->credentials();
-    QString imageDir = core::Application::theApp()->settingsDirectory() +
-                       "users" + '/' + cr->user() + '/' + "userpics" + '/';
-    imageDir = QDir::toNativeSeparators(imageDir);
+    QString imageDir = userPicsLocation();
     QDir dir(imageDir);
     if (!dir.exists()) {
         dir.mkpath(imageDir);
@@ -1404,6 +1401,14 @@ void MainWindow::downloadUserPics(const QStringList &urls,
         QPixmap pix = id.pixmap();
         pix.save(fileName);
     }
+}
+
+QString MainWindow::userPicsLocation() const
+{
+    core::Credentials *cr = core::Application::theApp()->credentials();
+    QString imageDir = core::Application::theApp()->settingsDirectory() +
+                       "users" + '/' + cr->user() + '/' + "userpics" + '/';
+    return QDir::toNativeSeparators(imageDir);
 }
 
 void MainWindow::onNewPost()
@@ -1424,11 +1429,7 @@ BlogEventView *MainWindow::createBlogEventView()
     journals.prepend(core::Application::theApp()->credentials()->user());
     view->setPostTo(journals);
 
-    core::Credentials *cr = core::Application::theApp()->credentials();
-    QString imageDir = core::Application::theApp()->settingsDirectory() +
-                       "users" + '/' + cr->user() + '/' + "userpics" + '/';
-
-    view->setUserPics(db->userPics(), imageDir);
+    view->setUserPics(db->userPics(), userPicsLocation());
     view->setMoods(db->moods());
     view->setUserTags(db->userTags());
     view->setSecurityNames(db->securityNames());
