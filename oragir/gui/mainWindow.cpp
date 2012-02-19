@@ -1304,6 +1304,9 @@ void MainWindow::onEventDelete()
         if (data.isValid()) {
             m_blogModel->removeRows(index.row(), 1);
             m_blogModel->submitAll();
+        } else {
+            QMessageBox::critical(this, "Delete Event",
+                                  data.error());
         }
     }
 }
