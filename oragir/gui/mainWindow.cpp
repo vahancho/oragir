@@ -19,9 +19,6 @@
 ***************************************************************************/
 
 #include <QtGui>
-#include <QNetworkAccessManager>
-#include <QNetworkRequest>
-#include <QNetworkReply>
 #include "mainWindow.h"
 #include "databaseView.h"
 #include "dlgFilters.h"
@@ -31,6 +28,7 @@
 #include "connectOptionsPage.h"
 #include "advancedOptionsPage.h"
 #include "blogTableModel.h"
+#include "imagedownloader.h"
 #include "../core/application.h"
 #include "../core/defaultManager.h"
 #include "../core/versionManager.h"
@@ -1150,7 +1148,8 @@ void MainWindow::onBlogAccountSetup()
 
             // Download all user pics.
             QStringList urls = userInfo.pictureUrls();
-            downloadUserPics(urls);
+            QStringList picKeys = userInfo.pictureKeys();
+            downloadUserPics(urls, picKeys);
 
             // Get user's friend groups
             db->setFriendGroups(com.getFriendGroups());
@@ -1378,39 +1377,30 @@ void MainWindow::setupBlogView()
     }
 }
 
-void MainWindow::downloadUserPics(const QStringList &urls)
+void MainWindow::downloadUserPics(const QStringList &urls,
+                                  const QStringList &keys)
 {
-    QNetworkAccessManager *netManager = new QNetworkAccessManager(this);
-    connect(netManager, SIGNAL(finished(QNetworkReply*)),
-            this, SLOT(onNetManagerFinished(QNetworkReply*)));
-
-    foreach(const QString &urlStr, urls) {
-        QUrl url(urlStr);
-        QNetworkRequest request(url);
-        netManager->get(request);
-    }
-}
-
-void MainWindow::onNetManagerFinished(QNetworkReply *reply)
-{
-    if (reply->error() != QNetworkReply::NoError) {
+    if (urls.count() != keys.count()) {
         return;
     }
 
-    QByteArray data = reply->readAll();
-    QPixmap pixmap;
-    pixmap.loadFromData(data);
-    if (!pixmap.isNull()) {
-        core::Credentials *cr = core::Application::theApp()->credentials();
-        QString imageDir = core::Application::theApp()->settingsDirectory() +
-                           "users" + '/' + cr->user() + '/' + "userpics" + '/';
-        imageDir = QDir::toNativeSeparators(imageDir);
-        QDir dir(imageDir);
-        if (!dir.exists())
-            dir.mkpath(imageDir);
-        QString fileName = imageDir +
-                           reply->url().path().section('/', -2).remove('/') + ".png";        
-        pixmap.save(fileName);
+    // Create target directory.
+    core::Credentials *cr = core::Application::theApp()->credentials();
+    QString imageDir = core::Application::theApp()->settingsDirectory() +
+                       "users" + '/' + cr->user() + '/' + "userpics" + '/';
+    imageDir = QDir::toNativeSeparators(imageDir);
+    QDir dir(imageDir);
+    if (!dir.exists()) {
+        dir.mkpath(imageDir);
+    }
+
+    ImageDownloader id;
+    for(int i = 0; i < urls.count(); ++i) {
+        QString urlStr = urls.at(i);
+        id.download(urlStr);
+        QString fileName = imageDir + keys.at(i) + ".png";
+        QPixmap pix = id.pixmap();
+        pix.save(fileName);
     }
 }
 

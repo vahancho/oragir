@@ -160,9 +160,6 @@ private slots:
 
     void onBlogViewContextMenu(const QPoint &);
 
-    /// Handle the user pics downloading request finished signal.
-    void onNetManagerFinished(QNetworkReply *);
-
     /// Called when the new blog post action tigerred.
     void onNewPost();
 
@@ -215,7 +212,11 @@ private:
     void updateBlogModel();
 
     /// Download the user's pictures by the given list of urls.
-    void downloadUserPics(const QStringList &urls);
+    /*!
+        User pics will be downloaded in the user's specific directory
+        and named according to the given list of keys.
+    */
+    void downloadUserPics(const QStringList &urls, const QStringList &keys);
 
     /// Creates the initial blog event view with default settings.
     BlogEventView *createBlogEventView();
