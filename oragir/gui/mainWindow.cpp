@@ -1300,8 +1300,7 @@ void MainWindow::onEventDelete()
         com.setUser(cr->user(), cr->password());
         QSqlRecord record = m_blogModel->record(index.row());
         int itemId = record.value(BlogTableModel::ItemId).toInt();
-        lj::EventData data = com.editEvent(itemId, "", "", "", QDateTime(),
-                                           lj::EventProperties(), "");
+        lj::EventData data = com.deleteEvent(itemId);
         if (data.isValid()) {
             m_blogModel->removeRows(index.row(), 1);
             m_blogModel->submitAll();

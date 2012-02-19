@@ -446,6 +446,12 @@ EventData Communicator::editEvent(int id, const QString &subject,
     return EventData(buf);
 }
 
+EventData Communicator::deleteEvent(int id)
+{
+    return editEvent(id, "", "", "", QDateTime(),
+                     EventProperties(), "");
+}
+
 void Communicator::request(QString methodName, const QVariantList &params)
 {
     QBuffer *responceBuffer = new QBuffer;

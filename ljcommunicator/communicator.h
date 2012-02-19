@@ -112,6 +112,8 @@ public:
                         const lj::EventProperties &props,
                         const QString &journal);
 
+    EventData deleteEvent(int id);
+
 private slots:
     void requestFinished(int id, bool error);
     void exitEventLoop();
