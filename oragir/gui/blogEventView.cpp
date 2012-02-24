@@ -57,7 +57,6 @@ BlogEventView::BlogEventView(QWidget *parent, Qt::WindowFlags f)
     m_cmbMoods = new QComboBox(this);
     m_cmbMoods->setEditable(true);
 
-    m_cmbSecurity = new QComboBox(this);
     QPushButton *btnSecurity = new QPushButton("Public", this);
     m_menuSecurity = new StaticMenu(this);
     connect(m_menuSecurity, SIGNAL(triggered(QAction *)),
