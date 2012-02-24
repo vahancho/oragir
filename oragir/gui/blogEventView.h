@@ -37,6 +37,7 @@ namespace gui
 {
 
 class HtmlEditor;
+class StaticMenu;
 
 class BlogEventView : public QWidget
 {
@@ -90,7 +91,7 @@ public:
 
     void setSecurityNames(const QStringList &security);
     void setSecurity(const QStringList &security);
-    QString security() const;
+    QStringList security() const;
 
     /// Handle location.
     void setLocation(const QString &location);
@@ -149,6 +150,10 @@ private slots:
 
     void onPicChanged(const QString &pic);
 
+    void onSecurityActionTrigerred(QAction *action);
+
+    void onCustomSecurityActionTrigerred(QAction *action);
+
 private:
     void bindWebAction(QAction *guiAction, QWebPage::WebAction webAction);
 
@@ -161,7 +166,8 @@ private:
     QComboBox *m_cmbUserPic;
     QComboBox *m_cmbTags;
     QComboBox *m_cmbMoods;
-    QComboBox *m_cmbSecurity;
+    StaticMenu *m_menuSecurity;
+    StaticMenu *m_menuCustomSecurity;
     QLabel *m_lblUserpic;
     QDateTimeEdit *m_dtEdit;
 

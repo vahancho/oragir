@@ -27,9 +27,12 @@
 #include <QComboBox>
 #include <QFormLayout>
 #include <QPixmap>
+#include <QPushButton>
+#include <QActionGroup>
 #include "blogEventView.h"
 #include "htmlEditor.h"
 #include "comboBox.h"
+#include "staticMenu.h"
 
 namespace gui
 {
@@ -53,7 +56,17 @@ BlogEventView::BlogEventView(QWidget *parent, Qt::WindowFlags f)
     m_cmbTags->setEditable(true);
     m_cmbMoods = new QComboBox(this);
     m_cmbMoods->setEditable(true);
+
     m_cmbSecurity = new QComboBox(this);
+    QPushButton *btnSecurity = new QPushButton("Public", this);
+    m_menuSecurity = new StaticMenu(this);
+    connect(m_menuSecurity, SIGNAL(triggered(QAction *)),
+            this, SLOT(onSecurityActionTrigerred(QAction *)));
+    m_menuCustomSecurity = new StaticMenu("Custom", this);
+    connect(m_menuCustomSecurity, SIGNAL(triggered(QAction *)),
+            this, SLOT(onCustomSecurityActionTrigerred(QAction *)));
+    btnSecurity->setMenu(m_menuSecurity);
+
     m_lblUserpic = new QLabel(this);
     m_lblUserpic->setMinimumSize(QSize(64, 64));
     m_lblUserpic->setAlignment(Qt::AlignTop);
@@ -71,7 +84,7 @@ BlogEventView::BlogEventView(QWidget *parent, Qt::WindowFlags f)
     QFormLayout *formLayout2 = new QFormLayout;
     formLayout2->addRow("Post to:", m_cmbPostTo);
     formLayout2->addRow("Userpic:", m_cmbUserPic);
-    formLayout2->addRow("Access:", m_cmbSecurity);
+    formLayout2->addRow("Access:", btnSecurity);
     formLayout2->addRow("Moods:", m_cmbMoods);
 
     QHBoxLayout *headerLayout = new QHBoxLayout;
@@ -237,24 +250,38 @@ QString BlogEventView::location() const
 
 void BlogEventView::setSecurityNames(const QStringList &security)
 {
-    m_cmbSecurity->addItems(security);
+    QActionGroup *ag = new QActionGroup(this);
+    for (int i = 0; i < 3; ++i) {
+        QAction *act = m_menuSecurity->addAction(security.at(i));
+        act->setCheckable(true);
+        ag->addAction(act);
+    }
+    m_menuSecurity->addSeparator();
+    m_menuSecurity->addMenu(m_menuCustomSecurity);
+    for (int i = 3; i < security.count(); ++i) {
+        QAction *act = m_menuCustomSecurity->addAction(security.at(i));
+        act->setCheckable(true);
+    }
 }
 
 void BlogEventView::setSecurity(const QStringList &security)
 {
-    /*
-    for (int i = 0; i < m_cmbSecurity->count(); ++i) {
-        if (m_cmbSecurity->itemText(i) == security) {
-            m_cmbSecurity->setCurrentIndex(i);
-            break;
-        }
+    foreach (const QString &s, security) {
+        m_menuSecurity->check(s);
+        m_menuCustomSecurity->check(s);
     }
-    */
 }
 
-QString BlogEventView::security() const
+QStringList BlogEventView::security() const
 {
-    return m_cmbSecurity->currentText();
+    QStringList ret;
+    QList<QAction *> actions = m_menuSecurity->actions();
+    actions << m_menuCustomSecurity->actions();
+    foreach (QAction *act, actions) {
+        if (act->isCheckable() && act->isChecked())
+            ret.append(act->text());
+    }
+    return ret;
 }
 
 void BlogEventView::setupActions(const HtmlActions &actions)
@@ -424,6 +451,16 @@ void BlogEventView::onPicChanged(const QString &pic)
                                            Qt::KeepAspectRatio));
     }
 
+}
+
+void BlogEventView::onSecurityActionTrigerred(QAction *action)
+{
+    m_menuCustomSecurity->uncheckAll();
+}
+
+void BlogEventView::onCustomSecurityActionTrigerred(QAction *action)
+{
+    m_menuSecurity->uncheckAll();
 }
 
 } // namespace gui
