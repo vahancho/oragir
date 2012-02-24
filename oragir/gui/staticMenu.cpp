@@ -81,4 +81,13 @@ void StaticMenu::uncheckAll()
     }
 }
 
+void StaticMenu::check(const QString &actionName)
+{
+    QList<QAction *> actionList = actions();
+    foreach (QAction *action, actionList) {
+        if (action->isCheckable() && action->text() == actionName)
+            action->setChecked(true);
+    }
+}
+
 } // namespace gui

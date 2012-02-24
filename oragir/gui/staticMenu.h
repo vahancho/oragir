@@ -37,6 +37,7 @@ public:
     ~StaticMenu();
 
     void uncheckAll();
+    void check(const QString &actionName);
 
 protected:
     bool eventFilter(QObject *obj, QEvent *event);
