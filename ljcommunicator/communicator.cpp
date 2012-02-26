@@ -24,6 +24,7 @@
 #include "communicator.h"
 #include "request.h"
 #include "response.h"
+#include "ljsecurity.h"
 
 namespace  lj
 {
@@ -383,8 +384,8 @@ Events Communicator::getDayEvents(const QString &dateStr)
 }
 
 EventData Communicator::postEvent(const QString &subject, const QString &event,
-                                  const QString &security, const QDateTime &dt,
-                                  const lj::EventProperties &props,
+                                  const Security &security, const QDateTime &dt,
+                                  const EventProperties &props,
                                   const QString &journal)
 {
     QVariantList params = authParams();
@@ -397,7 +398,6 @@ EventData Communicator::postEvent(const QString &subject, const QString &event,
     param["ver"] = 1;
     param["subject"] = subject;
     param["event"] = event;
-    param["security"] = security;
     param["year"] = dt.date().year();
     param["mon"] = dt.date().month();
     param["day"] = dt.date().day();
@@ -405,6 +405,12 @@ EventData Communicator::postEvent(const QString &subject, const QString &event,
     param["min"] = dt.time().minute();
     param["usejournal"] = journal;
     param["props"] = props.data();
+
+    param["security"] = security.selectedMajorLJName();
+    if (security.type() == Security::UseMask) {
+        param["allowmask"] = security.mask();
+    }
+
     params.push_back(param);
 
     request("LJ.XMLRPC.postevent", params);
@@ -414,9 +420,9 @@ EventData Communicator::postEvent(const QString &subject, const QString &event,
 }
 
 EventData Communicator::editEvent(int id, const QString &subject,
-                                  const QString &event, const QString &security,
+                                  const QString &event, const Security &security,
                                   const QDateTime &dt,
-                                  const lj::EventProperties &props,
+                                  const EventProperties &props,
                                   const QString &journal)
 {
     QVariantList params = authParams();
@@ -430,7 +436,6 @@ EventData Communicator::editEvent(int id, const QString &subject,
     param["itemid"] = id;
     param["subject"] = subject;
     param["event"] = event;
-    param["security"] = security;
     param["year"] = dt.date().year();
     param["mon"] = dt.date().month();
     param["day"] = dt.date().day();
@@ -438,6 +443,12 @@ EventData Communicator::editEvent(int id, const QString &subject,
     param["min"] = dt.time().minute();
     param["usejournal"] = journal;
     param["props"] = props.data();
+
+    param["security"] = security.selectedMajorLJName();
+    if (security.type() == Security::UseMask) {
+        param["allowmask"] = security.mask();
+    }
+
     params.push_back(param);
 
     request("LJ.XMLRPC.editevent", params);
@@ -448,7 +459,7 @@ EventData Communicator::editEvent(int id, const QString &subject,
 
 EventData Communicator::deleteEvent(int id)
 {
-    return editEvent(id, "", "", "", QDateTime(),
+    return editEvent(id, "", "", Security(), QDateTime(),
                      EventProperties(), "");
 }
 

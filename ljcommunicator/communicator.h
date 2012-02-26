@@ -37,6 +37,8 @@ class QBuffer;
 namespace lj
 {
 
+class Security;
+
 /// Implements LiveJournal wrapper around of xmlrpc client.
 class LJCOMMUNICATOR_EXPORT Communicator : public QObject
 {
@@ -102,14 +104,14 @@ public:
     Events getDayEvents(const QString &dateStr);
 
     EventData postEvent(const QString &subject, const QString &event,
-                        const QString &security, const QDateTime &dt,
-                        const lj::EventProperties &props,
+                        const Security &security, const QDateTime &dt,
+                        const EventProperties &props,
                         const QString &journal);
 
     /// Edits existing event given by id. If event is empty string it deleted.
     EventData editEvent(int id, const QString &subject, const QString &event,
-                        const QString &security, const QDateTime &dt,
-                        const lj::EventProperties &props,
+                        const Security &security, const QDateTime &dt,
+                        const EventProperties &props,
                         const QString &journal);
 
     EventData deleteEvent(int id);
