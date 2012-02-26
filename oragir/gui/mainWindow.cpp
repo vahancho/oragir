@@ -1432,7 +1432,8 @@ BlogEventView *MainWindow::createBlogEventView()
     view->setUserPics(db->userPics(), userPicsLocation());
     view->setMoods(db->moods());
     view->setUserTags(db->userTags());
-    view->setSecurityNames(db->securityNames());
+    //view->setSecurityNames(db->securityNames());
+    view->setSecurity(db->eventSecurity());
 
     return view;
 }
@@ -1451,6 +1452,7 @@ void MainWindow::onCommitChanges()
             lj::Communicator com;
             core::Credentials *cr = core::Application::theApp()->credentials();
             com.setUser(cr->user(), cr->password());
+
             lj::EventProperties props;
             props["picture_keyword"] = blogView->userPic();
             props["opt_backdated"] = blogView->dateOutOrder();
@@ -1459,6 +1461,7 @@ void MainWindow::onCommitChanges()
             props["current_mood"] = blogView->mood();
             props["current_location"] = blogView->location();
 
+            lj::Security security = blogView->security();
             lj::EventData data;
             int id = blogView->eventId();
             if (id < 0) {
@@ -1469,12 +1472,12 @@ void MainWindow::onCommitChanges()
                 body.append("\n\n" + ad);
                 // Post new event.
                 data = com.postEvent(subject, body,
-                                     "public", dt, props,
+                                     security, dt, props,
                                      blogView->postTo());
             } else {
                 // Edit existing event.
                 data = com.editEvent(id, subject, body,
-                                     "private", dt, props,
+                                     security, dt, props,
                                      blogView->postTo());
             }
 
