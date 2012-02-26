@@ -186,51 +186,41 @@ QString BlogDatabase::eventTags(int id) const
     return eventProperties(id, "taglist");
 }
 
-QStringList BlogDatabase::eventSecurity(int id) const
+lj::Security BlogDatabase::eventSecurity() const
 {
-    QStringList ret;
+    lj::Security security;
+
+    QSqlQuery q = query();
+    q.prepare("SELECT friendgroups FROM user");
+    if (q.exec() && q.next()) {
+        QStringList fg = q.value(0).toString().split(',');
+        security.setFriendGroups(fg);
+    }
+
+    return security;
+}
+
+lj::Security BlogDatabase::eventSecurity(int id) const
+{
+    lj::Security security = eventSecurity();
     QSqlQuery q = query();
     QString qStr = QString("SELECT security FROM %1 WHERE itemid='%2'")
                            .arg(str::MyBlogTableName).arg(id);
     q.prepare(qStr);
     if (q.exec() && q.next()) {
-        QString security = q.value(0).toString();
-        if (security == "public") {
-            return ret << "Public";
-        } else if (security == "private") {
-            return ret << "Private";
-        } else if (security == "usemask") {
-            quint32 mask = eventMask(id);
-            if (mask == 1) {
-                return ret << "Friends";
-            }
-            // Calculate selected group ids - the bit numbers for
-            // friend groups, from 1-30.
-            quint32 bitMask = 1;
-            int groupId = 0;
-            std::set<int> ids;
-            while (bitMask < mask) {
-                if ((mask & bitMask) == bitMask) {
-                    ids.insert(groupId);
-                }
-                bitMask = bitMask << 1;
-                groupId++;
-            }
+        QString securityName = q.value(0).toString();
 
-            q.prepare("SELECT friendgroups FROM user");
-            if (q.exec() && q.next()) {
-                QStringList fgList = q.value(0).toString().split(',');
-                for (int i = 0; i < fgList.size() - 1; i += 2) {
-                    const int curId = fgList.at(i).toInt();
-                    if (ids.find(curId) != ids.end()) {
-                        ret << fgList.at(i + 1);
-                    }
-                }
-            }
+        if (securityName == "public") {
+            security.setMajorSecurity("Public");
+        } else if (securityName == "private") {
+            security.setMajorSecurity("Private");
+        } else if (securityName == "usemask") {
+            quint32 mask = eventMask(id);
+            security.setMask(mask);
         }
     }
 
-    return ret;
+    return security;
 }
 
 unsigned int BlogDatabase::eventMask(int id) const
@@ -281,20 +271,6 @@ void BlogDatabase::setFriendGroups(const lj::FriendGroups &fg)
     q.prepare(QString("UPDATE user SET friendgroups = '%1'")
               .arg(fgList.join(",")));
     q.exec();
-}
-
-QStringList BlogDatabase::securityNames() const
-{
-    QStringList ret = QStringList() << "Public" << "Private" << "Friends";
-    QSqlQuery q = query();
-    q.prepare("SELECT friendgroups FROM user");
-    if (q.exec() && q.next()) {
-        QStringList fgList = q.value(0).toString().split(',');
-        for (int i = 1; i < fgList.size(); i += 2) {
-            ret << fgList.at(i);
-        }
-    }
-    return ret;
 }
 
 QString BlogDatabase::userPic(int id) const

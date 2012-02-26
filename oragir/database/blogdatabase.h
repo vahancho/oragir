@@ -21,6 +21,7 @@
 #ifndef __BLOGDATABASE_H__
 #define __BLOGDATABASE_H__
 
+#include "../../ljcommunicator/ljsecurity.h"
 #include "database.h"
 
 namespace lj
@@ -89,15 +90,14 @@ public:
 
     void setFriendGroups(const lj::FriendGroups &fg);
 
-    QStringList securityNames() const;
-
     /// Returns user pic as a picture keyword.
     QString userPic(int id) const;
 
     /// Returns the event's current mood as a string.
     QString currentMood(int id) const;
 
-    QStringList eventSecurity(int id) const;
+    lj::Security eventSecurity(int id) const;
+    lj::Security eventSecurity() const;
 
     unsigned int eventMask(int id) const;
 
