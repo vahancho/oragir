@@ -26,6 +26,7 @@
 #include <QDateTime>
 #include <QMap>
 #include <QTimer>
+#include "../../ljcommunicator/ljsecurity.h"
 
 class QLineEdit;
 class QCheckBox;
@@ -89,9 +90,8 @@ public:
     /// Returns the current mood as a string.
     QString mood() const;
 
-    void setSecurityNames(const QStringList &security);
-    void setSecurity(const QStringList &security);
-    QStringList security() const;
+    lj::Security security() const;
+    void setSecurity(const lj::Security &security);
 
     /// Handle location.
     void setLocation(const QString &location);
@@ -178,6 +178,9 @@ private:
 
     /// Stores the location where user pics stored.
     QString m_picLocation;
+
+    /// Stores the event security information.
+    lj::Security m_security;
 };
 
 } // namespace gui

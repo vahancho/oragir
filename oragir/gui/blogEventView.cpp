@@ -247,40 +247,40 @@ QString BlogEventView::location() const
     return m_editLocation->text();
 }
 
-void BlogEventView::setSecurityNames(const QStringList &security)
+void BlogEventView::setSecurity(const lj::Security &security)
 {
-    QActionGroup *ag = new QActionGroup(this);
-    for (int i = 0; i < 3; ++i) {
-        QAction *act = m_menuSecurity->addAction(security.at(i));
-        act->setCheckable(true);
-        ag->addAction(act);
-    }
-    m_menuSecurity->addSeparator();
-    m_menuSecurity->addMenu(m_menuCustomSecurity);
-    for (int i = 3; i < security.count(); ++i) {
-        QAction *act = m_menuCustomSecurity->addAction(security.at(i));
-        act->setCheckable(true);
-    }
-}
+    m_security = security;
 
-void BlogEventView::setSecurity(const QStringList &security)
-{
-    foreach (const QString &s, security) {
-        m_menuSecurity->check(s);
+    if (m_menuSecurity->actions().count() == 0 &&
+        m_menuCustomSecurity->actions().count() == 0) {
+        QStringList names = m_security.majorNames();
+        QActionGroup *ag = new QActionGroup(this);
+        foreach (const QString &name, names) {
+            QAction *act = m_menuSecurity->addAction(name);
+            act->setCheckable(true);
+            ag->addAction(act);
+        }
+        m_menuSecurity->addSeparator();
+        m_menuSecurity->addMenu(m_menuCustomSecurity);
+        names = m_security.minorNames();
+        foreach (const QString &name, names) {
+            QAction *act = m_menuCustomSecurity->addAction(name);
+            act->setCheckable(true);
+        }
+    }
+
+    m_menuSecurity->uncheckAll();
+    m_menuSecurity->check(m_security.selectedMajorName());
+    QStringList selected = m_security.selectedMinorNames();
+    m_menuCustomSecurity->uncheckAll();
+    foreach (const QString &s, selected) {
         m_menuCustomSecurity->check(s);
     }
 }
 
-QStringList BlogEventView::security() const
+lj::Security BlogEventView::security() const
 {
-    QStringList ret;
-    QList<QAction *> actions = m_menuSecurity->actions();
-    actions << m_menuCustomSecurity->actions();
-    foreach (QAction *act, actions) {
-        if (act->isCheckable() && act->isChecked())
-            ret.append(act->text());
-    }
-    return ret;
+    return m_security;
 }
 
 void BlogEventView::setupActions(const HtmlActions &actions)
@@ -455,11 +455,19 @@ void BlogEventView::onPicChanged(const QString &pic)
 void BlogEventView::onSecurityActionTrigerred(QAction *action)
 {
     m_menuCustomSecurity->uncheckAll();
+    m_security.setMajorSecurity(action->text());
 }
 
 void BlogEventView::onCustomSecurityActionTrigerred(QAction *action)
 {
     m_menuSecurity->uncheckAll();
+    QStringList selected;
+    QList<QAction *> actionList = m_menuCustomSecurity->actions();
+    foreach (QAction *action, actionList) {
+        if (action->isCheckable() && action->isChecked())
+            selected.append(action->text());
+    }
+    m_security.setMinorSecurity(selected);
 }
 
 } // namespace gui
