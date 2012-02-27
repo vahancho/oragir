@@ -289,6 +289,7 @@ void BlogEventView::setupActions(const HtmlActions &actions)
     while (it != actions.constEnd()) {
         // Handle the html actions' connection.
         QAction *action = it.value();
+        action->setEnabled(true);
         action->disconnect();
 
         switch (it.key()) {

@@ -800,6 +800,9 @@ void MainWindow::onSubWindowActivated(QMdiSubWindow *subWindow)
     if (!subWindow)
         return;
 
+    foreach (QAction *act, m_htmlActions)
+        act->setEnabled(false);
+
     QWidget *widget = subWindow->widget();
 
     if (DatabaseView *dbView = qobject_cast<DatabaseView *>(widget)) {
