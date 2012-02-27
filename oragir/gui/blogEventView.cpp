@@ -57,14 +57,14 @@ BlogEventView::BlogEventView(QWidget *parent, Qt::WindowFlags f)
     m_cmbMoods = new QComboBox(this);
     m_cmbMoods->setEditable(true);
 
-    QPushButton *btnSecurity = new QPushButton("Public", this);
+    m_btnSecurity = new QPushButton("Public", this);
     m_menuSecurity = new StaticMenu(this);
     connect(m_menuSecurity, SIGNAL(triggered(QAction *)),
             this, SLOT(onSecurityActionTrigerred(QAction *)));
     m_menuCustomSecurity = new StaticMenu("Custom", this);
     connect(m_menuCustomSecurity, SIGNAL(triggered(QAction *)),
             this, SLOT(onCustomSecurityActionTrigerred(QAction *)));
-    btnSecurity->setMenu(m_menuSecurity);
+    m_btnSecurity->setMenu(m_menuSecurity);
 
     m_lblUserpic = new QLabel(this);
     m_lblUserpic->setMinimumSize(QSize(64, 64));
@@ -83,7 +83,7 @@ BlogEventView::BlogEventView(QWidget *parent, Qt::WindowFlags f)
     QFormLayout *formLayout2 = new QFormLayout;
     formLayout2->addRow("Post to:", m_cmbPostTo);
     formLayout2->addRow("Userpic:", m_cmbUserPic);
-    formLayout2->addRow("Access:", btnSecurity);
+    formLayout2->addRow("Access:", m_btnSecurity);
     formLayout2->addRow("Moods:", m_cmbMoods);
 
     QHBoxLayout *headerLayout = new QHBoxLayout;
@@ -276,6 +276,12 @@ void BlogEventView::setSecurity(const lj::Security &security)
     foreach (const QString &s, selected) {
         m_menuCustomSecurity->check(s);
     }
+
+    if (m_security.type() != lj::Security::UseMask) {
+        m_btnSecurity->setText(m_security.selectedMajorName());
+    } else {
+        m_btnSecurity->setText("Custom");
+    }
 }
 
 lj::Security BlogEventView::security() const
@@ -456,7 +462,9 @@ void BlogEventView::onPicChanged(const QString &pic)
 void BlogEventView::onSecurityActionTrigerred(QAction *action)
 {
     m_menuCustomSecurity->uncheckAll();
-    m_security.setMajorSecurity(action->text());
+    QString text = action->text();
+    m_security.setMajorSecurity(text);
+    m_btnSecurity->setText(text);
 }
 
 void BlogEventView::onCustomSecurityActionTrigerred(QAction *action)
@@ -469,6 +477,7 @@ void BlogEventView::onCustomSecurityActionTrigerred(QAction *action)
             selected.append(action->text());
     }
     m_security.setMinorSecurity(selected);
+    m_btnSecurity->setText("Custom");
 }
 
 } // namespace gui

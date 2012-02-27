@@ -33,6 +33,7 @@ class QCheckBox;
 class QLabel;
 class QComboBox;
 class QDateTimeEdit;
+class QPushButton;
 
 namespace gui
 {
@@ -166,6 +167,7 @@ private:
     QComboBox *m_cmbUserPic;
     QComboBox *m_cmbTags;
     QComboBox *m_cmbMoods;
+    QPushButton *m_btnSecurity;
     StaticMenu *m_menuSecurity;
     StaticMenu *m_menuCustomSecurity;
     QLabel *m_lblUserpic;
