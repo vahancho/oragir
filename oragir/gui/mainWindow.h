@@ -259,6 +259,8 @@ private:
 
     QAction *m_syncAction;
 
+    QAction *m_commitAction;
+
     BlogEventView::HtmlActions m_htmlActions;
 
     /// Store the Window menu.

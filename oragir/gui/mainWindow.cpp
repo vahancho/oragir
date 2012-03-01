@@ -310,10 +310,11 @@ void MainWindow::createMenus()
     connect(newPost, SIGNAL(triggered()), this, SLOT(onNewPost()));
     fileToolBar->addAction(newPost);
 
-    QAction *commitAction = fileMenu->addAction("&Commit");
-    commitAction->setIcon(QIcon(":icons/commit"));
-    connect(commitAction, SIGNAL(triggered()), this, SLOT(onCommitChanges()));
-    fileToolBar->addAction(commitAction);
+    m_commitAction = fileMenu->addAction("&Commit");
+    m_commitAction->setEnabled(false);
+    m_commitAction->setIcon(QIcon(":icons/commit"));
+    connect(m_commitAction, SIGNAL(triggered()), this, SLOT(onCommitChanges()));
+    fileToolBar->addAction(m_commitAction);
     m_syncAction = fileMenu->addAction("S&ynchronize");
     m_syncAction->setEnabled(false);
     m_syncAction->setIcon(QIcon(":icons/sync"));
@@ -808,8 +809,10 @@ void MainWindow::onSubWindowActivated(QMdiSubWindow *subWindow)
 
     if (DatabaseView *dbView = qobject_cast<DatabaseView *>(widget)) {
         updateStatusLabels(dbView->table());
+        m_commitAction->setEnabled(false);
     } else if (BlogEventView *eventView = qobject_cast<BlogEventView *>(widget)) {
         eventView->setupActions(m_htmlActions);
+        m_commitAction->setEnabled(true);
     }
 }
 
