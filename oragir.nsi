@@ -11,7 +11,7 @@
 ;General
 
   ; Define version
-  !define VERSION "0.1"
+  !define VERSION "0.2"
   !define NAME "Oragir"
 
   ;Name and file
@@ -139,6 +139,7 @@ Section "Oragir" SecDummy
 
   ;ADD YOUR OWN FILES HERE...
   File "release\oragir.exe"
+  File "release\ljcommunicator.dll"
   File "distrib\msvcr90.dll"
   File "distrib\msvcp90.dll"
   File "distrib\Microsoft.VC90.CRT.manifest"
@@ -146,8 +147,10 @@ Section "Oragir" SecDummy
   File "distrib\QtGui4.dll"
   File "distrib\QtNetwork4.dll"
   File "distrib\QtSql4.dll"
+  File "distrib\QtWebKit4.dll"
+  File "distrib\QtXml4.dll"
   File "distrib\license.txt"
-  File "qt.conf"
+  File ".\oragir\qt.conf"
   SetOutPath "$INSTDIR\sqldrivers"
   File "distrib\qsqlite4.dll"
   SetOutPath "$INSTDIR\imageformats"
@@ -198,6 +201,7 @@ Section "Uninstall"
   ;ADD YOUR OWN FILES HERE...
 
   Delete "$INSTDIR\oragir.exe"
+  Delete "$INSTDIR\ljcommunicator.dll"
   Delete "$INSTDIR\msvcr90.dll"
   Delete "$INSTDIR\msvcp90.dll"
   Delete "$INSTDIR\Microsoft.VC90.CRT.manifest"
@@ -205,6 +209,8 @@ Section "Uninstall"
   Delete "$INSTDIR\QtGui4.dll"
   Delete "$INSTDIR\QtNetwork4.dll"
   Delete "$INSTDIR\QtSql4.dll"
+  Delete "$INSTDIR\QtWebKit4.dll"
+  Delete "$INSTDIR\QtXml4.dll"
   Delete "$INSTDIR\license.txt"
   Delete "$INSTDIR\qt.conf"
   Delete "$INSTDIR\Uninstall.exe"
