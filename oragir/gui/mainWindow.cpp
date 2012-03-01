@@ -1506,6 +1506,21 @@ void MainWindow::onSynchronize()
     core::BlogDatabase *db = core::Application::theApp()->blogDatabase();
     QString lastsynced = db->lastSynced();
 
+    if (m_blogModel->rowCount() == 0 &&
+        lastsynced == "1900-01-01 00:00:00") {
+
+        int res = QMessageBox::question(this, "Blog Synchronize",
+                            "Before synchronizing blog entries "
+                            "you need to download entire blog at "
+                            "least once. \n"
+                            "Would you like to download your blog now?",
+                            QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes);
+        if (res == QMessageBox::Yes) {
+            downloadAllEvents();
+        }
+        return;
+    }
+
     lj::Communicator com;
     core::Credentials *cr = core::Application::theApp()->credentials();
     com.setUser(cr->user(), cr->password());
