@@ -20,6 +20,9 @@ HEADERS += ./core/propertyTable.h \
            ./gui/htmlEditor.h \
            ./gui/blogTableModel.h \
            ./gui/blogEventView.h \
+           ./gui/imagedownloader.h \
+           ./gui/staticMenu.h \
+           ./gui/comboBox.h \
            ./parser/atomParser.h \
            ./parser/blog.h \
            ./parser/post.h \
@@ -52,6 +55,9 @@ SOURCES += ./main.cpp \
            ./gui/htmlEditor.cpp \
            ./gui/blogTableModel.cpp \
            ./gui/blogEventView.cpp \
+           ./gui/imagedownloader.cpp \
+           ./gui/staticMenu.cpp \
+           ./gui/comboBox.cpp \
            ./parser/blog.cpp \
            ./parser/post.cpp \
            ./database/database.cpp \

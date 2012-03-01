@@ -24,8 +24,26 @@ OBJECTS_DIR += release
 UI_DIR += ./GeneratedFiles
 RCC_DIR += ./GeneratedFiles
 
-HEADERS += export.h communicator.h ljevents.h ljsyncitems.h ljuserinfo.h \
-           ljusertags.h request.h response.h
-SOURCES += communicator.cpp ljevents.cpp ljsyncitems.cpp ljuserinfo.cpp \
-           ljusertags.cpp request.cpp response.cpp
+HEADERS += export.h \
+           communicator.h \
+           ljevents.h \
+           ljsyncitems.h \
+           ljuserinfo.h \
+           ljusertags.h \
+           request.h \
+           response.h \
+           ljfriendgroups.h \
+           ljsecurity.h \
+           ljeventdata.h
+
+SOURCES += communicator.cpp \
+           ljevents.cpp \
+           ljsyncitems.cpp \
+           ljuserinfo.cpp \
+           ljusertags.cpp \
+           request.cpp \
+           response.cpp \
+           ljfriendgroups.cpp \
+           ljsecurity.cpp \
+           ljeventdata.cpp
 
