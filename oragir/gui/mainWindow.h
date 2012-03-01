@@ -257,6 +257,8 @@ private:
 
     QAction *m_folderDeleteAction;
 
+    QAction *m_syncAction;
+
     BlogEventView::HtmlActions m_htmlActions;
 
     /// Store the Window menu.

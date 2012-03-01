@@ -314,10 +314,11 @@ void MainWindow::createMenus()
     commitAction->setIcon(QIcon(":icons/commit"));
     connect(commitAction, SIGNAL(triggered()), this, SLOT(onCommitChanges()));
     fileToolBar->addAction(commitAction);
-    QAction *syncAction = fileMenu->addAction("S&ynchronize");
-    syncAction->setIcon(QIcon(":icons/sync"));
-    connect(syncAction, SIGNAL(triggered()), this, SLOT(onSynchronize()));
-    fileToolBar->addAction(syncAction);
+    m_syncAction = fileMenu->addAction("S&ynchronize");
+    m_syncAction->setEnabled(false);
+    m_syncAction->setIcon(QIcon(":icons/sync"));
+    connect(m_syncAction, SIGNAL(triggered()), this, SLOT(onSynchronize()));
+    fileToolBar->addAction(m_syncAction);
 
     fileToolBar->addSeparator();
 
@@ -1379,6 +1380,8 @@ void MainWindow::setupBlogView()
                 m_blogView->hideColumn(i);
             }
         }
+
+        m_syncAction->setEnabled(true);
     }
 }
 
