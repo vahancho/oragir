@@ -61,6 +61,8 @@ public:
     /// Returns the total number of records in the given table.
     int totalCount(const QString &table) const;
 
+    void remove();
+
 protected:
     /// Returns query object for this database.
     QSqlQuery query() const;
@@ -69,8 +71,6 @@ protected:
     QString m_error;
 
 private:
-    void remove();
-
     QString m_connection;
 };
 
