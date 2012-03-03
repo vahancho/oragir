@@ -28,6 +28,8 @@ namespace gui
 {
 
 ImageDownloader::ImageDownloader(QObject *parent)
+    :
+        QObject(parent)
 {
     m_netManager = new QNetworkAccessManager(this);
     connect(m_netManager, SIGNAL(finished(QNetworkReply*)),

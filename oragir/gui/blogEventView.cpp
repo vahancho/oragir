@@ -467,7 +467,7 @@ void BlogEventView::onSecurityActionTrigerred(QAction *action)
     m_btnSecurity->setText(text);
 }
 
-void BlogEventView::onCustomSecurityActionTrigerred(QAction *action)
+void BlogEventView::onCustomSecurityActionTrigerred(QAction * /*action*/)
 {
     m_menuSecurity->uncheckAll();
     QStringList selected;

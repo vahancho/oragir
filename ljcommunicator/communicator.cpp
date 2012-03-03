@@ -104,9 +104,6 @@ QByteArray Communicator::getChallenge()
     if (response.isValid()) {
         QMap<QString, QVariant> map = responceData.toMap();
         challenge = map.value("challenge").toByteArray();
-        int serverTime = map.value("server_time").toInt();
-        int expireTime = map.value("expire_time").toInt();
-        int challangeLife = expireTime - serverTime;
     }
 
     return challenge;
@@ -486,7 +483,7 @@ void Communicator::request(QString methodName, const QVariantList &params)
     m_eventLoop.exec();
 }
 
-void Communicator::requestFinished(int id, bool error)
+void Communicator::requestFinished(int id, bool /*error*/)
 {
     if (id != m_currentRequestId)
         return;

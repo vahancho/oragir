@@ -100,7 +100,7 @@ void ComboBox::onEditTextChanged(const QString &text)
     connectTextChanged();
 }
 
-void ComboBox::onItemInderted(const QModelIndex &parent, int start, int end)
+void ComboBox::onItemInderted(const QModelIndex &/*parent*/, int start, int /*end*/)
 {
     setItemData(start, Qt::Unchecked, Qt::CheckStateRole);
 }
