@@ -1133,19 +1133,11 @@ void MainWindow::onBlogAccountSetup()
             QString dataFile = blogDataFile(user);
             if (db->database().isOpen()) {
                 QString currentDbName = db->database().connectionName();
-                if (currentDbName == dataFile) {
-                    // If used the same user, just delete the old data
-                    // to fetch it again.
-                    QStringList tables = db->tables();
-                    if (tables.contains(str::MyBlogTableName)) {
-                        // Clear the old table.
-                        m_blogModel->removeRows(0, m_blogModel->rowCount());
-                        m_blogModel->submitAll();
-                    }
-                } else {
-                    // Database switched, so remove existing model.
+                if (currentDbName != dataFile) {
+                     // Database switched, so remove existing model.
                     delete m_blogModel;
                     m_blogModel = 0;
+                    db->remove();
                 }
             }
             db->create(dataFile);
