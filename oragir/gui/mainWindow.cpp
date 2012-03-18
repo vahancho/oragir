@@ -1513,6 +1513,7 @@ void MainWindow::onSynchronize()
         if (res == QMessageBox::Yes) {
             downloadAllEvents();
         }
+        m_progress->stop();
         return;
     }
 
