@@ -139,6 +139,7 @@ void MainWindow::createBlogView()
     m_blogView->setSelectionBehavior(QAbstractItemView::SelectRows);
     m_blogView->verticalHeader()->setVisible(false);
     m_blogView->setSortingEnabled(true);
+
     // The uniformed rows height.
     QFontMetrics fm = fontMetrics();
     m_blogView->verticalHeader()->setDefaultSectionSize(fm.height() + 6);
@@ -1377,6 +1378,7 @@ void MainWindow::setupBlogView()
         }
 
         m_syncAction->setEnabled(true);
+        m_blogView->sortByColumn(BlogTableModel::Time, Qt::DescendingOrder);
     }
 }
 
