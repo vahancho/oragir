@@ -54,8 +54,8 @@ MainWindow::MainWindow(QWidget *parent, Qt::WFlags flags)
         m_trayIcon(0),
         m_processedItemCount(0),
         m_recordedItemCount(0),
-        m_statusBarVisible(true),
-        m_blogModel(0)
+        m_blogModel(0),
+        m_statusBarVisible(true)
 {
     createMenus();
 
