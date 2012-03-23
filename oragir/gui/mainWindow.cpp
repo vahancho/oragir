@@ -1529,9 +1529,9 @@ void MainWindow::onSynchronize()
         QDateTime lastDt = QDateTime::fromString(lastsynced, str::TimeFormat);
         lj::Events events;
         for (int i = 0; i < c; ++i) {
-            qDebug() << items.itemText(i);
-            qDebug() << items.time(i);
-            qDebug() << items.action(i);
+            //qDebug() << items.itemText(i);
+            //qDebug() << items.time(i);
+            //qDebug() << items.action(i);
 
             QString text = items.itemText(i);
             // Get the post. Ignore comments ('C') for now.

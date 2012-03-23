@@ -166,7 +166,6 @@ UserTags Communicator::getUserTags()
 
     std::auto_ptr<QBuffer> buffer(m_responses.take(m_currentRequestId));
     QByteArray buf = buffer->buffer();
-    qDebug() << buf;
 
     UserTags tags(buf);
     return tags;
@@ -188,7 +187,6 @@ QMap<QString, QVariant> Communicator::getComments(int postid)
 
     std::auto_ptr<QBuffer> buffer(m_responses.take(m_currentRequestId));
     QByteArray buf = buffer->buffer();
-    qDebug() << buf;
 
     xmlrpc::Response response;
     QVariant responceData = response.parse(buf);
@@ -210,7 +208,6 @@ FriendGroups Communicator::getFriendGroups()
 
     std::auto_ptr<QBuffer> buffer(m_responses.take(m_currentRequestId));
     QByteArray buf = buffer->buffer();
-    qDebug() << buf;
 
     FriendGroups groups(buf);
     return groups;
@@ -231,7 +228,6 @@ QVariantList Communicator::getDayCount()
 
     std::auto_ptr<QBuffer> buffer(m_responses.take(m_currentRequestId));
     QByteArray buf = buffer->buffer();
-    qDebug() << buf;
 
     xmlrpc::Response response;
     QVariant responceData = response.parse(buf);
@@ -343,7 +339,6 @@ Events Communicator::getEvent(int itemId)
 
     std::auto_ptr<QBuffer> buffer(m_responses.take(m_currentRequestId));
     QByteArray buf = buffer->buffer();
-    qDebug() << buf;
 
     Events events(buf);
     return events;

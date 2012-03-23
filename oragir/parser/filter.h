@@ -264,7 +264,6 @@ typename Filter<Source>::Result Filter<Source>::match(const QString &name,
                 rx.setPattern(pat);
                 if (rx.indexIn(stripped) != -1) {
                     QString s = rx.cap(0);
-                    //qDebug(s.toAscii().data());
                 }
                 return Matched;
             }

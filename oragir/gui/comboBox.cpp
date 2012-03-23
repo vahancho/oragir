@@ -21,7 +21,6 @@
 #include <QListWidget>
 #include <QLineEdit>
 #include <QMouseEvent>
-#include <QDebug>
 #include "comboBox.h"
 
 namespace gui

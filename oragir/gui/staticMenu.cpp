@@ -19,7 +19,6 @@
 ***************************************************************************/
 
 #include <QEvent>
-#include <QDebug>
 #include "staticMenu.h"
 
 namespace gui

@@ -20,7 +20,6 @@
 
 #include <assert.h>
 #include <vector>
-#include <QDebug>
 #include <QStringList>
 #include "ljsecurity.h"
 
@@ -63,7 +62,6 @@ void Security::setMinorSecurity(const QStringList &security)
         bitMask = bitMask << id;
         m_mask = m_mask | bitMask;
     }
-    qDebug() << m_mask;
 }
 
 QString Security::selectedMajorName() const
