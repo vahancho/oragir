@@ -387,7 +387,7 @@ EventData Communicator::postEvent(const QString &subject, const QString &event,
 {
     QVariantList params = authParams();
     if (params.size() == 0)
-        return 0;
+        EventData();
 
     // Modify params by adding the item id.
     QMap<QString, QVariant> param = params.takeAt(0).toMap();
@@ -424,7 +424,7 @@ EventData Communicator::editEvent(int id, const QString &subject,
 {
     QVariantList params = authParams();
     if (params.size() == 0)
-        return 0;
+        EventData();
 
     // Modify params by adding the item id.
     QMap<QString, QVariant> param = params.takeAt(0).toMap();
