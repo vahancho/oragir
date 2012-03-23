@@ -69,9 +69,9 @@ void HtmlEditor::onTabChanged(int tab)
 
 void HtmlEditor::setContent(const QString &html)
 {
-    QByteArray data = html.toUtf8();
+    QString data = html;
     data.replace("\n", "<BR>");
-    m_webView->setContent(data, "text/html;charset=utf-8");
+    m_webView->setHtml(data);
 }
 
 void HtmlEditor::onLinkClicked(const QUrl &url)
