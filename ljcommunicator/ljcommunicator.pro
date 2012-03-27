@@ -1,7 +1,11 @@
 message("You are running qmake on ljcommunicator.pro file.")
 
 TEMPLATE = lib
-TARGET = ljcommunicator
+os2 {
+    TARGET = ljcommun
+} else {
+    TARGET = ljcommunicator
+}
 
 # Will build the final executable in the release directory.
 DESTDIR = ../release
@@ -13,10 +17,11 @@ win32:CONFIG += embed_manifest_exe
 INCLUDEPATH += GeneratedFiles \
                GeneratedFiles/release \
                .
-win32:LIBS += -lqtmain -lQtCore4 -lQtNetwork4
-unix:LIBS += -lQtCore -lQtNetwork
 
-win32:DEFINES += LJCOMMUNICATOR_LIB
+win32:LIBS += -lqtmain -lQtCore4 -lQtNetwork4
+unix|os2:LIBS += -lQtCore -lQtNetwork
+
+win32|os2:DEFINES += LJCOMMUNICATOR_LIB
 
 DEPENDPATH += .
 MOC_DIR += ./GeneratedFiles/release
