@@ -33,7 +33,7 @@ class CheckModel : public QStandardItemModel
 public:
     CheckModel(QObject *parent = 0);
 
-    virtual Qt::ItemFlags flags(const QModelIndex &index);
+    virtual Qt::ItemFlags flags(const QModelIndex &index) const;
 };
 
 

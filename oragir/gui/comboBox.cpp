@@ -31,7 +31,7 @@ CheckModel::CheckModel(QObject *parent)
         QStandardItemModel(parent)
 {}
 
-Qt::ItemFlags CheckModel::flags(const QModelIndex & index)
+Qt::ItemFlags CheckModel::flags(const QModelIndex & index) const
 {
     return QStandardItemModel::flags(index) | Qt::ItemIsUserCheckable;
 }
@@ -42,11 +42,17 @@ ComboBox::ComboBox(QWidget *parent)
         QComboBox(parent)
 {
     connectTextChanged();
-    view()->viewport()->installEventFilter(this);
-    m_model = new CheckModel;
+    m_model = new CheckModel(this);
     connect(m_model, SIGNAL(rowsInserted(const QModelIndex &, int, int)),
             this, SLOT(onItemInderted(const QModelIndex &, int, int)));
     setModel(m_model);
+
+    QListView *lView = new QListView(this);
+    lView->setFlow(QListView::TopToBottom);
+    lView->setResizeMode(QListView::Adjust);
+    lView->setViewMode(QListView::IconMode);
+    setView(lView);
+    view()->viewport()->installEventFilter(this);
 }
 
 ComboBox::~ComboBox()
