@@ -51,6 +51,9 @@ ComboBox::ComboBox(QWidget *parent)
     lView->setFlow(QListView::TopToBottom);
     lView->setResizeMode(QListView::Adjust);
     lView->setViewMode(QListView::IconMode);
+    lView->setLayoutMode(QListView::Batched);
+    lView->setWrapping(true);
+    lView->setSpacing(5);
     setView(lView);
     view()->viewport()->installEventFilter(this);
 }
