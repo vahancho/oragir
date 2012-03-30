@@ -253,6 +253,8 @@ void BlogDatabase::setUserTags(const lj::UserTags &tags)
             tagList.push_back(tags.tagName(i));
         }
     }
+    // Sort tags before storing them.
+    qSort(tagList);
     QSqlQuery q = query();
     q.prepare(QString("UPDATE user SET tags = '%1'").arg(tagList.join(",")));
     q.exec();

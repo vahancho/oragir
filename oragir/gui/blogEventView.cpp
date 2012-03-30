@@ -200,7 +200,12 @@ void BlogEventView::setEventTags(const QString &tags)
 
 void BlogEventView::setUserTags(const QStringList &tags)
 {
-    m_cmbTags->addItems(tags);
+    /// TODO: Remove sorting here because tags already stored sorted
+    // in database. We sort here to support old databases with non
+    // sorted tags list.
+    QStringList sortedTags = tags;
+    qSort(sortedTags);
+    m_cmbTags->addItems(sortedTags);
 }
 
 QString BlogEventView::eventTags() const
