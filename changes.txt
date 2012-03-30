@@ -1,0 +1,29 @@
+-------------------------------------------------------------------------------
+oragir v0.2.1 beta
+-------------------------------------------------------------------------------
+
+- Fixed incorrect applying of lj-cut (LiveJournal cut off) tag
+- Improved tag list combo box with using multicolumn view
+- Sort tags alphabetically
+
+-------------------------------------------------------------------------------
+oragir v0.2 beta
+-------------------------------------------------------------------------------
+
+- Can download the whole journal from LJ server and backup it on hard disk
+- Allows writing new blog entries and edit existing ones
+- Has modern WYGIWYS html editor
+- Keeps the archive entries synced with the server
+- Improved gui and html visualization
+
+-------------------------------------------------------------------------------
+oragir v0.1 beta
+-------------------------------------------------------------------------------
+
+- Can work on multiple platforms
+- Has modern and simple gui
+- Supports filtering by many categories
+- Resides in the system tray
+- Can check for updates on application start up
+- Can group filtered entries into the folders for easy navigation and look up
+
