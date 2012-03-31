@@ -1417,7 +1417,7 @@ QString MainWindow::userPicsLocation() const
 void MainWindow::onNewPost()
 {
     BlogEventView *view = createBlogEventView();
-    createSubWindow(view, "New Post");
+    createSubWindow(view, "New Blog Entry");
 }
 
 BlogEventView *MainWindow::createBlogEventView()
