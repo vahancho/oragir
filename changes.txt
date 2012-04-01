@@ -3,6 +3,7 @@ oragir v0.2.1 beta
 -------------------------------------------------------------------------------
 
 - Fixed incorrect applying of lj-cut (LiveJournal cut off) tag
+- Fixed application versions incorrect comparison
 - Improved tag list combo box with using multicolumn view
 - Sort tags alphabetically
 
