@@ -1445,7 +1445,8 @@ void MainWindow::onCommitChanges()
 {
     if (QMdiSubWindow *mdiWindow = m_mdiArea.activeSubWindow()) {
         if(BlogEventView *blogView =
-           qobject_cast<BlogEventView *>(mdiWindow->widget())) {
+            qobject_cast<BlogEventView *>(mdiWindow->widget())) {
+            statusBar()->showMessage("Committing changes to server...");
             m_progress->start();
 
             QDateTime dt = blogView->dateTime();
@@ -1491,6 +1492,7 @@ void MainWindow::onCommitChanges()
                 QMessageBox::critical(this, "Blog Post Failure",
                                       data.error());
             }
+            statusBar()->showMessage("All changes are committed", 2000);
             m_progress->stop();
         }
     }
@@ -1499,6 +1501,7 @@ void MainWindow::onCommitChanges()
 void MainWindow::onSynchronize()
 {
     m_progress->start();
+    statusBar()->showMessage("Syncing changes from server...");
     // Get the last synced time from the user database.
     core::BlogDatabase *db = core::Application::theApp()->blogDatabase();
     QString lastsynced = db->lastSynced();
@@ -1564,6 +1567,7 @@ void MainWindow::onSynchronize()
         }
     }
     m_progress->stop();
+    statusBar()->showMessage("Syncing completed", 2000);
 }
 
 } // namespace gui
