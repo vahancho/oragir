@@ -85,14 +85,15 @@ void Version::reset()
 bool Version::operator>(const Version &ver) const
 {
     for (size_t i = 0; i < m_versions.size(); i++) {
-        if (i < ver.m_versions.size()) {
-            unsigned int thisVersion = m_versions.at(i);
-            unsigned int thatVersion = ver.m_versions.at(i);
-            if (thisVersion > thatVersion)
-                return true;
-            else if (thisVersion < thatVersion)
-                return false;
-        }
+        unsigned int thisVersion = m_versions.at(i);
+        unsigned int thatVersion = 0;
+        if (i < ver.m_versions.size())
+            thatVersion = ver.m_versions.at(i);
+
+        if (thisVersion > thatVersion)
+            return true;
+        else if (thisVersion < thatVersion)
+            return false;
     }
 
     return false;

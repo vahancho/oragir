@@ -11,7 +11,7 @@
 ;General
 
   ; Define version
-  !define VERSION "0.2"
+  !define VERSION "0.2.1"
   !define NAME "Oragir"
 
   ;Name and file
