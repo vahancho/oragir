@@ -70,7 +70,6 @@ void HtmlEditor::onTabChanged(int tab)
 void HtmlEditor::setContent(const QString &html)
 {
     QString data = html;
-    data.replace("\n", "<BR>");
     m_webView->setHtml(data);
 }
 
@@ -83,7 +82,6 @@ QString HtmlEditor::content() const
 {
     QString html = m_webView->page()->mainFrame()->toHtml();
     html.remove("\n");
-    html.replace("<BR>", "\n", Qt::CaseInsensitive);
     return html;
 }
 
@@ -211,13 +209,15 @@ void HtmlEditor::insertLjCut()
                                          "Read more...");
     if (!text.isEmpty()) {
         QString command = QString(
-        "var element = document.createElement(\"lj-cut\");"
-        "element.setAttribute('text', '%1');"
         "if (window.getSelection) {"
             "var sel = window.getSelection();"
             "if (sel.rangeCount) {"
-                "var range = sel.getRangeAt(0).cloneRange();"
-                "range.surroundContents(element);"
+                "var ljcut = document.createElement(\"lj-cut\");"
+                "ljcut.setAttribute('text', '%1');"
+                "var range = sel.getRangeAt(0);"
+                "var selectionContents = range.extractContents();"
+                "ljcut.appendChild(selectionContents);"
+                "range.insertNode(ljcut);"
                 "sel.removeAllRanges();"
                 "sel.addRange(range);"
             "}"
