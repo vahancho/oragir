@@ -1,5 +1,5 @@
 -------------------------------------------------------------------------------
-oragir v0.2.1 beta
+v0.2.1 beta (April 3, 2012)
 -------------------------------------------------------------------------------
 
 - Fixed incorrect applying of lj-cut (LiveJournal cut off) tag
@@ -8,7 +8,7 @@ oragir v0.2.1 beta
 - Sort tags alphabetically
 
 -------------------------------------------------------------------------------
-oragir v0.2 beta
+v0.2 beta (March 23, 2012)
 -------------------------------------------------------------------------------
 
 - Can download the whole journal from LJ server and backup it on hard disk
@@ -18,7 +18,7 @@ oragir v0.2 beta
 - Improved gui and html visualization
 
 -------------------------------------------------------------------------------
-oragir v0.1 beta
+v0.1 beta (Dec 25, 2011)
 -------------------------------------------------------------------------------
 
 - Can work on multiple platforms
